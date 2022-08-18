@@ -3,13 +3,14 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-18 17:51:14
+ * @LastEditTime: 2022-08-18 19:18:34
 -->
 <template>
   <main font-sans p=".5rem" text="center gray-700 dark:gray-200">
     <router-view />
     <TopNav />
     <Swiper/>
+    <IconList/>
   </main>
 </template>
 <style lang="less">
