@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-19 11:32:47
+ * @LastEditTime: 2022-08-19 11:46:11
  */
 /// <reference types="vitest" />
 
@@ -33,7 +33,7 @@ export default defineConfig({
     Pages(),
     Layouts({
       layoutsDirs: 'src/mylayouts',
-      defaultLayout: 'myDefault'
+      defaultLayout: 'default'
     }),
     // https://github.com/antfu/unplugin-auto-import
     AutoImport({
