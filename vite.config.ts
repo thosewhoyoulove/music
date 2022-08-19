@@ -32,7 +32,7 @@ export default defineConfig({
     // https://github.com/hannoeru/vite-plugin-pages
     Pages(),
     Layouts({
-      layoutsDirs: 'src/mylayouts',
+      layoutsDirs: 'src/layout',
       defaultLayout: 'default'
     }),
     // https://github.com/antfu/unplugin-auto-import
