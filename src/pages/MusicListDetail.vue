@@ -3,11 +3,11 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-19 12:42:59
+ * @LastEditTime: 2022-08-19 23:54:53
 -->
 <template>
     <div>
-        <DetailTop :playlist="state.playlist"></DetailTop>
+        <DetailTop :playlist="state.playlist" :creator="state.playlist.creator"></DetailTop>
     </div>
 </template>
 
@@ -24,7 +24,9 @@ onMounted(async () =>{
 
   let res = await getSongListDetail(id)
   state.playlist = res.data.playlist
-  console.log(state.playlist,2222222);
+  console.log(state.playlist.creator);
+  
+  // sessionStorage.setItem('playlistDetail',JSON.stringify(state))
   
 })
 </script>
