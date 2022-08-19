@@ -3,12 +3,15 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-18 17:48:12
+ * @LastEditTime: 2022-08-18 23:39:48
  */
+// import { ViteSSG } from 'vite-ssg' 不知道有什么用
 import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
-import routes from 'virtual:generated-pages'
 import App from './App.vue'
+import { setupLayouts } from 'virtual:generated-layouts'
+import generatedRoutes from 'virtual:generated-pages'
+
 
 import '@unocss/reset/tailwind.css'
 import './styles/main.css'
@@ -18,6 +21,7 @@ import Vant from 'vant';
 import 'vant/lib/index.css';
 
 const app = createApp(App)
+const routes = setupLayouts(generatedRoutes)
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
