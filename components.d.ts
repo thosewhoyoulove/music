@@ -18,8 +18,10 @@ declare module '@vue/runtime-core' {
     TopNav: typeof import('./src/components/TopNav.vue')['default']
     VanButton: typeof import('vant/es')['Button']
     VanIcon: typeof import('vant/es')['Icon']
+    VanList: typeof import('vant/es')['List']
     VanNavBar: typeof import('vant/es')['NavBar']
     VanSwipe: typeof import('vant/es')['Swipe']
     VanSwipeItem: typeof import('vant/es')['SwipeItem']
+    VanTag: typeof import('vant/es')['Tag']
   }
 }
