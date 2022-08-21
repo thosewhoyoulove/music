@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-21 20:43:23
+ * @LastEditTime: 2022-08-21 21:50:32
 -->
 <template>
  <div class="w-100% h-20vw bottom-0 fixed items-center  justify-between mx-2 bg-white border-t border-hex-ccc flex">
@@ -12,9 +12,11 @@
      <span class="px-2">{{playList[playListIndex].al.name}}</span>
    </span>
    <span class="flex pr-1.5rem">
-     <span class="text-lg px-2"><van-icon name="play-circle-o" /></span>
+     <span v-if="isShow" @click="playMusic" class="text-lg px-2"><van-icon name="play-circle-o" /></span>
+     <span v-else @click="pauseMusic" class="text-lg px-2"><van-icon name="pause-circle-o" /></span>
      <span class="text-xl"><van-icon name="bars" /></span>
    </span>
+   <audio ref="audio" :src="` https://music.163.com/song/media/outer/url?id=${playList[playListIndex].id}.mp3`"></audio>
  </div>
 </template>
 <script setup lang="ts">
@@ -23,13 +25,23 @@ import { useStore } from "~/store/index"
 // computed:{
 //   ...mapState(['playList','playListIndex'])
 // }
+    const audio = ref(null)//获取audio属性
     const store = useStore()
     const {playList,playListIndex} = storeToRefs(store)
-    
+    const isShow = ref(true)
     onMounted(() => {
+      console.log(audio.value.play);
+      
         console.log(playList);
         console.log(playListIndex);
     })
-    
+    const playMusic = () =>{
+      audio.value.play()
+      isShow.value = !isShow.value
+    }
+    const pauseMusic = () =>{
+      audio.value.pause()
+      isShow.value = !isShow.value
+    }
 </script>
 
