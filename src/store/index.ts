@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-21 19:43:23
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-21 20:16:47
+ * @LastEditTime: 2022-08-21 22:31:16
  */
 import { defineStore} from 'pinia'
 import { Names } from "./store-name";
@@ -21,6 +21,11 @@ export const useStore = defineStore(Names.playList, {
                 id:1817431690//歌曲id
             }],
             playListIndex:0,//播放歌曲的默认下标为0
+        }
+    },
+    actions: {
+        updatePlayList(state,value: any){
+            state.playList = value
         }
     }
 })

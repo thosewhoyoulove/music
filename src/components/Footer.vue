@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-21 21:50:32
+ * @LastEditTime: 2022-08-21 22:14:52
 -->
 <template>
  <div class="w-100% h-20vw bottom-0 fixed items-center  justify-between mx-2 bg-white border-t border-hex-ccc flex">
@@ -20,7 +20,7 @@
  </div>
 </template>
 <script setup lang="ts">
-import { mapState, storeToRefs } from "pinia";
+import { storeToRefs } from "pinia";
 import { useStore } from "~/store/index"
 // computed:{
 //   ...mapState(['playList','playListIndex'])

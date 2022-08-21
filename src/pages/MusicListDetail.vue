@@ -3,10 +3,11 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-21 19:32:39
+ * @LastEditTime: 2022-08-21 22:31:58
 -->
 <script setup lang="ts">
 import { getSongListDetail, getAllSong } from "~/api/SongListDetail"
+import { useStore } from "~/store/index"
 const router = useRouter()
 const route = useRoute()
 const state = reactive({
@@ -19,7 +20,7 @@ onMounted(async () =>{
 
   let res = await getSongListDetail(id)
   state.playlist = res.data.playlist//歌单信息
-  console.log(state.playlist,'创建者的头像');
+  console.log(state.playlist,'歌单信息');
   console.log(state?.playlist?.shareCount);
   let songlist = await getAllSong(id)
   
@@ -27,12 +28,17 @@ onMounted(async () =>{
   console.log(state.songlist)
   
   
- 
-  
 })
 const filter = num =>{
     if(num >100000000) return (num/100000000).toFixed(0) + '亿'
     else if(num>10000) return (num/10000).toFixed(0) + '万'
+}
+const store = useStore()
+//修改歌曲信息并进行播放
+const updateSongList = () =>{
+    store.updatePlayList(store.$state,state.songlist)
+    console.log(11111);
+    
 }
 </script>
 <template>
@@ -89,13 +95,13 @@ const filter = num =>{
           
         </ul>
         <ul
-          v-for="item in state.songlist"
-          :key="item"
+          v-for="(item,index) in state.songlist"
+          :key="index"
           class="flex justify-between h-3rem leading-8 my-1 text-sm"
         >
         <span class="flex">
           <img class="w-3rem h-3rem rounded" :src="item.al.picUrl" alt="">
-          <span class="flex-col ml-2 music-detail">
+          <span class="flex-col ml-2 music-detail" @click="updateSongList(index)">
             <span class="flex ">
               <span class="flex text-md font-extrabold">{{ item.name }}</span>
               <!-- <span class="px-1" v-if="item.alia.length">({{item.alia[0]}})</span> -->
