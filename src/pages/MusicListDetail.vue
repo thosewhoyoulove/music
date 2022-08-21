@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-21 22:31:58
+ * @LastEditTime: 2022-08-21 22:45:01
 -->
 <script setup lang="ts">
 import { getSongListDetail, getAllSong } from "~/api/SongListDetail"
@@ -35,9 +35,10 @@ const filter = num =>{
 }
 const store = useStore()
 //修改歌曲信息并进行播放
-const updateSongList = () =>{
+const updateSongList = index =>{
     store.updatePlayList(store.$state,state.songlist)
-    console.log(11111);
+    store.updatePlayListIndex(store.$state,index)
+    console.log(index);
     
 }
 </script>

@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-21 19:43:23
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-21 22:31:16
+ * @LastEditTime: 2022-08-21 22:46:35
  */
 import { defineStore} from 'pinia'
 import { Names } from "./store-name";
@@ -24,8 +24,11 @@ export const useStore = defineStore(Names.playList, {
         }
     },
     actions: {
-        updatePlayList(state,value: any){
+        updatePlayList(state: { playList: any; },value: any){
             state.playList = value
+        },
+        updatePlayListIndex(state,value: any){
+            state.playListIndex = value
         }
     }
 })
