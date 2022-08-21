@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-20 17:41:01
+ * @LastEditTime: 2022-08-21 19:32:39
 -->
 <script setup lang="ts">
 import { getSongListDetail, getAllSong } from "~/api/SongListDetail"
@@ -20,11 +20,11 @@ onMounted(async () =>{
   let res = await getSongListDetail(id)
   state.playlist = res.data.playlist//歌单信息
   console.log(state.playlist,'创建者的头像');
-  console.log(state.playlist.creator.nickname,'创建者的nickname');
+  console.log(state?.playlist?.shareCount);
   let songlist = await getAllSong(id)
-  console.log(songlist)
+  
   state.songlist = songlist.data.songs
-  console.log(state.songlist[0].name);
+  console.log(state.songlist)
   
   
  
@@ -53,14 +53,14 @@ const filter = num =>{
                     </span> 
                     
                     <div class="flex-col items-center">
-                        <span class="music-name text-left text-13px m-1 p-1 overflow-hidden">{{state.playlist.name}}</span>
+                        <span class="music-detail text-left text-13px m-1 p-1">{{state.playlist.name}}</span>
                         <span class="flex items-center">
                             <img class="w-10 h-10 rounded-1/2" :src="state?.playlist?.creator?.avatarUrl" alt="">
                             <span class="text-light-900 text-xs ml-2">{{state?.playlist?.creator?.nickname}}</span>
                         </span>
                     </div>
         </span>
-        <div class="flex absolute text-light-900 text-xs pt-1 text-left w-100% h-5 overflow-hidden">
+        <div class="flex absolute text-white text-xs pt-1 text-left w-100% h-5 overflow-hidden">
              <span>
                 {{state.playlist.description}}
              </span>
@@ -69,40 +69,50 @@ const filter = num =>{
              </span>
         </div>
         <div class="relative flex mt-6 text-light-900 justify-around">
-            <span><van-button color="#ccc" bg-opacity-5  round ><van-icon size="1rem" name="share-o" /></van-button></span>
-            <span><van-button color="#ccc" bg-opacity-5  round ><van-icon size="1rem" name="chat-o" /></van-button></span>
-            <span><van-button color="#FE3641"  round ><van-icon size="1rem" name="add-o" /></van-button></span>
+            <span class="flex items-center justify-between"><van-button color="#C8C6C6"  round ><van-icon size="1rem" name="share-o" /><span class="px-1">{{state?.playlist?.shareCount}}</span></van-button></span>
+            <span><van-button color="#C8C6C6"  round ><van-icon size="1rem" name="chat-o" /><span class="px-1">{{state?.playlist?.commentCount}}</span></van-button></span>
+            <span><van-button color="#FE3641"  round ><van-icon size="1rem" name="add-o" /><span class="px-1">{{state?.playlist?.subscribedCount}}</span></van-button></span>
         </div>
     </div>
-    <div class="w-100% h-50vw">
+    <div class="w-100% h-50vh">
         <van-list>
         <ul
           class="
             flex
-            justify-around
-            h-3em
+            h-3rem
             leading-12
-            border-b border-b-hex-E4E4E4
-            text-sm
-            list_top
+            text-md
             "
         >
-          <span class="flex-1">学号/工号</span>
-          <span class="flex-1">姓名</span>
-          <span class="flex-1">角色</span>
+          <span><van-icon name="play-circle-o" /></span>
+          <span class="flex">全部播放</span>
+          
         </ul>
         <ul
-          v-for="item in member_list"
+          v-for="item in state.songlist"
           :key="item"
-          class="flex justify-around h-3em leading-12 border-b border-b-hex-E4E4E4 text-sm"
+          class="flex justify-between h-3rem leading-8 my-1 text-sm"
         >
-          <span class="flex-1">{{ item.userId }}</span>
-          <span class="flex-1">{{ item.name }}</span>
-          <span class="flex-1">
-            <van-tag v-if="item.memberRank===2" color="#38bdf8">负责人</van-tag>
-            <van-tag v-if="item.memberRank===1" color="#10b981">管理员</van-tag>
-            <van-tag v-if="item.memberRank===0" plain color="#78716c">成员</van-tag>
+        <span class="flex">
+          <img class="w-3rem h-3rem rounded" :src="item.al.picUrl" alt="">
+          <span class="flex-col ml-2 music-detail">
+            <span class="flex ">
+              <span class="flex text-md font-extrabold">{{ item.name }}</span>
+              <!-- <span class="px-1" v-if="item.alia.length">({{item.alia[0]}})</span> -->
+            </span>
+            
+            <span class="flex">
+              <span class="text-xs text-gray-500">{{item.ar[0].name}}</span>
+              <span class="text-xs text-gray-500 px-1">-</span>
+              <span class="text-xs text-gray-500">{{item.al.name}}</span>
+            </span>
           </span>
+        </span>
+          <span>
+            <span v-if="item.mv" class="absolute right-2rem"><van-icon size="1.3rem" name="play-circle-o" /></span>
+            <span class="rotate-90 absolute right-1rem"><van-icon name="ellipsis" /></span>
+          </span>
+          
         </ul>
       </van-list>
     </div>
@@ -112,12 +122,11 @@ const filter = num =>{
 
 
 <style scoped>
-.music-name{
+.music-detail{
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     overflow: hidden;
-    color: #ccc;
 }
 .play-icon {
     background: rgba(0,0,0,.3);
