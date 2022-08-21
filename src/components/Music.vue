@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 20:03:07
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-19 16:46:53
+ * @LastEditTime: 2022-08-21 15:08:50
 -->
 <template>
     <div class="w-100% h-5rem p-.2rem">
@@ -37,7 +37,7 @@ let state = reactive({
 })
 onMounted(async () => {
      let res = await getRecommendSongList()
-     console.log(res);
+     console.log(res.data.result);
      state.musicList = res.data.result
      
  })
