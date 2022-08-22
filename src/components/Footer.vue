@@ -3,45 +3,49 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-21 22:14:52
+ * @LastEditTime: 2022-08-22 14:54:56
 -->
 <template>
  <div class="w-100% h-20vw bottom-0 fixed items-center  justify-between mx-2 bg-white border-t border-hex-ccc flex">
    <span class="flex items-center">
      <img class="w-3rem h-3rem rounded" :src="playList[playListIndex].al.picUrl" alt="">
-     <span class="px-2">{{playList[playListIndex].al.name}}</span>
+     <span class="px-2">{{playList[playListIndex].name}}</span>
    </span>
    <span class="flex pr-1.5rem">
      <span v-if="isShow" @click="playMusic" class="text-lg px-2"><van-icon name="play-circle-o" /></span>
      <span v-else @click="pauseMusic" class="text-lg px-2"><van-icon name="pause-circle-o" /></span>
      <span class="text-xl"><van-icon name="bars" /></span>
    </span>
-   <audio ref="audio" :src="` https://music.163.com/song/media/outer/url?id=${playList[playListIndex].id}.mp3`"></audio>
+   <audio ref="audio" autoplay :src="` https://music.163.com/song/media/outer/url?id=${playList[playListIndex].id}.mp3`"></audio>
  </div>
 </template>
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useStore } from "~/store/index"
-// computed:{
-//   ...mapState(['playList','playListIndex'])
-// }
     const audio = ref(null)//获取audio属性
     const store = useStore()
-    const {playList,playListIndex} = storeToRefs(store)
-    const isShow = ref(true)
+    const {playList,playListIndex,isShow} = storeToRefs(store)
     onMounted(() => {
-      console.log(audio.value.play);
-      
+        console.log(audio?.value?.autoplay);
         console.log(playList);
         console.log(playListIndex);
     })
     const playMusic = () =>{
       audio.value.play()
       isShow.value = !isShow.value
+      store.updateIsShow(store.$state,isShow.value)
     }
     const pauseMusic = () =>{
       audio.value.pause()
       isShow.value = !isShow.value
+      store.updateIsShow(store.$state,isShow.value)
     }
+    watch(playListIndex,() =>{
+      if(audio?.value?.paused){
+        isShow.value = false
+        console.log(111);
+        
+      }    
+    })
 </script>
 

@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-21 22:45:01
+ * @LastEditTime: 2022-08-22 14:56:56
 -->
 <script setup lang="ts">
 import { getSongListDetail, getAllSong } from "~/api/SongListDetail"
@@ -20,8 +20,7 @@ onMounted(async () =>{
 
   let res = await getSongListDetail(id)
   state.playlist = res.data.playlist//歌单信息
-  console.log(state.playlist,'歌单信息');
-  console.log(state?.playlist?.shareCount);
+  console.log(state.playlist,'歌单信息')
   let songlist = await getAllSong(id)
   
   state.songlist = songlist.data.songs
@@ -36,9 +35,9 @@ const filter = num =>{
 const store = useStore()
 //修改歌曲信息并进行播放
 const updateSongList = index =>{
-    store.updatePlayList(store.$state,state.songlist)
-    store.updatePlayListIndex(store.$state,index)
-    console.log(index);
+    store.updatePlayList(store.$state,state.songlist)//将歌单列表传进默认列表
+    store.updatePlayListIndex(store.$state,index)//将索引值传给默认索引
+    store.updateIsShow(store.$state,false)//修改为播放图标
     
 }
 </script>
