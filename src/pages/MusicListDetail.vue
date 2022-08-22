@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-22 14:56:56
+ * @LastEditTime: 2022-08-22 15:05:26
 -->
 <script setup lang="ts">
 import { getSongListDetail, getAllSong } from "~/api/SongListDetail"
@@ -81,11 +81,11 @@ const updateSongList = index =>{
         </div>
     </div>
     <div class="w-100% h-50vh">
-        <van-list>
+        <van-list class="h-1170px">
         <ul
           class="
             flex
-            h-3rem
+            h-4rem
             leading-12
             text-md
             "
@@ -140,6 +140,7 @@ const updateSongList = index =>{
     top: .5rem;
     left: 1rem
 }
+
 </style>
 <route lang="yaml">
 meta:
