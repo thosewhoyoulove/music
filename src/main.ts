@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-21 20:25:59
+ * @LastEditTime: 2022-08-22 21:28:50
  */
 // import { ViteSSG } from 'vite-ssg' 不知道有什么用
 import { createApp } from 'vue'
@@ -20,6 +20,7 @@ import 'uno.css'
 
 import Vant from 'vant';
 import 'vant/lib/index.css';
+import Vue3Marquee from 'vue3-marquee'
 
 const app = createApp(App)
 const store = createPinia()
@@ -30,6 +31,7 @@ const router = createRouter({
 })
 app.use(router)
 app.use(store)
+app.use(Vue3Marquee)
 app.mount('#app')
 app.use(Vant)
 

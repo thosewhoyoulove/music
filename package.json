@@ -16,7 +16,8 @@
     "pinia": "^2.0.20",
     "vant": "^3.5.4",
     "vue": "^3.2.37",
-    "vue-router": "^4.1.2"
+    "vue-router": "^4.1.2",
+    "vue3-marquee": "^3.0.7"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.25.2",

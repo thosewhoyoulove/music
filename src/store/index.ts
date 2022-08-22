@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-21 19:43:23
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-22 10:20:56
+ * @LastEditTime: 2022-08-22 20:54:04
  */
 import { defineStore} from 'pinia'
 import { Names } from "./store-name";
@@ -22,6 +22,7 @@ export const useStore = defineStore(Names.playList, {
             }],
             playListIndex:0,//播放歌曲的默认下标为0
             isShow:true,//暂停,false为播放
+            isDetailShow:false,//歌曲详情页的展示，true为隐藏
         }
     },
     actions: {
@@ -33,6 +34,9 @@ export const useStore = defineStore(Names.playList, {
         },
         updatePlayListIndex(state: { playListIndex: any; },value: any){
             state.playListIndex = value
+        },
+        updateDetailShow(state: { isDetailShow: boolean; }){
+            state.isDetailShow = !state.isDetailShow
         }
     }
 })
