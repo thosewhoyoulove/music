@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-21 19:43:23
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-23 10:57:58
+ * @LastEditTime: 2022-08-23 11:51:38
  */
 import { defineStore} from 'pinia'
 import { Names } from "./store-name";
@@ -12,13 +12,15 @@ export const useStore = defineStore(Names.playList, {
         return {
             playList:[{
                 al:{
-                    id: 122474433,//专辑id
-                    name: "借月",
-                    pic: 109951165690872270,
-                    picUrl: "https://p1.music.126.net/nA775k6j7ofdb-mMxjHMIA==/109951165690872270.jpg",
-                    pic_str: "109951165690872270"
+                    id: 126837556,
+                    name: "这世界那么多人",
+                    pic: 109951165944804130,
+                    picUrl: "https://p2.music.126.net/LOTxqRjFm03VJEOHJbUqMw==/109951165944804127.jpg",
+                    pic_str: "109951165944804127"
                 },
-                id:1817431690//歌曲id
+                name: "这世界那么多人",
+                id:1817431690,//歌曲id
+                ar:[{id: 8926, name: '莫文蔚'}]
             }],
             playListIndex:0,//播放歌曲的默认下标为0
             isShow:true,//暂停,false为播放

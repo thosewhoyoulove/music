@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-22 15:05:26
+ * @LastEditTime: 2022-08-23 11:55:03
 -->
 <script setup lang="ts">
 import { getSongListDetail, getAllSong } from "~/api/SongListDetail"
@@ -75,8 +75,8 @@ const updateSongList = index =>{
              </span>
         </div>
         <div class="relative flex mt-6 text-light-900 justify-around">
-            <span class="flex items-center justify-between"><van-button color="#C8C6C6"  round ><van-icon size="1rem" name="share-o" /><span class="px-1">{{state?.playlist?.shareCount}}</span></van-button></span>
-            <span><van-button color="#C8C6C6"  round ><van-icon size="1rem" name="chat-o" /><span class="px-1">{{state?.playlist?.commentCount}}</span></van-button></span>
+            <span class="flex items-center justify-between"><van-button style="background:transparent" round ><van-icon color="#ccc" size="1rem" name="share-o" /><span class="px-1 text-light-900">{{state?.playlist?.shareCount}}</span></van-button></span>
+            <span><van-button style="background:transparent"  round ><van-icon color="#ccc" size="1rem" name="chat-o" /><span class="px-1 text-light-900">{{state?.playlist?.commentCount}}</span></van-button></span>
             <span><van-button color="#FE3641"  round ><van-icon size="1rem" name="add-o" /><span class="px-1">{{state?.playlist?.subscribedCount}}</span></van-button></span>
         </div>
     </div>
@@ -99,7 +99,7 @@ const updateSongList = index =>{
           :key="index"
           class="flex justify-between h-3rem leading-8 my-1 text-sm"
         >
-        <span class="flex">
+        <div class="flex">
           <img class="w-3rem h-3rem rounded" :src="item.al.picUrl" alt="">
           <span class="flex-col ml-2 music-detail" @click="updateSongList(index)">
             <span class="flex ">
@@ -113,10 +113,10 @@ const updateSongList = index =>{
               <span class="text-xs text-gray-500">{{item.al.name}}</span>
             </span>
           </span>
-        </span>
+        </div>
           <span>
             <span v-if="item.mv" class="absolute right-2rem"><van-icon size="1.3rem" name="play-circle-o" /></span>
-            <span class="rotate-90 absolute right-1rem"><van-icon name="ellipsis" /></span>
+            <span style="transform: rotate(90deg)"><van-icon name="ellipsis" /></span>
           </span>
           
         </ul>

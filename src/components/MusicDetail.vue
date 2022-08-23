@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-22 21:03:00
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-23 11:00:04
+ * @LastEditTime: 2022-08-23 11:36:13
 -->
 <template>
     <div class="w-100% h-604px">
@@ -11,7 +11,7 @@
         <div class="flex justify-between mt-5 px-2">
             <div  @click="back" class="text-xl text-hex-ccc"><van-icon name="arrow-left" /></div>
             <div class="col mr-15 py-2">
-                <Vue3Marquee class="text-sm my-2 text-hex-ccc">
+                <Vue3Marquee class="text-sm my-2 text-hex-ccc w-30">
                     {{props?.musicList?.name}}
                 </Vue3Marquee>
                 <div class="flex items-center">
