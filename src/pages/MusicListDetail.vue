@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-23 21:35:18
+ * @LastEditTime: 2022-08-23 21:46:29
 -->
 <script setup lang="ts">
 import { getSongListDetail, getAllSong } from "~/api/SongListDetail"
@@ -59,7 +59,7 @@ const updateSongList = index =>{
                     </span> 
                     
                     <div class="flex-col items-center">
-                        <span class="music-detail text-left text-13px m-1 p-1">{{state.playlist.name}}</span>
+                        <span class="text-left flex  text-13px my-1 py-1">{{state.playlist.name}}</span>
                         <span class="flex items-center">
                             <img class="w-10 h-10 rounded-1/2" :src="state?.playlist?.creator?.avatarUrl" alt="">
                             <span class="text-light-900 text-xs ml-2">{{state?.playlist?.creator?.nickname}}</span>
@@ -67,7 +67,7 @@ const updateSongList = index =>{
                     </div>
         </span>
         <div class="flex absolute text-white text-xs pt-1 text-left w-100% h-5 overflow-hidden">
-             <span>
+             <span class="text-style">
                 {{state.playlist.description}}
              </span>
              <span>
@@ -101,9 +101,9 @@ const updateSongList = index =>{
         >
           <div class="flex justify-between">
             <img class="w-3rem h-3rem rounded" :src="item.al.picUrl" alt="">
-          <div class="flex-col ml-2 music-detail" @click="updateSongList(index)">
+          <div class="flex-col ml-2 text-style" @click="updateSongList(index)">
             <div class="flex">
-              <div class="flex text-md font-extrabold music-detail break-all">{{ item.name }}</div>
+              <div class="flex text-md font-extrabold text-style break-all">{{ item.name }}</div>
             </div>
             
             <div class="flex">
@@ -127,10 +127,10 @@ const updateSongList = index =>{
 
 
 <style scoped>
-.music-detail{
+.text-style{
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
     overflow: hidden;
     text-overflow: ellipsis;
 }
