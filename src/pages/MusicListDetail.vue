@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-23 18:04:01
+ * @LastEditTime: 2022-08-23 21:35:18
 -->
 <script setup lang="ts">
 import { getSongListDetail, getAllSong } from "~/api/SongListDetail"
@@ -99,13 +99,11 @@ const updateSongList = index =>{
           :key="index"
           class="flex justify-between h-3rem leading-8 my-1 text-sm"
         >
-        <!-- 这个列表是歌单列表 -->
-        <div class="flex justify-between">
-          <img class="w-3rem h-3rem rounded" :src="item.al.picUrl" alt="">
+          <div class="flex justify-between">
+            <img class="w-3rem h-3rem rounded" :src="item.al.picUrl" alt="">
           <div class="flex-col ml-2 music-detail" @click="updateSongList(index)">
             <div class="flex">
-              <div class="flex text-md font-extrabold">{{ item.name }}</div>
-              <!-- <span class="px-1" v-if="item.alia.length">({{item.alia[0]}})</span> -->
+              <div class="flex text-md font-extrabold music-detail break-all">{{ item.name }}</div>
             </div>
             
             <div class="flex">
@@ -114,11 +112,12 @@ const updateSongList = index =>{
               <span class="text-xs text-gray-500">{{item.al.name}}</span>
             </div>
           </div>
+          </div>
+          
             <div class="flex">
               <div v-if="item.mv" class="right-2rem"><van-icon size="1.3rem" name="play-circle-o" /></div>
               <div  style="transform: rotate(90deg)"><van-icon name="ellipsis" /></div>
             </div>
-         </div>
         </ul>
       </van-list>
     </div>
