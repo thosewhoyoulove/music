@@ -3,13 +3,13 @@
  * @Author: 曹俊
  * @Date: 2022-08-22 21:03:00
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-22 23:23:55
+ * @LastEditTime: 2022-08-23 11:00:04
 -->
 <template>
     <div class="w-100% h-604px">
         <img class="absolute -z-1 blur-3xl h-100% w-100%" :src="props?.musicList?.al?.picUrl" alt="">
         <div class="flex justify-between mt-5 px-2">
-            <div class="text-xl text-hex-ccc"><van-icon name="arrow-left" /></div>
+            <div  @click="back" class="text-xl text-hex-ccc"><van-icon name="arrow-left" /></div>
             <div class="col mr-15 py-2">
                 <Vue3Marquee class="text-sm my-2 text-hex-ccc">
                     {{props?.musicList?.name}}
@@ -32,8 +32,8 @@
         <div class="flex justify-around mt-100px text-xl items-center">
             <span><van-icon name="replay" /></span>
             <span><van-icon name="arrow-left" /></span>
-            <span v-if="!isShow"  class="text-3xl"><van-icon name="play-circle-o" /></span>
-            <span v-else class="text-3xl"><van-icon name="pause-circle-o" /></span>
+            <span v-if="isShow" @click="playMusic"  class="text-3xl"><van-icon name="play-circle-o" /></span>
+            <span v-else @click="pauseMusic" class="text-3xl"><van-icon name="pause-circle-o" /></span>
             <span><van-icon name="arrow" /></span>
             <span><van-icon name="bars" /></span>
         </div>
@@ -47,12 +47,19 @@ import { storeToRefs } from "pinia";
 import { useStore } from "~/store/index"
 const store = useStore()
 const props = defineProps<{
-    musicList:Object
+    musicList:Object,
+    playMusic:Function,
+    pauseMusic:Function
 }>()
-const {isShow} = storeToRefs(store)
+let {isShow, isDetailShow} = storeToRefs(store)
 onMounted(() => {
     console.log(props.musicList)
 })
+const back = () =>{
+    isDetailShow.value = false
+    console.log(111111111111111);
+    
+}
 </script>
 
 <style scoped>

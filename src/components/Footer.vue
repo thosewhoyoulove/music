@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-22 21:04:52
+ * @LastEditTime: 2022-08-23 10:59:32
 -->
 <template>
  <div class="w-100% h-20vw bottom-0 fixed items-center  justify-between mx-2 bg-white border-t border-hex-ccc flex">
@@ -19,7 +19,7 @@
    <audio ref="audio" autoplay :src="` https://music.163.com/song/media/outer/url?id=${playList[playListIndex].id}.mp3`"></audio>
  </div>
  <van-popup v-model:show="isDetailShow" position="right" :style="{ height: '100%', width:'100%' }" >
-   <music-detail :musicList="playList[playListIndex]"></music-detail>
+   <music-detail :musicList="playList[playListIndex]" :playMusic="playMusic" :pauseMusic="pauseMusic"></music-detail>
  </van-popup>
 </template>
 <script setup lang="ts">
