@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-23 11:55:03
+ * @LastEditTime: 2022-08-23 18:04:01
 -->
 <script setup lang="ts">
 import { getSongListDetail, getAllSong } from "~/api/SongListDetail"
@@ -99,26 +99,26 @@ const updateSongList = index =>{
           :key="index"
           class="flex justify-between h-3rem leading-8 my-1 text-sm"
         >
-        <div class="flex">
+        <!-- 这个列表是歌单列表 -->
+        <div class="flex justify-between">
           <img class="w-3rem h-3rem rounded" :src="item.al.picUrl" alt="">
-          <span class="flex-col ml-2 music-detail" @click="updateSongList(index)">
-            <span class="flex ">
-              <span class="flex text-md font-extrabold">{{ item.name }}</span>
+          <div class="flex-col ml-2 music-detail" @click="updateSongList(index)">
+            <div class="flex">
+              <div class="flex text-md font-extrabold">{{ item.name }}</div>
               <!-- <span class="px-1" v-if="item.alia.length">({{item.alia[0]}})</span> -->
-            </span>
+            </div>
             
-            <span class="flex">
+            <div class="flex">
               <span class="text-xs text-gray-500">{{item.ar[0].name}}</span>
               <span class="text-xs text-gray-500 px-1">-</span>
               <span class="text-xs text-gray-500">{{item.al.name}}</span>
-            </span>
-          </span>
-        </div>
-          <span>
-            <span v-if="item.mv" class="absolute right-2rem"><van-icon size="1.3rem" name="play-circle-o" /></span>
-            <span style="transform: rotate(90deg)"><van-icon name="ellipsis" /></span>
-          </span>
-          
+            </div>
+          </div>
+            <div class="flex">
+              <div v-if="item.mv" class="right-2rem"><van-icon size="1.3rem" name="play-circle-o" /></div>
+              <div  style="transform: rotate(90deg)"><van-icon name="ellipsis" /></div>
+            </div>
+         </div>
         </ul>
       </van-list>
     </div>
@@ -133,6 +133,7 @@ const updateSongList = index =>{
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     overflow: hidden;
+    text-overflow: ellipsis;
 }
 .play-icon {
     background: rgba(0,0,0,.3);
