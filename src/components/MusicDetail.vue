@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-22 21:03:00
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-23 11:36:13
+ * @LastEditTime: 2022-08-24 18:31:59
 -->
 <template>
     <div class="w-100% h-604px">
@@ -14,9 +14,9 @@
                 <Vue3Marquee class="text-sm my-2 text-hex-ccc w-30">
                     {{props?.musicList?.name}}
                 </Vue3Marquee>
-                <div class="flex items-center">
-                    <div class="text-xs text-hex-ccc">{{props?.musicList?.ar[0]?.name}}</div>
-                    <div class="text-xs text-hex-aaa"><van-icon name="arrow" /></div>
+                <div class="flex items-center" v-for="(item,index) in props?.musicList?.ar" :key="index">
+                    <div  class="text-xs text-hex-ccc px-1">{{item.name}}</div>
+                    <div class="text-xs text-hex-aaa"><van-icon color="#fff" name="arrow" /></div>
                 </div>
             </div>
             <div class="text-xl text-hex-ccc"><van-icon name="share-o" /></div>
@@ -29,7 +29,10 @@
             <span><van-icon name="comment-o" /></span>
             <span style="transform: rotate(90deg)"><van-icon name="ellipsis" /></span>
         </div>
-        <div class="flex justify-around mt-100px text-xl items-center">
+        <div>
+              <van-field class="bg-transparent" type="range" min="0" :max="store.duration" v-model="store.currentTime" step="0.05" />
+        </div>
+        <div class="flex justify-around mt-80px text-xl items-center">
             <span><van-icon name="replay" /></span>
             <span><van-icon name="arrow-left" /></span>
             <span v-if="isShow" @click="playMusic"  class="text-3xl"><van-icon name="play-circle-o" /></span>
@@ -49,11 +52,13 @@ const store = useStore()
 const props = defineProps<{
     musicList:Object,
     playMusic:Function,
-    pauseMusic:Function
+    pauseMusic:Function,
+    addDuration:Function
 }>()
 let {isShow, isDetailShow} = storeToRefs(store)
 onMounted(() => {
     console.log(props.musicList)
+    props.addDuration()
 })
 const back = () =>{
     isDetailShow.value = false

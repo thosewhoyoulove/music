@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-23 22:07:36
+ * @LastEditTime: 2022-08-24 19:03:56
 -->
 <template>
  <div class="w-100% h-20vw bottom-0 fixed items-center  justify-between mx-2 bg-white border-t border-hex-ccc flex">
@@ -19,7 +19,7 @@
    <audio ref="audio" loop autoplay :src="` https://music.163.com/song/media/outer/url?id=${playList[playListIndex].id}.mp3`"></audio>
  </div>
  <van-popup v-model:show="isDetailShow" position="right" :style="{ height: '100%', width:'100%' }" >
-   <music-detail :musicList="playList[playListIndex]" :playMusic="playMusic" :pauseMusic="pauseMusic"></music-detail>
+   <music-detail :musicList="playList[playListIndex]" :playMusic="playMusic" :pauseMusic="pauseMusic" :addDuration="addDuration"></music-detail>
  </van-popup>
 </template>
 <script setup lang="ts">
@@ -27,12 +27,16 @@ import { storeToRefs } from "pinia";
 import { useStore } from "~/store/index"
     const audio = ref(null)//获取audio属性
     const store = useStore()
-    const {playList,playListIndex,isShow,isDetailShow} = storeToRefs(store)
+    const {playList,playListIndex,isShow,isDetailShow,duration,currentTime} = storeToRefs(store)
     onMounted(() => {
-        console.log(audio?.value?.autoplay);
+        // store.getLyric(playList[playListIndex].id)
+        console.log(playList[playListIndex],playListIndex);
+        
         console.log(playList);
         console.log(playListIndex);
+        
     })
+    
     const playMusic = () =>{
       audio.value.play()
       isShow.value = !isShow.value
@@ -53,5 +57,12 @@ import { useStore } from "~/store/index"
     const toMusicDetail = () =>{
       store.updateDetailShow(store.$state)
     }
+    const addDuration = () =>{
+      store.updateDuration(store.$state,audio?.value?.duration)
+    }
+    onUpdated(() => {
+      // store.getLyric(playList[playListIndex].id) //获取对应歌曲的歌词
+      addDuration()
+    })
 </script>
 
