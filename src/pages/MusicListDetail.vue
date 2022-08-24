@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-23 21:46:29
+ * @LastEditTime: 2022-08-24 19:22:56
 -->
 <script setup lang="ts">
 import { getSongListDetail, getAllSong } from "~/api/SongListDetail"
@@ -39,6 +39,12 @@ const updateSongList = index =>{
     store.updatePlayListIndex(store.$state,index)//将索引值传给默认索引
     store.updateIsShow(store.$state,false)//修改为播放图标
     
+}
+const toCommentDetail = () =>{
+  router.push({
+    path:'SongListComment',
+    query:state.playlist?.id
+  })
 }
 </script>
 <template>
@@ -76,7 +82,7 @@ const updateSongList = index =>{
         </div>
         <div class="relative flex mt-6 text-light-900 justify-around">
             <span class="flex items-center justify-between"><van-button style="background:transparent" round ><van-icon color="#ccc" size="1rem" name="share-o" /><span class="px-1 text-light-900">{{state?.playlist?.shareCount}}</span></van-button></span>
-            <span><van-button style="background:transparent"  round ><van-icon color="#ccc" size="1rem" name="chat-o" /><span class="px-1 text-light-900">{{state?.playlist?.commentCount}}</span></van-button></span>
+            <span @click="toCommentDetail"><van-button style="background:transparent"  round ><van-icon color="#ccc" size="1rem" name="chat-o" /><span class="px-1 text-light-900">{{state?.playlist?.commentCount}}</span></van-button></span>
             <span><van-button color="#FE3641"  round ><van-icon size="1rem" name="add-o" /><span class="px-1">{{state?.playlist?.subscribedCount}}</span></van-button></span>
         </div>
     </div>
