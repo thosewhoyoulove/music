@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-24 19:22:56
+ * @LastEditTime: 2022-08-24 19:42:04
 -->
 <script setup lang="ts">
 import { getSongListDetail, getAllSong } from "~/api/SongListDetail"
@@ -42,8 +42,10 @@ const updateSongList = index =>{
 }
 const toCommentDetail = () =>{
   router.push({
-    path:'SongListComment',
-    query:state.playlist?.id
+    path:'/SongListComment',
+    query: {
+      id:id,
+    }
   })
 }
 </script>
