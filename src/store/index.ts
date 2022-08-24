@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-21 19:43:23
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-24 18:52:50
+ * @LastEditTime: 2022-08-24 21:07:08
  */
 import { defineStore} from 'pinia'
 import { Names } from "./store-name";
@@ -28,6 +28,7 @@ export const useStore = defineStore(Names.playList, {
             isDetailShow:false,//歌曲详情页的展示，false为隐藏
             duration:0,//歌曲的总时间
             currentTime:0,//歌曲现在的时间
+            lyric:{},//歌词
         }
     },
     actions: {
@@ -49,8 +50,10 @@ export const useStore = defineStore(Names.playList, {
         updateCurrentTime(state: { duration: any; },value: any){
             state.duration = value
         },
-        async getLyric(value) {
-            let res = await getMusicLyric(value)
+        async getLyric(value: any) {
+            let res =await  getMusicLyric(value)
+            this.lyric = res
+            
         }
     }
 })

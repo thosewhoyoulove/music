@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-24 19:03:56
+ * @LastEditTime: 2022-08-24 21:10:06
 -->
 <template>
  <div class="w-100% h-20vw bottom-0 fixed items-center  justify-between mx-2 bg-white border-t border-hex-ccc flex">
@@ -27,13 +27,10 @@ import { storeToRefs } from "pinia";
 import { useStore } from "~/store/index"
     const audio = ref(null)//获取audio属性
     const store = useStore()
-    const {playList,playListIndex,isShow,isDetailShow,duration,currentTime} = storeToRefs(store)
+    const {lyric,playList,playListIndex,isShow,isDetailShow,duration,currentTime} = storeToRefs(store)
     onMounted(() => {
-        // store.getLyric(playList[playListIndex].id)
-        console.log(playList[playListIndex],playListIndex);
-        
-        console.log(playList);
-        console.log(playListIndex);
+        store.getLyric(playList.value[playListIndex.value]?.id,)
+        console.log(lyric,'----------');
         
     })
     
@@ -61,7 +58,7 @@ import { useStore } from "~/store/index"
       store.updateDuration(store.$state,audio?.value?.duration)
     }
     onUpdated(() => {
-      // store.getLyric(playList[playListIndex].id) //获取对应歌曲的歌词
+      store.getLyric(playList.value[playListIndex.value]?.id) //获取对应歌曲的歌词
       addDuration()
     })
 </script>
