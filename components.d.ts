@@ -17,6 +17,7 @@ declare module '@vue/runtime-core' {
     RouterView: typeof import('vue-router')['RouterView']
     Swiper: typeof import('./src/components/Swiper.vue')['default']
     TopNav: typeof import('./src/components/TopNav.vue')['default']
+    VanBadge: typeof import('vant/es')['Badge']
     VanButton: typeof import('vant/es')['Button']
     VanField: typeof import('vant/es')['Field']
     VanIcon: typeof import('vant/es')['Icon']

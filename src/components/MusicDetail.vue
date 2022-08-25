@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-22 21:03:00
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-24 18:31:59
+ * @LastEditTime: 2022-08-25 12:55:37
 -->
 <template>
     <div class="w-100% h-604px">
@@ -26,7 +26,7 @@
             <span><van-icon name="like-o" /></span>
             <span style="transform: rotate(180deg)"><van-icon name="upgrade" /></span>
             <span><van-icon name="close" /></span>
-            <span><van-icon name="comment-o" /></span>
+            <span @click="toCommentDetail" class="relative"><van-icon name="comment-o" /><van-badge class="absolute top-6px -right-3" style="background:transparent;border-width:0" color="#ccc" :content="200" max="99"></van-badge></span>
             <span style="transform: rotate(90deg)"><van-icon name="ellipsis" /></span>
         </div>
         <div>
@@ -48,7 +48,9 @@ import { Vue3Marquee } from 'vue3-marquee'
 import 'vue3-marquee/dist/style.css'
 import { storeToRefs } from "pinia";
 import { useStore } from "~/store/index"
+const router = useRouter()
 const store = useStore()
+const {playList,playListIndex } = storeToRefs(store)
 const props = defineProps<{
     musicList:Object,
     playMusic:Function,
@@ -65,6 +67,15 @@ const back = () =>{
     console.log(111111111111111);
     
 }
+const toCommentDetail = () =>{
+    isDetailShow.value = false
+    router.push({
+        path:'/SongComment',
+        query:{
+            id:playList.value[playListIndex.value].id
+        }
+    })
+}
 </script>
 
 <style scoped>
@@ -73,5 +84,10 @@ const back = () =>{
     top: 45%;
     left: 50%;
     transform: translate(-50%,-50%);
+}
+.van-badge--top-right{
+    top: 6px;
+    right: -5px;
+    color:#003248;
 }
 </style>
