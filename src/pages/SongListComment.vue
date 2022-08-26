@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-24 19:17:32
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-25 12:23:48
+ * @LastEditTime: 2022-08-26 11:50:35
 -->
 
 <script setup lang="ts">
@@ -11,7 +11,7 @@ import { getSongListComment, getSongListDetail } from "~/api/SongListDetail";
 const route = useRoute()
 const state = reactive({
   playlist:{},//歌单信息
-  comment:[]
+  comment:[]//歌单评论
 })
 const total = ref(0)
 let id = route.query.id
@@ -20,7 +20,7 @@ onMounted( async() => {
     state.playlist = data.data.playlist
     let res = await getSongListComment(id)//歌单评论
     total.value = res.data.total
-    state.comment = res.data.comments
+    state.comment = res.data.hotComments
     console.log(state.comment,total)
 })
 </script>
