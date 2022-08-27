@@ -15,6 +15,7 @@ declare module '@vue/runtime-core' {
     MusicDetail: typeof import('./src/components/MusicDetail.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Search: typeof import('./src/components/Search.vue')['default']
     Swiper: typeof import('./src/components/Swiper.vue')['default']
     TopNav: typeof import('./src/components/TopNav.vue')['default']
     VanBadge: typeof import('vant/es')['Badge']
@@ -24,6 +25,7 @@ declare module '@vue/runtime-core' {
     VanList: typeof import('vant/es')['List']
     VanNavBar: typeof import('vant/es')['NavBar']
     VanPopup: typeof import('vant/es')['Popup']
+    VanSearch: typeof import('vant/es')['Search']
     VanSwipe: typeof import('vant/es')['Swipe']
     VanSwipeItem: typeof import('vant/es')['SwipeItem']
   }

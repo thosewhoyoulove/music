@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-16 22:44:19
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-18 17:46:38
+ * @LastEditTime: 2022-08-27 11:29:09
 -->
 <template>
   <div class="w-100% h-10 flex justify-between items-center">
@@ -17,7 +17,7 @@
       <span>云村</span>
       <span>视频</span>
     </div>
-    <span class="text-xl">
+    <span class="text-xl" @click="toSearch">
       <van-icon name="search" />
     </span>
     
@@ -25,6 +25,12 @@
 </template>
 
 <script setup lang="ts">
+const router = useRouter()
+const toSearch = () =>{
+  router.push({
+    path:'/Search'
+  })
+} 
 </script>
 
 <style scoped>
