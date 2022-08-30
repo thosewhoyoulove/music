@@ -3,18 +3,30 @@
  * @Author: 曹俊
  * @Date: 2022-08-27 11:27:10
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-30 11:24:44
+ * @LastEditTime: 2022-08-30 15:55:34
 -->
 <script setup lang="ts">
 import { getSearchMusic } from "~/api/Search"; 
-import { Notify } from 'vant';
+import { Notify, Dialog } from 'vant';
+const VanDialog = Dialog.Component
 const  keyWordList = ref([])//历史记录存放数组
 let  keyWord = ref('')//搜索关键词
-const onSearch = () =>{
-        keyWordList.value.push(keyWord.value)
+const onSearch = async() =>{
+        if ((keyWord.value !== '')) {
+        // 数组向前追加元素
+        keyWordList.value.unshift(keyWord.value)
+        // 去重,这里用到Set语法
+        keyWordList.value = [...new Set(keyWordList.value)]
+        // 固定长度
+        if (keyWordList.value.length > 10) {
+        keyWordList.value.splice(keyWordList.value.length - 1)
+            }
+        }
         localStorage.setItem('keyWordList',JSON.stringify(keyWordList.value))
+        let res = await getSearchMusic(keyWord.value)
         keyWord.value = ""
-        console.log(keyWordList.value,'数据数组');     
+        console.log(res,'搜索到的数据'); 
+        
 }
 onMounted(() =>{
     keyWordList.value = JSON.parse(localStorage.getItem('keyWordList')) || []
@@ -56,8 +68,7 @@ const onDialogConfirm = () =>{
             <span class="absolute top-.15rem right-.4" @click="showDelete"><van-icon name="delete-o" /></span>
         </div>
     </div>
-    <van-dialog v-model:show="isDialogShow" title="是否删除历史记录" show-cancel-button @cancel="onDialogCancel" @confirm="onDialogConfirm">
-        是否删除所有历史记录
+    <van-dialog v-model:show="isDialogShow" title="是否删除所有历史记录" show-cancel-button @cancel="onDialogCancel" @confirm="onDialogConfirm">
     </van-dialog>
 </template>
 

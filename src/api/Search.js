@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-27 11:44:35
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-27 11:46:44
+ * @LastEditTime: 2022-08-30 15:50:36
  */
 //搜索歌曲
 //必选参数 : keywords : 关键词
@@ -16,6 +16,6 @@ import request from '~/utils/request'
 export function getSearchMusic(data) {
     return request({
         method: 'get',
-        url: `/cloudsearch?keyword=${data}`,
+        url: `/search?keywords=${data}`,
     })
 }
