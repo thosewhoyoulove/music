@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-22 21:03:00
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-25 12:55:37
+ * @LastEditTime: 2022-08-30 21:08:16
 -->
 <template>
     <div class="w-100% h-604px">
@@ -15,7 +15,7 @@
                     {{props?.musicList?.name}}
                 </Vue3Marquee>
                 <div class="flex items-center" v-for="(item,index) in props?.musicList?.ar" :key="index">
-                    <div  class="text-xs text-hex-ccc px-1">{{item.name}}</div>
+                    <div class="text-xs text-hex-ccc px-1">{{item.name}}</div>
                     <div class="text-xs text-hex-aaa"><van-icon color="#fff" name="arrow" /></div>
                 </div>
             </div>
