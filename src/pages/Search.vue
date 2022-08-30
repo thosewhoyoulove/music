@@ -3,29 +3,44 @@
  * @Author: 曹俊
  * @Date: 2022-08-27 11:27:10
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-30 15:55:34
+ * @LastEditTime: 2022-08-30 20:42:50
 -->
 <script setup lang="ts">
 import { getSearchMusic } from "~/api/Search"; 
 import { Notify, Dialog } from 'vant';
+import { log } from "console";
 const VanDialog = Dialog.Component
 const  keyWordList = ref([])//历史记录存放数组
 let  keyWord = ref('')//搜索关键词
+const defaultSearchKeyWord = ref('奇妙能力歌')
 const onSearch = async() =>{
-        if ((keyWord.value !== '')) {
-        // 数组向前追加元素
-        keyWordList.value.unshift(keyWord.value)
-        // 去重,这里用到Set语法
-        keyWordList.value = [...new Set(keyWordList.value)]
+        
+        //如果输入为空，则直接搜索默认值
+        if(keyWord.value == ''){
+            keyWord.value = defaultSearchKeyWord.value
+            // 数组向前追加元素
+            keyWordList.value.unshift(keyWord.value)
+            // 去重,这里用到Set语法
+            keyWordList.value = [...new Set(keyWordList.value)]
+            localStorage.setItem('keyWordList',JSON.stringify(keyWordList.value))
+            keyWord.value = ""
+            let res = await getSearchMusic(keyWord.value)
+            console.log(res,'搜索到的数据'); 
+        }else{
+            // 数组向前追加元素
+            keyWordList.value.unshift(keyWord.value)
+            // 去重,这里用到Set语法
+            keyWordList.value = [...new Set(keyWordList.value)]
+            localStorage.setItem('keyWordList',JSON.stringify(keyWordList.value))
+            keyWord.value = ""
+            let res = await getSearchMusic(keyWord.value)
+            console.log(res,'搜索到的数据'); 
+        }
         // 固定长度
         if (keyWordList.value.length > 10) {
-        keyWordList.value.splice(keyWordList.value.length - 1)
-            }
+            keyWordList.value.splice(keyWordList.value.length - 1)
         }
-        localStorage.setItem('keyWordList',JSON.stringify(keyWordList.value))
-        let res = await getSearchMusic(keyWord.value)
-        keyWord.value = ""
-        console.log(res,'搜索到的数据'); 
+        
         
 }
 onMounted(() =>{
@@ -54,7 +69,7 @@ const onDialogConfirm = () =>{
             <van-search
             v-model="keyWord"
             show-action
-            placeholder="奇妙能力歌 - 陈粒"
+            :placeholder="defaultSearchKeyWord"
             class="rounded"
             >
             <template #action>
