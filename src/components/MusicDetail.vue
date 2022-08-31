@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-22 21:03:00
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-31 10:49:58
+ * @LastEditTime: 2022-08-31 10:52:32
 -->
 <template>
   <div class="w-100% h-604px">
@@ -112,14 +112,14 @@ const toCommentDetail = () => {
 };
 // 下一首上一首操作
 const goPlay = (num) => {
-  let index = playListIndex.value + num
+  let index = playListIndex.value + num;
   if (index < 0) {
-    index = playList.value.length - 1
+    index = playList.value.length - 1;
   } else if (index === playList.value.length) {
-    index = 0
+    index = 0;
   }
-  store.updateplayListIndex(index)
-}
+  store.updateplayListIndex(index);
+};
 </script>
 
 <style scoped>
