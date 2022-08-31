@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-22 21:03:00
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-31 10:38:22
+ * @LastEditTime: 2022-08-31 10:49:58
 -->
 <template>
   <div class="w-100% h-604px">
@@ -65,14 +65,14 @@
     </div>
     <div class="flex justify-around mt-80px text-xl items-center">
       <span><van-icon name="replay" /></span>
-      <span><van-icon name="arrow-left" /></span>
+      <span @click="goPlay(-1)"><van-icon name="arrow-left" /></span>
       <span v-if="isShow" @click="playMusic" class="text-3xl"
         ><van-icon name="play-circle-o"
       /></span>
       <span v-else @click="pauseMusic" class="text-3xl"
         ><van-icon name="pause-circle-o"
       /></span>
-      <span><van-icon name="arrow" /></span>
+      <span @click="goPlay(1)"><van-icon name="arrow" /></span>
       <span><van-icon name="bars" /></span>
     </div>
   </div>
@@ -110,6 +110,16 @@ const toCommentDetail = () => {
     },
   });
 };
+// 下一首上一首操作
+const goPlay = (num) => {
+  let index = playListIndex.value + num
+  if (index < 0) {
+    index = playList.value.length - 1
+  } else if (index === playList.value.length) {
+    index = 0
+  }
+  store.updateplayListIndex(index)
+}
 </script>
 
 <style scoped>

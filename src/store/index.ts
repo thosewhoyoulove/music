@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-21 19:43:23
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-24 21:07:08
+ * @LastEditTime: 2022-08-31 10:48:15
  */
 import { defineStore} from 'pinia'
 import { Names } from "./store-name";
@@ -50,6 +50,9 @@ export const useStore = defineStore(Names.playList, {
         updateCurrentTime(state: { duration: any; },value: any){
             state.duration = value
         },
+        updateplayListIndex (value: number) {
+            this.playListIndex = value
+          },
         async getLyric(value: any) {
             let res =await  getMusicLyric(value)
             this.lyric = res
