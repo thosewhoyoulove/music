@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-25 12:42:09
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-31 10:39:53
+ * @LastEditTime: 2022-09-01 22:53:02
 -->
 <template>
   <div class="w-100% h-100% bg-white">
@@ -87,6 +87,3 @@ onMounted(async () => {
   state.comment = comment.data.hotComments;
 });
 </script>
-
-<style scoped>
-</style>
