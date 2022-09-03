@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-25 12:42:09
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-01 22:53:02
+ * @LastEditTime: 2022-09-03 10:54:44
 -->
 <template>
   <div class="w-100% h-100% bg-white">
@@ -66,7 +66,6 @@
 </template>
 
 <script setup lang="ts">
-import { log } from "console";
 import { getMusicComment, getMusic } from "~/api/SongDetail";
 const route = useRoute();
 const id = route.query.id;

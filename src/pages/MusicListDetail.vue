@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-03 10:33:42
+ * @LastEditTime: 2022-09-03 12:33:09
 -->
 <script setup lang="ts">
 import { getSongListDetail, getAllSong } from "~/api/SongListDetail";
@@ -24,7 +24,7 @@ onMounted(async () => {
   let songlist = await getAllSong(id);
 
   state.songlist = songlist.data.songs;
-  console.log(state.songlist);
+  console.log(state.songlist,'歌曲信息');
 });
 const filter = (num) => {
   if (num > 100000000) return (num / 100000000).toFixed(0) + "亿";
