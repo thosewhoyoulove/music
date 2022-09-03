@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-31 10:38:55
+ * @LastEditTime: 2022-09-03 13:03:27
 -->
 <template>
   <div
@@ -23,10 +23,10 @@
     <span class="flex items-center" @click="toMusicDetail">
       <img
         class="w-3rem h-3rem rounded"
-        :src="playList[playListIndex].al.picUrl"
+        :src="playList[playListIndex]?.al?.picUrl"
         alt=""
       />
-      <span class="px-2">{{ playList[playListIndex].name }}</span>
+      <span class="px-2">{{ playList[playListIndex]?.name }}</span>
     </span>
     <span class="flex pr-1.5rem">
       <span v-if="isShow" @click="playMusic" class="text-lg px-2"

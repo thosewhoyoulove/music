@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-21 19:43:23
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-03 10:33:24
+ * @LastEditTime: 2022-09-03 12:51:44
  */
 import { defineStore} from 'pinia'
 import { Names } from "./store-name";
@@ -50,7 +50,9 @@ export const useStore = defineStore(Names.playList, {
         updateCurrentTime(state: { duration: any; },value: any){
             state.duration = value
         },//歌曲的现在时长
-        
+        pushPlayList (value:any) {
+            this.playList = value
+        },// 搜索出来的歌曲，点击播放，将整首歌数据追加到播放列表内
         async getLyric(value: any) {
             let res =await  getMusicLyric(value)
             this.lyric = res

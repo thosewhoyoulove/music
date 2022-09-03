@@ -3,12 +3,13 @@
  * @Author: 曹俊
  * @Date: 2022-08-27 11:27:10
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-03 10:25:23
+ * @LastEditTime: 2022-09-03 13:08:41
 -->
 <script setup lang="ts">
 import { getSearchMusic } from "~/api/Search";
 import { Notify, Dialog } from "vant";
-import { log } from "console";
+import { useStore } from "~/store/index";
+const store = useStore();
 const VanDialog = Dialog.Component;
 const keyWordList = ref([]); //历史记录存放数组
 let keyWord = ref(""); //搜索关键词
@@ -26,6 +27,8 @@ const onSearch = async () => {
     // keyWord.value = ""
     let res = await getSearchMusic(keyWord.value);
     searchList.value = res.data?.result?.songs;
+    console.log(searchList.value);
+    
   } else {
     console.log(keyWord.value);
 
@@ -68,6 +71,11 @@ const searchHistory = async (item) => {
   searchList.value = res.data?.result?.songs;
   console.log(searchList.value);
 };
+//点击列表播放歌曲
+const updateIndex = (item:any, index:any):any => {
+  store.updatePlayList(store.$state,searchList.value)
+  store.updatePlayListIndex(index)
+}
 </script>
 
 <template>
@@ -100,7 +108,7 @@ const searchHistory = async (item) => {
         "
         v-for="(item, index) in keyWordList"
         :key="index"
-        @click="searchHistory(item)"
+        @click="searchHistory(item,index)"
         >{{ item }}</span
       >
       <span class="absolute top-.15rem right-.4" @click="showDelete"
@@ -118,18 +126,19 @@ const searchHistory = async (item) => {
           v-for="(item, index) in searchList"
           :key="index"
           class="flex border-b-hex-ccc border-b"
+          @click="updateIndex(item,index)"
         >
-          <div class="col text-left m-2">
+          <div  class="col text-left m-2">
             <div>{{ item.name }}</div>
             <div class="flex text-xs">
               <div
-                v-for="(artist, index) in searchList[index].artists"
+                v-for="(ar, index) in searchList[index].ar"
                 :key="index"
               >
-                {{ artist.name }}
+                {{ ar.name }}
               </div>
               -
-              <div>{{ item.album.name }}</div>
+              <div>{{ item.al.name }}</div>
             </div>
           </div>
         </ul>
