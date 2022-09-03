@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-27 11:27:10
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-31 10:29:53
+ * @LastEditTime: 2022-09-03 10:25:23
 -->
 <script setup lang="ts">
 import { getSearchMusic } from "~/api/Search";
@@ -108,7 +108,7 @@ const searchHistory = async (item) => {
       /></span>
     </div>
     <div class="bg-white mt-5 rounded">
-      <div class="flex justify-between px-1 m-1 border-b-hex-ccc border-b">
+      <div v-if="searchList.legnth" class="flex justify-between px-1 m-1 border-b-hex-ccc border-b">
         <div>单曲</div>
         <div>播放全部</div>
       </div>

@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-22 21:03:00
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-31 10:52:32
+ * @LastEditTime: 2022-09-03 10:38:08
 -->
 <template>
   <div class="w-100% h-604px">
@@ -112,13 +112,15 @@ const toCommentDetail = () => {
 };
 // 下一首上一首操作
 const goPlay = (num) => {
+  //如果是第一首，上一首应该是最后一首
+  //如果是最后一首，下一首应该是第一首
   let index = playListIndex.value + num;
   if (index < 0) {
     index = playList.value.length - 1;
   } else if (index === playList.value.length) {
     index = 0;
   }
-  store.updateplayListIndex(index);
+  store.updatePlayListIndex(index);
 };
 </script>
 

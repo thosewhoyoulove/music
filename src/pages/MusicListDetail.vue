@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-31 10:39:46
+ * @LastEditTime: 2022-09-03 10:33:42
 -->
 <script setup lang="ts">
 import { getSongListDetail, getAllSong } from "~/api/SongListDetail";
@@ -34,7 +34,7 @@ const store = useStore();
 //修改歌曲信息并进行播放
 const updateSongList = (index) => {
   store.updatePlayList(store.$state, state.songlist); //将歌单列表传进默认列表
-  store.updatePlayListIndex(store.$state, index); //将索引值传给默认索引
+  store.updatePlayListIndex(index); //将索引值传给默认索引
   store.updateIsShow(store.$state, false); //修改为播放图标
 };
 const toCommentDetail = () => {

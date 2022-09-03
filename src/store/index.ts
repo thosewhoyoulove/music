@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-21 19:43:23
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-31 10:48:15
+ * @LastEditTime: 2022-09-03 10:33:24
  */
 import { defineStore} from 'pinia'
 import { Names } from "./store-name";
@@ -37,22 +37,20 @@ export const useStore = defineStore(Names.playList, {
         },//底部组件的播放按钮与暂停按钮
         updatePlayList(state: { playList: any; },value: any){
             state.playList = value
-        },
-        updatePlayListIndex(state: { playListIndex: any; },value: any){
-            state.playListIndex = value
-        },
+        },//播放歌曲的列表
+        updatePlayListIndex (value: number) {
+            this.playListIndex = value
+        },//播放歌曲的索引值
         updateDetailShow(state: { isDetailShow: boolean; }){
             state.isDetailShow = !state.isDetailShow
-        },
+        },//歌曲详情页
         updateDuration(state: { duration: any; },value: any){
             state.duration = value
-        },
+        },//歌曲的总时长
         updateCurrentTime(state: { duration: any; },value: any){
             state.duration = value
-        },
-        updateplayListIndex (value: number) {
-            this.playListIndex = value
-          },
+        },//歌曲的现在时长
+        
         async getLyric(value: any) {
             let res =await  getMusicLyric(value)
             this.lyric = res
