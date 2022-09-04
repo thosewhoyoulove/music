@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-27 11:27:10
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-03 16:51:30
+ * @LastEditTime: 2022-09-04 22:30:36
 -->
 <script setup lang="ts">
 import { getSearchMusic } from "~/api/Search";
@@ -115,20 +115,23 @@ const updateIndex = (item:any, index:any):any => {
         ><van-icon name="delete-o"
       /></span>
     </div>
-    <div class="bg-white mt-5 rounded">
-      <div v-if="searchList.legnth" class="flex justify-between px-1 m-1 border-b-hex-ccc border-b">
+    <div class="bg-white mt-5 rounded-lg p-1">
+      <div v-if="searchList.length" class="flex justify-between p-1 m-1 border-b-hex-ccc border-b">
         <div>单曲</div>
-        <div>播放全部</div>
+        <div class="flex justify-between items-center">
+          <van-icon name="play-circle-o" />
+          <div>播放全部</div>
+        </div>
       </div>
 
       <van-list>
         <ul
           v-for="(item, index) in searchList"
           :key="index"
-          class="flex border-b-hex-ccc border-b"
+          class="flex border-b-hex-ccc border-b justify-between"
           @click="updateIndex(item,index)"
         >
-          <div  class="col text-left m-2">
+          <div  class="col text-left m-2 text-style">
             <div>{{ item.name }}</div>
             <div class="flex text-xs">
               <div
@@ -140,6 +143,10 @@ const updateIndex = (item:any, index:any):any => {
               -
               <div>{{ item.al.name }}</div>
             </div>
+          </div>
+          <div class="flex justify-between items-center">
+            <div><van-icon name="tv-o" /></div>
+            <div style="transform: rotate(90deg)"><van-icon name="ellipsis" /></div>
           </div>
         </ul>
       </van-list>
@@ -158,4 +165,11 @@ const updateIndex = (item:any, index:any):any => {
 
 
 <style scoped>
+.text-style {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 </style>
