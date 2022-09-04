@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-03 13:03:27
+ * @LastEditTime: 2022-09-04 22:34:33
 -->
 <template>
   <div
@@ -26,7 +26,9 @@
         :src="playList[playListIndex]?.al?.picUrl"
         alt=""
       />
-      <span class="px-2">{{ playList[playListIndex]?.name }}</span>
+      <Vue3Marquee class="text-sm my-2 px-2 w-30">
+          {{ playList[playListIndex]?.name }}
+        </Vue3Marquee>
     </span>
     <span class="flex pr-1.5rem">
       <span v-if="isShow" @click="playMusic" class="text-lg px-2"
