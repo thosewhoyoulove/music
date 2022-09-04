@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-27 11:27:10
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-04 22:30:36
+ * @LastEditTime: 2022-09-04 22:40:07
 -->
 <script setup lang="ts">
 import { getSearchMusic } from "~/api/Search";
@@ -145,7 +145,7 @@ const updateIndex = (item:any, index:any):any => {
             </div>
           </div>
           <div class="flex justify-between items-center">
-            <div><van-icon name="tv-o" /></div>
+            <div v-if="item.mv !== 0"><van-icon name="tv-o" /></div>
             <div style="transform: rotate(90deg)"><van-icon name="ellipsis" /></div>
           </div>
         </ul>
