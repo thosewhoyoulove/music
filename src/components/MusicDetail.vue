@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-22 21:03:00
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-03 10:38:08
+ * @LastEditTime: 2022-09-04 23:11:08
 -->
 <template>
   <div class="w-100% h-604px">
@@ -53,27 +53,29 @@
       ></span>
       <span style="transform: rotate(90deg)"><van-icon name="ellipsis" /></span>
     </div>
-    <div>
-      <van-field
-        class="bg-transparent"
+    <div class="mx-2 flex mt-6 w-95% bg-transparent justify-around items-center text-xs text-hex-bbb">
+      <div class="flex">0:00</div>
+      <input
+        class="flex justify-between mx-1"
         type="range"
         min="0"
         :max="store.duration"
         v-model="store.currentTime"
         step="0.05"
       />
+      <div class="flex">3:00</div>
     </div>
-    <div class="flex justify-around mt-80px text-xl items-center">
-      <span><van-icon name="replay" /></span>
-      <span @click="goPlay(-1)"><van-icon name="arrow-left" /></span>
-      <span v-if="isShow" @click="playMusic" class="text-3xl"
+    <div class="fixed w-100% flex justify-around mt-40px text-xl items-center">
+      <div><van-icon name="replay" /></div>
+      <div @click="goPlay(-1)"><van-icon name="arrow-left" /></div>
+      <div v-if="isShow" @click="playMusic" class="text-3xl"
         ><van-icon name="play-circle-o"
-      /></span>
-      <span v-else @click="pauseMusic" class="text-3xl"
+      /></div>
+      <div v-else @click="pauseMusic" class="text-3xl"
         ><van-icon name="pause-circle-o"
-      /></span>
-      <span @click="goPlay(1)"><van-icon name="arrow" /></span>
-      <span><van-icon name="bars" /></span>
+      /></div>
+      <div @click="goPlay(1)"><van-icon name="arrow" /></div>
+      <div><van-icon name="bars" /></div>
     </div>
   </div>
 </template>
@@ -135,5 +137,22 @@ const goPlay = (num) => {
   top: 6px;
   right: -5px;
   color: #003248;
+}
+
+input[type=range] {
+  -webkit-appearance: none;/*清除系统默认样式*/
+  width: 100%;
+  background: -webkit-linear-gradient(#ccc) no-repeat, #ccc;/*设置左边颜色为#61bd12，右边颜色为#ddd*/
+  background-size: 75% 100%;/*设置左右宽度比例*/
+  height: 3px;/*横条的高度*/
+}
+/*拖动块的样式*/
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;/*清除系统默认样式*/
+  height: .6rem;/*拖动块高度*/
+  width: .6rem;/*拖动块宽度*/
+  background: #fff;/*拖动块背景*/
+  border-radius: 50%; /*外观设置为圆形*/
+  border: solid 1px #ddd; /*设置边框*/
 }
 </style>
