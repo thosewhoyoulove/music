@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-17 15:53:02
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-24 19:44:24
+ * @LastEditTime: 2022-09-05 18:23:52
  */
 import request from '~/utils/request'
 //获取歌单详情
@@ -40,6 +40,6 @@ export function getAllSong(data) {
 export function getSongListComment(data) {
     return request({
         method: 'get',
-        url: `/comment/playlist?id=${data}`
+        url: `/comment/playlist?id=${data}&limit=100&offset=0` //搜索的是100条，但渲染的值是热门评论，只有15条
     })
 }

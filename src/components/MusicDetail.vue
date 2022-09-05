@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-22 21:03:00
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-05 16:55:16
+ * @LastEditTime: 2022-09-05 18:22:30
 -->
 <template>
   <div class="w-100% h-604px">
@@ -186,7 +186,6 @@ watch(() => store.currentTime, (newValue) => {
       musicLyric.value.scrollTop = p.offsetTop - 150
     }
   }
-  console.log([musicLyric.value])
   if (newValue === store.duration?.value) {
     if (store.playListIndex === store.playList.length - 1) {
       store.updatePlayListIndex(0)

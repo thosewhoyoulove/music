@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-05 17:31:36
+ * @LastEditTime: 2022-09-05 18:30:38
 -->
 <template>
   <div
@@ -88,16 +88,14 @@ const play = () => {
     /* 调用audio的播放功能方法 */
     audio.value.play()
     // 让其显示播放按钮
-    isShow.value = !isShow.value;
-    store.updateIsShow(store.$state, isShow.value);
+    store.updateIsShow(store.$state, false);
     // 触发定时器
     updateTime()
   } else {
     /* 调用暂停方法 */
     audio.value.pause()
     // 让其隐藏播放按钮
-    isShow.value = !isShow.value;
-    store.updateIsShow(store.$state, isShow.value);
+    store.updateIsShow(store.$state, true);
     // 清除定时器
     clearInterval(interVal)
   }

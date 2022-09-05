@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-27 11:27:10
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-05 17:33:48
+ * @LastEditTime: 2022-09-05 18:31:15
 -->
 <script setup lang="ts">
 import { getSearchMusic } from "~/api/Search";
@@ -77,8 +77,7 @@ const searchHistory = async (item) => {
 const updateIndex = (item:any, index:any):any => {
   store.updatePlayList(store.$state,searchList.value)
   store.updatePlayListIndex(index)
-  isShow.value = !isShow.value;
-  store.updateIsShow(store.$state, isShow.value);
+  store.updateIsShow(store.$state, false);
 }
 </script>
 

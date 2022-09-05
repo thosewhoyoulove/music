@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-24 18:35:26
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-26 11:35:37
+ * @LastEditTime: 2022-09-05 18:21:44
  */
 import request from '~/utils/request'
 
@@ -26,6 +26,6 @@ export function getMusic(data) {
 export function getMusicComment(data) {
     return request({
         method: 'get',
-        url: `/comment/music?id=${data}&limit=2`
+        url: `/comment/music?id=${data}&limit=100&offset=0`
     })
 }
