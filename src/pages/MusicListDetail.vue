@@ -3,13 +3,14 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-03 12:33:09
+ * @LastEditTime: 2022-09-05 09:36:23
 -->
 <script setup lang="ts">
 import { getSongListDetail, getAllSong } from "~/api/SongListDetail";
 import { useStore } from "~/store/index";
 const router = useRouter();
 const route = useRoute();
+const store = useStore();
 const state = reactive({
   playlist: {}, //歌单信息
   songlist: [], //歌曲信息
@@ -30,7 +31,6 @@ const filter = (num) => {
   if (num > 100000000) return (num / 100000000).toFixed(0) + "亿";
   else if (num > 10000) return (num / 10000).toFixed(0) + "万";
 };
-const store = useStore();
 //修改歌曲信息并进行播放
 const updateSongList = (index) => {
   store.updatePlayList(store.$state, state.songlist); //将歌单列表传进默认列表
@@ -45,6 +45,7 @@ const toCommentDetail = () => {
     },
   });
 };
+
 </script>
 <template>
   <div class="bg-white w-100% h-50vh relative">
