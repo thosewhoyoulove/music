@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-22 21:03:00
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-05 15:18:09
+ * @LastEditTime: 2022-09-05 16:55:16
 -->
 <template>
   <div class="w-100% h-604px">
@@ -181,7 +181,6 @@ const musicLyric = ref(null)
 // 监听歌词时间
 watch(() => store.currentTime, (newValue) => {
   const p = document.querySelector('p.active')
-  console.log([p],11111111111111111)
   if (p) {
     if (p.offsetTop > 150) {
       musicLyric.value.scrollTop = p.offsetTop - 150

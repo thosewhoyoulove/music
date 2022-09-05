@@ -3,13 +3,15 @@
  * @Author: 曹俊
  * @Date: 2022-08-27 11:27:10
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-04 22:40:07
+ * @LastEditTime: 2022-09-05 17:33:48
 -->
 <script setup lang="ts">
 import { getSearchMusic } from "~/api/Search";
 import { Notify, Dialog } from "vant";
+import { storeToRefs } from "pinia";
 import { useStore } from "~/store/index";
 const store = useStore();
+const { isShow } = storeToRefs(store);
 const VanDialog = Dialog.Component;
 const keyWordList = ref([]); //历史记录存放数组
 let keyWord = ref(""); //搜索关键词
@@ -75,6 +77,8 @@ const searchHistory = async (item) => {
 const updateIndex = (item:any, index:any):any => {
   store.updatePlayList(store.$state,searchList.value)
   store.updatePlayListIndex(index)
+  isShow.value = !isShow.value;
+  store.updateIsShow(store.$state, isShow.value);
 }
 </script>
 

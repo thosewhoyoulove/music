@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-05 15:15:28
+ * @LastEditTime: 2022-09-05 17:31:36
 -->
 <template>
   <div
@@ -82,19 +82,6 @@ onMounted(() => {
 const updateTime = () => {
   interVal = setInterval(() => { store.updateCurrentTime(store.$state,audio.value?.currentTime) }, 50)
 }
-// const playMusic = () => {
-//   audio.value.play();
-//   isShow.value = !isShow.value;
-//   store.updateIsShow(store.$state, isShow.value);
-//   updateTime()//触发定时器
-// };
-// const pauseMusic = () => {
-//   audio.value.pause();
-//   isShow.value = !isShow.value;
-//   store.updateIsShow(store.$state, isShow.value);
-//   // 清除定时器
-//   clearInterval(interVal.value) 
-// };
 const play = () => {
   /* 判断是否已暂停 */
   if (audio.value.paused) {
@@ -116,16 +103,6 @@ const play = () => {
   }
 }
 
-// watch(playListIndex, () => {
-//   if (audio?.value?.paused) {
-//     isShow.value = false;
-//     console.log(111);
-//   }
-// });
-// watch(() =>audio.value?.paused,() =>{
-//         if(!audio.value?.paused) updateTime()//触发定时器
-//         clearInterval(interVal)// 清除定时器
-// })
 const toMusicDetail = () => {
   store.updateDetailShow(store.$state);
 };
