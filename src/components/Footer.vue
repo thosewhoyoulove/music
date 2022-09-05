@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-04 22:34:33
+ * @LastEditTime: 2022-09-05 15:15:28
 -->
 <template>
   <div
@@ -31,10 +31,10 @@
         </Vue3Marquee>
     </span>
     <span class="flex pr-1.5rem">
-      <span v-if="isShow" @click="playMusic" class="text-lg px-2"
+      <span v-if="isShow" @click="play" class="text-lg px-2"
         ><van-icon name="play-circle-o"
       /></span>
-      <span v-else @click="pauseMusic" class="text-lg px-2"
+      <span v-else @click="play" class="text-lg px-2"
         ><van-icon name="pause-circle-o"
       /></span>
       <span class="text-xl"><van-icon name="bars" /></span>
@@ -53,8 +53,7 @@
   >
     <music-detail
       :musicList="playList[playListIndex]"
-      :playMusic="playMusic"
-      :pauseMusic="pauseMusic"
+      :play="play"
       :addDuration="addDuration"
     ></music-detail>
   </van-popup>
@@ -64,36 +63,69 @@ import { storeToRefs } from "pinia";
 import { useStore } from "~/store/index";
 const audio = ref(null); //获取audio属性
 const store = useStore();
+let interVal = ref(0)//设置定时器
 const {
-  lyric,
+  lyricList,
   playList,
   playListIndex,
   isShow,
-  isDetailShow,
-  duration,
-  currentTime,
+  isDetailShow
 } = storeToRefs(store);
 onMounted(() => {
   store.getLyric(playList.value[playListIndex.value]?.id);
-  console.log(lyric, "----------");
-});
-
-const playMusic = () => {
-  audio.value.play();
-  isShow.value = !isShow.value;
-  store.updateIsShow(store.$state, isShow.value);
-};
-const pauseMusic = () => {
-  audio.value.pause();
-  isShow.value = !isShow.value;
-  store.updateIsShow(store.$state, isShow.value);
-};
-watch(playListIndex, () => {
-  if (audio?.value?.paused) {
-    isShow.value = false;
-    console.log(111);
+  // 渲染的时候也需要同步歌词时间
+  updateTime()
+  // console.log(lyricList, "----------");
+  console.log(audio,'1111111111111111111');
+  
+});//开始获取歌词
+const updateTime = () => {
+  interVal = setInterval(() => { store.updateCurrentTime(store.$state,audio.value?.currentTime) }, 50)
+}
+// const playMusic = () => {
+//   audio.value.play();
+//   isShow.value = !isShow.value;
+//   store.updateIsShow(store.$state, isShow.value);
+//   updateTime()//触发定时器
+// };
+// const pauseMusic = () => {
+//   audio.value.pause();
+//   isShow.value = !isShow.value;
+//   store.updateIsShow(store.$state, isShow.value);
+//   // 清除定时器
+//   clearInterval(interVal.value) 
+// };
+const play = () => {
+  /* 判断是否已暂停 */
+  if (audio.value.paused) {
+    /* 调用audio的播放功能方法 */
+    audio.value.play()
+    // 让其显示播放按钮
+    isShow.value = !isShow.value;
+    store.updateIsShow(store.$state, isShow.value);
+    // 触发定时器
+    updateTime()
+  } else {
+    /* 调用暂停方法 */
+    audio.value.pause()
+    // 让其隐藏播放按钮
+    isShow.value = !isShow.value;
+    store.updateIsShow(store.$state, isShow.value);
+    // 清除定时器
+    clearInterval(interVal)
   }
-});
+}
+
+// watch(playListIndex, () => {
+//   if (audio?.value?.paused) {
+//     isShow.value = false;
+//     console.log(111);
+//   }
+// });
+// watch(() =>audio.value?.paused,() =>{
+//         if(!audio.value?.paused) updateTime()//触发定时器
+//         clearInterval(interVal)// 清除定时器
+// })
 const toMusicDetail = () => {
   store.updateDetailShow(store.$state);
 };
@@ -101,8 +133,13 @@ const addDuration = () => {
   store.updateDuration(store.$state, audio?.value?.duration);
 };
 onUpdated(() => {
-  store.getLyric(playList.value[playListIndex.value]?.id); //获取对应歌曲的歌词
-  addDuration();
-});
+  /* 将id传给获取歌词的方法 */
+  store.getLyric(store.playList[store.playListIndex].id)
+  // 渲染的时候也需要同步歌词时间
+  updateTime()
+  addDuration()
+})
+
+
 </script>
 

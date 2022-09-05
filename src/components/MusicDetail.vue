@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-22 21:03:00
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-05 10:09:24
+ * @LastEditTime: 2022-09-05 15:18:09
 -->
 <template>
   <div class="w-100% h-604px">
@@ -59,7 +59,7 @@
       <span style="transform: rotate(90deg)"><van-icon name="ellipsis" /></span>
     </div>
     <div class="mx-2 flex mt-6 w-95% bg-transparent justify-around items-center text-xs text-hex-bbb">
-      <div class="flex">0:00</div>
+      <div class="flex">00:00</div>
       <input
         class="flex justify-between mx-1"
         type="range"
@@ -68,15 +68,15 @@
         v-model="store.currentTime"
         step="0.05"
       />
-      <div class="flex">3:00</div>
+      <div class="flex">04:30</div>
     </div>
     <div class="fixed w-100% flex justify-around mt-40px text-xl items-center">
       <div><van-icon name="replay" /></div>
       <div @click="goPlay(-1)"><van-icon name="arrow-left" /></div>
-      <div v-if="isShow" @click="playMusic" class="text-3xl"
+      <div v-if="isShow" @click="play" class="text-3xl"
         ><van-icon name="play-circle-o"
       /></div>
-      <div v-else @click="pauseMusic" class="text-3xl"
+      <div v-else @click="play" class="text-3xl"
         ><van-icon name="pause-circle-o"
       /></div>
       <div @click="goPlay(1)"><van-icon name="arrow" /></div>
@@ -93,16 +93,16 @@ import { useStore } from "~/store/index";
 const router = useRouter();
 const store = useStore();
 const isLyricShow = ref(false);//歌词是否显示
-const { playList, playListIndex } = storeToRefs(store);
+const { playList, playListIndex, currentTime, duration } = storeToRefs(store);
 const props = defineProps<{
   musicList: Object;
-  playMusic: Function;
-  pauseMusic: Function;
+  play: Function;
   addDuration: Function;
 }>();
 let { isShow, isDetailShow } = storeToRefs(store);
 onMounted(() => {
-  console.log(props.musicList);
+  console.log(props.musicList,'音乐信息');
+  console.log(store.lyricList.lyric);
   props.addDuration();
 });
 const back = () => {
@@ -131,6 +131,8 @@ const goPlay = (num) => {
   store.updatePlayListIndex(index);
 };
 // 计算属性歌词处理
+// let curMin = ref(0)
+// let curSec = ref(0)
 const lyric = computed(() => {
   let arr
   if (store.lyricList.lyric) {
@@ -148,7 +150,7 @@ const lyric = computed(() => {
       let mill = item.slice(7, 10)
       // 歌词切割
       let lrc = item.slice(11, item.length)
-      // 每句歌词显示的时间
+      // 每句歌词显示的时间,要与audio标签的currentTime对应才能显示active的歌词
       let time = parseInt(min) * 60 * 1000 + parseInt(sec) * 1000 + parseInt(mill)
       // 因为两句歌词后面的毫秒为两位数，则要进行处理
       if (isNaN(Number(mill))) {
@@ -156,14 +158,16 @@ const lyric = computed(() => {
         lrc = item.slice(10, item.length)
         time = parseInt(min) * 60 * 1000 + parseInt(sec) * 1000 + parseInt(mill)
       }
-      // console.log(min, sec, Number(mill), lrc)
+      console.log(min, sec, Number(mill), lrc)
+      // curMin.value = min
+      // curSec.value = sec
       // 返回对象组成数组
       return { min, sec, mill, lrc, time }
     })
     // 遍历拿到pre，即后一句歌词的时间
-    arr.forEach((item, i) => {
+    arr.forEach((item:any, i:any) => {
       if (i === arr.length - 1 || isNaN(arr[i + 1].time)) {
-        item.pre = 100000
+        item.pre = 0
       } else {
         item.pre = arr[i + 1].time
       }
@@ -179,15 +183,15 @@ watch(() => store.currentTime, (newValue) => {
   const p = document.querySelector('p.active')
   console.log([p],11111111111111111)
   if (p) {
-    if (p.offsetTop > 300) {
-      musicLyric.value.scrollTop = p.offsetTop - 300
+    if (p.offsetTop > 150) {
+      musicLyric.value.scrollTop = p.offsetTop - 150
     }
   }
-  // console.log([musicLyric.value])
-  if (newValue === store.duration) {
+  console.log([musicLyric.value])
+  if (newValue === store.duration?.value) {
     if (store.playListIndex === store.playList.length - 1) {
       store.updatePlayListIndex(0)
-      props.playMusic()
+      props.play()
     } else {
       store.updatePlayListIndex(store.playListIndex + 1)
     }
@@ -236,13 +240,14 @@ input[type=range]::-webkit-slider-thumb {
   //溢出滚动
   overflow: scroll;
   p{
+    font-size: 1rem;
     color:rgb(195, 239, 244);
-    margin-bottom: .4rem;
+    margin-bottom: 1rem;
   }
   //高亮显示的歌词
   .active{
     color: white;
-    font-size: .4rem;
+    font-size: 1.3rem;
   }
 }
 </style>
