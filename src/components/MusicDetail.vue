@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-22 21:03:00
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-04 23:11:08
+ * @LastEditTime: 2022-09-05 10:09:24
 -->
 <template>
   <div class="w-100% h-604px">
@@ -34,11 +34,16 @@
       <div class="text-xl text-hex-ccc"><van-icon name="share-o" /></div>
     </div>
     <img
-      class="al-img rounded-1/2 w-50 h-50"
+      class="al-img rounded-1/2 w-50 h-50 animate__animated animate__bounceIn"
       :src="props?.musicList?.al?.picUrl"
       alt=""
+      v-show="!isLyricShow"
+      @click="isLyricShow=true"
     />
-    <div class="flex justify-around mt-320px text-xl items-center">
+    <div class="musiclyricList  animate__animated animate__backInDown" ref="musicLyric" v-show="isLyricShow" @click="isLyricShow=false">
+      <p v-for="item in lyric" :key="item" :class="{active:(store.currentTime*1000)>=item.time&&store.currentTime*1000<item.pre}">{{item.lrc}}</p>
+    </div>
+    <div v-show="!isLyricShow" class="flex justify-around mt-320px text-xl items-center">
       <span><van-icon name="like-o" /></span>
       <span style="transform: rotate(180deg)"><van-icon name="upgrade" /></span>
       <span><van-icon name="close" /></span>
@@ -87,6 +92,7 @@ import { storeToRefs } from "pinia";
 import { useStore } from "~/store/index";
 const router = useRouter();
 const store = useStore();
+const isLyricShow = ref(false);//歌词是否显示
 const { playList, playListIndex } = storeToRefs(store);
 const props = defineProps<{
   musicList: Object;
@@ -124,13 +130,77 @@ const goPlay = (num) => {
   }
   store.updatePlayListIndex(index);
 };
+// 计算属性歌词处理
+const lyric = computed(() => {
+  let arr
+  if (store.lyricList.lyric) {
+    /* 将歌词进行换行符分割 */
+    /* 1.先用数组split方法对歌词的换行进行分割
+    2.用map方法，遍历数组并对其进行操作返回一个新数组
+    3.以对象形式返回为新数组
+    */
+    arr = store.lyricList.lyric.split(/[(\r\n)\r\n]+/).map((item, i) => {
+      // 分钟，切割第一到第三
+      const min = item.slice(1, 3)
+      // 秒钟切割
+      const sec = item.slice(4, 6)
+      // 毫秒切割
+      let mill = item.slice(7, 10)
+      // 歌词切割
+      let lrc = item.slice(11, item.length)
+      // 每句歌词显示的时间
+      let time = parseInt(min) * 60 * 1000 + parseInt(sec) * 1000 + parseInt(mill)
+      // 因为两句歌词后面的毫秒为两位数，则要进行处理
+      if (isNaN(Number(mill))) {
+        mill = item.slice(7, 9)
+        lrc = item.slice(10, item.length)
+        time = parseInt(min) * 60 * 1000 + parseInt(sec) * 1000 + parseInt(mill)
+      }
+      // console.log(min, sec, Number(mill), lrc)
+      // 返回对象组成数组
+      return { min, sec, mill, lrc, time }
+    })
+    // 遍历拿到pre，即后一句歌词的时间
+    arr.forEach((item, i) => {
+      if (i === arr.length - 1 || isNaN(arr[i + 1].time)) {
+        item.pre = 100000
+      } else {
+        item.pre = arr[i + 1].time
+      }
+    })
+  }
+  return arr
+}
+)
+// this.$refs的vue3写法
+const musicLyric = ref(null)
+// 监听歌词时间
+watch(() => store.currentTime, (newValue) => {
+  const p = document.querySelector('p.active')
+  console.log([p],11111111111111111)
+  if (p) {
+    if (p.offsetTop > 300) {
+      musicLyric.value.scrollTop = p.offsetTop - 300
+    }
+  }
+  // console.log([musicLyric.value])
+  if (newValue === store.duration) {
+    if (store.playListIndex === store.playList.length - 1) {
+      store.updatePlayListIndex(0)
+      props.playMusic()
+    } else {
+      store.updatePlayListIndex(store.playListIndex + 1)
+    }
+  }
+})
+
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .al-img {
   position: absolute;
-  top: 45%;
-  left: 50%;
+  top: 25%;
+  left: 20%;
   transform: translate(-50%, -50%);
 }
 .van-badge--top-right {
@@ -154,5 +224,25 @@ input[type=range]::-webkit-slider-thumb {
   background: #fff;/*拖动块背景*/
   border-radius: 50%; /*外观设置为圆形*/
   border: solid 1px #ddd; /*设置边框*/
+}
+/* 歌词 */
+.musiclyricList{
+  width: 100%;
+  height: 20rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: .2rem;
+  //溢出滚动
+  overflow: scroll;
+  p{
+    color:rgb(195, 239, 244);
+    margin-bottom: .4rem;
+  }
+  //高亮显示的歌词
+  .active{
+    color: white;
+    font-size: .4rem;
+  }
 }
 </style>
