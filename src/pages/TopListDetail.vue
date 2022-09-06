@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 17:07:32
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-06 18:50:08
+ * @LastEditTime: 2022-09-06 19:01:15
 -->
 <template>
   <div class="bg-white w-100% h-50vh relative">
@@ -13,8 +13,8 @@
       alt=""
     />
     <div class="justify-between pt-5 items-center px-5 text-white text-right">
-        <span class="text-7 mr-2"><van-icon size="25px" name="search" /></span>
-        <span class="text-7"><van-icon name="ellipsis" /></span>
+      <span class="text-7 mr-2"><van-icon size="25px" name="search" /></span>
+      <span class="text-7"><van-icon name="ellipsis" /></span>
     </div>
     <div class="">
       <img
@@ -43,14 +43,14 @@
       </span>
     </div>
     <div class="relative flex mt-6 text-light-900 justify-around">
-      <span class="flex items-center justify-between"
+      <span class="flex mx-1 items-center justify-between"
         ><van-button style="background: transparent" round
           ><van-icon color="#ccc" size="1rem" name="share-o" /><span
             class="px-1 text-light-900"
             >{{ state?.playlist?.shareCount }}</span
           ></van-button
-        ></span
-      >
+        >
+      </span>
       <span @click="toCommentDetail"
         ><van-button style="background: transparent" round
           ><van-icon color="#ccc" size="1rem" name="chat-o" /><span
@@ -59,7 +59,7 @@
           ></van-button
         ></span
       >
-      <span
+      <span class="mx-1"
         ><van-button color="#FE3641" round
           ><van-icon size="1rem" name="add-o" /><span class="px-1">{{
             state?.playlist?.subscribedCount
@@ -98,9 +98,6 @@
           <div v-if="item.mv" class="right-2rem">
             <van-icon size="1.3rem" name="play-circle-o" />
           </div>
-          <div style="transform: rotate(90deg)">
-            <van-icon name="ellipsis" />
-          </div>
         </div>
       </ul>
     </van-list>
@@ -126,6 +123,12 @@ onMounted(async () => {
   state.songlist = songlist.data.songs;
   console.log(state.songlist, "歌曲信息");
 });
+//修改歌曲信息并进行播放
+const updateSongList = (index) => {
+  store.updatePlayList(store.$state, state.songlist); //将歌单列表传进默认列表
+  store.updatePlayListIndex(index); //将索引值传给默认索引
+  store.updateIsShow(store.$state, false); //修改为播放图标
+};
 </script>
 
 <style scoped>
