@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-05 18:30:38
+ * @LastEditTime: 2022-09-06 15:04:27
 -->
 <template>
   <div
@@ -18,6 +18,7 @@
       bg-white
       border-t border-hex-ccc
       flex
+      z-30
     "
   >
     <span class="flex items-center" @click="toMusicDetail">
