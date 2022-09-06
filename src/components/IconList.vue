@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 19:16:37
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-31 10:39:12
+ * @LastEditTime: 2022-09-06 10:51:50
 -->
 <template>
   <div class="flex mt-2 justify-between items-center text-13px">
@@ -151,7 +151,7 @@
         ></path></svg
       ><span>歌单</span>
     </div>
-    <div class="flex-1">
+    <div class="flex-1" @click="toTopList">
       <svg
         t="1660821637091"
         class="icon mx-auto"
@@ -173,6 +173,12 @@
 </template>
 
 <script setup lang="ts">
+const router = useRouter()
+const toTopList = () =>{
+  router.push({
+    path:'/TopList'
+  })
+}
 </script>
 
 <style scoped>

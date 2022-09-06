@@ -3,14 +3,14 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 20:03:07
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-31 10:39:16
+ * @LastEditTime: 2022-09-05 18:37:49
 -->
 <template>
   <div class="w-100% h-5rem p-.2rem">
     <div
       class="flex justify-between items-center mt-2 w-100% h-1.8rem mb-.2rem"
     >
-      <div class="font-900">发现好歌单</div>
+      <div class="font-900">推荐歌单</div>
       <div
         class="text-13px border border-hex-bbb pl-2.5 pr-1.5 rounded-xl pt-.5"
       >
