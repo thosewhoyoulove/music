@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-21 19:43:23
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-05 15:13:42
+ * @LastEditTime: 2022-09-06 21:32:40
  */
 import { defineStore} from 'pinia'
 import { Names } from "./store-name";
@@ -55,7 +55,7 @@ export const useStore = defineStore(Names.playList, {
         },// 搜索出来的歌曲，点击播放，将整首歌数据追加到播放列表内
         async getLyric(value: any) {
             let res =await  getMusicLyric(value)
-            console.log(res);
+            // console.log(res);
             this.updateLyric(res.data.lrc)
         },//异步获取歌词的方法
         updateLyric(value: {}){

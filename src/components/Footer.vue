@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-06 15:04:27
+ * @LastEditTime: 2022-09-06 21:32:11
 -->
 <template>
   <div
@@ -77,7 +77,7 @@ onMounted(() => {
   // 渲染的时候也需要同步歌词时间
   updateTime()
   // console.log(lyricList, "----------");
-  console.log(audio,'1111111111111111111');
+  // console.log(audio,'1111111111111111111');
   
 });//开始获取歌词
 const updateTime = () => {
