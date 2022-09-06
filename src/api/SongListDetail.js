@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-17 15:53:02
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-05 18:23:52
+ * @LastEditTime: 2022-09-06 17:25:15
  */
 import request from '~/utils/request'
 //获取歌单详情
@@ -22,7 +22,7 @@ export function getSongListDetail(data) {
 export function getAllSong(data) {
     return request({
         method: 'get',
-        url: `/playlist/track/all?id=${data}&limit=20&offset=1`
+        url: `/playlist/track/all?id=${data}&limit=25&offset=1`
     })
 }
 
