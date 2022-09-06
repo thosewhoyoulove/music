@@ -160,7 +160,6 @@ const toCommentDetail = () => {
             </div>
           </div>
         </div>
-
         <div class="flex">
           <div v-if="item.mv" class="right-2rem">
             <van-icon size="1.3rem" name="play-circle-o" />

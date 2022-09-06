@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-27 11:27:10
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-05 18:31:15
+ * @LastEditTime: 2022-09-06 15:09:12
 -->
 <script setup lang="ts">
 import { getSearchMusic } from "~/api/Search";
@@ -82,7 +82,7 @@ const updateIndex = (item:any, index:any):any => {
 </script>
 
 <template>
-  <div class="w-100% h-100% bg-hex-eee p-1">
+  <div class="w-100% h-100% bg-hex-eee p-1 mb-15">
     <div>
       <van-search
         v-model="keyWord"

@@ -3,10 +3,10 @@
  * @Author: 曹俊
  * @Date: 2022-08-25 12:42:09
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-03 10:54:44
+ * @LastEditTime: 2022-09-06 15:15:20
 -->
 <template>
-  <div class="w-100% h-100% bg-white">
+  <div class="w-100% h-100% bg-white text-sm">
     <div class="font-700 text-left ml-5">评论({{ total }})</div>
     <div class="flex break-all m-1 p-1">
       <img
