@@ -3,11 +3,11 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 19:16:37
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-06 10:51:50
+ * @LastEditTime: 2022-09-06 19:11:23
 -->
 <template>
   <div class="flex mt-2 justify-between items-center text-13px">
-    <div class="flex-1">
+    <div class="flex-1" @click="toDailyRecommend">
       <svg
         t="1660821482291"
         class="icon mx-auto"
@@ -113,7 +113,7 @@
         ></path></svg
       ><span>私人FM</span>
     </div>
-    <div class="flex-1">
+    <div class="flex-1" @click="toMusicList">
       <svg
         t="1660821687023"
         class="icon mx-auto"
@@ -174,6 +174,16 @@
 
 <script setup lang="ts">
 const router = useRouter()
+const toDailyRecommend = () =>{
+  router.push({
+    path:'/DailyRecommend'
+  })
+}
+const toMusicList = () =>{
+  router.push({
+    path:'/MusicListDetail'
+  })
+}
 const toTopList = () =>{
   router.push({
     path:'/TopList'

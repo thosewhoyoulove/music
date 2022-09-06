@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 20:03:07
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-05 18:37:49
+ * @LastEditTime: 2022-09-06 19:12:41
 -->
 <template>
   <div class="w-100% h-5rem p-.2rem">
@@ -63,7 +63,7 @@ const filter = (num) => {
 };
 const toMusicDetail = (id) => {
   router.push({
-    path: "/MusicListDetail",
+    path: "/RecMusicListDetail",
     query: {
       id: id,
     },

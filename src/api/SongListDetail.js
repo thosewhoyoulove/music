@@ -3,10 +3,10 @@
  * @Author: 曹俊
  * @Date: 2022-08-17 15:53:02
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-06 17:25:15
+ * @LastEditTime: 2022-09-06 19:20:19
  */
 import request from '~/utils/request'
-//获取歌单详情
+//获取歌单详情 (包括推荐歌单和热门歌单)
 export function getSongListDetail(data) {
     return request({
         method: 'get',
