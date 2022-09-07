@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-22 21:03:00
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-07 11:31:19
+ * @LastEditTime: 2022-09-07 21:18:55
 -->
 <template>
   <div class="w-100% h-604px">
@@ -166,6 +166,14 @@ const lyric = computed(() => {
     })
     // 遍历拿到pre，即后一句歌词的时间
     arr.forEach((item:any, i:any) => {
+      //获取第一的item.pre为0的索引就可以获得总时长了
+      // let singleArr = Array.from(item)
+      // let res = singleArr.findIndex(s => s.pre == 0)
+      // console.log(res);
+      // console.log(Array.isArray(singleArr),i);
+      
+      
+      
       if (i === arr.length - 1 || isNaN(arr[i + 1].time)) {
         item.pre = 0
       } else {
@@ -173,7 +181,10 @@ const lyric = computed(() => {
       }
     })
   }
+  console.log(arr);
   return arr
+  
+  
 }
 )
 // this.$refs的vue3写法
