@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 19:17:40
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-07 10:29:58
+ * @LastEditTime: 2022-09-07 10:51:00
  */
 import request from '~/utils/request'
 //获取热门歌单
@@ -30,6 +30,6 @@ export function getSongList() {
 export function getSingleCatPlayList(cat) {
     return request({
         method: 'get',
-        url: `/top/playlist?limit=33&order=${cat}`,
+        url: `/top/playlist?limit=33&order=hot&cat=${cat}`,
     })
 }

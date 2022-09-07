@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 19:13:33
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-07 10:29:13
+ * @LastEditTime: 2022-09-07 10:39:11
 -->
 <template>
   <div class="mb-15">
@@ -41,17 +41,17 @@ const allSongList = ref([]); //所有的热门歌单
 const singleSongList = ref([])
 const active = ref();
 onMounted(async () => {
-  let category = await getSongList(); //获取热门歌单
-  allSongList.value = category.data.tags;
-  let res = await getSingleCatPlayList("华语");
+  let category = await getSongList(); 
+  allSongList.value = category.data.tags;//获取热门歌单的标签
+  let res = await getSingleCatPlayList("华语");//获取华语标签的歌单
   singleSongList.value = res.data.playlists;
   console.log(singleSongList.value);
 });
 const change = async (item, index) => {
+  //点击不同的标签切换不同的歌单，这里的index才是标签
   console.log(item,index);   
   singleSongList.value = []
   console.log(singleSongList.value);
-  
   let res = await getSingleCatPlayList(index);
   singleSongList.value = res.data.playlists;
   console.log(singleSongList.value, "歌单种类:" + index + "!!!");
