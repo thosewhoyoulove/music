@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 19:13:33
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-07 10:39:11
+ * @LastEditTime: 2022-09-07 10:56:08
 -->
 <template>
   <div class="mb-15">
@@ -14,7 +14,7 @@
         :key="index"
         @click="change(item, index)"
       >
-        <div class="inline-block pt-1 px-2" v-for="(item, index) in singleSongList" :key="index">
+        <div class="inline-block pt-1 px-2" v-for="(item, index) in singleSongList" :key="index" @click="toMusicDetail(item.id)">
           <div class="relative">
             <img class="w-21 h-21 rounded-xl p-1" :src="item.coverImgUrl" alt="" />
             <div class="text-style w-20 text-left text-13px px-1">
@@ -35,9 +35,7 @@
 import { getSongList, getSingleCatPlayList } from "~/api/SongList";
 import { getSongListDetail } from "~/api/SongListDetail";
 const allSongList = ref([]); //所有的热门歌单
-// const state = reactive({
-//     singleSongList:[]
-// }); //单独的一种歌单
+const router = useRouter()
 const singleSongList = ref([])
 const active = ref();
 onMounted(async () => {
@@ -59,6 +57,14 @@ const change = async (item, index) => {
 const filter = (num) => {
   if (num > 100000000) return (num / 100000000).toFixed(0) + "亿";
   else if (num > 10000) return (num / 10000).toFixed(0) + "万";
+};
+const toMusicDetail = (id) => {
+  router.push({
+    path: "/TopListDetail",
+    query: {
+      id: id,
+    },
+  });
 };
 </script>
 <style scoped>
