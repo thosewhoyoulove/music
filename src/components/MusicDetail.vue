@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-22 21:03:00
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-05 18:22:30
+ * @LastEditTime: 2022-09-07 11:31:19
 -->
 <template>
   <div class="w-100% h-604px">
@@ -41,7 +41,7 @@
       @click="isLyricShow=true"
     />
     <div class="musiclyricList  animate__animated animate__backInDown" ref="musicLyric" v-show="isLyricShow" @click="isLyricShow=false">
-      <p v-for="item in lyric" :key="item" :class="{active:(store.currentTime*1000)>=item.time&&store.currentTime*1000<item.pre}">{{item.lrc}}</p>
+      <p class="ml-6" v-for="item in lyric" :key="item" :class="{active:(store.currentTime*1000)>=item.time&&store.currentTime*1000<item.pre}">{{item.lrc}}</p>
     </div>
     <div v-show="!isLyricShow" class="flex justify-around mt-320px text-xl items-center">
       <span><van-icon name="like-o" /></span>
@@ -183,7 +183,8 @@ watch(() => store.currentTime, (newValue) => {
   const p = document.querySelector('p.active')
   if (p) {
     if (p.offsetTop > 150) {
-      musicLyric.value.scrollTop = p.offsetTop - 150
+         musicLyric.value.scrollTop = p.offsetTop - 150
+     
     }
   }
   if (newValue === store.duration?.value) {
@@ -238,14 +239,16 @@ input[type=range]::-webkit-slider-thumb {
   //溢出滚动
   overflow: scroll;
   p{
-    font-size: 1rem;
+    width: 200px;
+    font-size: 10px;
     color:rgb(195, 239, 244);
     margin-bottom: 1rem;
   }
   //高亮显示的歌词
   .active{
     color: white;
-    font-size: 1.3rem;
+    font-size: 1.1rem;
+    overflow-wrap: break-word;
   }
 }
 </style>
