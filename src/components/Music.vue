@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 20:03:07
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-06 19:12:41
+ * @LastEditTime: 2022-09-07 10:27:41
 -->
 <template>
   <div class="w-100% h-5rem p-.2rem">
@@ -31,7 +31,7 @@
         >
           <div class="relative">
             <img class="h-8rem m-1 rounded-xl p-1" :src="item.picUrl" alt="" />
-            <div class="music-name text-left text-13px px-1">
+            <div class="text-style text-left text-13px px-1">
               {{ item.name }}
             </div>
             <span class="play-icon text-12px px-2 py-0.5 rounded-xl absolute">
@@ -75,11 +75,12 @@ const toMusicDetail = (id) => {
 .more {
   line-height: 1.8rem;
 }
-.music-name {
+.text-style {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
+  text-overflow: ellipsis;
 }
 .play-icon {
   background: rgba(0, 0, 0, 0.3);
