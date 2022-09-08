@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-24 19:17:32
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-08 09:44:46
+ * @LastEditTime: 2022-09-08 10:30:10
 -->
 
 <script setup lang="ts">
@@ -32,11 +32,11 @@ const tabChange = async () => {
     state.comment = [];
     let res = await getSongListComment(id);
     state.comment = res.data.comments;
-    console.log(state.comment);
   } else if (active.value == 1) {
     state.comment = [];
     let res = await getSongListComment(id);
     state.comment = res.data.hotComments;
+    console.log(res.data);
   }
 };
 </script>
@@ -82,8 +82,8 @@ const tabChange = async () => {
                         <div class="text-sm font-600">
                           {{ item?.user?.nickname }}
                         </div>
-                        <div class="text-xs">{{ item.timeStr }}</div>
-                        <div class="font-serif">{{ item.content }}</div>
+                        <div class="text-10px">{{ item.timeStr }}</div>
+                        <div class="font-serif text-13px">{{ item.content }}</div>
                       </div>
                     </div>
 
@@ -114,8 +114,8 @@ const tabChange = async () => {
                         <div class="text-sm font-600">
                           {{ item?.user?.nickname }}
                         </div>
-                        <div class="text-xs">{{ item.timeStr }}</div>
-                        <div class="font-serif">{{ item.content }}</div>
+                        <div class="text-10px">{{ item.timeStr }}</div>
+                        <div class="font-serif text-13px">{{ item.content }}</div>
                       </div>
                     </div>
 
