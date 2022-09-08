@@ -3,14 +3,14 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-31 10:39:42
+ * @LastEditTime: 2022-09-08 21:59:28
 -->
 <template>
   <div>
     <TopNav />
     <Swiper />
     <IconList />
-    <Music />
+    <RecommendMusic />
   </div>
 </template>
 
