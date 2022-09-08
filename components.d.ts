@@ -11,7 +11,6 @@ declare module '@vue/runtime-core' {
     Footer: typeof import('./src/components/Footer.vue')['default']
     IconList: typeof import('./src/components/IconList.vue')['default']
     LottieAnimation: typeof import('vue3-marquee')['Vue3Marquee']
-    Music: typeof import('./src/components/Music.vue')['default']
     MusicDetail: typeof import('./src/components/MusicDetail.vue')['default']
     RecommendMusic: typeof import('./src/components/RecommendMusic.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
