@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-06 21:32:11
+ * @LastEditTime: 2022-09-08 17:17:29
 -->
 <template>
   <div
@@ -28,8 +28,8 @@
         alt=""
       />
       <Vue3Marquee class="text-sm my-2 px-2 w-30">
-          {{ playList[playListIndex]?.name }}
-        </Vue3Marquee>
+        {{ playList[playListIndex]?.name }}
+      </Vue3Marquee>
     </span>
     <span class="flex pr-1.5rem">
       <span v-if="isShow" @click="play" class="text-lg px-2"
@@ -62,45 +62,49 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useStore } from "~/store/index";
+import { isMusicAvailable } from "~/api/SongDetail";
 const audio = ref(null); //获取audio属性
 const store = useStore();
-let interVal = ref(0)//设置定时器
-const {
-  lyricList,
-  playList,
-  playListIndex,
-  isShow,
-  isDetailShow
-} = storeToRefs(store);
-onMounted(() => {
+let interVal = ref(0); //设置定时器
+const { lyricList, playList, playListIndex, isShow, isDetailShow } =
+  storeToRefs(store);
+onMounted(async () => {
   store.getLyric(playList.value[playListIndex.value]?.id);
+  let res = await isMusicAvailable(playList.value[playListIndex.value]?.id);
+  console.log(res, "音乐是否可用");
+
   // 渲染的时候也需要同步歌词时间
-  updateTime()
+  updateTime();
   // console.log(lyricList, "----------");
   // console.log(audio,'1111111111111111111');
-  
-});//开始获取歌词
+}); //开始获取歌词
 const updateTime = () => {
-  interVal = setInterval(() => { store.updateCurrentTime(store.$state,audio.value?.currentTime) }, 50)
-}
+  interVal = setInterval(() => {
+    store.updateCurrentTime(store.$state, audio.value?.currentTime);
+  }, 50);
+};
+onUpdated(async () => {
+  let res = await isMusicAvailable(playList.value[playListIndex.value]?.id);
+  console.log(res, "音乐是否可用");
+});
 const play = () => {
   /* 判断是否已暂停 */
   if (audio.value.paused) {
     /* 调用audio的播放功能方法 */
-    audio.value.play()
+    audio.value.play();
     // 让其显示播放按钮
     store.updateIsShow(store.$state, false);
     // 触发定时器
-    updateTime()
+    updateTime();
   } else {
     /* 调用暂停方法 */
-    audio.value.pause()
+    audio.value.pause();
     // 让其隐藏播放按钮
     store.updateIsShow(store.$state, true);
     // 清除定时器
-    clearInterval(interVal)
+    clearInterval(interVal);
   }
-}
+};
 
 const toMusicDetail = () => {
   store.updateDetailShow(store.$state);
@@ -110,12 +114,10 @@ const addDuration = () => {
 };
 onUpdated(() => {
   /* 将id传给获取歌词的方法 */
-  store.getLyric(store.playList[store.playListIndex].id)
+  store.getLyric(store.playList[store.playListIndex].id);
   // 渲染的时候也需要同步歌词时间
-  updateTime()
-  addDuration()
-})
-
-
+  updateTime();
+  addDuration();
+});
 </script>
 

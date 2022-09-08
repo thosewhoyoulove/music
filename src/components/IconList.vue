@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 19:16:37
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-06 19:11:23
+ * @LastEditTime: 2022-09-08 17:17:33
 -->
 <template>
   <div class="flex mt-2 justify-between items-center text-13px">
@@ -173,22 +173,22 @@
 </template>
 
 <script setup lang="ts">
-const router = useRouter()
-const toDailyRecommend = () =>{
+const router = useRouter();
+const toDailyRecommend = () => {
   router.push({
-    path:'/DailyRecommend'
-  })
-}
-const toMusicList = () =>{
+    path: "/DailyRecommend",
+  });
+};
+const toMusicList = () => {
   router.push({
-    path:'/MusicListDetail'
-  })
-}
-const toTopList = () =>{
+    path: "/MusicListDetail",
+  });
+};
+const toTopList = () => {
   router.push({
-    path:'/TopList'
-  })
-}
+    path: "/TopList",
+  });
+};
 </script>
 
 <style scoped>

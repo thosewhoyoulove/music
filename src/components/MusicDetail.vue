@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-22 21:03:00
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-07 21:18:55
+ * @LastEditTime: 2022-09-08 17:18:59
 -->
 <template>
   <div class="w-100% h-604px">
@@ -16,10 +16,12 @@
       <div @click="back" class="text-xl text-hex-ccc">
         <van-icon name="arrow-left" />
       </div>
+      <!-- 歌名跑马灯 -->
       <div class="col mr-15 py-2">
         <Vue3Marquee class="text-sm my-2 text-hex-ccc w-30">
           {{ props?.musicList?.name }}
         </Vue3Marquee>
+        <!-- 艺人名字 -->
         <div
           class="flex items-center"
           v-for="(item, index) in props?.musicList?.ar"
@@ -33,32 +35,65 @@
       </div>
       <div class="text-xl text-hex-ccc"><van-icon name="share-o" /></div>
     </div>
+    <!-- 磁盘大图 -->
     <img
       class="al-img rounded-1/2 w-50 h-50 animate__animated animate__bounceIn"
       :src="props?.musicList?.al?.picUrl"
       alt=""
       v-show="!isLyricShow"
-      @click="isLyricShow=true"
+      @click="isLyricShow = true"
     />
-    <div class="musiclyricList  animate__animated animate__backInDown" ref="musicLyric" v-show="isLyricShow" @click="isLyricShow=false">
-      <p class="ml-6" v-for="item in lyric" :key="item" :class="{active:(store.currentTime*1000)>=item.time&&store.currentTime*1000<item.pre}">{{item.lrc}}</p>
+    <div
+      class="musiclyricList animate__animated animate__backInDown"
+      ref="musicLyric"
+      v-show="isLyricShow"
+      @click="isLyricShow = false"
+    >
+      <p
+        class="ml-6"
+        v-for="item in lyric"
+        :key="item"
+        :class="{
+          active:
+            store.currentTime * 1000 >= item.time &&
+            store.currentTime * 1000 < item.pre,
+        }"
+      >
+        {{ item.lrc }}
+      </p>
     </div>
-    <div v-show="!isLyricShow" class="flex justify-around mt-320px text-xl items-center">
+    <!-- 点击展示歌词，并增加了动画效果 -->
+    <div
+      v-show="!isLyricShow"
+      class="flex justify-around mt-320px text-xl items-center"
+    >
       <span><van-icon name="like-o" /></span>
       <span style="transform: rotate(180deg)"><van-icon name="upgrade" /></span>
       <span><van-icon name="close" /></span>
       <span @click="toCommentDetail" class="relative"
         ><van-icon name="comment-o" /><van-badge
+          v-if="totalComment > 0"
           class="absolute top-6px -right-3"
           style="background: transparent; border-width: 0"
           color="#ccc"
-          :content="200"
-          max="99"
+          :content="totalComment"
+          max="999"
         ></van-badge
       ></span>
       <span style="transform: rotate(90deg)"><van-icon name="ellipsis" /></span>
     </div>
-    <div class="mx-2 flex mt-6 w-95% bg-transparent justify-around items-center text-xs text-hex-bbb">
+    <div
+      class="
+        mx-2
+        flex
+        mt-6
+        w-95%
+        bg-transparent
+        justify-around
+        items-center
+        text-xs text-hex-bbb
+      "
+    >
       <div class="flex">00:00</div>
       <input
         class="flex justify-between mx-1"
@@ -73,12 +108,12 @@
     <div class="fixed w-100% flex justify-around mt-40px text-xl items-center">
       <div><van-icon name="replay" /></div>
       <div @click="goPlay(-1)"><van-icon name="arrow-left" /></div>
-      <div v-if="isShow" @click="play" class="text-3xl"
-        ><van-icon name="play-circle-o"
-      /></div>
-      <div v-else @click="play" class="text-3xl"
-        ><van-icon name="pause-circle-o"
-      /></div>
+      <div v-if="isShow" @click="play" class="text-3xl">
+        <van-icon name="play-circle-o" />
+      </div>
+      <div v-else @click="play" class="text-3xl">
+        <van-icon name="pause-circle-o" />
+      </div>
       <div @click="goPlay(1)"><van-icon name="arrow" /></div>
       <div><van-icon name="bars" /></div>
     </div>
@@ -87,12 +122,14 @@
 
 <script setup lang="ts">
 import { Vue3Marquee } from "vue3-marquee";
+import { getMusicComment } from "~/api/SongDetail";
 import "vue3-marquee/dist/style.css";
 import { storeToRefs } from "pinia";
 import { useStore } from "~/store/index";
 const router = useRouter();
 const store = useStore();
-const isLyricShow = ref(false);//歌词是否显示
+const isLyricShow = ref(false); //歌词是否显示
+const totalComment = ref(0);
 const { playList, playListIndex, currentTime, duration } = storeToRefs(store);
 const props = defineProps<{
   musicList: Object;
@@ -100,9 +137,11 @@ const props = defineProps<{
   addDuration: Function;
 }>();
 let { isShow, isDetailShow } = storeToRefs(store);
-onMounted(() => {
-  console.log(props.musicList,'音乐信息');
-  console.log(store.lyricList.lyric);
+onMounted(async () => {
+  let res = await getMusicComment(props.musicList.id);
+  totalComment.value = res.data.total;
+  console.log(totalComment.value, "音乐评论数");
+  // console.log(store.lyricList.lyric);
   props.addDuration();
 });
 const back = () => {
@@ -134,7 +173,7 @@ const goPlay = (num) => {
 // let curMin = ref(0)
 // let curSec = ref(0)
 const lyric = computed(() => {
-  let arr
+  let arr;
   if (store.lyricList.lyric) {
     /* 将歌词进行换行符分割 */
     /* 1.先用数组split方法对歌词的换行进行分割
@@ -143,71 +182,69 @@ const lyric = computed(() => {
     */
     arr = store.lyricList.lyric.split(/[(\r\n)\r\n]+/).map((item, i) => {
       // 分钟，切割第一到第三
-      const min = item.slice(1, 3)
+      const min = item.slice(1, 3);
       // 秒钟切割
-      const sec = item.slice(4, 6)
+      const sec = item.slice(4, 6);
       // 毫秒切割
-      let mill = item.slice(7, 10)
+      let mill = item.slice(7, 10);
       // 歌词切割
-      let lrc = item.slice(11, item.length)
+      let lrc = item.slice(11, item.length);
       // 每句歌词显示的时间,要与audio标签的currentTime对应才能显示active的歌词
-      let time = parseInt(min) * 60 * 1000 + parseInt(sec) * 1000 + parseInt(mill)
+      let time =
+        parseInt(min) * 60 * 1000 + parseInt(sec) * 1000 + parseInt(mill);
       // 因为两句歌词后面的毫秒为两位数，则要进行处理
       if (isNaN(Number(mill))) {
-        mill = item.slice(7, 9)
-        lrc = item.slice(10, item.length)
-        time = parseInt(min) * 60 * 1000 + parseInt(sec) * 1000 + parseInt(mill)
+        mill = item.slice(7, 9);
+        lrc = item.slice(10, item.length);
+        time =
+          parseInt(min) * 60 * 1000 + parseInt(sec) * 1000 + parseInt(mill);
       }
-      console.log(min, sec, Number(mill), lrc)
+      // console.log(min, sec, Number(mill), lrc)
       // curMin.value = min
       // curSec.value = sec
       // 返回对象组成数组
-      return { min, sec, mill, lrc, time }
-    })
+      return { min, sec, mill, lrc, time };
+    });
     // 遍历拿到pre，即后一句歌词的时间
-    arr.forEach((item:any, i:any) => {
+    arr.forEach((item: any, i: any) => {
       //获取第一的item.pre为0的索引就可以获得总时长了
       // let singleArr = Array.from(item)
       // let res = singleArr.findIndex(s => s.pre == 0)
       // console.log(res);
       // console.log(Array.isArray(singleArr),i);
-      
-      
-      
-      if (i === arr.length - 1 || isNaN(arr[i + 1].time)) {
-        item.pre = 0
-      } else {
-        item.pre = arr[i + 1].time
-      }
-    })
-  }
-  console.log(arr);
-  return arr
-  
-  
-}
-)
-// this.$refs的vue3写法
-const musicLyric = ref(null)
-// 监听歌词时间
-watch(() => store.currentTime, (newValue) => {
-  const p = document.querySelector('p.active')
-  if (p) {
-    if (p.offsetTop > 150) {
-         musicLyric.value.scrollTop = p.offsetTop - 150
-     
-    }
-  }
-  if (newValue === store.duration?.value) {
-    if (store.playListIndex === store.playList.length - 1) {
-      store.updatePlayListIndex(0)
-      props.play()
-    } else {
-      store.updatePlayListIndex(store.playListIndex + 1)
-    }
-  }
-})
 
+      if (i === arr.length - 1 || isNaN(arr[i + 1].time)) {
+        item.pre = 0;
+      } else {
+        item.pre = arr[i + 1].time;
+      }
+    });
+  }
+  // console.log(arr);
+  return arr;
+});
+// this.$refs的vue3写法
+const musicLyric = ref(null);
+// 监听歌词时间
+watch(
+  () => store.currentTime,
+  (newValue) => {
+    const p = document.querySelector("p.active");
+    if (p) {
+      if (p.offsetTop > 150) {
+        musicLyric.value.scrollTop = p.offsetTop - 150;
+      }
+    }
+    if (newValue === store.duration?.value) {
+      if (store.playListIndex === store.playList.length - 1) {
+        store.updatePlayListIndex(0);
+        props.play();
+      } else {
+        store.updatePlayListIndex(store.playListIndex + 1);
+      }
+    }
+  }
+);
 </script>
 
 <style lang="less" scoped>
@@ -223,40 +260,40 @@ watch(() => store.currentTime, (newValue) => {
   color: #003248;
 }
 
-input[type=range] {
-  -webkit-appearance: none;/*清除系统默认样式*/
+input[type="range"] {
+  -webkit-appearance: none; /*清除系统默认样式*/
   width: 100%;
-  background: -webkit-linear-gradient(#ccc) no-repeat, #ccc;/*设置左边颜色为#61bd12，右边颜色为#ddd*/
-  background-size: 75% 100%;/*设置左右宽度比例*/
-  height: 3px;/*横条的高度*/
+  background: -webkit-linear-gradient(#ccc) no-repeat, #ccc; /*设置左边颜色为#61bd12，右边颜色为#ddd*/
+  background-size: 75% 100%; /*设置左右宽度比例*/
+  height: 3px; /*横条的高度*/
 }
 /*拖动块的样式*/
-input[type=range]::-webkit-slider-thumb {
-  -webkit-appearance: none;/*清除系统默认样式*/
-  height: .6rem;/*拖动块高度*/
-  width: .6rem;/*拖动块宽度*/
-  background: #fff;/*拖动块背景*/
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; /*清除系统默认样式*/
+  height: 0.6rem; /*拖动块高度*/
+  width: 0.6rem; /*拖动块宽度*/
+  background: #fff; /*拖动块背景*/
   border-radius: 50%; /*外观设置为圆形*/
   border: solid 1px #ddd; /*设置边框*/
 }
 /* 歌词 */
-.musiclyricList{
+.musiclyricList {
   width: 100%;
   height: 20rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: .2rem;
+  margin-top: 0.2rem;
   //溢出滚动
   overflow: scroll;
-  p{
+  p {
     width: 200px;
     font-size: 10px;
-    color:rgb(195, 239, 244);
+    color: rgb(195, 239, 244);
     margin-bottom: 1rem;
   }
   //高亮显示的歌词
-  .active{
+  .active {
     color: white;
     font-size: 1.1rem;
     overflow-wrap: break-word;

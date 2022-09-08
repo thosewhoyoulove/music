@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-25 12:42:09
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-08 12:43:41
+ * @LastEditTime: 2022-09-08 13:32:07
 -->
 <template>
   <div class="w-100% h-100% bg-white text-sm">
@@ -146,7 +146,7 @@ const total = ref(0); //评论数
 //控制展示最新还是最热评论
 const active = ref(0);
 const choice = ref(["最新", "最热"]);
-const showLoading = ref(true);
+const showLoading = ref(true);//展示加载的图标
 onMounted(async () => {
   //获取歌曲信息
   let res = await getMusic(id);
