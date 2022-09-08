@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-24 19:17:32
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-08 10:30:10
+ * @LastEditTime: 2022-09-08 12:41:51
 -->
 
 <script setup lang="ts">
@@ -17,6 +17,7 @@ const total = ref(0); //评论数
 //控制展示最新还是最热评论
 const active = ref(0);
 const choice = ref(["最新", "最热"]);
+const showLoading = ref(true);
 let id = route.query.id;
 onMounted(async () => {
   let data = await getSongListDetail(id); //歌单信息
@@ -26,17 +27,26 @@ onMounted(async () => {
   total.value = res.data.total;
   state.comment = res.data.hotComments;
   console.log(state.comment, total);
+  setTimeout(() => {
+    showLoading.value = false;
+  }, 1000);
 });
 const tabChange = async () => {
+  showLoading.value = true;
   if (active.value == 0) {
     state.comment = [];
     let res = await getSongListComment(id);
     state.comment = res.data.comments;
+    setTimeout(() => {
+      showLoading.value = false;
+    }, 1000);
   } else if (active.value == 1) {
     state.comment = [];
     let res = await getSongListComment(id);
     state.comment = res.data.hotComments;
-    console.log(res.data);
+    setTimeout(() => {
+      showLoading.value = false;
+    }, 1000);
   }
 };
 </script>
@@ -65,68 +75,96 @@ const tabChange = async () => {
           <van-tabs v-model:active="active" @click-tab="tabChange">
             <van-tab v-for="(item, index) in choice" :key="index" :title="item">
               <div v-show="active == 0">
-                <div v-if="!state.comment.length">暂无评论</div>
-                <ul
-                  v-for="(item, index) in state.comment"
-                  :key="index"
-                  class="mt-3 border-b border-gray-500"
+                <van-loading
+                  v-if="showLoading"
+                  color="#666"
+                  type="spinner"
+                  class="mt-5"
+                  size="24px"
+                  vertical
                 >
-                  <div class="flex justify-between">
-                    <div class="flex">
-                      <img
-                        class="w-3rem h-3rem rounded-full"
-                        :src="item.user?.avatarUrl"
-                        alt=""
-                      />
-                      <div class="col ml-1 text-left">
-                        <div class="text-sm font-600">
-                          {{ item?.user?.nickname }}
+                  加载中...
+                </van-loading>
+                <div v-if="!state.comment.length">暂无评论</div>
+                <div v-if="!showLoading">
+                  <ul
+                    v-for="(item, index) in state.comment"
+                    :key="index"
+                    class="mt-3 border-b border-gray-500"
+                  >
+                    <div class="flex justify-between">
+                      <div class="flex">
+                        <img
+                          class="w-3rem h-3rem rounded-full"
+                          :src="item.user?.avatarUrl"
+                          alt=""
+                        />
+                        <div class="col ml-1 text-left">
+                          <div class="text-sm font-600">
+                            {{ item?.user?.nickname }}
+                          </div>
+                          <div class="text-10px">{{ item.timeStr }}</div>
+                          <div class="font-serif text-13px">
+                            {{ item.content }}
+                          </div>
                         </div>
-                        <div class="text-10px">{{ item.timeStr }}</div>
-                        <div class="font-serif text-13px">{{ item.content }}</div>
                       </div>
-                    </div>
 
-                    <div class="flex">
-                      <div class="text-sm mt-.5 mr-.5 color-#ccc">
-                        {{ item.likedCount }}
+                      <div class="flex">
+                        <div class="text-sm mt-.5 mr-.5 color-#ccc">
+                          {{ item.likedCount }}
+                        </div>
+                        <div class=""><van-icon name="thumb-circle-o" /></div>
                       </div>
-                      <div class=""><van-icon name="thumb-circle-o" /></div>
                     </div>
-                  </div>
-                </ul>
+                  </ul>
+                </div>
               </div>
               <div v-show="active == 1">
-                <div v-if="!state.comment.length">暂无评论</div>
-                <ul
-                  v-for="(item, index) in state.comment"
-                  :key="index"
-                  class="mt-3 border-b border-gray-500"
+                <van-loading
+                  v-if="showLoading"
+                  color="#666"
+                  type="spinner"
+                  class="mt-5"
+                  size="24px"
+                  vertical
                 >
-                  <div class="flex justify-between">
-                    <div class="flex">
-                      <img
-                        class="w-3rem h-3rem rounded-full"
-                        :src="item.user?.avatarUrl"
-                        alt=""
-                      />
-                      <div class="col ml-1 text-left">
-                        <div class="text-sm font-600">
-                          {{ item?.user?.nickname }}
+                  加载中...
+                </van-loading>
+                <div v-if="!state.comment.length">暂无评论</div>
+                <div v-if="!showLoading">
+                  <ul
+                    v-for="(item, index) in state.comment"
+                    :key="index"
+                    class="mt-3 border-b border-gray-500"
+                  >
+                    <div class="flex justify-between">
+                      <div class="flex">
+                        <img
+                          class="w-3rem h-3rem rounded-full"
+                          :src="item.user?.avatarUrl"
+                          alt=""
+                        />
+                        <div class="col ml-1 text-left">
+                          <div class="text-sm font-600">
+                            {{ item?.user?.nickname }}
+                          </div>
+                          <div class="text-10px">{{ item.timeStr }}</div>
+                          <div class="font-serif text-13px">
+                            {{ item.content }}
+                          </div>
                         </div>
-                        <div class="text-10px">{{ item.timeStr }}</div>
-                        <div class="font-serif text-13px">{{ item.content }}</div>
                       </div>
-                    </div>
 
-                    <div class="flex">
-                      <div class="text-sm mt-.5 mr-.5 color-#ccc">
-                        {{ item.likedCount }}
+                      <div class="flex">
+                        <div class="text-sm mt-.5 mr-.5 color-#ccc">
+                          {{ item.likedCount }}
+                        </div>
+                        <div class=""><van-icon name="thumb-circle-o" /></div>
                       </div>
-                      <div class=""><van-icon name="thumb-circle-o" /></div>
                     </div>
-                  </div>
-                </ul>
+                  </ul>
+                </div>
               </div>
             </van-tab>
           </van-tabs>

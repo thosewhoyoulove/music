@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-25 12:42:09
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-08 10:27:02
+ * @LastEditTime: 2022-09-08 12:43:41
 -->
 <template>
   <div class="w-100% h-100% bg-white text-sm">
@@ -34,9 +34,20 @@
       <van-list class="mb-15">
         <div class="text-left font-600 ml-5">评论区</div>
         <van-tabs v-model:active="active" @click-tab="tabChange">
-            <van-tab v-for="(item, index) in choice" :key="index" :title="item">
-              <div v-show="active == 0">
-                <div v-if="!state.comment.length">暂无评论</div>
+          <van-tab v-for="(item, index) in choice" :key="index" :title="item">
+            <div v-show="active == 0">
+              <van-loading
+                v-if="showLoading"
+                color="#666"
+                type="spinner"
+                class="mt-5"
+                size="24px"
+                vertical
+              >
+                加载中...
+              </van-loading>
+              <div v-if="!state.comment.length">暂无评论</div>
+              <div v-if="!showLoading">
                 <ul
                   v-for="(item, index) in state.comment"
                   :key="index"
@@ -54,7 +65,9 @@
                           {{ item?.user?.nickname }}
                         </div>
                         <div class="text-10px">{{ item.timeStr }}</div>
-                        <div class="font-serif text-13px">{{ item.content }}</div>
+                        <div class="font-serif text-13px">
+                          {{ item.content }}
+                        </div>
                       </div>
                     </div>
 
@@ -67,8 +80,20 @@
                   </div>
                 </ul>
               </div>
-              <div v-show="active == 1">
-                <div v-if="!state.comment.length">暂无评论</div>
+            </div>
+            <div v-show="active == 1">
+              <van-loading
+                v-if="showLoading"
+                color="#666"
+                type="spinner"
+                class="mt-5"
+                size="24px"
+                vertical
+              >
+                加载中...
+              </van-loading>
+              <div v-if="!state.comment.length">暂无评论</div>
+              <div v-if="!showLoading">
                 <ul
                   v-for="(item, index) in state.comment"
                   :key="index"
@@ -85,8 +110,10 @@
                         <div class="text-sm font-600">
                           {{ item?.user?.nickname }}
                         </div>
-                        <div class="text-10px ">{{ item.timeStr }}</div>
-                        <div class="font-serif text-13px">{{ item.content }}</div>
+                        <div class="text-10px">{{ item.timeStr }}</div>
+                        <div class="font-serif text-13px">
+                          {{ item.content }}
+                        </div>
                       </div>
                     </div>
 
@@ -99,8 +126,9 @@
                   </div>
                 </ul>
               </div>
-            </van-tab>
-          </van-tabs>
+            </div>
+          </van-tab>
+        </van-tabs>
       </van-list>
     </div>
   </div>
@@ -118,6 +146,7 @@ const total = ref(0); //评论数
 //控制展示最新还是最热评论
 const active = ref(0);
 const choice = ref(["最新", "最热"]);
+const showLoading = ref(true);
 onMounted(async () => {
   //获取歌曲信息
   let res = await getMusic(id);
@@ -129,17 +158,26 @@ onMounted(async () => {
   active.value = 1;
   total.value = comment.data.total;
   state.comment = comment.data.hotComments;
+  setTimeout(() => {
+    showLoading.value = false;
+  }, 1000);
 });
 const tabChange = async () => {
+  showLoading.value = true;
   if (active.value == 0) {
     state.comment = [];
     let res = await getMusicComment(id);
     state.comment = res.data.comments;
-    console.log(state.comment);
+    setTimeout(() => {
+      showLoading.value = false;
+    }, 1000);
   } else if (active.value == 1) {
     state.comment = [];
     let res = await getMusicComment(id);
     state.comment = res.data.hotComments;
+    setTimeout(() => {
+      showLoading.value = false;
+    }, 1000);
   }
 };
 </script>
