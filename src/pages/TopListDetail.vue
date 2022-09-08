@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 17:07:32
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-06 19:01:15
+ * @LastEditTime: 2022-09-08 09:12:50
 -->
 <template>
   <div class="bg-white w-100% h-50vh relative">
@@ -128,6 +128,15 @@ const updateSongList = (index) => {
   store.updatePlayList(store.$state, state.songlist); //将歌单列表传进默认列表
   store.updatePlayListIndex(index); //将索引值传给默认索引
   store.updateIsShow(store.$state, false); //修改为播放图标
+};
+//点击评论按钮跳转
+const toCommentDetail = () => {
+  router.push({
+    path: "/SongListComment",
+    query: {
+      id: id,
+    },
+  });
 };
 </script>
 
