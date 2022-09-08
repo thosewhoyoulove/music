@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-06 18:55:19
+ * @LastEditTime: 2022-09-08 20:34:31
 -->
 <script setup lang="ts">
 import { getSongListDetail, getAllSong } from "~/api/SongListDetail";
@@ -52,7 +52,7 @@ const toCommentDetail = () => {
     <img
       class="w-100% h-100% rounded-xl absolute blur-xl"
       :src="state.playlist.coverImgUrl"
-      alt=""
+      alt="这是推荐歌单封面"
     />
     <div class="flex justify-between pt-5 items-center px-2 text-white">
       <span class="z-1">歌单</span>

@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-25 12:42:09
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-08 13:32:07
+ * @LastEditTime: 2022-09-08 20:37:22
 -->
 <template>
   <div class="w-100% h-100% bg-white text-sm">
@@ -12,7 +12,7 @@
       <img
         class="h-4.5rem rounded-xl ml-2"
         :src="state.songDetail[0]?.al?.picUrl"
-        alt=""
+        alt="这是歌曲评论的专辑图片"
       />
       <div class="text-left ml-2">
         <div class="text-style text-sm font-600">
@@ -58,7 +58,7 @@
                       <img
                         class="w-3rem h-3rem rounded-full"
                         :src="item.user?.avatarUrl"
-                        alt=""
+                        alt="这是歌曲评论用户的头像"
                       />
                       <div class="col ml-1 text-left">
                         <div class="text-sm font-600">
@@ -104,7 +104,7 @@
                       <img
                         class="w-3rem h-3rem rounded-full"
                         :src="item.user?.avatarUrl"
-                        alt=""
+                        alt="这是歌曲评论用户的头像"
                       />
                       <div class="col ml-1 text-left">
                         <div class="text-sm font-600">

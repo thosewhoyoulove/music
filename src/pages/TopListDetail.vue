@@ -3,14 +3,14 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 17:07:32
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-08 09:12:50
+ * @LastEditTime: 2022-09-08 20:41:03
 -->
 <template>
   <div class="bg-white w-100% h-50vh relative">
     <img
       class="w-100% h-100% rounded-xl absolute blur-xl"
       :src="state.playlist.coverImgUrl"
-      alt=""
+      alt="这是排行榜详情的底片阴影"
     />
     <div class="justify-between pt-5 items-center px-5 text-white text-right">
       <span class="text-7 mr-2"><van-icon size="25px" name="search" /></span>
@@ -20,7 +20,7 @@
       <img
         class="h-8rem m-1 rounded-xl p-1 relative inline-block"
         :src="state.playlist.coverImgUrl"
-        alt=""
+        alt="这是排行榜详情的封面"
       />
     </div>
     <div
@@ -80,7 +80,7 @@
         class="flex justify-between h-3rem my-1 text-sm"
       >
         <div class="flex justify-between">
-          <img class="w-3rem h-3rem rounded" :src="item.al.picUrl" alt="" />
+          <img class="w-3rem h-3rem rounded" :src="item.al.picUrl" alt="这是排行榜详情的歌曲专辑图片" />
           <div class="flex-col ml-2 text-style" @click="updateSongList(index)">
             <div class="flex">
               <div class="flex text-md font-extrabold text-style break-all">

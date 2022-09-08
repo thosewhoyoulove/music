@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-08 17:17:29
+ * @LastEditTime: 2022-09-08 20:41:45
 -->
 <template>
   <div
@@ -25,7 +25,7 @@
       <img
         class="w-3rem h-3rem rounded"
         :src="playList[playListIndex]?.al?.picUrl"
-        alt=""
+        alt="这是底部播放组件专辑的封面"
       />
       <Vue3Marquee class="text-sm my-2 px-2 w-30">
         {{ playList[playListIndex]?.name }}
@@ -83,10 +83,10 @@ const updateTime = () => {
     store.updateCurrentTime(store.$state, audio.value?.currentTime);
   }, 50);
 };
-onUpdated(async () => {
-  let res = await isMusicAvailable(playList.value[playListIndex.value]?.id);
-  console.log(res, "音乐是否可用");
-});
+// onUpdated(async () => {
+//   let res = await isMusicAvailable(playList.value[playListIndex.value]?.id);
+//   console.log(res, "音乐是否可用");
+// });
 const play = () => {
   /* 判断是否已暂停 */
   if (audio.value.paused) {

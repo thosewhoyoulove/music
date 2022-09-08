@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:49:56
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-31 10:39:24
+ * @LastEditTime: 2022-09-08 20:33:17
 -->
 <template>
   <div class="pt-2">
@@ -13,7 +13,7 @@
         v-for="image in state.image"
         :key="image"
       >
-        <img class="h-30 w-100% h-100% rounded-xl" :src="image.pic" />
+        <img class="h-30 w-100% h-100% rounded-xl" :src="image.pic" alt="这是首页轮播图" />
       </van-swipe-item>
     </van-swipe>
   </div>

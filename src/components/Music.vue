@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 20:03:07
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-07 10:27:41
+ * @LastEditTime: 2022-09-08 20:42:56
 -->
 <template>
   <div class="w-100% h-5rem p-.2rem">
@@ -30,7 +30,7 @@
           @click="toMusicDetail(item.id)"
         >
           <div class="relative">
-            <img class="h-8rem m-1 rounded-xl p-1" :src="item.picUrl" alt="" />
+            <img class="h-8rem m-1 rounded-xl p-1" :src="item.picUrl" alt="这是首页推荐歌单的封面" />
             <div class="text-style text-left text-13px px-1">
               {{ item.name }}
             </div>

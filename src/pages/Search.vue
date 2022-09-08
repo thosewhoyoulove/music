@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-27 11:27:10
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-06 15:09:12
+ * @LastEditTime: 2022-09-08 20:32:02
 -->
 <script setup lang="ts">
 import { getSearchMusic } from "~/api/Search";
@@ -82,7 +82,7 @@ const updateIndex = (item:any, index:any):any => {
 </script>
 
 <template>
-  <div class="w-100% h-100% bg-hex-eee p-1 mb-15">
+  <div class="w-100% h-100%  rounded bg-hex-eee p-1 mb-15">
     <div>
       <van-search
         v-model="keyWord"
@@ -95,7 +95,7 @@ const updateIndex = (item:any, index:any):any => {
         </template>
       </van-search>
     </div>
-    <div v-if="keyWordList.length" class="text-left ml-2.5 relative">
+    <div v-if="keyWordList.length" class="text-left ml-2.5 relative my-2">
       <span class="text-sm font-700">历史记录:</span>
       <span
         class="
@@ -118,8 +118,8 @@ const updateIndex = (item:any, index:any):any => {
         ><van-icon name="delete-o"
       /></span>
     </div>
-    <div class="bg-white mt-5 rounded-lg p-1">
-      <div v-if="searchList.length" class="flex justify-between p-1 m-1 border-b-hex-ccc border-b">
+    <div v-if="searchList.length" class="bg-white mt-5 rounded-lg p-1">
+      <div class="flex justify-between p-1 m-1 border-b-hex-ccc border-b">
         <div>单曲</div>
         <div class="flex justify-between items-center">
           <van-icon name="play-circle-o" />

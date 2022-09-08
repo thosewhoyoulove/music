@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 19:13:33
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-08 10:51:19
+ * @LastEditTime: 2022-09-08 20:35:26
 -->
 <template>
   <div class="mb-15">
@@ -16,7 +16,7 @@
       >
         <div class="inline-block pt-1 px-2" v-for="(item, index) in singleSongList" :key="index" @click="toMusicDetail(item.id)">
           <div class="relative">
-            <img class="w-21 h-21 rounded-xl p-1" :src="item.coverImgUrl" alt="" />
+            <img class="w-21 h-21 rounded-xl p-1" :src="item.coverImgUrl" alt="这是歌单广场的封面" />
             <div class="text-style w-20 text-left text-13px px-1">
               {{ item.name }}
             </div>

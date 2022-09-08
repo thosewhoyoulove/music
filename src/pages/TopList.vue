@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 10:48:40
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-08 17:18:43
+ * @LastEditTime: 2022-09-08 20:39:19
 -->
 <template>
   <div class="bg-hex-eee p-1 font-sans-serif mb-15">
@@ -14,7 +14,7 @@
       :key="index"
       @click="toTopDetail(item, index)"
     >
-      <img class="w-21 h-21 rounded-lg p-1" :src="item.coverImgUrl" alt="" />
+      <img class="w-21 h-21 rounded-lg p-1" :src="item.coverImgUrl" alt="这是排行榜官方榜的封面" />
       <div
         class="
           flex-col
@@ -48,7 +48,7 @@
       :key="index"
       @click="toTopDetail(item, index)"
     >
-      <img class="w-21 h-21 rounded-lg" :src="item.coverImgUrl" alt="" />
+      <img class="w-21 h-21 rounded-lg" :src="item.coverImgUrl" alt="这是精选榜官方榜的封面" />
       <div class="w-20 absolute bottom-2 z-10 text-hex-fff text-xs text-center">
         {{ item.updateFrequency }}
       </div>

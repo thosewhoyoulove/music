@@ -3,14 +3,14 @@
  * @Author: 曹俊
  * @Date: 2022-08-22 21:03:00
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-08 17:18:59
+ * @LastEditTime: 2022-09-08 20:43:47
 -->
 <template>
   <div class="w-100% h-604px">
     <img
       class="absolute -z-1 blur-3xl h-100% w-100%"
       :src="props?.musicList?.al?.picUrl"
-      alt=""
+      alt="这是歌曲详情的底部阴影"
     />
     <div class="flex justify-between mt-5 px-2">
       <div @click="back" class="text-xl text-hex-ccc">
@@ -39,7 +39,7 @@
     <img
       class="al-img rounded-1/2 w-50 h-50 animate__animated animate__bounceIn"
       :src="props?.musicList?.al?.picUrl"
-      alt=""
+      alt="这是歌曲详情的磁盘图"
       v-show="!isLyricShow"
       @click="isLyricShow = true"
     />

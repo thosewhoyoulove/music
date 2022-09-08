@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-24 19:17:32
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-08 12:41:51
+ * @LastEditTime: 2022-09-08 20:38:03
 -->
 
 <script setup lang="ts">
@@ -59,7 +59,7 @@ const tabChange = async () => {
       <img
         class="h-4.5rem rounded-xl ml-2"
         :src="state.playlist.coverImgUrl"
-        alt=""
+        alt="这是歌单评论的歌单封面"
       />
       <div class="text-left ml-2">
         <div class="text-style text-sm font-600">{{ state.playlist.name }}</div>
@@ -97,7 +97,7 @@ const tabChange = async () => {
                         <img
                           class="w-3rem h-3rem rounded-full"
                           :src="item.user?.avatarUrl"
-                          alt=""
+                          alt="这是歌单评论的用户头像"
                         />
                         <div class="col ml-1 text-left">
                           <div class="text-sm font-600">
@@ -143,7 +143,7 @@ const tabChange = async () => {
                         <img
                           class="w-3rem h-3rem rounded-full"
                           :src="item.user?.avatarUrl"
-                          alt=""
+                          alt="这是歌单评论的用户头像"
                         />
                         <div class="col ml-1 text-left">
                           <div class="text-sm font-600">
