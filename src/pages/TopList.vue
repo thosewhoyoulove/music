@@ -3,13 +3,13 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 10:48:40
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-06 17:20:07
+ * @LastEditTime: 2022-09-08 10:57:41
 -->
 <template>
     <div class="bg-hex-eee p-1 font-sans-serif mb-15">
         <div class="text-left ml-3 mt-2 font-extrabold text-sm">官方榜</div>
         <div class="flex m-2 bg-hex-fff justify-between rounded-lg p-1" v-for="(item,index) in list.slice(0,4)" :key="index" @click="toTopDetail(item,index)" >
-            <img class="w-20 h-20 rounded" :src="item.coverImgUrl" alt="">
+            <img class="w-21 h-21 rounded-lg p-1" :src="item.coverImgUrl" alt="">
             <div class="flex-col text-left justify-between items-center text-xs font-600 ml-1 py-1">
                 <ul class="text-style py-.5 pt-1" v-for="(item,index) in list[index].tracks" :key="index">
                     <div class="justify-between">{{index+1}}.{{item.first}} - {{item.second}}</div>
@@ -19,7 +19,7 @@
         </div>
         <div class="text-left ml-3 mt-2 font-extrabold text-sm">精选榜</div>
         <div  class="inline-block px-1.5 mt-1 relative"  v-for="(item,index) in list.slice(4,list.length)" :key="index" @click="toTopDetail(item,index)">
-            <img class="w-20 h-20 rounded-lg" :src="item.coverImgUrl" alt="">
+            <img class="w-21 h-21 rounded-lg" :src="item.coverImgUrl" alt="">
             <div class="w-20 absolute bottom-2 z-10 text-hex-fff text-xs text-center">{{item.updateFrequency}}</div>
         </div>
     </div>
@@ -43,6 +43,7 @@ const toTopDetail = (item,index) =>{
         }
     })
 }
+
 </script>
 
 <style scoped>
