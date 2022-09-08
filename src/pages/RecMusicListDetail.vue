@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-08 20:34:31
+ * @LastEditTime: 2022-09-08 21:00:57
 -->
 <script setup lang="ts">
 import { getSongListDetail, getAllSong } from "~/api/SongListDetail";
@@ -52,7 +52,7 @@ const toCommentDetail = () => {
     <img
       class="w-100% h-100% rounded-xl absolute blur-xl"
       :src="state.playlist.coverImgUrl"
-      alt="这是推荐歌单封面"
+      alt="这是推荐歌单底部阴影"
     />
     <div class="flex justify-between pt-5 items-center px-2 text-white">
       <span class="z-1">歌单</span>
@@ -65,7 +65,7 @@ const toCommentDetail = () => {
       <img
         class="h-8rem m-1 rounded-xl p-1 relative inline-block"
         :src="state.playlist.coverImgUrl"
-        alt=""
+        alt="推荐歌单封面"
       />
       <span class="play-icon text-12px px-2 py-0.5 rounded-xl absolute">
         <span><van-icon name="play-circle-o" /></span>
@@ -80,7 +80,7 @@ const toCommentDetail = () => {
           <img
             class="w-10 h-10 rounded-1/2"
             :src="state?.playlist?.creator?.avatarUrl"
-            alt=""
+            alt="歌单创建者头像"
           />
           <span class="text-light-900 text-xs ml-2">{{
             state?.playlist?.creator?.nickname
@@ -145,7 +145,7 @@ const toCommentDetail = () => {
         class="flex justify-between h-3rem my-1 text-sm"
       >
         <div class="flex justify-between">
-          <img class="w-3rem h-3rem rounded" :src="item.al.picUrl" alt="" />
+          <img class="w-3rem h-3rem rounded" :src="item.al.picUrl" alt="歌曲专辑图片" />
           <div class="flex-col ml-2 text-style" @click="updateSongList(index)">
             <div class="flex">
               <div class="flex text-md font-extrabold text-style break-all">
