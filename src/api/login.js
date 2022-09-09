@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-09 15:28:19
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-09 17:19:14
+ * @LastEditTime: 2022-09-09 21:51:01
  */
 import request from '~/utils/request'
 // 二维码登录
@@ -51,5 +51,61 @@ export function testCodeByKey(key) {
     return request({
         method: 'post',
         url: `/login/qr/check?key=${key}?timestamp=${Date.now()}`,
+    })
+}
+// 发送验证码
+// 说明 : 调用此接口 ,传入手机号码, 可发送验证码
+
+// 必选参数 : phone: 手机号码
+
+// 可选参数 : ctcode: 国家区号,默认 86 即中国
+
+// 接口地址 : /captcha/sent
+
+// 调用例子 : /captcha/sent?phone=13xxx
+
+export function sendVeryCode(phone) {
+    return request({
+        method: 'post',
+        url: `/captcha/sent?phone=${phone}`,
+    })
+}
+// 验证验证码
+// 说明 : 调用此接口 ,传入手机号码和验证码, 可校验验证码是否正确
+
+// 必选参数 : phone: 手机号码
+
+// captcha: 验证码
+
+// 可选参数 :
+
+// ctcode: 国家区号,默认 86 即中国
+
+// 接口地址 : /captcha/verify
+
+// 调用例子 : /captcha/verify?phone=13xxx&captcha=1597
+
+export function verifyCode(phone, captcha) {
+    return request({
+        method: 'post',
+        url: `/captcha/sent?phone=${phone}&captcha=${captcha}?timestamp=${Date.now()}`,
+    })
+}
+// 检测手机号码是否已注册
+// 说明 : 调用此接口 ,可检测手机号码是否已注册
+// 必选参数 :
+// phone : 手机号码
+
+// 可选参数 :
+// countrycode: 国家码，用于国外手机号，例如美国传入：1 ,默认 86 即中国
+
+// 接口地址 : /cellphone/existence/check
+
+// 调用例子 : /cellphone/existence/check?phone=13xxx
+
+export function isRegister(phone) {
+    return request({
+        method: 'post',
+        url: `/captcha/sent?phone=${phone}?timestamp=${Date.now()}`,
     })
 }
