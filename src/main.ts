@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-05 10:02:44
+ * @LastEditTime: 2022-09-09 14:14:44
  */
 // import { ViteSSG } from 'vite-ssg' 不知道有什么用
 import { createApp } from 'vue'
@@ -20,6 +20,7 @@ import 'uno.css'
 
 import { Dialog } from 'vant'
 import Vant from 'vant';
+import { ConfigProvider } from 'vant';
 import 'vant/lib/index.css';
 import Vue3Marquee from 'vue3-marquee'
 import 'animate.css';
@@ -34,6 +35,7 @@ const router = createRouter({
 app.use(router)
 app.use(store)
 app.use(Vue3Marquee)
+app.use(ConfigProvider);
 app.use(Dialog)
 app.mount('#app')
 app.use(Vant)

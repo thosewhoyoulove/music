@@ -3,13 +3,14 @@
  * @Author: 曹俊
  * @Date: 2022-08-16 22:44:19
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-08 21:49:14
+ * @LastEditTime: 2022-09-09 15:01:43
 -->
 <template>
-  <div class="w-100% h-10 flex justify-between items-center">
-    <span @click="show = true" class="text-xl">
+  <div class="w-100% h-100% flex justify-between items-center relative">
+    <div @click="show = true" class="text-xl absolute left-0 top-0 z-5">
       <van-icon name="bars" />
-    </span>
+    </div>
+    <!-- 侧边弹出框 -->
     <van-popup v-model:show="show" position="left" :style="{ height: '100%', width:'70%' }">
       <div class="w-100% h-100% col p-2 bg-hex-F4F5F5">
         <div class="flex px-2 justify-between items-center">
@@ -116,28 +117,82 @@
         </div>
       </div>
     </van-popup>
-    <div class="flex w-70% justify-between items-center text-md font-500">
-      <span>我的</span>
-      <span class="font-900">发现</span>
-      <span>云村</span>
-      <span>视频</span>
+    <div class="flex h-100% mx-auto mt-5 justify-between items-center text-md font-500">
+      <van-tabs class="bg-hex-F6F7F9" mx-auto background="#F6F7F9" v-model:active="activeName">
+        <van-tab title="我的" name="a">
+          <div class="w-90vw">
+
+          </div>
+        </van-tab>
+        <van-tab title="发现" name="b">
+          <div class="w-50vw">
+            <Swiper />
+            </div>
+            <div class="w-90vw">
+              <IconList />
+            </div>
+          <div class="w-90vw">
+             <RecommendMusic />
+          </div>
+         
+        </van-tab>
+        <van-tab title="云村" name="c">
+          <div class="w-90vw">
+
+          </div>
+        </van-tab>
+        <van-tab title="视频" name="d">
+          <div class="w-90vw">
+
+          </div>
+        </van-tab>
+      </van-tabs>
     </div>
-    <span class="text-xl" @click="toSearch">
-      <van-icon name="search" />
-    </span>
+    <div class="text-xl absolute top-0 right-0 w-300px" @click="toSearch">
+      <van-cell-group inset>
+        <van-field input-align="center" left-icon="search" center v-model="value" :placeholder="showKeyword" />
+      </van-cell-group>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import {getSearchKeyWord} from '~/api/Search'
 const router = useRouter();
 //弹出框是否展示
 const show = ref(false)
+//搜索建议关键词
+const showKeyword = ref('')//输入框的内容
+const realkeyword = ref('')//搜索关键词
+onMounted(async() => {
+  let res = await getSearchKeyWord()
+  console.log(res.data.data);
+  showKeyword.value = res.data.data.showKeyword
+  realkeyword.value = res.data.data.realkeyword
+})
 const toSearch = () => {
   router.push({
     path: "/Search",
+    query:{
+      showKeyword:showKeyword.value,
+      realkeyword:realkeyword.value
+    }
   });
 };
 </script>
 
 <style scoped>
+.van-cell{
+  padding:2px 4px
+}
+.van-field__control{
+  color:#fff
+}
+.van-tab {
+  padding: 10px;
+  --van-padding-base:6px
+}
+:root{
+  --van-padding-base:6px
+}
 </style>
