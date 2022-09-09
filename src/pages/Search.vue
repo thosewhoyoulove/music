@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-27 11:27:10
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-08 20:32:02
+ * @LastEditTime: 2022-09-09 14:55:19
 -->
 <script setup lang="ts">
 import { getSearchMusic } from "~/api/Search";
@@ -11,22 +11,25 @@ import { Notify, Dialog } from "vant";
 import { storeToRefs } from "pinia";
 import { useStore } from "~/store/index";
 const store = useStore();
+const route = useRoute()
 const { isShow } = storeToRefs(store);
 const VanDialog = Dialog.Component;
 const keyWordList = ref([]); //历史记录存放数组
-let keyWord = ref(""); //搜索关键词
+let keyWord = ref(''); //搜索关键词
 const searchList = ref([]); //存放搜索结果的数组
-const defaultSearchKeyWord = ref("奇妙能力歌");
+let defaultSearchKeyWord = ref(route.query.showKeyword)
 const onSearch = async () => {
   //如果输入为空，则直接搜索默认值
   if (keyWord.value == "") {
-    keyWord.value = defaultSearchKeyWord.value;
+    keyWord.value = route.query.realkeyword
     // 数组向前追加元素
     keyWordList.value.unshift(keyWord.value);
     // 去重,这里用到Set语法
     keyWordList.value = [...new Set(keyWordList.value)];
     localStorage.setItem("keyWordList", JSON.stringify(keyWordList.value));
     // keyWord.value = ""
+    console.log(keyWord.value);
+    
     let res = await getSearchMusic(keyWord.value);
     searchList.value = res.data?.result?.songs;
     console.log(searchList.value);

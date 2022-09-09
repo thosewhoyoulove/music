@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-27 11:44:35
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-03 12:50:16
+ * @LastEditTime: 2022-09-09 14:35:34
  */
 //搜索歌曲
 //必选参数 : keywords : 关键词
@@ -17,5 +17,16 @@ export function getSearchMusic(data) {
     return request({
         method: 'get',
         url: `/cloudsearch?keywords=${data}`,
+    })
+}
+
+// 默认搜索关键词
+// 说明 : 调用此接口 , 可获取默认搜索关键词
+
+// 接口地址 : /search/default
+export function getSearchKeyWord(data) {
+    return request({
+        method: 'get',
+        url: '/search/default',
     })
 }
