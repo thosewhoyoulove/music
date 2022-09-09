@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-09 15:16:22
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-09 19:50:59
+ * @LastEditTime: 2022-09-09 20:04:40
 -->
 <template>
   <div class="bg-hex-f4f5f5 w-95vw h-100vh p-5">
@@ -19,7 +19,10 @@
             v-model="phoneNumber"
             name="手机号"
             label="+86"
+            @focus="show = true"
             placeholder="请输入手机号"
+            :maxlength="11"
+            clearable
             :rules="[
               { validator, message: '请输入正确的手机号', trigger: 'blur' },
             ]"
@@ -36,9 +39,9 @@
         </div>
       </van-form>
     </div>
-    <div>
-      <van-cell @touchstart.stop="show = true">弹出默认键盘</van-cell>
+    <div class="w-20 h-20 z-1000">
       <van-number-keyboard
+        v-model="phoneNumber"
         :show="show"
         @blur="show = false"
         @input="onInput"
@@ -49,7 +52,7 @@
 </template>
 
 <script setup lang="ts">
-import { Notify } from "vant";
+import { Notify,Toast } from "vant";
 const router = useRouter();
 const phoneNumber = ref("");
 //校验规则
@@ -72,9 +75,9 @@ const submit = () => {
     });
   }
 };
- const show = ref(true);
-    const onInput = (value) => Toast(value);
-    const onDelete = () => Toast('删除');
+const show = ref(true);
+const onInput = (value) => Toast(value);
+const onDelete = () => Notify({ type: "error", message: "删除" });
 </script>
 
 <style scoped>
