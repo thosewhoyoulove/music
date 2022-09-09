@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-09 15:16:22
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-09 20:04:40
+ * @LastEditTime: 2022-09-09 20:11:06
 -->
 <template>
   <div class="bg-hex-f4f5f5 w-95vw h-100vh p-5">
@@ -44,8 +44,6 @@
         v-model="phoneNumber"
         :show="show"
         @blur="show = false"
-        @input="onInput"
-        @delete="onDelete"
       />
     </div>
   </div>
@@ -76,8 +74,6 @@ const submit = () => {
   }
 };
 const show = ref(true);
-const onInput = (value) => Toast(value);
-const onDelete = () => Notify({ type: "error", message: "删除" });
 </script>
 
 <style scoped>
