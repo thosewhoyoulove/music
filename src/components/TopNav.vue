@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-16 22:44:19
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-09 15:01:43
+ * @LastEditTime: 2022-09-09 21:16:06
 -->
 <template>
   <div class="w-100% h-100% flex justify-between items-center relative">
@@ -148,7 +148,7 @@
         </van-tab>
       </van-tabs>
     </div>
-    <div class="text-xl absolute top-0 right-0 w-300px" @click="toSearch">
+    <div class="text-xl absolute top-0 right-0 w-250px" @click="toSearch">
       <van-cell-group inset>
         <van-field input-align="center" left-icon="search" center v-model="value" :placeholder="showKeyword" />
       </van-cell-group>

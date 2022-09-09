@@ -3,11 +3,11 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:49:56
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-09 14:04:02
+ * @LastEditTime: 2022-09-09 21:16:52
 -->
 <template>
   <div class="pt-2 w-100%">
-    <van-swipe class="w-90vw rounded-xl" :autoplay="3000" lazy-render>
+    <van-swipe class="w-85vw rounded-xl" :autoplay="3000" lazy-render>
       <van-swipe-item
         class="w-100vw h-40"
         v-for="image in state.image"

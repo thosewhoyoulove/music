@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 20:03:07
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-08 20:42:56
+ * @LastEditTime: 2022-09-09 21:17:16
 -->
 <template>
   <div class="w-100% h-5rem p-.2rem">
@@ -12,7 +12,7 @@
     >
       <div class="font-900">推荐歌单</div>
       <div
-        class="text-13px border border-hex-bbb pl-2.5 pr-1.5 rounded-xl pt-.5"
+        class="text-13px border border-hex-bbb pl-2.5 mr-2 rounded-xl pt-.5"
       >
         查看更多<van-icon name="arrow" />
       </div>
