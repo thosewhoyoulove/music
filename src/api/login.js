@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-09 15:28:19
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-09 21:51:01
+ * @LastEditTime: 2022-09-10 16:48:03
  */
 import request from '~/utils/request'
 // 二维码登录
@@ -43,7 +43,7 @@ export function getCodeKey() {
 export function getCodeByKey(key) {
     return request({
         method: 'post',
-        url: `/login/qr/create?key=${key}`,
+        url: `/login/qr/create?key=${key}?timestamp=${Date.now()}`,
     })
 }
 
@@ -107,5 +107,36 @@ export function isRegister(phone) {
     return request({
         method: 'post',
         url: `/captcha/sent?phone=${phone}?timestamp=${Date.now()}`,
+    })
+}
+
+//  手机登录
+// 必选参数 :
+// phone: 手机号码
+
+// password: 密码
+
+// 可选参数 :
+// countrycode: 国家码，用于国外手机号登录，例如美国传入：1
+
+// md5_password: md5 加密后的密码,传入后 password 参数将失效
+
+// captcha: 验证码,使用 /captcha/sent接口传入手机号获取验证码,调用此接口传入验证码,可使用验证码登录,传入后 password 参数将失效
+
+// 接口地址 : /login/cellphone
+
+// 调用例子 : /login/cellphone?phone=xxx&password=yyy /login/cellphone?phone=xxx&md5_password=yyy /login/cellphone?phone=xxx&captcha=1234
+//手机号+验证码登录：
+export function loginByPhone(phone, captcha) {
+    return request({
+        method: 'post',
+        url: `/login/cellphone?phone=${phone}&captcha=${captcha}}`,
+    })
+}
+//手机号+密码登录
+export function loginByPassword(phone, password) {
+    return request({
+        method: 'post',
+        url: `/login/cellphone?phone=${phone}&password=${password}}`,
     })
 }

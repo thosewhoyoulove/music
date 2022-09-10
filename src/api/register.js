@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-09 21:53:26
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-09 21:53:58
+ * @LastEditTime: 2022-09-10 10:04:07
  */
 import request from '~/utils/request'
 
@@ -27,9 +27,9 @@ import request from '~/utils/request'
 // 接口地址 : /register/cellphone
 
 // 调用例子 : /register/cellphone?phone=13xxx&password=xxxxx&captcha=1234&nickname=binary1345
-export function getBanner() {
+export function Register(phone, password, captcha, nickname) {
     return request({
-        method: 'get',
-        url: '/banner?type=2',
+        method: 'post',
+        url: `/register/cellphone?phone=${phone}&password=${password}&captcha=${captcha}&nickname=${nickname}`,
     })
 }
