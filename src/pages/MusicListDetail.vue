@@ -3,10 +3,10 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 19:13:33
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-10 07:38:42
+ * @LastEditTime: 2022-09-10 19:53:49
 -->
 <template>
-  <div class="mb-15">
+  <div class>
     <van-tabs v-model:active="active" @change="change">
       <van-tab
         v-for="(item, index) in allSongList"
@@ -34,11 +34,16 @@
 <script setup lang="ts">
 import { getSongList, getSingleCatPlayList } from "~/api/SongList";
 import { getSongListDetail } from "~/api/SongListDetail";
+import { useStore } from "~/store/index";
+import { storeToRefs } from "pinia";
+const store = useStore();
+const { isFooterShow } = storeToRefs(store);
 const allSongList = ref([]); //所有的热门歌单
 const router = useRouter()
 const singleSongList = ref([])
 const active = ref();
 onMounted(async () => {
+  isFooterShow.value = false;
   let category = await getSongList(); 
   allSongList.value = category.tags;//获取热门歌单的标签
   let res = await getSingleCatPlayList("华语");//获取华语标签的歌单

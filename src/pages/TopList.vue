@@ -3,10 +3,10 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 10:48:40
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-10 07:31:20
+ * @LastEditTime: 2022-09-10 19:54:29
 -->
 <template>
-  <div class="bg-hex-eee p-1 font-sans-serif mb-15">
+  <div class="bg-hex-eee p-1 font-sans-serif">
     <div class="text-left ml-3 mt-2 font-extrabold text-sm">官方榜</div>
     <div
       class="flex m-2 bg-hex-fff justify-between rounded-lg p-1"
@@ -58,6 +58,13 @@
 
 <script setup lang="ts">
 import { getTopListDetail } from "~/api/TopList";
+import { useStore } from "~/store/index";
+import { storeToRefs } from "pinia";
+const store = useStore();
+const { isFooterShow } = storeToRefs(store);
+onMounted(() => {
+  isFooterShow.value = false;
+});
 const list = ref([]);
 const router = useRouter();
 onMounted(async () => {
