@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-21 19:43:23
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-10 09:15:59
+ * @LastEditTime: 2022-09-10 14:06:59
  */
 import { defineStore} from 'pinia'
 import { Names } from "./name-store";
@@ -26,15 +26,16 @@ export const useStore = defineStore(Names.playList, {
             playListIndex:0,//播放歌曲的默认下标为0
             isShow:true,//暂停,false为播放
             isDetailShow:false,//歌曲详情页的展示，false为隐藏
+            isFooterShow:true,//底部组件是否展示
             duration:0,//歌曲的总时间
             currentTime:0,//歌曲现在的时间
             lyricList:{},//歌词
             token:'',//登录成功后返回token
             user:{
-                name:'',
-                password:'',
-                phoneNumber:'',
-                avatar:'',
+                name:'caojun',
+                password:'111111',
+                phoneNumber:'1111111',
+                avatar:'http://p4.music.126.net/HIDf1LimA4MkXuDJOvO8mA==/109951164394653313.jpg',//jpeg的图片识别不了
                 email:''  
             },//用户的信息
         }
