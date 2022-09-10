@@ -3,10 +3,10 @@
  * @Author: 曹俊
  * @Date: 2022-08-21 19:43:23
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-06 21:32:40
+ * @LastEditTime: 2022-09-10 08:24:12
  */
 import { defineStore} from 'pinia'
-import { Names } from "./store-name";
+import { Names } from "./name-store";
 import { getMusicLyric } from '~/api/SongDetail'
 export const useStore = defineStore(Names.playList, {
     state:()=> {
@@ -29,6 +29,13 @@ export const useStore = defineStore(Names.playList, {
             duration:0,//歌曲的总时间
             currentTime:0,//歌曲现在的时间
             lyricList:{},//歌词
+            token:'',//登录成功后返回token
+            user:{
+                name:'',
+                password:'',
+                phoneNumber:'',
+                avtarImg:''
+            },//用户的信息
         }
     },
     actions: {
@@ -56,7 +63,7 @@ export const useStore = defineStore(Names.playList, {
         async getLyric(value: any) {
             let res =await  getMusicLyric(value)
             // console.log(res);
-            this.updateLyric(res.data.lrc)
+            this.updateLyric(res.lrc)
         },//异步获取歌词的方法
         updateLyric(value: {}){
             this.lyricList = value
