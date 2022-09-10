@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-24 18:35:26
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-08 13:28:10
+ * @LastEditTime: 2022-09-10 10:29:03
  */
 import request from '~/utils/request'
 
@@ -11,7 +11,7 @@ import request from '~/utils/request'
 
 export function getMusicLyric(data) {
     return request({
-        method: 'get',
+        method: 'post',
         url: `/lyric?id=${data}`
     })
 }
@@ -42,7 +42,7 @@ export function getMusicComment(data) {
 // 调用例子 : /check/music?id=33894312
 export function isMusicAvailable(data) {
     return request({
-        method: 'get',
-        url: `/check/music?id=${data}`
+        method: 'post',
+        url: `/check/music?id=${data}?timestamp=${Date.now()}`
     })
 }
