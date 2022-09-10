@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-24 19:17:32
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-08 20:38:03
+ * @LastEditTime: 2022-09-10 08:13:24
 -->
 
 <script setup lang="ts">
@@ -21,11 +21,11 @@ const showLoading = ref(true);
 let id = route.query.id;
 onMounted(async () => {
   let data = await getSongListDetail(id); //歌单信息
-  state.playlist = data.data.playlist;
+  state.playlist = data.playlist;
   let res = await getSongListComment(id); //歌单评论
   active.value = 1;
-  total.value = res.data.total;
-  state.comment = res.data.hotComments;
+  total.value = res.total;
+  state.comment = res.hotComments;
   console.log(state.comment, total);
   setTimeout(() => {
     showLoading.value = false;
@@ -36,18 +36,22 @@ const tabChange = async () => {
   if (active.value == 0) {
     state.comment = [];
     let res = await getSongListComment(id);
-    state.comment = res.data.comments;
+    state.comment = res.comments;
     setTimeout(() => {
       showLoading.value = false;
     }, 1000);
   } else if (active.value == 1) {
     state.comment = [];
     let res = await getSongListComment(id);
-    state.comment = res.data.hotComments;
+    state.comment = res.hotComments;
     setTimeout(() => {
       showLoading.value = false;
     }, 1000);
   }
+};
+const filter = (num) => {
+  if(num<10000) return num
+  else if (num > 10000) return (num / 10000).toFixed(1) + "万";
 };
 </script>
 
@@ -90,7 +94,7 @@ const tabChange = async () => {
                   <ul
                     v-for="(item, index) in state.comment"
                     :key="index"
-                    class="mt-3 border-b border-gray-500"
+                    class="mt-3 border-b border-gray-500 break-all"
                   >
                     <div class="flex justify-between">
                       <div class="flex">
@@ -99,7 +103,7 @@ const tabChange = async () => {
                           :src="item.user?.avatarUrl"
                           alt="这是歌单评论的用户头像"
                         />
-                        <div class="col ml-1 text-left">
+                        <div class="col ml-1 text-left w-60">
                           <div class="text-sm font-600">
                             {{ item?.user?.nickname }}
                           </div>
@@ -110,11 +114,11 @@ const tabChange = async () => {
                         </div>
                       </div>
 
-                      <div class="flex">
-                        <div class="text-sm mt-.5 mr-.5 color-#ccc">
+                      <div class="flex w-2rem">
+                        <div class="flex text-10px mr-.5 color-#ccc">
                           {{ item.likedCount }}
                         </div>
-                        <div class=""><van-icon name="thumb-circle-o" /></div>
+                        <div class="flex my-1"><van-icon size="10px" name="thumb-circle-o" /></div>
                       </div>
                     </div>
                   </ul>
@@ -136,7 +140,7 @@ const tabChange = async () => {
                   <ul
                     v-for="(item, index) in state.comment"
                     :key="index"
-                    class="mt-3 border-b border-gray-500"
+                    class="mt-3 border-b border-gray-500 break-all"
                   >
                     <div class="flex justify-between">
                       <div class="flex">
@@ -145,7 +149,7 @@ const tabChange = async () => {
                           :src="item.user?.avatarUrl"
                           alt="这是歌单评论的用户头像"
                         />
-                        <div class="col ml-1 text-left">
+                        <div class="col ml-1 text-left w-60">
                           <div class="text-sm font-600">
                             {{ item?.user?.nickname }}
                           </div>
@@ -156,11 +160,11 @@ const tabChange = async () => {
                         </div>
                       </div>
 
-                      <div class="flex">
-                        <div class="text-sm mt-.5 mr-.5 color-#ccc">
-                          {{ item.likedCount }}
+                      <div class="flex w-3rem">
+                        <div class="flex text-10px mr-.5 color-#ccc">
+                          {{ filter(item.likedCount) }}
                         </div>
-                        <div class=""><van-icon name="thumb-circle-o" /></div>
+                        <div class="flex my-1"><van-icon size="10px" name="thumb-circle-o" /></div>
                       </div>
                     </div>
                   </ul>

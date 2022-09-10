@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-25 12:42:09
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-08 20:37:22
+ * @LastEditTime: 2022-09-10 08:13:14
 -->
 <template>
   <div class="w-100% h-100% bg-white text-sm">
@@ -51,7 +51,7 @@
                 <ul
                   v-for="(item, index) in state.comment"
                   :key="index"
-                  class="mt-3 border-b border-gray-500"
+                  class="mt-3 border-b border-gray-500 break-all"
                 >
                   <div class="flex justify-between">
                     <div class="flex">
@@ -60,7 +60,7 @@
                         :src="item.user?.avatarUrl"
                         alt="这是歌曲评论用户的头像"
                       />
-                      <div class="col ml-1 text-left">
+                      <div class="col ml-1 text-left w-60">
                         <div class="text-sm font-600">
                           {{ item?.user?.nickname }}
                         </div>
@@ -71,11 +71,11 @@
                       </div>
                     </div>
 
-                    <div class="flex">
-                      <div class="text-sm mt-.5 mr-.5 color-#ccc">
+                    <div class="flex w-2rem">
+                      <div class="text-10px mr-.5 color-#ccc">
                         {{ item.likedCount }}
                       </div>
-                      <div class=""><van-icon name="thumb-circle-o" /></div>
+                      <div class="flex my-1"><van-icon size="10px" name="thumb-circle-o" /></div>
                     </div>
                   </div>
                 </ul>
@@ -97,7 +97,7 @@
                 <ul
                   v-for="(item, index) in state.comment"
                   :key="index"
-                  class="mt-3 border-b border-gray-500"
+                  class="mt-3 border-b border-gray-500 break-all"
                 >
                   <div class="flex justify-between">
                     <div class="flex">
@@ -106,7 +106,7 @@
                         :src="item.user?.avatarUrl"
                         alt="这是歌曲评论用户的头像"
                       />
-                      <div class="col ml-1 text-left">
+                      <div class="col ml-1 text-left w-60">
                         <div class="text-sm font-600">
                           {{ item?.user?.nickname }}
                         </div>
@@ -117,11 +117,11 @@
                       </div>
                     </div>
 
-                    <div class="flex">
-                      <div class="text-sm mt-.5 mr-.5 color-#ccc">
-                        {{ item.likedCount }}
+                    <div class="flex w-3rem">
+                      <div class="text-10px mr-.5 color-#ccc">
+                        {{ filter(item.likedCount) }}
                       </div>
-                      <div class=""><van-icon name="thumb-circle-o" /></div>
+                      <div class="flex my-1"><van-icon size="10px" name="thumb-circle-o" /></div>
                     </div>
                   </div>
                 </ul>
@@ -150,14 +150,14 @@ const showLoading = ref(true);//展示加载的图标
 onMounted(async () => {
   //获取歌曲信息
   let res = await getMusic(id);
-  state.songDetail = res.data.songs;
+  state.songDetail = res.songs;
   console.log(res, "歌曲信息");
   //获取歌曲评论
   let comment = await getMusicComment(id);
   console.log(comment, "歌曲评论");
   active.value = 1;
-  total.value = comment.data.total;
-  state.comment = comment.data.hotComments;
+  total.value = comment.total;
+  state.comment = comment.hotComments;
   setTimeout(() => {
     showLoading.value = false;
   }, 1000);
@@ -167,17 +167,21 @@ const tabChange = async () => {
   if (active.value == 0) {
     state.comment = [];
     let res = await getMusicComment(id);
-    state.comment = res.data.comments;
+    state.comment = res.comments;
     setTimeout(() => {
       showLoading.value = false;
     }, 1000);
   } else if (active.value == 1) {
     state.comment = [];
     let res = await getMusicComment(id);
-    state.comment = res.data.hotComments;
+    state.comment = res.hotComments;
     setTimeout(() => {
       showLoading.value = false;
     }, 1000);
   }
+};
+const filter = (num) => {
+  if(num<10000) return num
+  else if (num > 10000) return (num / 10000).toFixed(1) + "万";
 };
 </script>
