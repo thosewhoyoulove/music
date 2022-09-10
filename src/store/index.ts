@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-21 19:43:23
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-10 08:24:12
+ * @LastEditTime: 2022-09-10 09:15:59
  */
 import { defineStore} from 'pinia'
 import { Names } from "./name-store";
@@ -34,7 +34,8 @@ export const useStore = defineStore(Names.playList, {
                 name:'',
                 password:'',
                 phoneNumber:'',
-                avtarImg:''
+                avatar:'',
+                email:''  
             },//用户的信息
         }
     },
