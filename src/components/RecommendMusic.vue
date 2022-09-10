@@ -54,8 +54,8 @@ let state = reactive({
 });
 onMounted(async () => {
   let res = await getRecommendSongList();
-  console.log(res.data.result);
-  state.musicList = res.data.result;
+  console.log(res.result);
+  state.musicList = res.result;
 });
 const filter = (num) => {
   if (num > 100000000) return (num / 100000000).toFixed(0) + "亿";

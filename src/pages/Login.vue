@@ -67,9 +67,9 @@ const submit = async () => {
     Notify({ type: "warning", message: "请输入11位的手机号" });
   } else if (regExp.test(phoneNumber.value)) {
     let res = await sendVeryCode(phoneNumber.value);
-    if (res.data.code === 400)
-      Notify({ type: "warning", message: res.data.message });
-    else if (res.data.code === 200) {
+    if (res.code === 400)
+      Notify({ type: "warning", message: res.message });
+    else if (res.code === 200) {
       router.push({
         path: "/VerificationCode",
         query: {

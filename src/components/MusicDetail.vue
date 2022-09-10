@@ -139,7 +139,7 @@ const props = defineProps<{
 let { isShow, isDetailShow } = storeToRefs(store);
 onMounted(async () => {
   let res = await getMusicComment(props.musicList.id);
-  totalComment.value = res.data.total;
+  totalComment.value = res.total;
   console.log(totalComment.value, "音乐评论数");
   // console.log(store.lyricList.lyric);
   props.addDuration();

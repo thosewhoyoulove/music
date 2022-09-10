@@ -28,7 +28,7 @@ const state = reactive({
 });
 onMounted(async () => {
   let res = await getBanner();
-  state.image = res.data.banners;
+  state.image = res.banners;
 });
 </script>
 

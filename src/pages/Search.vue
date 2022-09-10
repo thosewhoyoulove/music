@@ -31,7 +31,7 @@ const onSearch = async () => {
     console.log(keyWord.value);
     
     let res = await getSearchMusic(keyWord.value);
-    searchList.value = res.data?.result?.songs;
+    searchList.value = res?.result?.songs;
     console.log(searchList.value);
     
   } else {
@@ -44,7 +44,7 @@ const onSearch = async () => {
     localStorage.setItem("keyWordList", JSON.stringify(keyWordList.value));
     // keyWord.value = ""
     let res = await getSearchMusic(keyWord.value);
-    searchList.value = res.data?.result?.songs;
+    searchList.value = res?.result?.songs;
   }
   // 固定长度
   if (keyWordList.value.length > 10) {
@@ -73,7 +73,7 @@ const onDialogConfirm = () => {
 const searchHistory = async (item) => {
   keyWord.value = item;
   let res = await getSearchMusic(item);
-  searchList.value = res.data?.result?.songs;
+  searchList.value = res?.result?.songs;
   console.log(searchList.value);
 };
 //点击列表播放歌曲

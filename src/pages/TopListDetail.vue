@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 17:07:32
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-08 20:41:03
+ * @LastEditTime: 2022-09-10 07:32:10
 -->
 <template>
   <div class="bg-white w-100% h-50vh relative">
@@ -117,10 +117,10 @@ const state = reactive({
 let id = parseInt(route.query.id);
 onMounted(async () => {
   let res = await getSongListDetail(id);
-  state.playlist = res.data.playlist; //歌单信息
+  state.playlist = res.playlist; //歌单信息
   console.log(state.playlist, "歌单信息");
   let songlist = await getAllSong(id);
-  state.songlist = songlist.data.songs;
+  state.songlist = songlist.songs;
   console.log(state.songlist, "歌曲信息");
 });
 //修改歌曲信息并进行播放

@@ -166,9 +166,9 @@ const showKeyword = ref('')//输入框的内容
 const realkeyword = ref('')//搜索关键词
 onMounted(async() => {
   let res = await getSearchKeyWord()
-  console.log(res.data.data);
-  showKeyword.value = res.data.data.showKeyword
-  realkeyword.value = res.data.data.realkeyword
+  console.log(res.data);
+  showKeyword.value = res.data.showKeyword
+  realkeyword.value = res.data.realkeyword
 })
 const toSearch = () => {
   router.push({

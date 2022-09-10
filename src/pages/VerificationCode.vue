@@ -55,9 +55,9 @@ const veryCode = ref();
 watch(veryCode, async(newVal) => {
       if (newVal.length === 4 ) {
           let res = await verifyCode(phoneNumber.value,newVal)//验证验证码
-          if(res.data.code === 200){
+          if(res.code === 200){
               let res = await isRegister(phoneNumber.value)//账号是否已经注册过
-              if(res.data.code === 200){
+              if(res.code === 200){
                   Notify({ type: "success", message: "该账号已经注册，即将为你自动登录" });
               } else{
                   //没有注册但是要传密码和昵称作为参数

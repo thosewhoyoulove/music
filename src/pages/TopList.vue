@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 10:48:40
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-08 20:39:19
+ * @LastEditTime: 2022-09-10 07:31:20
 -->
 <template>
   <div class="bg-hex-eee p-1 font-sans-serif mb-15">
@@ -21,7 +21,7 @@
           text-left
           justify-between
           items-center
-          text-xs
+          text-12px
           font-600
           ml-1
           py-1
@@ -32,12 +32,12 @@
           v-for="(item, index) in list[index].tracks"
           :key="index"
         >
-          <div class="justify-between">
+          <div class="justify-between w-25">
             {{ index + 1 }}.{{ item.first }} - {{ item.second }}
           </div>
         </ul>
       </div>
-      <div class="top-0 text-xs font-700 w-20 text-hex-ccc">
+      <div class="text-10px font-700 w-15 text-hex-ccc">
         {{ item.updateFrequency }}
       </div>
     </div>
@@ -61,8 +61,8 @@ import { getTopListDetail } from "~/api/TopList";
 const list = ref([]);
 const router = useRouter();
 onMounted(async () => {
-  let res_listDetail = await getTopListDetail();
-  list.value = res_listDetail.data.list;
+  let res = await getTopListDetail();
+  list.value = res.list;
   console.log(list.value, "所有榜单内容摘要");
 });
 const toTopDetail = (item, index) => {
