@@ -3,13 +3,12 @@
  * @Author: 曹俊
  * @Date: 2022-09-09 15:16:22
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-09 21:32:09
+ * @LastEditTime: 2022-09-10 19:20:16
 -->
 <template>
   <div class="bg-hex-f4f5f5 w-95vw h-100vh p-5">
-    <div class="w-100% text-left">
+    <div class="w-100% text-left ml-5">
       <div class="font-550">登录体验更多精彩</div>
-      <div class="text-xs text-hex-aaa">未注册的手机号登录后将自动创建账号</div>
     </div>
     <div class="w-100% flex items-center mt-5">
       <van-form class="flex-col" @submit="onSubmit">
@@ -23,19 +22,26 @@
             placeholder="请输入手机号"
             :maxlength="11"
             clearable
-            :rules="[
-              { validator, message: '请输入正确的手机号', trigger: 'blur' },
-            ]"
-            show-error-message
+          />
+          <van-field
+            label-width="3rem"
+            v-model="password"
+            type="password"
+            label="密码"
+            @focus="showPassboard = true"
+            placeholder="输入密码"
+            :maxlength="15"
+            clearable
           />
         </van-cell-group>
-        <div style="margin: 16px">
+        <div class="mt-10 mb-3 m-10px" >
           <van-button round block type="danger" @click="submit">
-            下一步
+            登录
           </van-button>
         </div>
-        <div>
-          <div class="text-xs text-hex-1A73E9">找回账号</div>
+        <div class="flex items-center justify-between">
+          <div @click="router.push({path:'/LoginByVeryCode'})" class="text-12px text-hex-ccc">使用验证码登录</div>
+          <div class="text-xs text-hex-1A73E9">重设密码</div>
         </div>
       </van-form>
     </div>
@@ -46,15 +52,30 @@
         @blur="showKeyboard = false"
       />
     </div>
+    <div class="w-20 h-20 z-1000">
+      <van-number-keyboard
+        v-model="password"
+        :show="showPassboard"
+        @blur="showPassboard = false"
+      />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { Notify, Toast } from "vant";
-import { sendVeryCode } from "~/api/login";
+import { sendVeryCode,loginByPassword } from "~/api/login";
+import { useStore } from "~/store/index";
+import { storeToRefs } from "pinia";
 const router = useRouter();
 const phoneNumber = ref("");
+const password = ref("");
 const veryCode = ref();
+const store = useStore();
+const { isFooterShow } = storeToRefs(store);
+onMounted(() => {
+  isFooterShow.value = false;
+});
 //校验规则
 let regExp = new RegExp("^1[3578]\\d{9}$");
 // let validator = (phoneNumber:any) =>{
@@ -63,23 +84,28 @@ let regExp = new RegExp("^1[3578]\\d{9}$");
 const submit = async () => {
   if (!phoneNumber.value) {
     Notify({ type: "warning", message: "请输入手机号" });
+  } else if (!password.value) {
+    Notify({ type: "warning", message: "请输入密码" });
   } else if (!regExp.test(phoneNumber.value)) {
     Notify({ type: "warning", message: "请输入11位的手机号" });
-  } else if (regExp.test(phoneNumber.value)) {
-    let res = await sendVeryCode(phoneNumber.value);
-    if (res.code === 400)
-      Notify({ type: "warning", message: res.message });
-    else if (res.code === 200) {
-      router.push({
-        path: "/VerificationCode",
-        query: {
-          phoneNumber: phoneNumber.value,
-        },
-      });
-    }
+  } else if(password.value.length < 6){
+    Notify({ type: "warning", message: "密码的长度不小于6位" });
+  } else if (regExp.test(phoneNumber.value) && password.value.length>=6) {
+      let res = await loginByPassword(phoneNumber.value,password.value)
+      console.log(res);
+      
+      if(res.code === 200){
+        Notify({ type: "success", message: '登陆成功，即将跳转到首页' });
+        router.push({
+            path:'/'
+        })
+      }else{
+        Notify({ type: "danger", message: res.message });
+      }
   }
 };
 const showKeyboard = ref(true); //数字键盘是否展示
+const showPassboard = ref(false); //密码键盘是否展示
 </script>
 
 <style scoped>
