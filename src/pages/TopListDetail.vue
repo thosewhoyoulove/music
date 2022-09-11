@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 17:07:32
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-10 07:32:10
+ * @LastEditTime: 2022-09-11 20:30:57
 -->
 <template>
   <div class="bg-white w-100% h-50vh relative">
@@ -74,13 +74,18 @@
         <span><van-icon name="play-circle-o" /></span>
         <span class="flex">全部播放</span>
       </div>
+      <van-skeleton :row="15" round :loading="loading" />
       <ul
         v-for="(item, index) in state.songlist"
         :key="index"
         class="flex justify-between h-3rem my-1 text-sm"
       >
         <div class="flex justify-between">
-          <img class="w-3rem h-3rem rounded" :src="item.al.picUrl" alt="这是排行榜详情的歌曲专辑图片" />
+          <img
+            class="w-3rem h-3rem rounded"
+            :src="item.al.picUrl"
+            alt="这是排行榜详情的歌曲专辑图片"
+          />
           <div class="flex-col ml-2 text-style" @click="updateSongList(index)">
             <div class="flex">
               <div class="flex text-md font-extrabold text-style break-all">
@@ -114,6 +119,7 @@ const state = reactive({
   playlist: {}, //歌单信息
   songlist: [], //歌曲信息
 });
+const loading = ref(true);
 let id = parseInt(route.query.id);
 onMounted(async () => {
   let res = await getSongListDetail(id);
@@ -121,6 +127,7 @@ onMounted(async () => {
   console.log(state.playlist, "歌单信息");
   let songlist = await getAllSong(id);
   state.songlist = songlist.songs;
+  loading.value = false;
   console.log(state.songlist, "歌曲信息");
 });
 //修改歌曲信息并进行播放

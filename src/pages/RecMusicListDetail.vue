@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-10 07:40:07
+ * @LastEditTime: 2022-09-11 20:30:15
 -->
 <script setup lang="ts">
 import { getSongListDetail, getAllSong } from "~/api/SongListDetail";
@@ -15,6 +15,7 @@ const state = reactive({
   playlist: {}, //歌单信息
   songlist: [], //歌曲信息
 });
+const loading = ref(true);
 let id = route.query.id;
 onMounted(async () => {
   console.log(id);
@@ -25,6 +26,7 @@ onMounted(async () => {
   let songlist = await getAllSong(id);
 
   state.songlist = songlist.songs;
+  loading.value = false;
   console.log(state.songlist, "歌曲信息");
 });
 const filter = (num) => {
@@ -138,6 +140,7 @@ const toCommentDetail = () => {
         <span><van-icon name="play-circle-o" /></span>
         <span class="flex">全部播放</span>
       </ul>
+      <van-skeleton :row="20" round :loading="loading" />
       <ul
         v-for="(item, index) in state.songlist"
         :key="index"

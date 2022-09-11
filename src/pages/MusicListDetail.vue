@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 19:13:33
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-10 19:53:49
+ * @LastEditTime: 2022-09-11 20:30:47
 -->
 <template>
   <div class>
@@ -14,18 +14,41 @@
         :key="index"
         @click="change(item, index)"
       >
-        <div class="inline-block pt-1 px-2" v-for="(item, index) in singleSongList" :key="index" @click="toMusicDetail(item.id)">
+        <div
+          class="inline-block pt-1 px-2"
+          v-for="(item, index) in singleSongList"
+          :key="index"
+          @click="toMusicDetail(item.id)"
+        >
           <div class="relative">
-            <img class="w-21 h-21 rounded-xl p-1" :src="item.coverImgUrl" alt="这是歌单广场的封面" />
+            <img
+              class="w-21 h-21 rounded-xl p-1"
+              :src="item.coverImgUrl"
+              alt="这是歌单广场的封面"
+            />
             <div class="text-style w-20 text-left text-13px px-1">
               {{ item.name }}
             </div>
-            <div class="w-15 flex play-icon text-10px top-1 left-8 rounded-xl text-white absolute z-100">
+            <div
+              class="
+                w-15
+                flex
+                play-icon
+                text-10px
+                top-1
+                left-8
+                rounded-xl
+                text-white
+                absolute
+                z-100
+              "
+            >
               <div><van-icon name="play-circle-o" /></div>
               <div class="mx-1">{{ filter(item.playCount) }}</div>
             </div>
           </div>
         </div>
+        <van-skeleton :row="20" round :loading="loading" />
       </van-tab>
     </van-tabs>
   </div>
@@ -33,34 +56,39 @@
 
 <script setup lang="ts">
 import { getSongList, getSingleCatPlayList } from "~/api/SongList";
+import { Skeleton } from "vant";
 import { getSongListDetail } from "~/api/SongListDetail";
 import { useStore } from "~/store/index";
 import { storeToRefs } from "pinia";
 const store = useStore();
 const { isFooterShow } = storeToRefs(store);
 const allSongList = ref([]); //所有的热门歌单
-const router = useRouter()
-const singleSongList = ref([])
+const router = useRouter();
+const singleSongList = ref([]);
 const active = ref();
+const loading = ref(true);
 onMounted(async () => {
   isFooterShow.value = false;
-  let category = await getSongList(); 
-  allSongList.value = category.tags;//获取热门歌单的标签
-  let res = await getSingleCatPlayList("华语");//获取华语标签的歌单
+  let category = await getSongList();
+  allSongList.value = category.tags; //获取热门歌单的标签
+  let res = await getSingleCatPlayList("华语"); //获取华语标签的歌单
   singleSongList.value = res.playlists;
+  loading.value = false;
   console.log(singleSongList.value);
 });
 const change = async (item, index) => {
+  loading.value = true;
   //点击不同的标签切换不同的歌单，这里的index才是标签
-  console.log(item,index);   
-  singleSongList.value = []
+  console.log(item, index);
+  singleSongList.value = [];
   console.log(singleSongList.value);
   let res = await getSingleCatPlayList(index);
   singleSongList.value = res.playlists;
   console.log(singleSongList.value, "歌单种类:" + index + "!!!");
+  loading.value = false;
 };
 const filter = (num) => {
-  if (num > 100000000) return (num / 100000000).toFixed(0) + "亿";
+  if (num > 100000000) return (num / 100000000).toFixed(1) + "亿";
   else if (num > 10000) return (num / 10000).toFixed(0) + "万";
 };
 const toMusicDetail = (id) => {
