@@ -3,14 +3,14 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 20:03:07
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-09 21:17:16
+ * @LastEditTime: 2022-09-11 10:42:14
 -->
 <template>
   <div class="w-100% h-5rem p-.2rem">
     <div
       class="flex justify-between items-center mt-2 w-100% h-1.8rem mb-.2rem"
     >
-      <div class="font-900">推荐歌单</div>
+      <div class="font-900">发现歌单</div>
       <div
         class="text-13px border border-hex-bbb pl-2.5 mr-2 rounded-xl pt-.5"
       >
@@ -47,18 +47,18 @@
 </template>
 
 <script setup lang="ts">
-import getRecommendSongList from "~/api/RecommendSongList";
+import getFindSongList from "~/api/RecommendSongList";
 const router = useRouter();
 let state = reactive({
   musicList: [],
 });
 onMounted(async () => {
-  let res = await getRecommendSongList();
+  let res = await getFindSongList();
   console.log(res.result);
   state.musicList = res.result;
 });
 const filter = (num) => {
-  if (num > 100000000) return (num / 100000000).toFixed(0) + "亿";
+  if (num > 100000000) return (num / 100000000).toFixed(1) + "亿";
   else if (num > 10000) return (num / 10000).toFixed(0) + "万";
 };
 const toMusicDetail = (id) => {

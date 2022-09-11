@@ -8,11 +8,11 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     Counter: typeof import('./src/components/Counter.vue')['default']
+    FindMusic: typeof import('./src/components/FindMusic.vue')['default']
     Footer: typeof import('./src/components/Footer.vue')['default']
     IconList: typeof import('./src/components/IconList.vue')['default']
     LottieAnimation: typeof import('vue3-marquee')['Vue3Marquee']
     MusicDetail: typeof import('./src/components/MusicDetail.vue')['default']
-    RecommendMusic: typeof import('./src/components/RecommendMusic.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Search: typeof import('./src/components/Search.vue')['default']
