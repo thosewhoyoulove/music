@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-27 11:27:10
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-09 14:55:19
+ * @LastEditTime: 2022-09-11 09:17:31
 -->
 <script setup lang="ts">
 import { getSearchMusic } from "~/api/Search";
@@ -92,6 +92,7 @@ const updateIndex = (item:any, index:any):any => {
         show-action
         :placeholder="defaultSearchKeyWord"
         class="rounded"
+        @keydown.enter="onSearch"
       >
         <template #action>
           <div @click="onSearch">搜索</div>
