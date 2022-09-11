@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-09 15:28:19
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-10 16:48:03
+ * @LastEditTime: 2022-09-11 18:23:49
  */
 import request from '~/utils/request'
 // 二维码登录
@@ -67,7 +67,7 @@ export function testCodeByKey(key) {
 export function sendVeryCode(phone) {
     return request({
         method: 'post',
-        url: `/captcha/sent?phone=${phone}`,
+        url: `/captcha/sent?phone=${phone}`, //不可以加时间戳
     })
 }
 // 验证验证码
@@ -88,7 +88,7 @@ export function sendVeryCode(phone) {
 export function verifyCode(phone, captcha) {
     return request({
         method: 'post',
-        url: `/captcha/sent?phone=${phone}&captcha=${captcha}?timestamp=${Date.now()}`,
+        url: `/captcha/sent?phone=${phone}&captcha=${captcha}`,
     })
 }
 // 检测手机号码是否已注册
@@ -130,13 +130,44 @@ export function isRegister(phone) {
 export function loginByPhone(phone, captcha) {
     return request({
         method: 'post',
-        url: `/login/cellphone?phone=${phone}&captcha=${captcha}}`,
+        url: `/login/cellphone?phone=${phone}&captcha=${captcha}?timestamp=${Date.now()}`,
     })
 }
 //手机号+密码登录
 export function loginByPassword(phone, password) {
     return request({
         method: 'post',
-        url: `/login/cellphone?phone=${phone}&password=${password}}`,
+        url: `/login/cellphone?phone=${phone}&password=${password}?timestamp=${Date.now()}`,
+    })
+}
+//邮箱地址+密码登录
+//  邮箱登录
+// 必选参数 :
+
+// email: 163 网易邮箱
+
+// password: 密码
+
+// 可选参数 :
+
+// md5_password: md5 加密后的密码,传入后 password 将失效
+
+// 接口地址 : /login
+
+// 调用例子 : /login?email=xxx@163.com&password=yyy
+export function loginByEmail(email, password) {
+    return request({
+        method: 'post',
+        url: `/login?email=${email}&password=${password}`,
+    })
+}
+// 刷新登录
+// 说明 : 调用此接口 , 可刷新登录状态,返回内容包含新的cookie(不支持刷新二维码登录的cookie)
+
+// 调用例子 : /login/refresh
+export function refreshLoginStu() {
+    return request({
+        method: 'post',
+        url: '/login/refresh',
     })
 }
