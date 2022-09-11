@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-10 14:10:14
+ * @LastEditTime: 2022-09-11 20:46:04
 -->
 <template>
   <main font-sans-serif p=".5rem" text="center gray-700 dark:gray-200">
@@ -36,7 +36,7 @@
 <script setup lang="ts">
 import { useStore } from "~/store/index";
 import { storeToRefs } from "pinia";
-const store = useStore()
+const store = useStore();
 const { isFooterShow } = storeToRefs(store);
 const router = useRouter();
 const route = useRoute();
@@ -49,7 +49,7 @@ const toTop = () => {
   });
 };
 const handleScroll = () => {
-  if (document.documentElement.scrollTop > 20) {
+  if (document.documentElement.scrollTop > 100) {
     isShow.value = true;
   } else {
     isShow.value = false;

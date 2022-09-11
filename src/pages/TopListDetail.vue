@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 17:07:32
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-11 20:30:57
+ * @LastEditTime: 2022-09-11 20:46:11
 -->
 <template>
   <div class="bg-white w-100% h-50vh relative">
@@ -112,9 +112,11 @@
 <script setup lang="ts">
 import { getSongListDetail, getAllSong } from "~/api/SongListDetail";
 import { useStore } from "~/store/index";
+import { storeToRefs } from "pinia";
+const store = useStore();
+const { isFooterShow } = storeToRefs(store);
 const route = useRoute();
 const router = useRouter();
-const store = useStore();
 const state = reactive({
   playlist: {}, //歌单信息
   songlist: [], //歌曲信息
@@ -122,6 +124,7 @@ const state = reactive({
 const loading = ref(true);
 let id = parseInt(route.query.id);
 onMounted(async () => {
+  isFooterShow.value = false;
   let res = await getSongListDetail(id);
   state.playlist = res.playlist; //歌单信息
   console.log(state.playlist, "歌单信息");
@@ -135,6 +138,7 @@ const updateSongList = (index) => {
   store.updatePlayList(store.$state, state.songlist); //将歌单列表传进默认列表
   store.updatePlayListIndex(index); //将索引值传给默认索引
   store.updateIsShow(store.$state, false); //修改为播放图标
+  isFooterShow.value = true;
 };
 //点击评论按钮跳转
 const toCommentDetail = () => {
