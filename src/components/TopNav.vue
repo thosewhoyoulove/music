@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-16 22:44:19
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-10 19:38:20
+ * @LastEditTime: 2022-09-11 10:42:53
 -->
 <template>
   <div class="w-100% h-100% flex justify-between items-center relative">
@@ -199,7 +199,7 @@
             <IconList />
           </div>
           <div class="w-90vw">
-            <RecommendMusic />
+            <FindMusic />
           </div>
         </van-tab>
         <van-tab title="云村" name="c">
@@ -227,10 +227,12 @@
 <script setup lang="ts">
 import { getSearchKeyWord } from "~/api/Search";
 import { storeToRefs } from "pinia";
-import { useStore } from "~/store/index";
+import { useStore,userStore } from "~/store/index";
 const router = useRouter();
 const store = useStore();
-const {token,user} = storeToRefs(store);
+const userInfo = userStore()
+const {token} = storeToRefs(store);
+const {user} = storeToRefs(userInfo)//获得用户信息
 //弹出框是否展示
 const show = ref(false);
 //搜索建议关键词
