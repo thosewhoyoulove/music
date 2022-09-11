@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 19:16:37
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-10 11:20:45
+ * @LastEditTime: 2022-09-10 21:02:14
 -->
 <template>
   <div class="flex mt-2 justify-between items-center text-13px">
@@ -173,15 +173,16 @@
 </template>
 
 <script setup lang="ts">
-import { useStore } from "~/store/index";
+import { useStore,userStore } from "~/store/index";
 import { storeToRefs } from "pinia";
 const router = useRouter();
 const store = useStore();
-const {token,user} = storeToRefs(store);
+const userInfo = userStore()
+const {user} = storeToRefs(userInfo)
 const toDailyRecommend = () => {
-  if(!token.value){
+  if(!user.value.token){
     router.push({
-      path:'/login'
+      path:'/LoginOrReg'
     })
   }else{
     router.push({
