@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-10 17:08:38
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-10 19:34:06
+ * @LastEditTime: 2022-09-11 19:34:22
 -->
 <template>
     <div>
@@ -69,7 +69,7 @@
 import { Notify } from "vant";
 import { useStore } from "~/store/index";
 import { storeToRefs } from "pinia";
-import { sendVeryCode,verifyCode } from "~/api/login";
+import { sendVeryCode,verifyCode,refreshLoginStu,loginByPhone } from "~/api/login";
 const router = useRouter();
 const phoneNumber = ref("");
 const veryCode = ref();
@@ -110,15 +110,21 @@ const submit = async () => {
     Notify({ type: "warning", message: "请输入4位的验证码" });
   }
   else if(regExp.test(phoneNumber.value)&&veryCode.value.length===4) {
-      console.log('正在核查验证码');
-      
+    console.log('正在核查验证码');
     let res = await verifyCode(phoneNumber.value,veryCode.value)
     console.log(res);
     if(res.code === 200){
-        Notify({ type: "success", message: "登录成功，即将跳转到首页" });
+        let res1 = await loginByPhone(phoneNumber.value,veryCode.value)
+        console.log(res1,'验证码登录的方式');
+        if(res1.code === 200){
+          Notify({ type: "success", message: "登录成功，即将跳转到首页" });
         router.push({
             path:'/'
         })
+        }else{
+        Notify({ type: "danger", message: res.message });
+        }
+        
     }else{
         Notify({ type: "danger", message: res.message });
     }
