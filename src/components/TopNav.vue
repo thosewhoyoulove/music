@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-16 22:44:19
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-11 10:42:53
+ * @LastEditTime: 2022-09-12 17:03:12
 -->
 <template>
   <div class="w-100% h-100% flex justify-between items-center relative">
@@ -19,11 +19,11 @@
       <div class="w-100% h-100% col p-2 bg-hex-F4F5F5">
         <div class="flex px-2 justify-between items-center">
           <div v-if="token" class="flex items-center">
-            <img class="flex rounded-full w-10 h-10" :src="user.avatar" alt="">
-            <div class="flex mx-1">{{user.name}}</div>
+            <img class="flex rounded-full w-10 h-10" :src="user?.profile?.avatarUrl" alt="">
+            <div class="flex mx-1">{{user?.profile?.nickname}}</div>
             <div class="flex"><van-icon size="12px" name="arrow" /></div>
           </div>
-          <div v-if="!token" class="flex items-center" @click="router.push({path:'/login'})">
+          <div v-if="!token" class="flex items-center" @click="router.push({path:'/loginorreg'})">
             <div class="flex"><van-icon name="user-o" /></div>
             <div class="flex mx-1 text-xs">立即登录</div>
             <div class="flex"><van-icon size="12px" name="arrow" /></div>
@@ -189,7 +189,9 @@
         v-model:active="activeName"
       >
         <van-tab title="我的" name="a">
-          <div class="w-90vw"></div>
+          <div class="w-90vw">
+            <my-home></my-home>
+          </div>
         </van-tab>
         <van-tab title="发现" name="b">
           <div class="w-50vw">
@@ -231,8 +233,7 @@ import { useStore,userStore } from "~/store/index";
 const router = useRouter();
 const store = useStore();
 const userInfo = userStore()
-const {token} = storeToRefs(store);
-const {user} = storeToRefs(userInfo)//获得用户信息
+const {user,token} = storeToRefs(userInfo)//获得用户信息
 //弹出框是否展示
 const show = ref(false);
 //搜索建议关键词
@@ -243,10 +244,13 @@ const activeName = ref('b');
 onMounted(async () => {
   let res = await getSearchKeyWord();
   console.log(res.data);
-  console.log(user.value);
-  
   showKeyword.value = res.data.showKeyword;
   realkeyword.value = res.data.realkeyword;
+  console.log(JSON.parse(localStorage.getItem('userInfo')),'解析后的数据');
+  user.value = JSON.parse(localStorage.getItem('userInfo'))
+  token.value = user.value.token
+  console.log(user.value,111);
+  
 });
 const toSearch = () => {
   router.push({
