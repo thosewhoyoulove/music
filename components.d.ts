@@ -13,6 +13,7 @@ declare module '@vue/runtime-core' {
     IconList: typeof import('./src/components/IconList.vue')['default']
     LottieAnimation: typeof import('vue3-marquee')['Vue3Marquee']
     MusicDetail: typeof import('./src/components/MusicDetail.vue')['default']
+    MyHome: typeof import('./src/components/MyHome.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Search: typeof import('./src/components/Search.vue')['default']
