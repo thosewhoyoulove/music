@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-17 15:53:02
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-12 20:47:22
+ * @LastEditTime: 2022-09-12 21:24:09
  */
 import request from '~/utils/request'
 import { storeToRefs } from "pinia";
@@ -18,9 +18,12 @@ import { useStore, userStore } from "~/store/index";
 
 // 调用例子 : /user/detail?uid=32953014
 export function getUserDetail(uid) {
+    const store = useStore();
+    const userInfo = userStore()
+    const { user } = storeToRefs(userInfo) //获得用户信息
     return request({
         method: 'get',
-        url: `/user/detail?uid=${uid}`,
+        url: `/user/detail?uid=${uid}?cookie=${encodeURIComponent(user.value.cookie)}`,
     })
 }
 // 获取用户信息 , 歌单，收藏，mv, dj 数量
