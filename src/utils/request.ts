@@ -1,9 +1,10 @@
+import { Cookies } from 'js-cookie';
 /*
  * @Description: 
  * @Author: 曹俊
  * @Date: 2022-08-17 15:49:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-11 11:05:56
+ * @LastEditTime: 2022-09-12 20:44:03
  */
 import axios from 'axios'
 import { getToken, removeToken,  removeName, removeAvatar } from './cookie'
@@ -22,10 +23,9 @@ const service = axios.create({
     // 请求拦截器
 service.interceptors.request.use(
         (config: any) => {
-            const userInfo = userStore()//在setup之外使用useStore(),在需要用的时候再引入，不要到顶端直接引入
-            const {user} = storeToRefs(userInfo)
-            const token = user.value.token
-            if (token) config.headers["X-Token"] = token;
+            // const userInfo = userStore()//在setup之外使用useStore(),在需要用的时候再引入，不要到顶端直接引入
+            // const {token} = storeToRefs(userInfo)
+            // if (token.value) config.headers["X-Token"] = token.value;
             return config;
         },
         (error) => {
