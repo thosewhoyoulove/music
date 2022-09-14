@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-09 15:28:19
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-11 18:23:49
+ * @LastEditTime: 2022-09-14 20:57:49
  */
 import request from '~/utils/request'
 // 二维码登录
@@ -43,14 +43,14 @@ export function getCodeKey() {
 export function getCodeByKey(key) {
     return request({
         method: 'post',
-        url: `/login/qr/create?key=${key}?timestamp=${Date.now()}`,
+        url: `/login/qr/create?key=${key}&qrimg=true&timestamp=${Date.now()}`,
     })
 }
 
 export function testCodeByKey(key) {
     return request({
         method: 'post',
-        url: `/login/qr/check?key=${key}?timestamp=${Date.now()}`,
+        url: `/login/qr/check?key=${key}&timestamp=${Date.now()}`,
     })
 }
 // 发送验证码
