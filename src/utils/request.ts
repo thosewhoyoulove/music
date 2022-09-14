@@ -4,7 +4,7 @@ import { Cookies } from 'js-cookie';
  * @Author: 曹俊
  * @Date: 2022-08-17 15:49:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-12 20:44:03
+ * @LastEditTime: 2022-09-14 21:35:31
  */
 import axios from 'axios'
 import { getToken, removeToken,  removeName, removeAvatar } from './cookie'
@@ -15,17 +15,16 @@ import { storeToRefs } from "pinia";
 const service = axios.create({
         // 请求路由
         // baseURL: 'http://localhost:3000/', //本地开启后端服务
-        baseURL: 'https://netease-cloud-music-7lnmd0dbn-thosewhoyoulove.vercel.app/', //线上测试
+        baseURL: 'https://netease-cloud-music-api-five-ebon.vercel.app/', //线上测试
         // 请求超时时间
         timeout: 10000,
-        withCredentials: true,
+        withCredentials: true
+        
     })
     // 请求拦截器
 service.interceptors.request.use(
         (config: any) => {
-            // const userInfo = userStore()//在setup之外使用useStore(),在需要用的时候再引入，不要到顶端直接引入
-            // const {token} = storeToRefs(userInfo)
-            // if (token.value) config.headers["X-Token"] = token.value;
+            // config.headers['cookie'] ='__remember_me=true; NMTID=00O12_ftYzTNqRugkWPkrPfXeAHhS4AAAGDO_srTA'
             return config;
         },
         (error) => {
