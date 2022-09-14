@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-21 19:43:23
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-12 11:18:32
+ * @LastEditTime: 2022-09-14 19:27:08
  */
 import { defineStore} from 'pinia'
 import { Names } from "./name-store";
@@ -72,7 +72,7 @@ export const userStore = defineStore(Names.User,{
         return {
             user:{
                 // token:'',
-                // id:0,
+                // id:286940473 ,
                 // nickname:'',
                 // password:'',
                 // phoneNumber:0,
@@ -98,6 +98,11 @@ export const userStore = defineStore(Names.User,{
         updateUserInfo(value:object){
             this.user = value
             localStorage.setItem('userInfo',JSON.stringify(this.user))
+        },
+        //退出登录清空信息
+        removeUserInfo(){
+            this.user = {}
+            this.token = ''
         }
     }
 })
