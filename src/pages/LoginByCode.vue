@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-09 15:26:41
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-14 21:24:31
+ * @LastEditTime: 2022-09-15 09:38:45
 -->
 <template>
   <div class="h-100vh">
@@ -14,10 +14,13 @@
 
 <script setup lang="ts">
 import { getCodeKey, getCodeByKey, testCodeByKey } from "~/api/login";
-import { useStore } from "~/store/index";
+import {getUserAcount} from '~/api/user'
+import { useStore,userStore } from "~/store/index";
 import { Notify } from "vant";
 import { storeToRefs } from "pinia";
+const router = useRouter()
 const store = useStore();
+const userInfo = userStore();
 const { isFooterShow } = storeToRefs(store);
 onMounted(() => {
   isFooterShow.value = false;
@@ -47,9 +50,17 @@ onMounted(async () => {
     if (statusRes.code === 803) {
       // 这一步会返回cookie
       clearInterval(timer);
-      Notify({ type: "success", message: "授权登录成功" });
-      console.log(statusRes, "成功了");
+      Notify({ type: "success", message: '授权登录成功，即将跳转首页' });
+      console.log(statusRes.cookie, "成功了");
       localStorage.setItem("cookie", statusRes.cookie);
+      const AcountRes  = await getUserAcount()
+      console.log(AcountRes,'用户账户信息');
+      userInfo.updateIsLogin(true);
+      userInfo.updateUserInfo(AcountRes);
+      router.push({
+        path:'/'
+      })
+      
     }
   }, 5000);
 });
