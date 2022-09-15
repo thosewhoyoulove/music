@@ -3,14 +3,14 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-11 20:46:04
+ * @LastEditTime: 2022-09-15 19:01:06
 -->
 <template>
   <main font-sans-serif p=".5rem" text="center gray-700 dark:gray-200">
     <router-view />
   </main>
   <!-- 全局增加一个回到顶端的按钮 -->
-  <div v-show="isShow" class="fixed -right-1px bottom-70px pt-2 mr-1 z-1000">
+  <div v-show="isShow" class="fixed -right-1px bottom-70px pt-2 mr-1.5 z-1000">
     <van-sticky>
       <svg
         xmlns="http://www.w3.org/2000/svg"
