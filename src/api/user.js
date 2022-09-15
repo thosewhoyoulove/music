@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-17 15:53:02
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-15 15:54:59
+ * @LastEditTime: 2022-09-15 21:53:08
  */
 import request from '~/utils/request'
 import { storeToRefs } from "pinia";
@@ -99,5 +99,25 @@ export function getUserFolloweds(uid) {
     return request({
         method: 'post',
         url: `/user/followeds?uid=${uid}`,
+    })
+}
+
+// 获取用户动态
+// 说明 : 登录后调用此接口 , 传入用户 id, 可以获取用户动态
+
+// 必选参数 : uid : 用户 id
+
+// 可选参数 : limit : 返回数量 , 默认为 30
+
+// lasttime : 返回数据的 lasttime ,默认-1,传入上一次返回结果的 lasttime,将会返回下一页的数据
+
+// 接口地址 : /user/event
+
+// 调用例子 : /user/event?uid=32953014 /user/event?uid=32953014&limit=1&lasttime=1558011138743
+export function getUserEvent(uid) {
+    const cookie = localStorage.getItem('cookie')
+    return request({
+        method: 'post',
+        url: `/user/event?uid=${uid}`,
     })
 }

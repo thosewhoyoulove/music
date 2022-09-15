@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-16 22:44:19
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-15 19:36:07
+ * @LastEditTime: 2022-09-15 22:26:44
 -->
 <template>
   <div class="w-100% h-100% flex justify-between items-center relative">
@@ -207,7 +207,6 @@
     <div
       class="
         flex
-        h-100%
         mx-auto
         mt-5
         justify-between
@@ -217,8 +216,7 @@
       "
     >
       <van-tabs
-        class="bg-hex-F6F7F9"
-        mx-auto
+        class="bg-hex-F6F7F9 h-100vh"
         background="#F6F7F9"
         v-model:active="activeName"
       >
