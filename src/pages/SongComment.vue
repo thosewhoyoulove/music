@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-25 12:42:09
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-10 08:13:14
+ * @LastEditTime: 2022-09-15 18:55:29
 -->
 <template>
   <div class="w-100% h-100% bg-white text-sm">
@@ -37,7 +37,7 @@
           <van-tab v-for="(item, index) in choice" :key="index" :title="item">
             <div v-show="active == 0">
               <van-loading
-                v-if="showLoading"
+                v-show="showLoading"
                 color="#666"
                 type="spinner"
                 class="mt-5"
@@ -46,12 +46,12 @@
               >
                 加载中...
               </van-loading>
-              <div v-if="!state.comment.length">暂无评论</div>
-              <div v-if="!showLoading">
+              <div v-show="!state.comment.length">暂无评论</div>
+              <div v-show="!showLoading">
                 <ul
                   v-for="(item, index) in state.comment"
                   :key="index"
-                  class="mt-3 border-b border-gray-500 break-all"
+                  class="mt-3 border-b border-gray-500 break-all relative"
                 >
                   <div class="flex justify-between">
                     <div class="flex">
@@ -71,7 +71,7 @@
                       </div>
                     </div>
 
-                    <div class="flex w-2rem">
+                    <div class="flex absolute right-0">
                       <div class="text-10px mr-.5 color-#ccc">
                         {{ item.likedCount }}
                       </div>
@@ -83,7 +83,7 @@
             </div>
             <div v-show="active == 1">
               <van-loading
-                v-if="showLoading"
+                v-show="showLoading"
                 color="#666"
                 type="spinner"
                 class="mt-5"
@@ -92,14 +92,14 @@
               >
                 加载中...
               </van-loading>
-              <div v-if="!state.comment.length">暂无评论</div>
-              <div v-if="!showLoading">
+              <div v-show="!state.comment.length">暂无评论</div>
+              <div v-show="!showLoading">
                 <ul
                   v-for="(item, index) in state.comment"
                   :key="index"
                   class="mt-3 border-b border-gray-500 break-all"
                 >
-                  <div class="flex justify-between">
+                  <div class="flex justify-between relative">
                     <div class="flex">
                       <img
                         class="w-3rem h-3rem rounded-full"
@@ -117,7 +117,7 @@
                       </div>
                     </div>
 
-                    <div class="flex w-3rem">
+                    <div class="flex absolute z-10 right-0">
                       <div class="text-10px mr-.5 color-#ccc">
                         {{ filter(item.likedCount) }}
                       </div>
@@ -160,7 +160,7 @@ onMounted(async () => {
   state.comment = comment.hotComments;
   setTimeout(() => {
     showLoading.value = false;
-  }, 1000);
+  }, 700);
 });
 const tabChange = async () => {
   showLoading.value = true;
@@ -177,7 +177,7 @@ const tabChange = async () => {
     state.comment = res.hotComments;
     setTimeout(() => {
       showLoading.value = false;
-    }, 1000);
+    }, 700);
   }
 };
 const filter = (num) => {

@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-24 19:17:32
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-10 08:13:24
+ * @LastEditTime: 2022-09-15 18:59:24
 -->
 
 <script setup lang="ts">
@@ -73,14 +73,14 @@ const filter = (num) => {
       </div>
     </div>
     <div>
-      <van-list class="mb-15">
+      <van-list>
         <div>
           <div class="text-left font-600 ml-5">评论区</div>
           <van-tabs v-model:active="active" @click-tab="tabChange">
             <van-tab v-for="(item, index) in choice" :key="index" :title="item">
               <div v-show="active == 0">
                 <van-loading
-                  v-if="showLoading"
+                  v-show="showLoading"
                   color="#666"
                   type="spinner"
                   class="mt-5"
@@ -89,12 +89,12 @@ const filter = (num) => {
                 >
                   加载中...
                 </van-loading>
-                <div v-if="!state.comment.length">暂无评论</div>
-                <div v-if="!showLoading">
+                <div v-show="!state.comment.length">暂无评论</div>
+                <div v-show="!showLoading">
                   <ul
                     v-for="(item, index) in state.comment"
                     :key="index"
-                    class="mt-3 border-b border-gray-500 break-all"
+                    class="mt-3 border-b border-gray-500 break-all relative"
                   >
                     <div class="flex justify-between">
                       <div class="flex">
@@ -114,7 +114,7 @@ const filter = (num) => {
                         </div>
                       </div>
 
-                      <div class="flex w-2rem">
+                      <div class="flex absolute right-0">
                         <div class="flex text-10px mr-.5 color-#ccc">
                           {{ item.likedCount }}
                         </div>
@@ -126,7 +126,7 @@ const filter = (num) => {
               </div>
               <div v-show="active == 1">
                 <van-loading
-                  v-if="showLoading"
+                  v-show="showLoading"
                   color="#666"
                   type="spinner"
                   class="mt-5"
@@ -135,12 +135,12 @@ const filter = (num) => {
                 >
                   加载中...
                 </van-loading>
-                <div v-if="!state.comment.length">暂无评论</div>
-                <div v-if="!showLoading">
+                <div v-show="!state.comment.length">暂无评论</div>
+                <div v-show="!showLoading">
                   <ul
                     v-for="(item, index) in state.comment"
                     :key="index"
-                    class="mt-3 border-b border-gray-500 break-all"
+                    class="mt-3 border-b border-gray-500 break-all relative"
                   >
                     <div class="flex justify-between">
                       <div class="flex">
@@ -160,7 +160,7 @@ const filter = (num) => {
                         </div>
                       </div>
 
-                      <div class="flex w-3rem">
+                      <div class="flex absolute right-0">
                         <div class="flex text-10px mr-.5 color-#ccc">
                           {{ filter(item.likedCount) }}
                         </div>
