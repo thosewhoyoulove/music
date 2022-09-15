@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-10 14:01:20
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-11 17:26:57
+ * @LastEditTime: 2022-09-15 19:18:24
 -->
 <template>
   <div class="h-100vh w-99% bg-hex-DB2C1F relative">
@@ -51,10 +51,13 @@
     </div>
     <img
       @click="toEmailLogin"
-      class="h-8 w-8 mt-5 left-50% top-89% absolute -translate-x-1/2"
+      class="h-8 w-8 mt-5 left-30% top-89% absolute -translate-x-1/2"
       src="/email.png"
       alt=""
     />
+    <div @click="toQrCodeLogin" class="mt-5 left-70% top-89% absolute -translate-x-1/2">
+      <van-icon size="1.8rem" color="#f3f4f5" name="qr" />
+    </div>
   </div>
 </template>
 
@@ -83,6 +86,13 @@ const toEmailLogin = () => {
     router.push({ path: "/LoginByEmail" });
   }
 };
+const toQrCodeLogin = () =>{
+  if (!checked.value) {
+    Notify({ type: "warning", message: "请勾选同意条款和政策" });
+  } else {
+    router.push({ path: "/LoginByCode" });
+  }
+}
 </script>
 
 <style scoped>
