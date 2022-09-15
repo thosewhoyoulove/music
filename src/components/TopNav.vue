@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-16 22:44:19
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-14 20:32:38
+ * @LastEditTime: 2022-09-15 09:58:31
 -->
 <template>
   <div class="w-100% h-100% flex justify-between items-center relative">
@@ -18,7 +18,7 @@
     >
       <div class="w-100% h-100% col p-2 bg-hex-F4F5F5">
         <div class="flex px-2 justify-between items-center">
-          <div v-if="token" class="flex items-center" @click="closePopup">
+          <div v-if="isLogin" class="flex items-center" @click="closePopup">
             <img
               class="flex rounded-full w-10 h-10"
               :src="user?.profile?.avatarUrl"
@@ -28,7 +28,7 @@
             <div class="flex"><van-icon size="12px" name="arrow" /></div>
           </div>
           <div
-            v-if="!token"
+            v-if="!isLogin"
             class="flex items-center"
             @click="router.push({ path: '/loginorreg' })"
           >
@@ -269,7 +269,7 @@ const VanDialog = Dialog.Component;
 const router = useRouter();
 const store = useStore();
 const userInfo = userStore();
-const { user, token } = storeToRefs(userInfo); //获得用户信息
+const { user, isLogin } = storeToRefs(userInfo); //获得用户信息
 //弹出框是否展示
 const show = ref(false);
 //搜索建议关键词
@@ -285,7 +285,6 @@ onMounted(async () => {
   console.log(JSON.parse(localStorage.getItem("userInfo")), "解析后的数据");
   if(user.value){
     user.value = JSON.parse(localStorage.getItem("userInfo"));
-    // token.value = user.value.token;
   }
   
   console.log(user.value, 111);
@@ -310,6 +309,8 @@ const onDialogCancel = () => {
 };
 const onDialogConfirm = () => {
   localStorage.removeItem("userInfo");
+  localStorage.removeItem('cookie')
+  userInfo.updateIsLogin(false)
   userInfo.removeUserInfo()
   isDialogShow.value = false;
   show.value = false
