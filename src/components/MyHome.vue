@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-12 17:02:36
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-14 20:31:43
+ * @LastEditTime: 2022-09-15 09:57:14
 -->
 <template>
   <div class="w-100% pt-2">
@@ -11,10 +11,10 @@
       <div class="relative w-95% h-30 top-30 rounded  bg-white">
           <img class="absolute h-15 w-15 rounded-full -top-20% left-50% -translate-x-1/2" :src="user?.profile?.avatarUrl" alt="">
           <div class="absolute font-sans font-650 top-30% left-50% -translate-x-1/2">{{user.profile?.nickname}}</div>
-          <div class="absolute font-sans text-10px text-hex-aab top-50% left-30% -translate-x-1/2">{{user.profile?.follows}} 关注</div>
-          <div class="absolute font-sans text-10px text-hex-aab top-50% left-50% -translate-x-1/2">{{user.profile?.followeds}} 粉丝</div>
-          <div class="absolute font-sans text-10px text-hex-aab top-50% left-70% -translate-x-1/2">lv{{level}}</div>
-          <div class="absolute font-sans text-10px text-hex-aab top-70% left-20% -translate-x-1/2">累积听歌数：{{listenSongs}}</div>
+          <div class="absolute font-sans text-10px text-hex-aab top-50% left-30% -translate-x-1/2">{{userDetail.profile?.follows}} 关注</div>
+          <div class="absolute font-sans text-10px text-hex-aab top-50% left-50% -translate-x-1/2">{{userDetail.profile?.followeds}} 粉丝</div>
+          <div class="absolute font-sans text-10px text-hex-aab top-50% left-70% -translate-x-1/2">lv{{userDetail.level}}</div>
+          <div class="absolute font-sans text-10px text-hex-aab top-70% left-20% -translate-x-1/2">累积听歌数：{{userDetail.listenSongs}}</div>
       </div>
   </div>
 </template>
@@ -29,25 +29,21 @@ const router = useRouter();
 const store = useStore();
 const userInfo = userStore();
 const { isFooterShow } = storeToRefs(store);
-const { isLogin, token, user } = storeToRefs(userInfo);
-const level = ref(0)
-const listenSongs = ref(0)
+const { isLogin, user } = storeToRefs(userInfo);
+let userDetail = ref({})//存储用户详情信息
 onMounted(async() => {
     user.value = JSON.parse(localStorage.getItem("userInfo"));
-    token.value = user.value.token;
     console.log(user.value,'本地用户信息');
-    
     let uid = ref(user.value.account.id)
     let res = await getUserAcount()//获取账号信息
     console.log(res,'这是用户账号信息');
-    let res1 = await getUserDetail(uid.value)//获取用户详细信息
-    console.log(res1,'用户详情');
-    level.value = res1.level
-    listenSongs.value = res1.listenSongs
-    let res2 = await getUserPlaylist(286940473)
+    let res1 = await getUserDetail(uid.value)//获取用户详细信息-关注
+    userDetail.value = res1
+    console.log(userDetail,'用户详情对象');
+    let res2 = await getUserPlaylist(uid.value)
     console.log(uid.value,res2,'用户歌单');
     
-    if(!token.value.length){router.push({
+    if(!isLogin.value){router.push({
         path:'/LoginOrReg'
     })
     }
