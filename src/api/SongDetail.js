@@ -1,32 +1,32 @@
 /*
- * @Description: 
+ * @Description:
  * @Author: 曹俊
  * @Date: 2022-08-24 18:35:26
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-10 10:29:03
+ * @LastEditTime: 2022-09-16 19:30:42
  */
 import request from '~/utils/request'
 
-//获取歌曲的歌词
+// 获取歌曲的歌词
 
 export function getMusicLyric(data) {
     return request({
         method: 'post',
-        url: `/lyric?id=${data}`
+        url: `/lyric?id=${data}`,
     })
 }
-//获取歌曲信息
+// 获取歌曲信息
 export function getMusic(data) {
     return request({
         method: 'get',
-        url: `/song/detail?ids=${data}`
+        url: `/song/detail?ids=${data}`,
     })
 }
-//获取歌曲的评论
+// 获取歌曲的评论
 export function getMusicComment(data) {
     return request({
         method: 'get',
-        url: `/comment/music?id=${data}&limit=100&offset=0`
+        url: `/comment/music?id=${data}&limit=100&offset=0`,
     })
 }
 
@@ -40,9 +40,9 @@ export function getMusicComment(data) {
 // 接口地址 : /check/music
 
 // 调用例子 : /check/music?id=33894312
-export function isMusicAvailable(data) {
-    return request({
-        method: 'post',
-        url: `/check/music?id=${data}?timestamp=${Date.now()}`
-    })
-}
+// export function isMusicAvailable(data) {
+//     return request({
+//         method: 'post',
+//         url: `/check/music?id=${data}?timestamp=${Date.now()}`
+//     })
+// }
