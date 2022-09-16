@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-22 21:03:00
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-16 21:05:53
+ * @LastEditTime: 2022-09-16 21:23:03
 -->
 <script setup lang="ts">
 import { Vue3Marquee } from "vue3-marquee";
@@ -37,29 +37,29 @@ const timeFilter = (time) => {
     res = `${minRes}:${secRes}`;
   }
 
-  console.log(minRes, secRes);
+  // console.log(minRes, secRes);
   return res;
 };
 const nowTime = ref(timeFilter(store.currentTime)); //获取当前时间
 const totalTime = ref(timeFilter(duration.value)); //获取总时长
-console.log(totalTime, "totalTime");
+// console.log(totalTime, "totalTime");
 
 const { isShow, isDetailShow } = storeToRefs(store);
 onMounted(async () => {
   const res = await getMusicComment(props.musicList.id);
   totalComment.value = res.total;
   console.log(totalComment.value, "音乐评论数");
-  totalTime.value = timeFilter(duration.value);
+  totalTime.value = timeFilter(duration.value);//有时候接口数据获取不到的话就会丢失响应式，再赋值一次
   // console.log(store.lyricList.lyric);
   props.addDuration();
   setInterval(() => {
-    nowTime.value = timeFilter(store.currentTime);
+    nowTime.value = timeFilter(store.currentTime);//每隔一秒更改一次当前时间
     console.log(timeFilter(store.currentTime), "currentTime");
   }, 1000);
 });
 const change = (target) => {
-  console.log(target.target.value, "value");
-  store.currentTime = parseInt(target.target.value);
+  console.log(timeFilter(target.target.value), "value");
+  nowTime.value = timeFilter(target.target.value)
 };
 const back = () => {
   isDetailShow.value = false;
@@ -233,7 +233,7 @@ watch(
     <div
       class="mx-2 flex mt-6 w-95% bg-transparent justify-around items-center text-xs text-hex-bbb"
     >
-      <div class="flex">{{ nowTime }}</div>
+      <div class="flex w-5 mr-1">{{ nowTime }}</div>
       <input
         class="flex justify-between mx-1"
         v-model="store.currentTime"
@@ -243,7 +243,7 @@ watch(
         step="0.01"
         @change="change"
       />
-      <div class="flex">{{ totalTime }}</div>
+      <div class="flex w-5 mx-1">{{ totalTime }}</div>
     </div>
     <div class="fixed w-100% flex justify-around mt-40px text-xl items-center">
       <div><van-icon name="replay"></van-icon></div>
