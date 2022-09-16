@@ -1,19 +1,64 @@
 <!--
- * @Description: 
+ * @Description:
  * @Author: 曹俊
  * @Date: 2022-09-06 19:07:49
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-16 16:45:16
+ * @LastEditTime: 2022-09-16 19:46:06
 -->
+<script setup lang="ts">
+import {
+  getDailyRecommendSongList,
+  getDailyRecommendSongs,
+} from '~/api/RecommendSongList'
+import { useStore } from '~/store/index'
+const store = useStore()
+const loading = ref(true)
+// 获取时间
+const day = new Date()
+const Day = ref(day.getUTCDate())
+const month = new Date()
+const Month = ref(month.getMonth() + 1)
+const choice = ref(['推荐歌曲', '推荐歌单'])
+const active = ref(0)
+const state = reactive({
+  songs: [],
+  songList: [],
+})
+onMounted(async () => {
+  const recSongRes = await getDailyRecommendSongs()
+  state.songs = recSongRes.data.dailySongs
+  console.log(recSongRes, '推荐歌曲')
+  loading.value = false
+  const recSongListRes = await getDailyRecommendSongList()
+  console.log(recSongListRes, '推荐歌单')
+  state.songList = recSongListRes.recommend
+})
+const filter = (num) => {
+  if (num > 100000000)
+    return `${(num / 100000000).toFixed(1)}亿`
+  else if (num > 10000)
+    return `${(num / 10000).toFixed(0)}万`
+  else return num
+}
+// 修改歌曲信息并进行播放
+const updateSongList = (index) => {
+  store.updatePlayList(store.$state, state.songs) // 将歌单列表传进默认列表
+  store.updatePlayListIndex(index) // 将索引值传给默认索引
+  store.updateIsShow(store.$state, false) // 修改为播放图标
+}
+</script>
+
 <template>
   <div class="w-100% h-30vh relative bg-hex-DB2C1F">
     <img
       class="w-10 h-10 rounded-xl absolute left-50% top-40% -translate-x-1/2"
       src="/logo.png"
       alt="背景图"
-    />
+    >
     <div class="flex w-50 items-center text-white pt-34">
-      <div class="text-3xl font-500 ml-3">{{ Month }}</div>
+      <div class="text-3xl font-500 ml-3">
+        {{ Month }}
+      </div>
       /
       <div>{{ Day }}</div>
     </div>
@@ -39,7 +84,7 @@
                     class="w-3rem h-3rem rounded"
                     :src="item.al.picUrl"
                     alt="这是每日推荐歌曲图片"
-                  />
+                  >
                   <div
                     class="flex-col ml-2 text-style"
                     @click="updateSongList(index)"
@@ -73,9 +118,9 @@
         </div>
         <div v-show="active == 1" class="mb-15">
           <div
-            class="inline-block pt-1 px-2"
             v-for="(item, index) in state.songList"
             :key="index"
+            class="inline-block pt-1 px-2"
             @click="toMusicDetail(item.id)"
           >
             <div class="relative">
@@ -83,7 +128,7 @@
                 class="w-21 h-21 rounded-xl p-1"
                 :src="item.picUrl"
                 alt="这是歌单广场的封面"
-              />
+              >
               <div class="text-style w-20 text-left text-13px px-1">
                 {{ item.name }}
               </div>
@@ -91,7 +136,9 @@
                 class="flex play-icon text-10px px-2 py-0.5 rounded-xl absolute"
               >
                 <div><van-icon name="play-circle-o" /></div>
-                <div class="mx-.5">{{ filter(item.playcount) }}</div>
+                <div class="mx-.5">
+                  {{ filter(item.playcount) }}
+                </div>
               </div>
             </div>
           </div>
@@ -100,47 +147,6 @@
     </van-tabs>
   </div>
 </template>
-
-<script setup lang="ts">
-import {
-  getDailyRecommendSongs,
-  getDailyRecommendSongList,
-} from "~/api/RecommendSongList";
-import { useStore } from "~/store/index";
-const store = useStore();
-const loading = ref(true);
-//获取时间
-const day = new Date();
-let Day = ref(day.getUTCDate());
-const month = new Date();
-let Month = ref(month.getMonth() + 1);
-const choice = ref(["推荐歌曲", "推荐歌单"]);
-const active = ref(0);
-const state = reactive({
-  songs: [],
-  songList: [],
-});
-onMounted(async () => {
-  let recSongRes = await getDailyRecommendSongs();
-  state.songs = recSongRes.data.dailySongs;
-  console.log(recSongRes, "推荐歌曲");
-  loading.value = false;
-  let recSongListRes = await getDailyRecommendSongList();
-  console.log(recSongListRes, "推荐歌单");
-  state.songList = recSongListRes.recommend;
-});
-const filter = (num) => {
-  if (num > 100000000) return (num / 100000000).toFixed(1) + "亿";
-  else if (num > 10000) return (num / 10000).toFixed(0) + "万";
-  else return num;
-};
-//修改歌曲信息并进行播放
-const updateSongList = (index) => {
-  store.updatePlayList(store.$state, state.songs); //将歌单列表传进默认列表
-  store.updatePlayListIndex(index); //将索引值传给默认索引
-  store.updateIsShow(store.$state, false); //修改为播放图标
-};
-</script>
 
 <style scoped>
 .text-style {
