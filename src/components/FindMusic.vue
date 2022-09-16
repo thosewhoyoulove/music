@@ -1,16 +1,48 @@
 <!--
- * @Description: 
+ * @Description:
  * @Author: 曹俊
  * @Date: 2022-08-18 20:03:07
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-11 20:30:34
+ * @LastEditTime: 2022-09-16 19:33:02
 -->
+<script setup lang="ts">
+import getFindSongList from '~/api/RecommendSongList'
+const router = useRouter()
+const loading = ref(true)
+const state = reactive({
+  musicList: [],
+})
+onMounted(async () => {
+  const res = await getFindSongList()
+  console.log(res.result)
+  state.musicList = res.result
+  loading.value = false
+})
+const filter = (num) => {
+  if (num > 100000000)
+    return `${(num / 100000000).toFixed(1)}亿`
+  else if (num > 10000)
+    return `${(num / 10000).toFixed(0)}万`
+  else return num
+}
+const toMusicDetail = (id) => {
+  router.push({
+    path: '/RecMusicListDetail',
+    query: {
+      id,
+    },
+  })
+}
+</script>
+
 <template>
   <div class="w-100% h-5rem p-.2rem">
     <div
       class="flex justify-between items-center mt-2 w-100% h-1.8rem mb-.2rem"
     >
-      <div class="font-900">发现歌单</div>
+      <div class="font-900">
+        发现歌单
+      </div>
       <div class="text-13px border border-hex-bbb pl-2.5 mr-2 rounded-xl pt-.5">
         查看更多<van-icon name="arrow" />
       </div>
@@ -33,7 +65,7 @@
               class="h-8rem m-1 rounded-xl p-1"
               :src="item.picUrl"
               alt="这是首页推荐歌单的封面"
-            />
+            >
             <div class="text-style text-left text-13px px-1">
               {{ item.name }}
             </div>
@@ -48,33 +80,6 @@
   </div>
   <router-view />
 </template>
-
-<script setup lang="ts">
-import getFindSongList from "~/api/RecommendSongList";
-const router = useRouter();
-const loading = ref(true);
-let state = reactive({
-  musicList: [],
-});
-onMounted(async () => {
-  let res = await getFindSongList();
-  console.log(res.result);
-  state.musicList = res.result;
-  loading.value = false;
-});
-const filter = (num) => {
-  if (num > 100000000) return (num / 100000000).toFixed(1) + "亿";
-  else if (num > 10000) return (num / 10000).toFixed(0) + "万";
-};
-const toMusicDetail = (id) => {
-  router.push({
-    path: "/RecMusicListDetail",
-    query: {
-      id: id,
-    },
-  });
-};
-</script>
 
 <style scoped>
 .more {
