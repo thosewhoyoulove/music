@@ -1,17 +1,55 @@
 <!--
- * @Description: 
+ * @Description:
  * @Author: 曹俊
  * @Date: 2022-09-06 17:07:32
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-11 20:46:11
+ * @LastEditTime: 2022-09-16 19:36:31
 -->
+<script setup lang="ts">
+import { getAllSong, getSongListDetail } from '~/api/SongListDetail'
+import { useStore } from '~/store/index'
+const store = useStore()
+const route = useRoute()
+const router = useRouter()
+const state = reactive({
+  playlist: {}, // 歌单信息
+  songlist: [], // 歌曲信息
+})
+const loading = ref(true)
+const id = parseInt(route.query.id)
+onMounted(async () => {
+  const res = await getSongListDetail(id)
+  state.playlist = res.playlist // 歌单信息
+  console.log(state.playlist, '歌单信息')
+  const songlist = await getAllSong(id)
+  state.songlist = songlist.songs
+  loading.value = false
+  console.log(state.songlist, '歌曲信息')
+})
+// 修改歌曲信息并进行播放
+const updateSongList = (index) => {
+  store.updatePlayList(store.$state, state.songlist) // 将歌单列表传进默认列表
+  store.updatePlayListIndex(index) // 将索引值传给默认索引
+  store.updateIsShow(store.$state, false) // 修改为播放图标
+}
+// 点击评论按钮跳转
+const toCommentDetail = () => {
+  router.push({
+    path: '/SongListComment',
+    query: {
+      id,
+    },
+  })
+}
+</script>
+
 <template>
   <div class="bg-white w-100% h-50vh relative">
     <img
       class="w-100% h-100% rounded-xl absolute blur-xl"
       :src="state.playlist.coverImgUrl"
       alt="这是排行榜详情的底片阴影"
-    />
+    >
     <div class="justify-between pt-5 items-center px-5 text-white text-right">
       <span class="text-7 mr-2"><van-icon size="25px" name="search" /></span>
       <span class="text-7"><van-icon name="ellipsis" /></span>
@@ -21,7 +59,7 @@
         class="h-8rem m-1 rounded-xl p-1 relative inline-block"
         :src="state.playlist.coverImgUrl"
         alt="这是排行榜详情的封面"
-      />
+      >
     </div>
     <div
       class="
@@ -43,29 +81,16 @@
       </span>
     </div>
     <div class="relative flex mt-6 text-light-900 justify-around">
-      <span class="flex mx-1 items-center justify-between"
-        ><van-button style="background: transparent" round
-          ><van-icon color="#ccc" size="1rem" name="share-o" /><span
-            class="px-1 text-light-900"
-            >{{ state?.playlist?.shareCount }}</span
-          ></van-button
-        >
+      <span class="flex mx-1 items-center justify-between"><van-button style="background: transparent" round><van-icon color="#ccc" size="1rem" name="share-o" /><span
+        class="px-1 text-light-900"
+      >{{ state?.playlist?.shareCount }}</span></van-button>
       </span>
-      <span @click="toCommentDetail"
-        ><van-button style="background: transparent" round
-          ><van-icon color="#ccc" size="1rem" name="chat-o" /><span
-            class="px-1 text-light-900"
-            >{{ state?.playlist?.commentCount }}</span
-          ></van-button
-        ></span
-      >
-      <span class="mx-1"
-        ><van-button color="#FE3641" round
-          ><van-icon size="1rem" name="add-o" /><span class="px-1">{{
-            state?.playlist?.subscribedCount
-          }}</span></van-button
-        ></span
-      >
+      <span @click="toCommentDetail"><van-button style="background: transparent" round><van-icon color="#ccc" size="1rem" name="chat-o" /><span
+        class="px-1 text-light-900"
+      >{{ state?.playlist?.commentCount }}</span></van-button></span>
+      <span class="mx-1"><van-button color="#FE3641" round><van-icon size="1rem" name="add-o" /><span class="px-1">{{
+        state?.playlist?.subscribedCount
+      }}</span></van-button></span>
     </div>
   </div>
   <div class="w-100% mb-15">
@@ -85,7 +110,7 @@
             class="w-3rem h-3rem rounded"
             :src="item.al.picUrl"
             alt="这是排行榜详情的歌曲专辑图片"
-          />
+          >
           <div class="flex-col ml-2 text-style" @click="updateSongList(index)">
             <div class="flex">
               <div class="flex text-md font-extrabold text-style break-all">
@@ -109,48 +134,6 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { getSongListDetail, getAllSong } from "~/api/SongListDetail";
-import { useStore } from "~/store/index";
-import { storeToRefs } from "pinia";
-const store = useStore();
-const { isFooterShow } = storeToRefs(store);
-const route = useRoute();
-const router = useRouter();
-const state = reactive({
-  playlist: {}, //歌单信息
-  songlist: [], //歌曲信息
-});
-const loading = ref(true);
-let id = parseInt(route.query.id);
-onMounted(async () => {
-  isFooterShow.value = false;
-  let res = await getSongListDetail(id);
-  state.playlist = res.playlist; //歌单信息
-  console.log(state.playlist, "歌单信息");
-  let songlist = await getAllSong(id);
-  state.songlist = songlist.songs;
-  loading.value = false;
-  console.log(state.songlist, "歌曲信息");
-});
-//修改歌曲信息并进行播放
-const updateSongList = (index) => {
-  store.updatePlayList(store.$state, state.songlist); //将歌单列表传进默认列表
-  store.updatePlayListIndex(index); //将索引值传给默认索引
-  store.updateIsShow(store.$state, false); //修改为播放图标
-  isFooterShow.value = true;
-};
-//点击评论按钮跳转
-const toCommentDetail = () => {
-  router.push({
-    path: "/SongListComment",
-    query: {
-      id: id,
-    },
-  });
-};
-</script>
-
 <style scoped>
 .text-style {
   display: -webkit-box;
@@ -166,6 +149,7 @@ const toCommentDetail = () => {
   left: 1rem;
 }
 </style>
+
 <route lang="yaml">
 meta:
   layout: default
