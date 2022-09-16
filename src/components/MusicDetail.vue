@@ -1,19 +1,162 @@
 <!--
- * @Description: 
+ * @Description:
  * @Author: 曹俊
  * @Date: 2022-08-22 21:03:00
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-08 20:43:47
+ * @LastEditTime: 2022-09-16 19:39:25
 -->
+<script setup lang="ts">
+import { Vue3Marquee } from 'vue3-marquee'
+import { getMusicComment } from '~/api/SongDetail'
+import 'vue3-marquee/dist/style.css'
+import { storeToRefs } from 'pinia'
+import { useStore } from '~/store/index'
+const props = defineProps<{
+  musicList: Object
+  play: Function
+  addDuration: Function
+}>()
+const router = useRouter()
+const store = useStore()
+const isLyricShow = ref(false) // 歌词是否显示
+const totalComment = ref(0)
+
+const { playList, playListIndex, currentTime, duration } = storeToRefs(store)
+
+const timeFilter = (time) => {
+  const minRes = Math.floor((parseInt(time) / 60))
+  const secRes = parseInt(time) % 60
+  const res = `${minRes}:${secRes}`
+  console.log(minRes, secRes)
+
+  return res
+}
+
+const totalTime = ref(timeFilter(duration.value))
+console.log(totalTime, 'totalTime')
+
+const { isShow, isDetailShow } = storeToRefs(store)
+onMounted(async () => {
+  const res = await getMusicComment(props.musicList.id)
+  totalComment.value = res.total
+  console.log(totalComment.value, '音乐评论数')
+  // console.log(store.lyricList.lyric);
+  props.addDuration()
+  console.log(store.currentTime, 'currentTime')
+  console.log(timeFilter(67392.30000001192), '11111111111111')
+})
+const change = (target) => {
+  console.log(target.target.value, 'value')
+}
+const back = () => {
+  isDetailShow.value = false
+  console.log(111111111111111)
+}
+const toCommentDetail = () => {
+  isDetailShow.value = false
+  router.push({
+    path: '/SongComment',
+    query: {
+      id: playList.value[playListIndex.value].id,
+    },
+  })
+}
+// 下一首上一首操作
+const goPlay = (num) => {
+  console.log('点击了切换歌曲')
+
+  // 如果是第一首，上一首应该是最后一首
+  // 如果是最后一首，下一首应该是第一首
+  let index = playListIndex.value + num
+  if (index < 0)
+    index = playList.value.length - 1
+  else if (index == playList.value.length)
+    index = 0
+
+  store.updatePlayListIndex(index)
+}
+// 计算属性歌词处理
+// let curMin = ref(0)
+// let curSec = ref(0)
+const lyric = computed(() => {
+  let arr
+  if (store.lyricList.lyric) {
+    /* 将歌词进行换行符分割 */
+    /* 1.先用数组split方法对歌词的换行进行分割
+    2.用map方法，遍历数组并对其进行操作返回一个新数组
+    3.以对象形式返回为新数组
+    */
+    arr = store.lyricList.lyric.split(/[(\r\n)\r\n]+/).map((item, i) => {
+      // 分钟，切割第一到第三
+      const min = item.slice(1, 3)
+      // 秒钟切割
+      const sec = item.slice(4, 6)
+      // 毫秒切割
+      let mill = item.slice(7, 10)
+      // 歌词切割
+      let lrc = item.slice(11, item.length)
+      // 每句歌词显示的时间,要与audio标签的currentTime对应才能显示active的歌词
+      let time
+        = parseInt(min) * 60 * 1000 + parseInt(sec) * 1000 + parseInt(mill)
+      // 因为两句歌词后面的毫秒为两位数，则要进行处理
+      if (isNaN(Number(mill))) {
+        mill = item.slice(7, 9)
+        lrc = item.slice(10, item.length)
+        time
+          = parseInt(min) * 60 * 1000 + parseInt(sec) * 1000 + parseInt(mill)
+      }
+      // console.log(min, sec, Number(mill), lrc)
+      // curMin.value = min
+      // curSec.value = sec
+      // 返回对象组成数组
+      return { min, sec, mill, lrc, time }
+    })
+    // 遍历拿到pre，即后一句歌词的时间
+    arr.forEach((item: any, i: any) => {
+      // 获取第一的item.pre为0的索引就可以获得总时长了
+      // let singleArr = Array.from(item)
+      // let res = singleArr.findIndex(s => s.pre == 0)
+      // console.log(res);
+      // console.log(Array.isArray(singleArr),i);
+
+      if (i === arr.length - 1 || isNaN(arr[i + 1].time))
+        item.pre = 0
+      else
+        item.pre = arr[i + 1].time
+    })
+  }
+  console.log(arr)
+  return arr
+})
+// this.$refs的vue3写法
+const musicLyric = ref(null)
+// 监听歌词时间
+watch(
+  () => store.currentTime,
+  (newValue) => {
+    const p = document.querySelector('p.active')
+    if (p) {
+      if (p.offsetTop > 150)
+        musicLyric.value.scrollTop = p.offsetTop - 150
+    }
+    if (newValue === store.duration?.value) {
+      if (store.playListIndex === store.playList.length - 1) {
+        store.updatePlayListIndex(0)
+        props.play()
+      }
+      else {
+        store.updatePlayListIndex(store.playListIndex + 1)
+      }
+    }
+  },
+)
+</script>
+
 <template>
   <div class="w-100% h-604px">
-    <img
-      class="absolute -z-1 blur-3xl h-100% w-100%"
-      :src="props?.musicList?.al?.picUrl"
-      alt="这是歌曲详情的底部阴影"
-    />
+    <div class="absolute -z-1 blur-3xl h-100% w-100% bg-pink" />
     <div class="flex justify-between mt-5 px-2">
-      <div @click="back" class="text-xl text-hex-ccc">
+      <div class="text-xl text-hex-ccc" @click="back">
         <van-icon name="arrow-left" />
       </div>
       <!-- 歌名跑马灯 -->
@@ -23,40 +166,44 @@
         </Vue3Marquee>
         <!-- 艺人名字 -->
         <div
-          class="flex items-center"
           v-for="(item, index) in props?.musicList?.ar"
           :key="index"
+          class="flex items-center"
         >
-          <div class="text-xs text-hex-ccc px-1">{{ item.name }}</div>
+          <div class="text-xs text-hex-ccc px-1">
+            {{ item.name }}
+          </div>
           <div class="text-xs text-hex-aaa">
             <van-icon color="#fff" name="arrow" />
           </div>
         </div>
       </div>
-      <div class="text-xl text-hex-ccc"><van-icon name="share-o" /></div>
+      <div class="text-xl text-hex-ccc">
+        <van-icon name="share-o" />
+      </div>
     </div>
     <!-- 磁盘大图 -->
     <img
+      v-show="!isLyricShow"
       class="al-img rounded-1/2 w-50 h-50 animate__animated animate__bounceIn"
       :src="props?.musicList?.al?.picUrl"
       alt="这是歌曲详情的磁盘图"
-      v-show="!isLyricShow"
       @click="isLyricShow = true"
-    />
+    >
     <div
-      class="musiclyricList animate__animated animate__backInDown"
-      ref="musicLyric"
       v-show="isLyricShow"
+      ref="musicLyric"
+      class="musiclyricList animate__animated animate__backInDown"
       @click="isLyricShow = false"
     >
       <p
-        class="ml-6"
         v-for="item in lyric"
         :key="item"
+        class="ml-6"
         :class="{
           active:
-            store.currentTime * 1000 >= item.time &&
-            store.currentTime * 1000 < item.pre,
+            store.currentTime * 1000 >= item.time
+            && store.currentTime * 1000 < item.pre,
         }"
       >
         {{ item.lrc }}
@@ -70,16 +217,14 @@
       <span><van-icon name="like-o" /></span>
       <span style="transform: rotate(180deg)"><van-icon name="upgrade" /></span>
       <span><van-icon name="close" /></span>
-      <span @click="toCommentDetail" class="relative"
-        ><van-icon name="comment-o" /><van-badge
-          v-if="totalComment > 0"
-          class="absolute top-6px -right-3"
-          style="background: transparent; border-width: 0"
-          color="#ccc"
-          :content="totalComment"
-          max="999"
-        ></van-badge
-      ></span>
+      <span class="relative" @click="toCommentDetail"><van-icon name="comment-o" /><van-badge
+        v-if="totalComment > 0"
+        class="absolute top-6px -right-3"
+        style="background: transparent; border-width: 0"
+        color="#ccc"
+        :content="totalComment"
+        max="999"
+      /></span>
       <span style="transform: rotate(90deg)"><van-icon name="ellipsis" /></span>
     </div>
     <div
@@ -94,158 +239,40 @@
         text-xs text-hex-bbb
       "
     >
-      <div class="flex">00:00</div>
+      <div class="flex">
+        00:00
+      </div>
       <input
+        v-model="store.currentTime"
         class="flex justify-between mx-1"
         type="range"
         min="0"
         :max="store.duration"
-        v-model="store.currentTime"
         step="0.05"
-      />
-      <div class="flex">04:30</div>
+        @change="change"
+      >
+      <div class="flex">
+        {{ totalTime }}
+      </div>
     </div>
     <div class="fixed w-100% flex justify-around mt-40px text-xl items-center">
       <div><van-icon name="replay" /></div>
-      <div @click="goPlay(-1)"><van-icon name="arrow-left" /></div>
-      <div v-if="isShow" @click="play" class="text-3xl">
+      <div @click="goPlay(-1)">
+        <van-icon name="arrow-left" />
+      </div>
+      <div v-if="isShow" class="text-3xl" @click="play">
         <van-icon name="play-circle-o" />
       </div>
-      <div v-else @click="play" class="text-3xl">
+      <div v-else class="text-3xl" @click="play">
         <van-icon name="pause-circle-o" />
       </div>
-      <div @click="goPlay(1)"><van-icon name="arrow" /></div>
+      <div @click="goPlay(1)">
+        <van-icon name="arrow" />
+      </div>
       <div><van-icon name="bars" /></div>
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { Vue3Marquee } from "vue3-marquee";
-import { getMusicComment } from "~/api/SongDetail";
-import "vue3-marquee/dist/style.css";
-import { storeToRefs } from "pinia";
-import { useStore } from "~/store/index";
-const router = useRouter();
-const store = useStore();
-const isLyricShow = ref(false); //歌词是否显示
-const totalComment = ref(0);
-const { playList, playListIndex, currentTime, duration } = storeToRefs(store);
-const props = defineProps<{
-  musicList: Object;
-  play: Function;
-  addDuration: Function;
-}>();
-let { isShow, isDetailShow } = storeToRefs(store);
-onMounted(async () => {
-  let res = await getMusicComment(props.musicList.id);
-  totalComment.value = res.total;
-  console.log(totalComment.value, "音乐评论数");
-  // console.log(store.lyricList.lyric);
-  props.addDuration();
-});
-const back = () => {
-  isDetailShow.value = false;
-  console.log(111111111111111);
-};
-const toCommentDetail = () => {
-  isDetailShow.value = false;
-  router.push({
-    path: "/SongComment",
-    query: {
-      id: playList.value[playListIndex.value].id,
-    },
-  });
-};
-// 下一首上一首操作
-const goPlay = (num) => {
-  //如果是第一首，上一首应该是最后一首
-  //如果是最后一首，下一首应该是第一首
-  let index = playListIndex.value + num;
-  if (index < 0) {
-    index = playList.value.length - 1;
-  } else if (index === playList.value.length) {
-    index = 0;
-  }
-  store.updatePlayListIndex(index);
-};
-// 计算属性歌词处理
-// let curMin = ref(0)
-// let curSec = ref(0)
-const lyric = computed(() => {
-  let arr;
-  if (store.lyricList.lyric) {
-    /* 将歌词进行换行符分割 */
-    /* 1.先用数组split方法对歌词的换行进行分割
-    2.用map方法，遍历数组并对其进行操作返回一个新数组
-    3.以对象形式返回为新数组
-    */
-    arr = store.lyricList.lyric.split(/[(\r\n)\r\n]+/).map((item, i) => {
-      // 分钟，切割第一到第三
-      const min = item.slice(1, 3);
-      // 秒钟切割
-      const sec = item.slice(4, 6);
-      // 毫秒切割
-      let mill = item.slice(7, 10);
-      // 歌词切割
-      let lrc = item.slice(11, item.length);
-      // 每句歌词显示的时间,要与audio标签的currentTime对应才能显示active的歌词
-      let time =
-        parseInt(min) * 60 * 1000 + parseInt(sec) * 1000 + parseInt(mill);
-      // 因为两句歌词后面的毫秒为两位数，则要进行处理
-      if (isNaN(Number(mill))) {
-        mill = item.slice(7, 9);
-        lrc = item.slice(10, item.length);
-        time =
-          parseInt(min) * 60 * 1000 + parseInt(sec) * 1000 + parseInt(mill);
-      }
-      // console.log(min, sec, Number(mill), lrc)
-      // curMin.value = min
-      // curSec.value = sec
-      // 返回对象组成数组
-      return { min, sec, mill, lrc, time };
-    });
-    // 遍历拿到pre，即后一句歌词的时间
-    arr.forEach((item: any, i: any) => {
-      //获取第一的item.pre为0的索引就可以获得总时长了
-      // let singleArr = Array.from(item)
-      // let res = singleArr.findIndex(s => s.pre == 0)
-      // console.log(res);
-      // console.log(Array.isArray(singleArr),i);
-
-      if (i === arr.length - 1 || isNaN(arr[i + 1].time)) {
-        item.pre = 0;
-      } else {
-        item.pre = arr[i + 1].time;
-      }
-    });
-  }
-  // console.log(arr);
-  return arr;
-});
-// this.$refs的vue3写法
-const musicLyric = ref(null);
-// 监听歌词时间
-watch(
-  () => store.currentTime,
-  (newValue) => {
-    const p = document.querySelector("p.active");
-    if (p) {
-      if (p.offsetTop > 150) {
-        musicLyric.value.scrollTop = p.offsetTop - 150;
-      }
-    }
-    if (newValue === store.duration?.value) {
-      if (store.playListIndex === store.playList.length - 1) {
-        store.updatePlayListIndex(0);
-        props.play();
-      } else {
-        store.updatePlayListIndex(store.playListIndex + 1);
-      }
-    }
-  }
-);
-</script>
 
 <style lang="less" scoped>
 .al-img {
