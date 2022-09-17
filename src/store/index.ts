@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-21 19:43:23
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-14 19:27:08
+ * @LastEditTime: 2022-09-16 21:43:39
  */
 import { defineStore} from 'pinia'
 import { Names } from "./name-store";
@@ -48,7 +48,7 @@ export const useStore = defineStore(Names.playList, {
         updateDuration(state: { duration: any; },value: any){
             state.duration = value
         },//歌曲的总时长
-        updateCurrentTime(state: { currentTime: any; },value: any){
+        async updateCurrentTime(state: { currentTime: any; },value: any){
             state.currentTime = value
         },//歌曲的现在时长
         pushPlayList (value:any) {

@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-22 21:03:00
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-16 21:23:03
+ * @LastEditTime: 2022-09-17 09:19:04
 -->
 <script setup lang="ts">
 import { Vue3Marquee } from "vue3-marquee";
@@ -19,7 +19,6 @@ const props = defineProps<{
 const router = useRouter();
 const store = useStore();
 const isLyricShow = ref(false); // 歌词是否显示
-
 const totalComment = ref(0);
 
 const { playList, playListIndex, currentTime, duration } = storeToRefs(store);
@@ -54,11 +53,13 @@ onMounted(async () => {
   props.addDuration();
   setInterval(() => {
     nowTime.value = timeFilter(store.currentTime);//每隔一秒更改一次当前时间
-    console.log(timeFilter(store.currentTime), "currentTime");
+    // console.log(timeFilter(store.currentTime), "currentTime");
   }, 1000);
 });
 const change = (target) => {
-  console.log(timeFilter(target.target.value), "value");
+  // console.log(timeFilter(target.target.value), "value");
+  console.log(target.target.value,'value');
+  // timeValue.value = Number(target.target.value)
   nowTime.value = timeFilter(target.target.value)
 };
 const back = () => {
@@ -132,7 +133,7 @@ const lyric = computed(() => {
       else item.pre = arr[i + 1].time;
     });
   }
-  console.log(arr);
+  // console.log(arr);
   return arr;
 });
 // this.$refs的vue3写法

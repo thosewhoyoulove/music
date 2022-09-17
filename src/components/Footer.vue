@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-16 19:39:36
+ * @LastEditTime: 2022-09-16 21:44:42
 -->
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
@@ -11,7 +11,7 @@ import { useStore } from '~/store/index'
 const audio = ref(null) // 获取audio属性
 const store = useStore()
 let interVal = ref(0) // 设置定时器
-const { lyricList, playList, playListIndex, isShow, isDetailShow }
+const { lyricList, playList, playListIndex, isShow, isDetailShow,currentTime }
   = storeToRefs(store)
 onMounted(async () => {
   store.getLyric(playList.value[playListIndex.value]?.id)
@@ -36,7 +36,7 @@ const play = () => {
   /* 判断是否已暂停 */
   if (audio.value.paused) {
     console.log('点击了播放')
-
+    store.currentTime = audio.value.currentTime
     /* 调用audio的播放功能方法 */
     audio.value.load()
     // 让其显示播放按钮
@@ -45,8 +45,8 @@ const play = () => {
     updateTime()
   }
   else if (!audio.value.paused) {
-    console.log('点击了暂停')
-
+    console.log(audio)
+    store.updateCurrentTime(store.$state,audio.value.currentTime)
     /* 调用暂停方法 */
     audio.value.pause()
     // 让其隐藏播放按钮
