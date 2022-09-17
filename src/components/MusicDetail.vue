@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-22 21:03:00
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-17 18:56:24
+ * @LastEditTime: 2022-09-17 19:56:54
 -->
 <script setup lang="ts">
 import { Vue3Marquee } from "vue3-marquee";
@@ -51,11 +51,19 @@ onMounted(async () => {
   totalTime.value = timeFilter(duration.value);//有时候接口数据获取不到的话就会丢失响应式，再赋值一次
   // console.log(store.lyricList.lyric);
   props.addDuration();
-  setInterval(() => {
+  let timer =  setInterval(() => {
+    nowTime.value = timeFilter(store.currentTime);//每隔一秒更改一次当前时间
+    // console.log(timeFilter(store.currentTime), "currentTime");
+  }, 1000);//上下两个定时器第一个将时间每秒变化，第二个暂停的时候停止计时
+});
+let timer =  setInterval(() => {
     nowTime.value = timeFilter(store.currentTime);//每隔一秒更改一次当前时间
     // console.log(timeFilter(store.currentTime), "currentTime");
   }, 1000);
-});
+const playMusic = () =>{
+    clearInterval(timer)
+    props.play()
+  }
 const change = (target) => {
   // console.log(timeFilter(target.target.value), "value");
   console.log(target.target.value,'value');
@@ -249,10 +257,10 @@ watch(
     <div class="fixed w-100% flex justify-around mt-40px text-xl items-center">
       <div><van-icon name="replay"></van-icon></div>
       <div @click="goPlay(-1)"><van-icon name="arrow-left"></van-icon></div>
-      <div class="text-3xl" v-if="isShow" @click="play">
+      <div class="text-3xl" v-show="isShow" @click="playMusic">
         <van-icon name="play-circle-o"></van-icon>
       </div>
-      <div class="text-3xl" v-else @click="play">
+      <div class="text-3xl" v-show="!isShow" @click="play">
         <van-icon name="pause-circle-o"></van-icon>
       </div>
       <div @click="goPlay(1)"><van-icon name="arrow"></van-icon></div>
