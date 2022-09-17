@@ -7,24 +7,19 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    Counter: typeof import('./src/components/Counter.vue')['default']
     FindMusic: typeof import('./src/components/FindMusic.vue')['default']
     Footer: typeof import('./src/components/Footer.vue')['default']
     IconList: typeof import('./src/components/IconList.vue')['default']
-    LottieAnimation: typeof import('vue3-marquee')['Vue3Marquee']
     MusicDetail: typeof import('./src/components/MusicDetail.vue')['default']
     MyHome: typeof import('./src/components/MyHome.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    Search: typeof import('./src/components/Search.vue')['default']
     Swiper: typeof import('./src/components/Swiper.vue')['default']
     TopNav: typeof import('./src/components/TopNav.vue')['default']
     VanBadge: typeof import('vant/es')['Badge']
     VanButton: typeof import('vant/es')['Button']
-    VanCell: typeof import('vant/es')['Cell']
     VanCellGroup: typeof import('vant/es')['CellGroup']
     VanCheckbox: typeof import('vant/es')['Checkbox']
-    VanDialog: typeof import('vant/es')['Dialog']
     VanField: typeof import('vant/es')['Field']
     VanForm: typeof import('vant/es')['Form']
     VanIcon: typeof import('vant/es')['Icon']
@@ -40,8 +35,6 @@ declare module '@vue/runtime-core' {
     VanSwipe: typeof import('vant/es')['Swipe']
     VanSwipeItem: typeof import('vant/es')['SwipeItem']
     VanTab: typeof import('vant/es')['Tab']
-    VanTabbar: typeof import('vant/es')['Tabbar']
-    VanTabbarItem: typeof import('vant/es')['TabbarItem']
     VanTabs: typeof import('vant/es')['Tabs']
   }
 }

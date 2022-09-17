@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-08-19 11:46:11
+ * @LastEditTime: 2022-09-17 11:07:43
  */
 /// <reference types="vitest" />
 
@@ -16,6 +16,8 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Unocss from 'unocss/vite'
 import { VantResolver } from 'unplugin-vue-components/resolvers';
 import Layouts from 'vite-plugin-vue-layouts';
+import viteCompression from 'vite-plugin-compression'//开启gzip压缩
+import legacyPlugin from '@vitejs/plugin-legacy'
 
 
 export default defineConfig({
@@ -27,6 +29,17 @@ export default defineConfig({
   plugins: [
     Vue({
       reactivityTransform: true,
+    }),
+    viteCompression({
+      verbose:true,
+      disable:false,
+      threshold:10240,
+      algorithm:'gzip',//开启gzip静态压缩
+      ext:'.gz'
+    }),
+    legacyPlugin({
+      targets:['chrome 52'],//需要兼容的浏览器列表
+      additionalLegacyPolyfills:['regenerator-runtime/runtime']//兼容IE11
     }),
 
     // https://github.com/hannoeru/vite-plugin-pages
@@ -60,6 +73,18 @@ export default defineConfig({
     // see unocss.config.ts for config
     Unocss(),
   ],
+  build:{
+    // assetsDir: './static',
+    //css代码分离
+    // cssCodeSplit: true,
+    minify: 'terser',
+    terserOptions:{
+      compress:{
+        drop_console:true,
+        drop_debugger:true,
+      },
+    },
+  },
 
   // https://github.com/vitest-dev/vitest
   test: {
