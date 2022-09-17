@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-16 22:44:19
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-17 20:10:09
+ * @LastEditTime: 2022-09-17 20:18:57
 -->
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
@@ -307,7 +307,6 @@ const onDialogConfirm = () => {
     <div class="text-xl absolute top-0 right-0 w-250px" @click="toSearch">
       <van-cell-group inset>
         <van-field
-          v-model="value"
           input-align="center"
           left-icon="search"
           center
