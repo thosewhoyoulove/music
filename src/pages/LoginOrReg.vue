@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-10 14:01:20
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-16 19:46:17
+ * @LastEditTime: 2022-09-17 19:30:02
 -->
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
@@ -43,13 +43,13 @@ const toQrCodeLogin = () => {
       src="/logo.png"
       alt=""
     >
-    <div class="myBtn flex-col absolute -translate-x-1/2 left-50% top-68% w-55">
+    <div class="myBtn flex-col absolute -translate-x-1/2 left-50% top-60% w-55">
       <div class="mb-2 text-hex-FF4843" @click="toLogin">
         <van-button class="w-55 btn1" round size="large" type="default">
           手机号登录
         </van-button>
       </div>
-      <div>
+      <div @click="router.push({path:'register'})">
         <van-button
           class="btn2"
           round
@@ -69,7 +69,7 @@ const toQrCodeLogin = () => {
         w-60
         mt-4
         left-50%
-        top-85%
+        top-75%
         absolute
         -translate-x-1/2
       "
@@ -84,12 +84,12 @@ const toQrCodeLogin = () => {
       </div>
     </div>
     <img
-      class="h-8 w-8 mt-5 left-30% top-89% absolute -translate-x-1/2"
+      class="h-8 w-8 mt-5 left-30% top-81% absolute -translate-x-1/2"
       src="/email.png"
       alt=""
       @click="toEmailLogin"
     >
-    <div class="mt-5 left-70% top-89% absolute -translate-x-1/2" @click="toQrCodeLogin">
+    <div class="mt-5 left-70% top-81% absolute -translate-x-1/2" @click="toQrCodeLogin">
       <van-icon size="1.8rem" color="#f3f4f5" name="qr" />
     </div>
   </div>
