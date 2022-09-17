@@ -20,15 +20,17 @@ export default function getFindSongList() {
 // 调用例子 : /recommend/resource
 //获取每日推荐歌单
 export function getDailyRecommendSongList() {
+    const cookie = localStorage.getItem('cookie')
     return request({
         method: 'get',
-        url: '/recommend/resource',
+        url: `/recommend/resource?cookie=${encodeURIComponent(cookie)}`,
     })
 }
 //获取每日推荐歌曲，需要登录
 export function getDailyRecommendSongs() {
+    const cookie = localStorage.getItem('cookie')
     return request({
         method: 'get',
-        url: '/recommend/songs',
+        url: `/recommend/songs?cookie=${encodeURIComponent(cookie)}`,
     })
 }
