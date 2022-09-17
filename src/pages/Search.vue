@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-27 11:27:10
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-16 19:46:28
+ * @LastEditTime: 2022-09-17 19:58:53
 -->
 <script setup lang="ts">
 import { Dialog, Notify } from 'vant'
@@ -79,7 +79,7 @@ const searchHistory = async (item) => {
 const updateIndex = (item: any, index: any): any => {
   store.updatePlayList(store.$state, searchList.value)
   store.updatePlayListIndex(index)
-  store.updateIsShow(store.$state, false)
+  store.updateIsShow(store.$state, true)
 }
 </script>
 
