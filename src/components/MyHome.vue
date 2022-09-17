@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-12 17:02:36
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-16 19:39:13
+ * @LastEditTime: 2022-09-17 20:04:26
 -->
 <script setup lang="ts">
 import { Dialog, Notify } from 'vant'
@@ -35,6 +35,7 @@ const events = ref([])
 const pics = ref([])
 onMounted(async () => {
   if (!cookie.value) {
+    store.updateIsShow(store.$state, true)
     router.push({
       path: '/LoginOrReg',
     })

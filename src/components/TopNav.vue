@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-16 22:44:19
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-17 19:24:53
+ * @LastEditTime: 2022-09-17 20:10:09
 -->
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
@@ -276,7 +276,7 @@ const onDialogConfirm = () => {
         />
       </div>
     </van-popup>
-    <div class="flex mx-auto mt-5 justify-between items-center text-md font-500">
+    <div class="flex mx-auto mt-5 justify-between items-center text-md font-500 ">
       <van-tabs v-model:active="activeName" class="bg-hex-F6F7F9" background="#F6F7F9">
         <van-tab title="我的" name="a">
           <div class="w-90vw">
@@ -294,10 +294,12 @@ const onDialogConfirm = () => {
             <FindMusic />
           </div>
         </van-tab>
-        <!-- <van-tab title="云村" name="c">
-          <div class="w-90vw"></div>
+        <van-tab title="作者有话说" name="c">
+          <div class="w-90vw">
+          <read></read>
+          </div>
         </van-tab>
-        <van-tab title="视频" name="d">
+        <!-- <van-tab title="视频" name="d">
           <div class="w-90vw"></div>
         </van-tab> -->
       </van-tabs>

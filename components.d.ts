@@ -12,6 +12,7 @@ declare module '@vue/runtime-core' {
     IconList: typeof import('./src/components/IconList.vue')['default']
     MusicDetail: typeof import('./src/components/MusicDetail.vue')['default']
     MyHome: typeof import('./src/components/MyHome.vue')['default']
+    Read: typeof import('./src/components/Read.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Swiper: typeof import('./src/components/Swiper.vue')['default']

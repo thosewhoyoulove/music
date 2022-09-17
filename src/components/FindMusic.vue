@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 20:03:07
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-16 19:33:02
+ * @LastEditTime: 2022-09-17 20:08:24
 -->
 <script setup lang="ts">
 import getFindSongList from '~/api/RecommendSongList'
@@ -36,7 +36,7 @@ const toMusicDetail = (id) => {
 </script>
 
 <template>
-  <div class="w-100% h-5rem p-.2rem">
+  <div class="w-100% h-5rem p-.2rem ">
     <div
       class="flex justify-between items-center mt-2 w-100% h-1.8rem mb-.2rem"
     >
