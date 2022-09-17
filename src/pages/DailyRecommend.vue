@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 19:07:49
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-16 19:46:06
+ * @LastEditTime: 2022-09-17 19:09:09
 -->
 <script setup lang="ts">
 import {
@@ -13,6 +13,7 @@ import {
 import { useStore } from '~/store/index'
 const store = useStore()
 const loading = ref(true)
+const router = useRouter()
 // 获取时间
 const day = new Date()
 const Day = ref(day.getUTCDate())
@@ -44,7 +45,15 @@ const filter = (num) => {
 const updateSongList = (index) => {
   store.updatePlayList(store.$state, state.songs) // 将歌单列表传进默认列表
   store.updatePlayListIndex(index) // 将索引值传给默认索引
-  store.updateIsShow(store.$state, false) // 修改为播放图标
+  store.updateIsShow(store.$state, true) // 修改为暂停图标
+}
+const toMusicDetail = (id) => {
+  router.push({
+    path: '/TopListDetail',
+    query: {
+      id,
+    },
+  })
 }
 </script>
 
