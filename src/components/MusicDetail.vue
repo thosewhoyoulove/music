@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-22 21:03:00
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-17 09:19:04
+ * @LastEditTime: 2022-09-17 18:56:24
 -->
 <script setup lang="ts">
 import { Vue3Marquee } from "vue3-marquee";
@@ -78,7 +78,7 @@ const toCommentDetail = () => {
 // 下一首上一首操作
 const goPlay = (num) => {
   console.log("点击了切换歌曲");
-
+  store.updateIsShow(store.$state, true)
   // 如果是第一首，上一首应该是最后一首
   // 如果是最后一首，下一首应该是第一首
   let index = playListIndex.value + num;

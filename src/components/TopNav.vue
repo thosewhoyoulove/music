@@ -3,68 +3,70 @@
  * @Author: 曹俊
  * @Date: 2022-08-16 22:44:19
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-16 18:59:43
+ * @LastEditTime: 2022-09-17 19:24:53
 -->
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
-import { Dialog, Notify } from 'vant'
-import { getSearchKeyWord } from '~/api/Search'
-import { useStore, userStore } from '~/store/index'
-const VanDialog = Dialog.Component
-const router = useRouter()
-const store = useStore()
-const userInfo = userStore()
-const { user } = storeToRefs(userInfo) // 获得用户信息
-const cookie = ref(localStorage.getItem('cookie'))
+import { storeToRefs } from "pinia";
+import { Dialog, Notify } from "vant";
+import { getSearchKeyWord } from "~/api/Search";
+import { useStore, userStore } from "~/store/index";
+const VanDialog = Dialog.Component;
+const router = useRouter();
+const store = useStore();
+const userInfo = userStore();
+const { isFooterShow } = storeToRefs(store);
+const { user } = storeToRefs(userInfo); // 获得用户信息
+const cookie = ref(localStorage.getItem("cookie"));
 // 弹出框是否展示
-const show = ref(false)
+const show = ref(false);
 // 搜索建议关键词
-const showKeyword = ref('') // 输入框的内容
-const realkeyword = ref('') // 搜索关键词
+const showKeyword = ref(""); // 输入框的内容
+const realkeyword = ref(""); // 搜索关键词
 // 默认展示发现tab
-const activeName = ref('b')
+const activeName = ref("b");
 onMounted(async () => {
-  const res = await getSearchKeyWord()
-  console.log(res.data)
-  showKeyword.value = res.data.showKeyword
-  realkeyword.value = res.data.realkeyword
-  console.log(JSON.parse(localStorage.getItem('userInfo')), '解析后的数据')
-  if (user.value)
-    user.value = JSON.parse(localStorage.getItem('userInfo'))
-
-  console.log(user.value, 111)
-})
+  const res = await getSearchKeyWord();
+  isFooterShow.value = true;
+  console.log(res.data);
+  showKeyword.value = res.data.showKeyword;
+  realkeyword.value = res.data.realkeyword;
+  console.log(JSON.parse(localStorage.getItem("userInfo")), "解析后的数据");
+  if (user.value) user.value = JSON.parse(localStorage.getItem("userInfo"));
+});
 const toSearch = () => {
   router.push({
-    path: '/Search',
+    path: "/Search",
     query: {
       showKeyword: showKeyword.value,
       realkeyword: realkeyword.value,
     },
-  })
-}
+  });
+};
 const closePopup = () => {
-  show.value = false
-  activeName.value = 'a'
-}
+  show.value = false;
+  activeName.value = "a";
+};
 // 展示是否退出登录
-const isDialogShow = ref(false)
+const isDialogShow = ref(false);
 const onDialogCancel = () => {
-  isDialogShow.value = false
-}
+  isDialogShow.value = false;
+};
 const onDialogConfirm = () => {
-  localStorage.removeItem('userInfo')
-  localStorage.removeItem('cookie')
-  userInfo.updateIsLogin(false)
-  userInfo.removeUserInfo()
-  isDialogShow.value = false
-  show.value = false
-  console.log('点击了退出登录按钮')
+  localStorage.removeItem("userInfo");
+  localStorage.removeItem("cookie");
+  userInfo.updateIsLogin(false);
+  userInfo.removeUserInfo();
+  store.updateIsShow(store.$state, true); // 修改为暂停图标
+  isDialogShow.value = false;
+  show.value = false;
+  console.log("点击了退出登录按钮");
   router.push({
-    path: '/LoginOrReg',
-  })
-  Notify({ type: 'success', message: '退出登录成功' })
-}
+    path: "/LoginOrReg",
+  });
+  setTimeout(() => {
+    Notify({ type: "success", message: "退出登录成功" });
+  }, 1000);
+};
 </script>
 
 <template>
@@ -85,7 +87,7 @@ const onDialogConfirm = () => {
               class="flex rounded-full w-10 h-10"
               :src="user?.profile?.avatarUrl"
               alt=""
-            >
+            />
             <div class="flex mx-1 text-style">
               {{ user?.profile?.nickname }}
             </div>
@@ -101,9 +103,7 @@ const onDialogConfirm = () => {
             <div class="flex">
               <van-icon name="user-o" />
             </div>
-            <div class="flex mx-1 text-xs">
-              立即登录
-            </div>
+            <div class="flex mx-1 text-xs">立即登录</div>
             <div class="flex">
               <van-icon size="12px" name="arrow" />
             </div>
@@ -113,25 +113,14 @@ const onDialogConfirm = () => {
           </div>
         </div>
         <div
-          class="
-            flex-col
-            w-100%
-            text-sm text-left
-            p-2
-            mt-5
-            rounded-lg
-            items-center
-            bg-white
-          "
+          class="flex-col w-100% text-sm text-left p-2 mt-5 rounded-lg items-center bg-white"
         >
           <div class="flex justify-between border-b border-hex-ccc py-1">
             <div class="flex">
               <div class="pr-1">
                 <van-icon name="envelop-o" />
               </div>
-              <div class="">
-                我的消息
-              </div>
+              <div class="">我的消息</div>
             </div>
             <div class="flex">
               <van-icon name="arrow" />
@@ -161,25 +150,14 @@ const onDialogConfirm = () => {
           </div>
         </div>
         <div
-          class="
-            flex-col
-            w-100%
-            text-sm text-left
-            p-2
-            mt-5
-            rounded-lg
-            items-center
-            bg-white
-          "
+          class="flex-col w-100% text-sm text-left p-2 mt-5 rounded-lg items-center bg-white"
         >
           <div class="flex justify-between border-b border-hex-ccc py-1">
             <div class="flex">
               <div class="pr-1">
                 <van-icon name="envelop-o" />
               </div>
-              <div class="">
-                我的消息
-              </div>
+              <div class="">我的消息</div>
             </div>
             <div class="flex">
               <van-icon name="arrow" />
@@ -209,25 +187,14 @@ const onDialogConfirm = () => {
           </div>
         </div>
         <div
-          class="
-            flex-col
-            w-100%
-            text-sm text-left
-            p-2
-            mt-5
-            rounded-lg
-            items-center
-            bg-white
-          "
+          class="flex-col w-100% text-sm text-left p-2 mt-5 rounded-lg items-center bg-white"
         >
           <div class="flex justify-between border-b border-hex-ccc py-1">
             <div class="flex">
               <div class="pr-1">
                 <van-icon name="envelop-o" />
               </div>
-              <div class="">
-                我的消息
-              </div>
+              <div class="">我的消息</div>
             </div>
             <div class="flex">
               <van-icon name="arrow" />
@@ -257,25 +224,14 @@ const onDialogConfirm = () => {
           </div>
         </div>
         <div
-          class="
-            flex-col
-            w-100%
-            text-sm text-left
-            p-2
-            mt-5
-            rounded-lg
-            items-center
-            bg-white
-          "
+          class="flex-col w-100% text-sm text-left p-2 mt-5 rounded-lg items-center bg-white"
         >
           <div class="flex justify-between border-b border-hex-ccc py-1">
             <div class="flex">
               <div class="pr-1">
                 <van-icon name="envelop-o" />
               </div>
-              <div class="">
-                我的消息
-              </div>
+              <div class="">我的消息</div>
             </div>
             <div class="flex">
               <van-icon name="arrow" />
@@ -305,23 +261,10 @@ const onDialogConfirm = () => {
           </div>
         </div>
         <div
-          class="
-            w-100%
-            font-550
-            text-15px
-            p-2
-            mt-5
-            rounded-lg
-            items-center
-            bg-white
-            color-red
-            py-2
-          "
+          class="w-100% font-550 text-15px p-2 mt-5 rounded-lg items-center bg-white color-red py-2"
           @click="isDialogShow = true"
         >
-          <div class="w-11.875rem text-center">
-            退出登录
-          </div>
+          <div class="w-11.875rem text-center">退出登录</div>
         </div>
         <VanDialog
           v-model:show="isDialogShow"
@@ -333,22 +276,8 @@ const onDialogConfirm = () => {
         />
       </div>
     </van-popup>
-    <div
-      class="
-        flex
-        mx-auto
-        mt-5
-        justify-between
-        items-center
-        text-md
-        font-500
-      "
-    >
-      <van-tabs
-        v-model:active="activeName"
-        class="bg-hex-F6F7F9"
-        background="#F6F7F9"
-      >
+    <div class="flex mx-auto mt-5 justify-between items-center text-md font-500">
+      <van-tabs v-model:active="activeName" class="bg-hex-F6F7F9" background="#F6F7F9">
         <van-tab title="我的" name="a">
           <div class="w-90vw">
             <my-home />

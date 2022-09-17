@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-16 19:35:46
+ * @LastEditTime: 2022-09-17 18:59:22
 -->
 <script setup lang="ts">
 import { getAllSong, getSongListDetail } from '~/api/SongListDetail'
@@ -35,10 +35,11 @@ const filter = (num) => {
     return `${(num / 10000).toFixed(0)}万`
 }
 // 修改歌曲信息并进行播放
+
 const updateSongList = (index) => {
   store.updatePlayList(store.$state, state.songlist) // 将歌单列表传进默认列表
   store.updatePlayListIndex(index) // 将索引值传给默认索引
-  store.updateIsShow(store.$state, false) // 修改为播放图标
+  store.updateIsShow(store.$state, true) // 修改为暂停图标
 }
 const toCommentDetail = () => {
   router.push({

@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-16 21:44:42
+ * @LastEditTime: 2022-09-17 18:54:04
 -->
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
@@ -38,7 +38,7 @@ const play = () => {
     console.log('点击了播放')
     store.currentTime = audio.value.currentTime
     /* 调用audio的播放功能方法 */
-    audio.value.load()
+    audio.value.play()
     // 让其显示播放按钮
     store.updateIsShow(store.$state, false)
     // 触发定时器
@@ -104,7 +104,6 @@ onUpdated(() => {
     </span>
     <audio
       ref="audio"
-      autoplay
       loop
       :src="` https://music.163.com/song/media/outer/url?id=${playList[playListIndex].id}.mp3`"
     />

@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 17:07:32
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-16 19:36:31
+ * @LastEditTime: 2022-09-17 18:59:47
 -->
 <script setup lang="ts">
 import { getAllSong, getSongListDetail } from '~/api/SongListDetail'
@@ -30,7 +30,7 @@ onMounted(async () => {
 const updateSongList = (index) => {
   store.updatePlayList(store.$state, state.songlist) // 将歌单列表传进默认列表
   store.updatePlayListIndex(index) // 将索引值传给默认索引
-  store.updateIsShow(store.$state, false) // 修改为播放图标
+  store.updateIsShow(store.$state, true) // 修改为暂停图标
 }
 // 点击评论按钮跳转
 const toCommentDetail = () => {
