@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-18 11:43:10
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-18 14:15:21
+ * @LastEditTime: 2022-09-18 14:47:41
 -->
 <template>
   <div>
@@ -19,7 +19,7 @@
 
     <!-- 等级进度条 -->
     <div class="flex w-80 items-center h-10 mx-auto mt-5">
-      <div class="">0</div>
+      <div class="ml-1">0</div>
       <div class="w-65 mx-3 h-6.9 mt-5">
         <van-progress color="#ee0a24" stroke-width="8px" :percentage="percentage" />
       </div>

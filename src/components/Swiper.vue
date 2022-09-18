@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:49:56
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-16 19:45:56
+ * @LastEditTime: 2022-09-18 14:24:03
 -->
 <script setup lang="ts">
 import { onMounted, reactive } from 'vue'
@@ -22,7 +22,7 @@ onMounted(async () => {
 <template>
   <div class="pt-2 w-100%">
     <van-skeleton :row="4" round :loading="loading" />
-    <van-swipe class="w-85vw rounded-xl" :autoplay="3000" lazy-render>
+    <van-swipe class="w-88vw rounded-xl" :autoplay="3000" lazy-render>
       <van-swipe-item
         v-for="image in state.image"
         :key="image"

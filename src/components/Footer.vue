@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-17 18:54:04
+ * @LastEditTime: 2022-09-18 14:40:55
 -->
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
@@ -80,10 +80,10 @@ onUpdated(() => {
       fixed
       items-center
       justify-between
-      mx-2
       bg-white
       border-t border-hex-ccc
       flex
+      px-1
       z-30
     "
   >

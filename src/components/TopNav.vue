@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-16 22:44:19
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-18 10:19:16
+ * @LastEditTime: 2022-09-18 14:25:03
 -->
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
@@ -284,7 +284,7 @@ const onDialogConfirm = () => {
           </div>
         </van-tab>
         <van-tab title="发现" name="b">
-          <div class="w-50vw">
+          <div class="w-60vw">
             <Swiper />
           </div>
           <div class="w-90vw">

@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 17:07:32
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-17 18:59:47
+ * @LastEditTime: 2022-09-18 14:45:19
 -->
 <script setup lang="ts">
 import { getAllSong, getSongListDetail } from '~/api/SongListDetail'
@@ -93,7 +93,7 @@ const toCommentDetail = () => {
       }}</span></van-button></span>
     </div>
   </div>
-  <div class="w-100% mb-15">
+  <div class="w-100%">
     <van-list>
       <div class="flex h-3rem leading-12 text-md">
         <span><van-icon name="play-circle-o" /></span>
