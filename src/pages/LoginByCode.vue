@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-09 15:26:41
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-17 19:41:25
+ * @LastEditTime: 2022-09-18 10:31:54
 -->
 <script setup lang="ts">
 import { Notify } from "vant";
@@ -42,7 +42,7 @@ onMounted(async () => {
       console.log(statusRes, "失败了");
 
       Notify({ type: "warning", message: statusRes.message });
-      clearInterval(timer);
+      // clearInterval(timer);
     }
     if (statusRes.code === 803) {
       // 这一步会返回cookie
