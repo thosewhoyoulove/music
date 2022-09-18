@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-16 22:44:19
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-17 20:18:57
+ * @LastEditTime: 2022-09-18 10:19:16
 -->
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
@@ -294,7 +294,7 @@ const onDialogConfirm = () => {
             <FindMusic />
           </div>
         </van-tab>
-        <van-tab title="作者有话说" name="c">
+        <van-tab title="声明" name="c">
           <div class="w-90vw">
           <read></read>
           </div>
