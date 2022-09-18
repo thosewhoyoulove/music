@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-22 21:03:00
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-17 19:56:54
+ * @LastEditTime: 2022-09-18 11:28:30
 -->
 <script setup lang="ts">
 import { Vue3Marquee } from "vue3-marquee";
@@ -48,27 +48,28 @@ onMounted(async () => {
   const res = await getMusicComment(props.musicList.id);
   totalComment.value = res.total;
   console.log(totalComment.value, "音乐评论数");
-  totalTime.value = timeFilter(duration.value);//有时候接口数据获取不到的话就会丢失响应式，再赋值一次
+  totalTime.value = timeFilter(duration.value); //有时候接口数据获取不到的话就会丢失响应式，再赋值一次
   // console.log(store.lyricList.lyric);
   props.addDuration();
-  let timer =  setInterval(() => {
-    nowTime.value = timeFilter(store.currentTime);//每隔一秒更改一次当前时间
+  let timer = setInterval(() => {
+    nowTime.value = timeFilter(store.currentTime); //每隔一秒更改一次当前时间
     // console.log(timeFilter(store.currentTime), "currentTime");
-  }, 1000);//上下两个定时器第一个将时间每秒变化，第二个暂停的时候停止计时
+  }, 1000); //上下两个定时器第一个将时间每秒变化，第二个暂停的时候停止计时
 });
-let timer =  setInterval(() => {
-    nowTime.value = timeFilter(store.currentTime);//每隔一秒更改一次当前时间
-    // console.log(timeFilter(store.currentTime), "currentTime");
-  }, 1000);
-const playMusic = () =>{
-    clearInterval(timer)
-    props.play()
-  }
+let timer = setInterval(() => {
+  nowTime.value = timeFilter(store.currentTime); //每隔一秒更改一次当前时间
+  // console.log(timeFilter(store.currentTime), "currentTime");
+}, 1000);
+//暂停停止计时
+const playMusic = () => {
+  clearInterval(timer);
+  props.play();
+};
 const change = (target) => {
   // console.log(timeFilter(target.target.value), "value");
-  console.log(target.target.value,'value');
+  console.log(target.target.value, "value");
   // timeValue.value = Number(target.target.value)
-  nowTime.value = timeFilter(target.target.value)
+  nowTime.value = timeFilter(target.target.value);
 };
 const back = () => {
   isDetailShow.value = false;
@@ -83,10 +84,19 @@ const toCommentDetail = () => {
     },
   });
 };
+//切换歌曲更新评论数
+const getNewComment = async (id) => {
+  if (store.shouldUpdate) {
+    const res = await getMusicComment(props.musicList.id);
+    totalComment.value = res.total;
+    console.log(totalComment.value, "更新后的评论总数");
+    store.shouldUpdate = false;
+  }
+};
 // 下一首上一首操作
 const goPlay = (num) => {
   console.log("点击了切换歌曲");
-  store.updateIsShow(store.$state, true)
+  store.updateIsShow(store.$state, true);
   // 如果是第一首，上一首应该是最后一首
   // 如果是最后一首，下一首应该是第一首
   let index = playListIndex.value + num;
@@ -164,6 +174,13 @@ watch(
     }
   }
 );
+watch(
+  () => store.playListIndex,
+  (newVal) => {
+    store.shouldUpdate = true;
+    getNewComment(props.musicList.id);
+  }
+);
 </script>
 
 <template>
@@ -230,12 +247,12 @@ watch(
       ><span class="relative" @click="toCommentDetail"
         ><van-icon name="comment-o"></van-icon
         ><van-badge
-          class="absolute top-6px -right-3"
+          class="absolute"
           v-if="totalComment > 0"
           style="background: transparent; border-width: 0"
           color="#ccfc"
           :content="totalComment"
-          max="999"
+          max="100000"
         ></van-badge></span
       ><span style="transform: rotate(90deg)"><van-icon name="ellipsis"></van-icon></span>
     </div>
@@ -271,8 +288,8 @@ watch(
 
 <style lang="less" scoped>
 .van-badge--top-right {
-  top: 6px;
-  right: -5px;
+  top: 5px;
+  right: -14px;
   color: #003248;
 }
 

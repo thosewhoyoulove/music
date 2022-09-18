@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-21 19:43:23
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-16 21:43:39
+ * @LastEditTime: 2022-09-18 11:30:40
  */
 import { defineStore} from 'pinia'
 import { Names } from "./name-store";
@@ -30,6 +30,7 @@ export const useStore = defineStore(Names.playList, {
             duration:0,//歌曲的总时间
             currentTime:0,//歌曲现在的时间
             lyricList:{},//歌词
+            shouldUpdate:false//是否更新歌词评论数
          }
     },
     actions: {
