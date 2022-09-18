@@ -3,10 +3,10 @@
  * @Author: 曹俊
  * @Date: 2022-09-12 17:02:36
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-17 20:04:26
+ * @LastEditTime: 2022-09-18 12:33:18
 -->
 <script setup lang="ts">
-import { Dialog, Notify } from 'vant'
+import { Dialog, Loading, Notify } from 'vant'
 import { storeToRefs } from 'pinia'
 import {
   getUserAcount,
@@ -25,6 +25,7 @@ const nickname = ref('')
 const createTime = ref('')
 const { isLogin, user } = storeToRefs(userInfo)
 const userDetail = ref({}) // 存储用户详情信息
+const showLoading = ref(true)
 const uid = ref(0)
 const choice = ref(['主页', '动态'])
 const active = ref(0)
@@ -59,6 +60,7 @@ onMounted(async () => {
     const eventRes = await getUserEvent(uid.value)
     console.log(eventRes, '用户动态')
     events.value = eventRes.events
+    showLoading.value = false
   }
 })
 const addZero = (num) => {
@@ -165,6 +167,7 @@ const toMyFolloweds = () => {
         {{ userDetail.profile?.followeds }} 粉丝
       </div>
       <div
+      @click="router.push({path:'level',query:{id:uid}})"
         class="
           absolute
           font-sans
@@ -236,6 +239,16 @@ const toMyFolloweds = () => {
             v-show="active == 1"
             class="bg-white rounded-lg relative pl-3 w-100% text-left"
           >
+          <van-loading
+                v-show="showLoading"
+                color="#666"
+                type="spinner"
+                class="mt-5"
+                size="24px"
+                vertical
+              >
+                加载中...
+              </van-loading>
             <ul
               v-for="(item, index) in events"
               :key="index"
