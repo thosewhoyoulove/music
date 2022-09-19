@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-24 19:17:32
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-16 19:46:33
+ * @LastEditTime: 2022-09-19 16:53:59
 -->
 
 <script setup lang="ts">
@@ -120,7 +120,7 @@ const filter = (num) => {
                           <div class="text-10px">
                             {{ item.timeStr }}
                           </div>
-                          <div class="font-serif text-13px">
+                          <div class="text-13px">
                             {{ item.content }}
                           </div>
                         </div>
@@ -172,7 +172,7 @@ const filter = (num) => {
                           <div class="text-10px">
                             {{ item.timeStr }}
                           </div>
-                          <div class="font-serif text-13px">
+                          <div class="text-13px">
                             {{ item.content }}
                           </div>
                         </div>

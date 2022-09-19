@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-18 15:06:31
+ * @LastEditTime: 2022-09-19 16:52:07
 -->
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
@@ -35,7 +35,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <main font-sans-serif text="center gray-700 dark:gray-200">
+  <main  text="center gray-700 dark:gray-200 font-mono">
     <router-view />
   </main>
   <!-- 全局增加一个回到顶端的按钮 -->

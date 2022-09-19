@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-12 17:02:36
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-18 12:33:18
+ * @LastEditTime: 2022-09-19 16:53:31
 -->
 <script setup lang="ts">
 import { Dialog, Loading, Notify } from 'vant'
@@ -268,7 +268,7 @@ const toMyFolloweds = () => {
                     <div class="text-10px">
                       {{ formatMsToDate(item.eventTime) }}
                     </div>
-                    <div class="font-serif text-13px">
+                    <div class=" text-13px">
                       {{ item.info?.commentThread?.resourceTitle }}
                     </div>
                     <div v-if="item.pics.length">
