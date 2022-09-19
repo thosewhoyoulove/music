@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-22 21:03:00
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-18 11:28:30
+ * @LastEditTime: 2022-09-19 17:06:07
 -->
 <script setup lang="ts">
 import { Vue3Marquee } from "vue3-marquee";
@@ -191,18 +191,18 @@ watch(
       :src="props?.musicList?.al?.picUrl"
       alt="背景虚化"
     />
-    <div class="flex justify-between mt-5 px-2 relative">
+    <div class="flex justify-between mt-4 px-5 relative">
       <div class="text-xl text-hex-ccc" @click="back">
         <van-icon name="arrow-left"></van-icon>
       </div>
       <!-- 歌名跑马灯 -->
-      <div class="col mr-15 py-2">
+      <div class="col absolute left-10 -top-1">
         <Vue3Marquee class="text-sm my-2 text-hex-ccc w-30">{{
           props?.musicList?.name
         }}</Vue3Marquee
         ><!-- 艺人名字 -->
         <div
-          class="flex items-center"
+          class="flex items-center ml-5"
           v-for="(item, index) in props?.musicList?.ar"
           :key="index"
         >
@@ -215,14 +215,14 @@ watch(
       <div class="text-xl text-hex-ccc"><van-icon name="share-o"></van-icon></div>
     </div>
     <!-- 磁盘大图 --><img
-      class="rounded-1/2 w-40 h-40 absolute top-30% left-25% -translate-x-1/2 animate__animated animate__bounceIn"
+      class="rounded-1/2 w-40 h-40 absolute top-25% left-25% -translate-x-1/2 animate__animated animate__bounceIn"
       v-show="!isLyricShow"
       :src="props?.musicList?.al?.picUrl"
       alt="这是歌曲详情的磁盘图"
       @click="isLyricShow = true"
     />
     <div
-      class="musiclyricList animate__animated animate__backInDown"
+      class="musicLyricList animate__animated animate__backInDown"
       v-show="isLyricShow"
       ref="musicLyric"
       @click="isLyricShow = false"
@@ -240,12 +240,12 @@ watch(
       </p>
     </div>
     <!-- 点击展示歌词，并增加了动画效果 -->
-    <div class="flex justify-around mt-320px text-xl items-center" v-show="!isLyricShow">
-      <span><van-icon name="like-o"></van-icon></span
-      ><span style="transform: rotate(180deg)"><van-icon name="upgrade"></van-icon></span
-      ><span><van-icon name="close"></van-icon></span
-      ><span class="relative" @click="toCommentDetail"
-        ><van-icon name="comment-o"></van-icon
+    <div class="flex h-10 justify-around mt-320px text-md items-center align-baseline" v-show="!isLyricShow">
+      <span><van-icon size="18px" name="like-o"></van-icon></span
+      ><span ><van-icon style="transform: rotate(180deg)" size="18px" name="upgrade"></van-icon></span
+      ><span><van-icon size="18px" name="music-o"></van-icon></span
+      ><span class="relative bottom-0" @click="toCommentDetail"
+        ><van-icon size="18px" name="comment-o"></van-icon
         ><van-badge
           class="absolute"
           v-if="totalComment > 0"
@@ -254,12 +254,12 @@ watch(
           :content="totalComment"
           max="100000"
         ></van-badge></span
-      ><span style="transform: rotate(90deg)"><van-icon name="ellipsis"></van-icon></span>
+      ><span style="transform: rotate(90deg)"><van-icon size="18px" name="ellipsis"></van-icon></span>
     </div>
     <div
-      class="mx-2 flex mt-6 w-95% bg-transparent justify-around items-center text-xs text-hex-bbb"
+      class="absolute top-68% mx-2 flex w-90% bg-transparent justify-around items-center text-xs text-hex-bbb"
     >
-      <div class="flex w-5 mr-1">{{ nowTime }}</div>
+      <div class="flex w-5 mr-2">{{ nowTime }}</div>
       <input
         class="flex justify-between mx-1"
         v-model="store.currentTime"
@@ -271,7 +271,7 @@ watch(
       />
       <div class="flex w-5 mx-1">{{ totalTime }}</div>
     </div>
-    <div class="fixed w-100% flex justify-around mt-40px text-xl items-center">
+    <div class="absolute top-75% w-100% flex justify-around text-xl items-center">
       <div><van-icon name="replay"></van-icon></div>
       <div @click="goPlay(-1)"><van-icon name="arrow-left"></van-icon></div>
       <div class="text-3xl" v-show="isShow" @click="playMusic">
@@ -288,8 +288,8 @@ watch(
 
 <style lang="less" scoped>
 .van-badge--top-right {
-  top: 5px;
-  right: -14px;
+  top: 0.3125rem;
+  right: -0.625rem;
   color: #003248;
 }
 
@@ -310,7 +310,7 @@ input[type="range"]::-webkit-slider-thumb {
   border: solid 1px #ddd; /*设置边框*/
 }
 /* 歌词 */
-.musiclyricList {
+.musicLyricList {
   width: 100%;
   height: 20rem;
   display: flex;
