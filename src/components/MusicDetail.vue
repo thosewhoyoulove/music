@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-22 21:03:00
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-19 17:06:07
+ * @LastEditTime: 2022-09-19 19:31:23
 -->
 <script setup lang="ts">
 import { Vue3Marquee } from "vue3-marquee";
@@ -215,7 +215,7 @@ watch(
       <div class="text-xl text-hex-ccc"><van-icon name="share-o"></van-icon></div>
     </div>
     <!-- 磁盘大图 --><img
-      class="rounded-1/2 w-40 h-40 absolute top-25% left-25% -translate-x-1/2 animate__animated animate__bounceIn"
+      class="rounded-1/2 w-45 h-45 absolute top-25% left-22% -translate-x-1/2 animate__animated animate__bounceIn"
       v-show="!isLyricShow"
       :src="props?.musicList?.al?.picUrl"
       alt="这是歌曲详情的磁盘图"
@@ -240,7 +240,7 @@ watch(
       </p>
     </div>
     <!-- 点击展示歌词，并增加了动画效果 -->
-    <div class="flex h-10 justify-around mt-320px text-md items-center align-baseline" v-show="!isLyricShow">
+    <div class="flex h-10 justify-around mt-24.375rem text-md items-center" v-show="!isLyricShow">
       <span><van-icon size="18px" name="like-o"></van-icon></span
       ><span ><van-icon style="transform: rotate(180deg)" size="18px" name="upgrade"></van-icon></span
       ><span><van-icon size="18px" name="music-o"></van-icon></span
@@ -257,7 +257,7 @@ watch(
       ><span style="transform: rotate(90deg)"><van-icon size="18px" name="ellipsis"></van-icon></span>
     </div>
     <div
-      class="absolute top-68% mx-2 flex w-90% bg-transparent justify-around items-center text-xs text-hex-bbb"
+      class="absolute top-78% mx-2 flex w-90% bg-transparent justify-around items-center text-xs text-hex-bbb"
     >
       <div class="flex w-5 mr-2">{{ nowTime }}</div>
       <input
@@ -271,7 +271,7 @@ watch(
       />
       <div class="flex w-5 mx-1">{{ totalTime }}</div>
     </div>
-    <div class="absolute top-75% w-100% flex justify-around text-xl items-center">
+    <div class="absolute top-85% w-100% flex justify-around text-xl items-center">
       <div><van-icon name="replay"></van-icon></div>
       <div @click="goPlay(-1)"><van-icon name="arrow-left"></van-icon></div>
       <div class="text-3xl" v-show="isShow" @click="playMusic">
@@ -312,11 +312,11 @@ input[type="range"]::-webkit-slider-thumb {
 /* 歌词 */
 .musicLyricList {
   width: 100%;
-  height: 20rem;
+  height: 24rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 0.2rem;
+  margin-top: 3rem;
   //溢出滚动
   overflow: scroll;
   p {
