@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-19 16:52:07
+ * @LastEditTime: 2022-09-19 19:37:13
 -->
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
@@ -39,7 +39,7 @@ onUnmounted(() => {
     <router-view />
   </main>
   <!-- 全局增加一个回到顶端的按钮 -->
-  <div v-show="isShow" class="fixed -right-1px bottom-70px pt-2 mr-1.5 z-1000">
+  <div v-show="isShow" class="fixed right-4px bottom-70px pt-2 mr-1.5 z-1000">
     <van-sticky>
       <svg
         t="1663468028574"

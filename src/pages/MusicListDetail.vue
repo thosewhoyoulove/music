@@ -49,7 +49,7 @@ const toMusicDetail = (id) => {
 </script>
 
 <template>
-  <div class="mb-15">
+  <div class="pb-15">
     <van-tabs v-model:active="active" @change="change">
       <van-tab
         v-for="(item, index) in allSongList"
@@ -65,7 +65,7 @@ const toMusicDetail = (id) => {
         >
           <div class="relative">
             <img
-              class="w-21 h-21 rounded-xl p-1"
+              class="w-20 h-20 rounded-xl p-1"
               :src="item.coverImgUrl"
               alt="这是歌单广场的封面"
             >

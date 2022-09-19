@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 10:48:40
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-18 11:01:31
+ * @LastEditTime: 2022-09-19 19:39:25
 -->
 <script setup lang="ts">
 import { getTopListDetail } from '~/api/TopList'
@@ -29,7 +29,7 @@ const toTopDetail = (item, index) => {
 </script>
 
 <template>
-  <div class="bg-hex-eee p-1 font-sans-serif mb-15">
+  <div class="bg-hex-eee p-1 font-sans-serif pb-15">
     <div class="text-left ml-3 mt-2 font-extrabold text-sm">
       官方榜
     </div>
@@ -82,7 +82,7 @@ const toTopDetail = (item, index) => {
       @click="toTopDetail(item, index)"
     >
       <img
-        class="w-21 h-21 rounded-lg"
+        class="w-20 h-20 rounded-lg"
         :src="item.coverImgUrl"
         alt="这是精选榜官方榜的封面"
         

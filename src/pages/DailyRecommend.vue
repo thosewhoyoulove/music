@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 19:07:49
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-17 19:09:09
+ * @LastEditTime: 2022-09-19 20:35:33
 -->
 <script setup lang="ts">
 import {
@@ -72,7 +72,7 @@ const toMusicDetail = (id) => {
       <div>{{ Day }}</div>
     </div>
   </div>
-  <div class="w-100%">
+  <div class="w-100% pb-10">
     <van-tabs v-model:active="active" @click-tab="tabChange">
       <van-tab v-for="(item, index) in choice" :key="index" :title="item">
         <div v-show="active == 0">

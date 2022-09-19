@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 17:07:32
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-18 14:45:19
+ * @LastEditTime: 2022-09-19 20:37:40
 -->
 <script setup lang="ts">
 import { getAllSong, getSongListDetail } from '~/api/SongListDetail'
@@ -67,6 +67,7 @@ const toCommentDetail = () => {
         absolute
         text-white text-xs
         pt-1
+        px-4
         text-left
         w-100%
         h-5
@@ -93,7 +94,7 @@ const toCommentDetail = () => {
       }}</span></van-button></span>
     </div>
   </div>
-  <div class="w-100%">
+  <div class="w-100% pb-16">
     <van-list>
       <div class="flex h-3rem leading-12 text-md">
         <span><van-icon name="play-circle-o" /></span>
@@ -103,7 +104,7 @@ const toCommentDetail = () => {
       <ul
         v-for="(item, index) in state.songlist"
         :key="index"
-        class="flex justify-between h-3rem my-1 text-sm"
+        class="flex justify-between h-3rem my-1 text-sm px-1"
       >
         <div class="flex justify-between">
           <img
@@ -125,8 +126,8 @@ const toCommentDetail = () => {
           </div>
         </div>
         <div class="flex">
-          <div v-if="item.mv" class="right-2rem">
-            <van-icon size="1.3rem" name="play-circle-o" />
+          <div v-if="item.mv" class="mr-5">
+            <van-icon size="1rem" name="tv-o" />
           </div>
         </div>
       </ul>
