@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 19:16:37
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-18 10:23:52
+ * @LastEditTime: 2022-09-19 20:51:59
 -->
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
@@ -24,6 +24,17 @@ const toDailyRecommend = () => {
     });
   }
 };
+const toFm = () =>{
+  if (!cookie) {
+    router.push({
+      path: "/LoginOrReg",
+    });
+  } else {
+    router.push({
+      path: "/Fm",
+    });
+  }
+}
 const toMusicList = () => {
   router.push({
     path: "/MusicListDetail",
@@ -71,7 +82,7 @@ const toTopList = () => {
         /></svg
       ><span>每日推荐</span>
     </div>
-    <div class="flex-1">
+    <div class="flex-1" @click="toFm">
       <svg
         t="1663467721308"
         class="icon mx-auto"
