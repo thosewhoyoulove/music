@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-09 15:26:41
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-18 10:31:54
+ * @LastEditTime: 2022-09-20 18:44:38
 -->
 <script setup lang="ts">
 import { Notify } from "vant";
@@ -72,7 +72,7 @@ onMounted(async () => {
       :src="qrimg"
       alt=""
     />
-    <div class="w-100% mt-60 text-left">
+    <div class="absolute w-100% top-50% text-left px-2">
       温馨提示：如果二维码失效了的话，请刷新页面，谢谢合作！！！
     </div>
   </div>
