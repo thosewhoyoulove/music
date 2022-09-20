@@ -14,4 +14,4 @@ $ pnpm dev
 $ pnpm build
 ```
 
-#### visit:(https://www.sciencewithfun.cn/)
+#### visit:<https://www.sciencewithfun.cn/>
