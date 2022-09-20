@@ -3,9 +3,9 @@ This is a mobile app. Please enter the developer option to select the mobile app
 
 # Dev
 ```
-$ git clone git@github.com:TickNet-Hnust/sign.git
-$ cd sign
-$ pnpm i
+$ git clone git@github.com:thosewhoyoulove/music.git
+$ cd music
+$ pnpm i # If you don't have pnpm installed, run: npm install -g pnpm
 $ pnpm dev
 ```
 
