@@ -3,44 +3,45 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 17:07:32
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-19 20:37:40
+ * @LastEditTime: 2022-09-21 18:56:42
 -->
 <script setup lang="ts">
-import { getAllSong, getSongListDetail } from '~/api/SongListDetail'
-import { useStore } from '~/store/index'
-const store = useStore()
-const route = useRoute()
-const router = useRouter()
+import { getAllSong, getSongListDetail } from "~/api/SongListDetail";
+import { useStore } from "~/store/index";
+const store = useStore();
+const route = useRoute();
+const router = useRouter();
 const state = reactive({
   playlist: {}, // 歌单信息
   songlist: [], // 歌曲信息
-})
-const loading = ref(true)
-const id = parseInt(route.query.id)
+});
+const limit = parseInt(route.query.limit) || ref(25);
+const loading = ref(true);
+const id = parseInt(route.query.id);
 onMounted(async () => {
-  const res = await getSongListDetail(id)
-  state.playlist = res.playlist // 歌单信息
-  console.log(state.playlist, '歌单信息')
-  const songlist = await getAllSong(id)
-  state.songlist = songlist.songs
-  loading.value = false
-  console.log(state.songlist, '歌曲信息')
-})
+  const res = await getSongListDetail(id);
+  state.playlist = res.playlist; // 歌单信息
+  console.log(state.playlist, "歌单信息");
+  const songlist = await getAllSong(id, limit.value);
+  state.songlist = songlist.songs;
+  loading.value = false;
+  console.log(state.songlist, "歌曲信息");
+});
 // 修改歌曲信息并进行播放
 const updateSongList = (index) => {
-  store.updatePlayList(store.$state, state.songlist) // 将歌单列表传进默认列表
-  store.updatePlayListIndex(index) // 将索引值传给默认索引
-  store.updateIsShow(store.$state, true) // 修改为暂停图标
-}
+  store.updatePlayList(store.$state, state.songlist); // 将歌单列表传进默认列表
+  store.updatePlayListIndex(index); // 将索引值传给默认索引
+  store.updateIsShow(store.$state, true); // 修改为暂停图标
+};
 // 点击评论按钮跳转
 const toCommentDetail = () => {
   router.push({
-    path: '/SongListComment',
+    path: "/SongListComment",
     query: {
       id,
     },
-  })
-}
+  });
+};
 </script>
 
 <template>
@@ -49,7 +50,7 @@ const toCommentDetail = () => {
       class="w-100% h-100% rounded-xl absolute blur-xl"
       :src="state.playlist.coverImgUrl"
       alt="这是排行榜详情的底片阴影"
-    >
+    />
     <div class="justify-between pt-5 items-center px-5 text-white text-right">
       <span class="text-7 mr-2"><van-icon size="25px" name="search" /></span>
       <span class="text-7"><van-icon name="ellipsis" /></span>
@@ -59,20 +60,11 @@ const toCommentDetail = () => {
         class="h-8rem m-1 rounded-xl p-1 relative inline-block"
         :src="state.playlist.coverImgUrl"
         alt="这是排行榜详情的封面"
-      >
+      />
     </div>
     <div
-      class="
-        flex
-        absolute
-        text-white text-xs
-        pt-1
-        px-4
-        text-left
-        w-100%
-        h-5
-        overflow-hidden
-      "
+      v-if="state.playlist.description"
+      class="flex absolute text-white text-xs pt-1 px-4 text-left w-100% h-5 overflow-hidden"
     >
       <span class="text-style">
         {{ state.playlist.description }}
@@ -82,16 +74,29 @@ const toCommentDetail = () => {
       </span>
     </div>
     <div class="relative flex mt-6 text-light-900 justify-around">
-      <span class="flex mx-1 items-center justify-between"><van-button style="background: transparent" round><van-icon color="#ccc" size="1rem" name="share-o" /><span
-        class="px-1 text-light-900"
-      >{{ state?.playlist?.shareCount }}</span></van-button>
+      <span class="flex mx-1 items-center justify-between"
+        ><van-button style="background: transparent" round
+          ><van-icon color="#ccc" size="1rem" name="share-o" /><span
+            class="px-1 text-light-900"
+            >{{ state?.playlist?.shareCount }}</span
+          ></van-button
+        >
       </span>
-      <span @click="toCommentDetail"><van-button style="background: transparent" round><van-icon color="#ccc" size="1rem" name="chat-o" /><span
-        class="px-1 text-light-900"
-      >{{ state?.playlist?.commentCount }}</span></van-button></span>
-      <span class="mx-1"><van-button color="#FE3641" round><van-icon size="1rem" name="add-o" /><span class="px-1">{{
-        state?.playlist?.subscribedCount
-      }}</span></van-button></span>
+      <span @click="toCommentDetail"
+        ><van-button style="background: transparent" round
+          ><van-icon color="#ccc" size="1rem" name="chat-o" /><span
+            class="px-1 text-light-900"
+            >{{ state?.playlist?.commentCount }}</span
+          ></van-button
+        ></span
+      >
+      <span class="mx-1"
+        ><van-button color="#FE3641" round
+          ><van-icon size="1rem" name="add-o" /><span class="px-1">{{
+            state?.playlist?.subscribedCount
+          }}</span></van-button
+        ></span
+      >
     </div>
   </div>
   <div class="w-100% pb-16">
@@ -104,24 +109,29 @@ const toCommentDetail = () => {
       <ul
         v-for="(item, index) in state.songlist"
         :key="index"
-        class="flex justify-between h-3rem my-1 text-sm px-1"
+        class="flex justify-between h-3rem my-1 text-sm pr-1"
       >
         <div class="flex justify-between">
+          <div class="flex w-10 justify-center text-.1rem items-center">
+            {{ index + 1 }}
+          </div>
           <img
             class="w-3rem h-3rem rounded"
             :src="item.al.picUrl"
             alt="这是排行榜详情的歌曲专辑图片"
-          >
+          />
           <div class="flex-col ml-2 text-style" @click="updateSongList(index)">
             <div class="flex">
               <div class="flex text-md font-extrabold text-style break-all">
                 {{ item.name }}
               </div>
             </div>
-            <div class="text-style">
-              <span class="text-xs text-gray-500">{{ item.ar[0].name }}</span>
-              <span class="text-xs text-gray-500 px-1">-</span>
-              <span class="text-xs text-gray-500">{{ item.al.name }}</span>
+            <div class="flex text-left">
+              <div class="text-xs w-10 text-style text-gray-500">
+                {{ item.ar[0].name }}
+              </div>
+              <div class="text-xs text-gray-500 px-1">-</div>
+              <div class="text-xs w-15 text-style text-gray-500">{{ item.al.name }}</div>
             </div>
           </div>
         </div>
