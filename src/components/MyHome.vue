@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-12 17:02:36
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-21 18:51:42
+ * @LastEditTime: 2022-09-21 20:38:28
 -->
 <script setup lang="ts">
 import { Dialog, Loading, Notify } from "vant";
@@ -119,11 +119,11 @@ const toMyFolloweds = () => {
 };
 const toDetail = (item) => {
   router.push({
-    path: "/TopListDetail",
+    path: "/RecMusicListDetail",
     query: {
       id: item.id,
-      limit:item.trackCount,
-      name:item.name
+      limit: parseInt(item.trackCount),
+      name: item.name,
     },
   });
 };
@@ -193,7 +193,7 @@ const toDetail = (item) => {
                   <div>创建的歌单({{ createdList.length }})</div>
                 </template>
                 <div
-                  @click="toDetail(item, id)"
+                  @click="toDetail(item)"
                   class="flex pb-1"
                   v-for="(item, index) in createdList.slice(0, 1)"
                   :key="index"
@@ -205,6 +205,7 @@ const toDetail = (item) => {
                   </div>
                 </div>
                 <div
+                  @click="toDetail(item)"
                   class="flex pb-1"
                   v-for="(item, index) in createdList.slice(1, createdList.length - 1)"
                   :key="index"
@@ -220,7 +221,12 @@ const toDetail = (item) => {
                 <template #title>
                   <div>收藏的歌单({{ subList.length }})</div>
                 </template>
-                <div class="flex pb-1" v-for="(item, index) in subList" :key="index">
+                <div
+                  class="flex pb-1"
+                  @click="toDetail(item)"
+                  v-for="(item, index) in subList"
+                  :key="index"
+                >
                   <img class="w-10 h-10 rounded-lg" :src="item.coverImgUrl" alt="" />
                   <div class="ml-2 col">
                     <div class="text-style text-hex-000 text-xs">{{ item.name }}</div>

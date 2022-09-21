@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 17:07:32
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-21 18:56:42
+ * @LastEditTime: 2022-09-21 20:44:24
 -->
 <script setup lang="ts">
 import { getAllSong, getSongListDetail } from "~/api/SongListDetail";
@@ -15,17 +15,18 @@ const state = reactive({
   playlist: {}, // 歌单信息
   songlist: [], // 歌曲信息
 });
-const limit = parseInt(route.query.limit) || ref(25);
+const limit = route.query.limit || ref(25);//接收我的歌单歌曲的数量，默认为25
 const loading = ref(true);
 const id = parseInt(route.query.id);
 onMounted(async () => {
   const res = await getSongListDetail(id);
   state.playlist = res.playlist; // 歌单信息
   console.log(state.playlist, "歌单信息");
-  const songlist = await getAllSong(id, limit.value);
+  const songlist = await getAllSong(id, limit);
   state.songlist = songlist.songs;
   loading.value = false;
   console.log(state.songlist, "歌曲信息");
+  
 });
 // 修改歌曲信息并进行播放
 const updateSongList = (index) => {
@@ -59,7 +60,7 @@ const toCommentDetail = () => {
       <img
         class="h-8rem m-1 rounded-xl p-1 relative inline-block"
         :src="state.playlist.coverImgUrl"
-        alt="这是排行榜详情的封面"
+        alt="正在加载"
       />
     </div>
     <div
@@ -118,20 +119,20 @@ const toCommentDetail = () => {
           <img
             class="w-3rem h-3rem rounded"
             :src="item.al.picUrl"
-            alt="这是排行榜详情的歌曲专辑图片"
+            alt="图片加载失败"
           />
           <div class="flex-col ml-2 text-style" @click="updateSongList(index)">
             <div class="flex">
-              <div class="flex text-md font-extrabold text-style break-all">
+              <div class="flex text-md w-45 text-left font-extrabold text-style break-all">
                 {{ item.name }}
               </div>
             </div>
-            <div class="flex text-left">
+            <div class="flex w-45 text-left">
               <div class="text-xs w-10 text-style text-gray-500">
                 {{ item.ar[0].name }}
               </div>
               <div class="text-xs text-gray-500 px-1">-</div>
-              <div class="text-xs w-15 text-style text-gray-500">{{ item.al.name }}</div>
+              <div class="text-xs w-30 text-style text-gray-500">{{ item.al.name }}</div>
             </div>
           </div>
         </div>
