@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-12 17:02:36
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-21 20:38:28
+ * @LastEditTime: 2022-09-21 21:00:28
 -->
 <script setup lang="ts">
 import { Dialog, Loading, Notify } from "vant";
@@ -185,57 +185,59 @@ const toDetail = (item) => {
             <div class="text-10px text-hex-bcb py-2">
               累积听歌数: {{ userDetail.listenSongs }}
             </div>
+
+            <div class="bg-white rounded-lg px-.5 text-left mt-5">
+              <van-collapse v-model="activeNames">
+                <van-collapse-item name="创建的歌单">
+                  <template #title>
+                    <div>创建的歌单({{ createdList.length }})</div>
+                  </template>
+                  <div
+                    @click="toDetail(item)"
+                    class="flex pb-1"
+                    v-for="(item, index) in createdList.slice(0, 1)"
+                    :key="index"
+                  >
+                    <img class="w-10 h-10 rounded-lg" :src="item.coverImgUrl" alt="" />
+                    <div class="ml-2 col">
+                      <div class="text-hex-000 text-xs">我喜欢的音乐</div>
+                      <div class="text-xs mt-1">{{ item.trackCount }}首</div>
+                    </div>
+                  </div>
+                  <div
+                    @click="toDetail(item)"
+                    class="flex pb-1"
+                    v-for="(item, index) in createdList.slice(1, createdList.length - 1)"
+                    :key="index"
+                  >
+                    <img class="w-10 h-10 rounded-lg" :src="item.coverImgUrl" alt="" />
+                    <div class="ml-2 col">
+                      <div class="text-style text-hex-000 text-xs">{{ item.name }}</div>
+                      <div class="text-xs mt-1.5">{{ item.trackCount }}首</div>
+                    </div>
+                  </div>
+                </van-collapse-item>
+                <van-collapse-item name="收藏的歌单">
+                  <template #title>
+                    <div>收藏的歌单({{ subList.length }})</div>
+                  </template>
+                  <div
+                    class="flex pb-1"
+                    @click="toDetail(item)"
+                    v-for="(item, index) in subList"
+                    :key="index"
+                  >
+                    <img class="w-10 h-10 rounded-lg" :src="item.coverImgUrl" alt="" />
+                    <div class="ml-2 col">
+                      <div class="text-style text-hex-000 text-xs">{{ item.name }}</div>
+                      <div class="text-xs mt-1.5">{{ item.trackCount }}首</div>
+                    </div>
+                  </div>
+                </van-collapse-item>
+              </van-collapse>
+            </div>
           </div>
-          <div class="bg-white rounded-lg px-.5 text-left mt-5">
-            <van-collapse v-model="activeNames">
-              <van-collapse-item name="创建的歌单">
-                <template #title>
-                  <div>创建的歌单({{ createdList.length }})</div>
-                </template>
-                <div
-                  @click="toDetail(item)"
-                  class="flex pb-1"
-                  v-for="(item, index) in createdList.slice(0, 1)"
-                  :key="index"
-                >
-                  <img class="w-10 h-10 rounded-lg" :src="item.coverImgUrl" alt="" />
-                  <div class="ml-2 col">
-                    <div class="text-hex-000 text-xs">我喜欢的音乐</div>
-                    <div class="text-xs mt-1">{{ item.trackCount }}首</div>
-                  </div>
-                </div>
-                <div
-                  @click="toDetail(item)"
-                  class="flex pb-1"
-                  v-for="(item, index) in createdList.slice(1, createdList.length - 1)"
-                  :key="index"
-                >
-                  <img class="w-10 h-10 rounded-lg" :src="item.coverImgUrl" alt="" />
-                  <div class="ml-2 col">
-                    <div class="text-style text-hex-000 text-xs">{{ item.name }}</div>
-                    <div class="text-xs mt-1.5">{{ item.trackCount }}首</div>
-                  </div>
-                </div>
-              </van-collapse-item>
-              <van-collapse-item name="收藏的歌单">
-                <template #title>
-                  <div>收藏的歌单({{ subList.length }})</div>
-                </template>
-                <div
-                  class="flex pb-1"
-                  @click="toDetail(item)"
-                  v-for="(item, index) in subList"
-                  :key="index"
-                >
-                  <img class="w-10 h-10 rounded-lg" :src="item.coverImgUrl" alt="" />
-                  <div class="ml-2 col">
-                    <div class="text-style text-hex-000 text-xs">{{ item.name }}</div>
-                    <div class="text-xs mt-1.5">{{ item.trackCount }}首</div>
-                  </div>
-                </div>
-              </van-collapse-item>
-            </van-collapse>
-          </div>
+
           <div
             v-show="active == 1"
             class="bg-white rounded-lg relative pl-3 w-100% text-left"
