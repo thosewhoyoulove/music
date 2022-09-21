@@ -3,12 +3,14 @@
  * @Author: 曹俊
  * @Date: 2022-09-19 20:52:39
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-21 10:41:02
+ * @LastEditTime: 2022-09-21 16:02:18
 -->
 <script setup lang="ts">
 import { getFm, deleteFm } from "~/api/FM";
+import { likeMusic } from "~/api/SongDetail";
 import { storeToRefs } from "pinia";
 import { useStore } from "~/store/index";
+import { Toast } from "vant";
 const store = useStore();
 const playListIndex = ref(0);
 const state = reactive({
@@ -37,6 +39,7 @@ onMounted(async () => {
   store.isFooterShow = false;
   let FmRes = await getFm();
   state.playList = FmRes.data;
+  console.log(FmRes.data, "歌曲信息");
 });
 // 下一首上一首操作
 const goPlay = (num: number) => {
@@ -63,7 +66,9 @@ const deleteFmItem = async (id) => {
   }
 
   console.log(res);
-
+  199.75;
+  133.16;
+  66;
   console.log(state.playList);
 };
 watch(
@@ -77,6 +82,13 @@ watch(
     }
   }
 );
+const like = async (id) => {
+  let likeRes = await likeMusic(state.playList[playListIndex.value].id);
+  console.log(likeRes);
+  if (likeRes.code === 200) {
+    Toast.success("收藏成功");
+  } else Toast.fail("收藏失败");
+};
 </script>
 
 <template>
@@ -119,7 +131,7 @@ watch(
       />
 
       <div class="flex absolute w-100% -bottom-17 justify-around items-center">
-        <div>
+        <div @click="like(id)">
           <van-icon color="#fff" name="like-o" />
         </div>
         <div @click="deleteFmItem(id)">

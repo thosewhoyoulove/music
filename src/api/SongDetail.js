@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-24 18:35:26
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-16 19:30:42
+ * @LastEditTime: 2022-09-21 11:06:13
  */
 import request from '~/utils/request'
 
@@ -46,3 +46,20 @@ export function getMusicComment(data) {
 //         url: `/check/music?id=${data}?timestamp=${Date.now()}`
 //     })
 // }
+// 喜欢音乐
+// 说明: 调用此接口, 传入音乐 id, 可喜欢该音乐
+
+// 必选参数: id: 歌曲 id
+
+// 可选参数: like: 布尔值, 默认为 true 即喜欢, 若传 false, 则取消喜欢
+
+// 接口地址: /like
+
+// 调用例子: /like?id=347230
+export function likeMusic(id) {
+    const cookie = localStorage.getItem('cookie')
+    return request({
+        method: 'get',
+        url: `/like?id=${id}&cookie=${encodeURIComponent(cookie)}`,
+    })
+}
