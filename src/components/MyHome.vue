@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-12 17:02:36
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-21 21:00:28
+ * @LastEditTime: 2022-09-21 21:03:35
 -->
 <script setup lang="ts">
 import { Dialog, Loading, Notify } from "vant";
@@ -35,7 +35,7 @@ const signature = ref("");
 const events = ref([]);
 const pics = ref([]);
 //个人歌单
-const activeNames = ref(["创建的歌单"]);
+const activeNames = ref("创建的歌单");
 const createdList = ref([]); //
 const subList = ref([]);
 onMounted(async () => {
@@ -187,7 +187,7 @@ const toDetail = (item) => {
             </div>
 
             <div class="bg-white rounded-lg px-.5 text-left mt-5">
-              <van-collapse v-model="activeNames">
+              <van-collapse v-model="activeNames" accordion>
                 <van-collapse-item name="创建的歌单">
                   <template #title>
                     <div>创建的歌单({{ createdList.length }})</div>
