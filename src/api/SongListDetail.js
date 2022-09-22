@@ -21,7 +21,7 @@ export function getSongListDetail(data) {
 // 可选参数 : offset : 默认值为0
 export function getAllSong(data, limit) {
     return request({
-        method: 'get',
+        method: 'post',
         url: `/playlist/track/all?id=${data}&limit=${limit}&offset=0`
     })
 }
@@ -39,7 +39,7 @@ export function getAllSong(data, limit) {
 // before: 分页参数,取上一页最后一项的 time 获取下一页数据(获取超过 5000 条评论的时候需要用到)
 export function getSongListComment(data) {
     return request({
-        method: 'get',
+        method: 'post',
         url: `/comment/playlist?id=${data}&limit=100&offset=0` //搜索的是100条，但渲染的值是热门评论，只有15条
     })
 }

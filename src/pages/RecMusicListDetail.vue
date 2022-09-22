@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-21 20:51:23
+ * @LastEditTime: 2022-09-22 11:45:43
 -->
 <script setup lang="ts">
 import { getAllSong, getSongListDetail } from "~/api/SongListDetail";
@@ -145,7 +145,7 @@ const toCommentDetail = () => {
           <img class="w-3rem h-3rem rounded" :src="item.al.picUrl" alt="图片加载失败" />
           <div class="flex-col ml-2 text-style" @click="updateSongList(index)">
             <div class="flex">
-              <div class="flex text-md font-extrabold text-style break-all">
+              <div class="flex w-45 text-left text-md font-extrabold text-style break-all">
                 {{ item.name }}
               </div>
             </div>
