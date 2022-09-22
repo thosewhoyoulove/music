@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-16 22:44:19
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-18 14:25:03
+ * @LastEditTime: 2022-09-22 21:45:00
 -->
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
@@ -67,6 +67,10 @@ const onDialogConfirm = () => {
     Notify({ type: "success", message: "退出登录成功" });
   }, 1000);
 };
+//彩蛋
+const caidan = () =>{
+  Notify({ type: 'success', message: '祝你开心每一天' });
+}
 </script>
 
 <template>
@@ -120,7 +124,7 @@ const onDialogConfirm = () => {
               <div class="pr-1">
                 <van-icon name="envelop-o" />
               </div>
-              <div class="">我的消息</div>
+              <div class="">你好</div>
             </div>
             <div class="flex">
               <van-icon name="arrow" />
@@ -131,7 +135,7 @@ const onDialogConfirm = () => {
               <div class="pr-1">
                 <van-icon name="points" />
               </div>
-              <div>云贝中心</div>
+              <div>写点什么好呢</div>
             </div>
             <div class="flex">
               <van-icon name="arrow" />
@@ -142,7 +146,7 @@ const onDialogConfirm = () => {
               <div class="pr-1">
                 <van-icon name="user-circle-o" />
               </div>
-              <div>创作者中心</div>
+              <div>那就祝你开心每一天吧</div>
             </div>
             <div class="flex">
               <van-icon name="arrow" />
@@ -157,7 +161,7 @@ const onDialogConfirm = () => {
               <div class="pr-1">
                 <van-icon name="envelop-o" />
               </div>
-              <div class="">我的消息</div>
+              <div class="">呜呜呜</div>
             </div>
             <div class="flex">
               <van-icon name="arrow" />
@@ -168,7 +172,7 @@ const onDialogConfirm = () => {
               <div class="pr-1">
                 <van-icon name="points" />
               </div>
-              <div>云贝中心</div>
+              <div>今天是疯狂星期四</div>
             </div>
             <div class="flex">
               <van-icon name="arrow" />
@@ -179,7 +183,7 @@ const onDialogConfirm = () => {
               <div class="pr-1">
                 <van-icon name="user-circle-o" />
               </div>
-              <div>创作者中心</div>
+              <div>我很疯狂</div>
             </div>
             <div class="flex">
               <van-icon name="arrow" />
@@ -194,7 +198,7 @@ const onDialogConfirm = () => {
               <div class="pr-1">
                 <van-icon name="envelop-o" />
               </div>
-              <div class="">我的消息</div>
+              <div class="">别点我</div>
             </div>
             <div class="flex">
               <van-icon name="arrow" />
@@ -205,18 +209,18 @@ const onDialogConfirm = () => {
               <div class="pr-1">
                 <van-icon name="points" />
               </div>
-              <div>云贝中心</div>
+              <div>点了也没用</div>
             </div>
             <div class="flex">
               <van-icon name="arrow" />
             </div>
           </div>
-          <div class="flex justify-between border-b border-hex-ccc py-1">
+          <div @click="caidan" class="flex justify-between border-b border-hex-ccc py-1">
             <div class="flex">
               <div class="pr-1">
                 <van-icon name="user-circle-o" />
               </div>
-              <div>创作者中心</div>
+              <div>点击我</div>
             </div>
             <div class="flex">
               <van-icon name="arrow" />
@@ -231,7 +235,7 @@ const onDialogConfirm = () => {
               <div class="pr-1">
                 <van-icon name="envelop-o" />
               </div>
-              <div class="">我的消息</div>
+              <div class="">马上就要国庆咯</div>
             </div>
             <div class="flex">
               <van-icon name="arrow" />
@@ -242,7 +246,7 @@ const onDialogConfirm = () => {
               <div class="pr-1">
                 <van-icon name="points" />
               </div>
-              <div>云贝中心</div>
+              <div>放几天假好呢</div>
             </div>
             <div class="flex">
               <van-icon name="arrow" />
@@ -253,7 +257,7 @@ const onDialogConfirm = () => {
               <div class="pr-1">
                 <van-icon name="user-circle-o" />
               </div>
-              <div>创作者中心</div>
+              <div>那就七天吧</div>
             </div>
             <div class="flex">
               <van-icon name="arrow" />
