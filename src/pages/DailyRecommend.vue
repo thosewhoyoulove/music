@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 19:07:49
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-22 11:52:53
+ * @LastEditTime: 2022-09-23 21:42:40
 -->
 <script setup lang="ts">
 import {
@@ -87,7 +87,7 @@ const toMusicDetail = (id) => {
                 class="flex justify-between h-3rem my-1 text-sm"
               >
                 <div class="flex justify-between">
-                  <div class="flex w-10 justify-center text-.1rem items-center">
+                  <div class="flex w-10 justify-center text-10px items-center">
                     {{ index + 1 }}
                   </div>
                   <img
