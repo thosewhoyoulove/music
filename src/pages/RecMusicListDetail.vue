@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-22 16:20:13
+ * @LastEditTime: 2022-09-23 22:24:38
 -->
 <script setup lang="ts">
 import { getAllSong, getSongListDetail } from "~/api/SongListDetail";
@@ -51,87 +51,89 @@ const toCommentDetail = () => {
 </script>
 
 <template>
-  <div class="bg-white w-100% h-50vh relative">
+  <div class="bg-white w-100% h-50vh relative mx-2">
     <img
       class="w-100% h-100% rounded-xl absolute blur-xl"
       :src="state.playlist.coverImgUrl"
       alt="这是推荐歌单底部阴影"
     />
     <div class="flex justify-between pt-5 items-center px-2 text-white">
-      <span class="z-1">歌单</span>
-      <div class="w-25% h-100% flex justify-between">
-        <span class="text-7"><van-icon name="search" /></span>
-        <span class="text-7"><van-icon name="ellipsis" /></span>
+      <div class="z-1 text-.5rem">歌单</div>
+      <div class="w-25% h-100% flex justify-around">
+        <div class="text-5"><van-icon name="search" /></div>
+        <div class="text-5"><van-icon name="ellipsis" /></div>
       </div>
     </div>
-    <span class="relative flex justify-between">
+    <div class="relative flex">
       <img
-        class="h-8rem m-1 rounded-xl p-1 relative inline-block"
+        class="h-8rem w-8rem m-1 rounded-xl p-1 relative inline-block"
         :src="state.playlist.coverImgUrl"
         alt="正在加载"
       />
-      <span class="play-icon text-12px px-2 py-0.5 rounded-xl absolute">
-        <span><van-icon name="play-circle-o" /></span>
-        <span class="mx-1">{{ filter(state.playlist.playCount) }}</span>
-      </span>
+      <div class="play-icon text-.5rem px-.5 py-0.5 rounded-xl absolute flex">
+        <div><van-icon name="play-circle-o" /></div>
+        <div class="mx-1">{{ filter(state.playlist.playCount) }}</div>
+      </div>
 
-      <div class="flex-col items-center">
-        <span class="text-left flex text-13px my-1 py-1">{{ state.playlist.name }}</span>
-        <span class="flex items-center">
+      <div class="flex-col ml-2 items-center text-left">
+        <div class="flex text-hex-fff text-.8rem my-1 py-1">
+          {{ state.playlist.name }}
+        </div>
+        <div class="flex items-center">
           <img
-            class="w-10 h-10 rounded-1/2"
+            class="w-7 h-7 rounded-1/2"
             :src="state?.playlist?.creator?.avatarUrl"
             alt="正在加载"
           />
-          <span class="text-light-900 text-xs ml-2">{{
-            state?.playlist?.creator?.nickname
-          }}</span>
-        </span>
+          <div class="text-hex-ccc text-.5rem ml-2">
+            {{ state?.playlist?.creator?.nickname }}
+          </div>
+        </div>
+        <div
+          v-if="state.playlist.description"
+          class="flex text-hex-ccc text-.5rem mt-3 text-left w-100% h-4 pr-2"
+        >
+          <div class="text-style">
+            {{ state.playlist.description }}
+          </div>
+          <div class="mr-1">
+            <van-icon name="arrow" />
+          </div>
+        </div>
       </div>
-    </span>
-    <div
-      v-if="state.playlist.description"
-      class="flex absolute text-white text-xs pt-1 text-left w-100% h-5 overflow-hidden"
-    >
-      <span class="text-style">
-        {{ state.playlist.description }}
-      </span>
-      <span>
-        <van-icon name="arrow" />
-      </span>
     </div>
+
     <div class="relative flex mt-6 text-light-900 justify-around">
-      <span class="flex items-center justify-between"
-        ><van-button style="background: transparent" round
-          ><van-icon color="#ccc" size="1rem" name="share-o" /><span
-            class="px-1 text-light-900"
-            >{{ state?.playlist?.shareCount }}</span
-          ></van-button
-        ></span
-      >
-      <span @click="toCommentDetail"
-        ><van-button style="background: transparent" round
-          ><van-icon color="#ccc" size="1rem" name="chat-o" /><span
-            class="px-1 text-light-900"
-            >{{ state?.playlist?.commentCount }}</span
-          ></van-button
-        ></span
-      >
-      <span
-        ><van-button color="#FE3641" round
-          ><van-icon size="1rem" name="add-o" /><span class="px-1">{{
-            state?.playlist?.subscribedCount
-          }}</span></van-button
-        ></span
-      >
+      <div class="flex items-center justify-between">
+        <van-button style="background: transparent" round
+          ><van-icon color="#ccc" size="1rem" name="share-o" />
+          <div class="px-1 text-light-900">
+            {{ state?.playlist?.shareCount }}
+          </div></van-button
+        >
+      </div>
+      <div @click="toCommentDetail">
+        <van-button style="background: transparent" round
+          ><van-icon color="#ccc" size="1rem" name="chat-o" />
+          <div class="px-1 text-light-900">
+            {{ state?.playlist?.commentCount }}
+          </div></van-button
+        >
+      </div>
+      <div>
+        <van-button color="#FE3641" round
+          ><van-icon size="1rem" name="add-o" />
+          <div class="px-1">{{ state?.playlist?.subscribedCount }}</div></van-button
+        >
+      </div>
     </div>
   </div>
   <div class="w-100% pb-15">
     <van-list>
-      <ul class="flex h-3rem leading-12 text-md ml-2">
-        <span><van-icon name="play-circle-o" /></span>
-        <span class="flex">全部播放</span>
-      </ul>
+      <div class="flex h-3rem text-md ml-2">
+        <div><van-icon size="1.5rem" name="play-circle-o" /></div>
+        <div class="flex ml-2">全部播放</div>
+      </div>
       <van-skeleton :row="20" round :loading="loading" />
       <ul
         v-for="(item, index) in state.songlist"
@@ -145,7 +147,9 @@ const toCommentDetail = () => {
           <img class="w-3rem h-3rem rounded" :src="item.al.picUrl" alt="图片加载失败" />
           <div class="flex-col ml-2 text-style" @click="updateSongList(index)">
             <div class="flex">
-              <div class="flex w-45 text-left text-md font-extrabold text-style break-all">
+              <div
+                class="flex w-45 text-left text-md font-extrabold text-style break-all"
+              >
                 {{ item.name }}
               </div>
             </div>
@@ -180,7 +184,7 @@ const toCommentDetail = () => {
   background: rgba(0, 0, 0, 0.3);
   color: #fff;
   top: 0.5rem;
-  left: 1rem;
+  left: 4rem;
 }
 </style>
 
