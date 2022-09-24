@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-16 22:44:19
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-22 21:45:00
+ * @LastEditTime: 2022-09-24 17:02:25
 -->
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
@@ -283,23 +283,23 @@ const caidan = () =>{
     <div class="flex mx-auto mt-5 justify-between items-center text-md font-500 ">
       <van-tabs v-model:active="activeName" class="bg-hex-F6F7F9" background="#F6F7F9">
         <van-tab title="我的" name="a">
-          <div class="w-90vw">
+          <div class="w-100vw">
             <my-home />
           </div>
         </van-tab>
         <van-tab title="发现" name="b">
-          <div class="w-60vw">
+          <div class="w-100vw">
             <Swiper />
           </div>
-          <div class="w-90vw">
+          <div class="w-100vw">
             <IconList />
           </div>
-          <div class="w-90vw">
+          <div class="w-100vw">
             <FindMusic />
           </div>
         </van-tab>
         <van-tab title="声明" name="c">
-          <div class="w-90vw">
+          <div class="w-100vw">
           <read></read>
           </div>
         </van-tab>
