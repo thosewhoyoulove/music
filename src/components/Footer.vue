@@ -8,25 +8,36 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { useStore } from '~/store/index'
-const audio = ref(null) // 获取audio属性
+
+const audio = ref<HTMLElement & {
+  paused: boolean,
+  pause: () => void,
+  play: () => void,
+  currentTime: number,
+  duration: number
+}>() // 获取audio属性
+
 const store = useStore()
-let interVal = ref(0) // 设置定时器
-const { lyricList, playList, playListIndex, isShow, isDetailShow,currentTime }
+let interVal = ref<any>() // 设置定时器
+const { playList, playListIndex, isShow, isDetailShow }
   = storeToRefs(store)
+
 onMounted(async () => {
   store.getLyric(playList.value[playListIndex.value]?.id)
   // let res = await isMusicAvailable(playList.value[playListIndex.value]?.id);
   // console.log(res, "音乐是否可用");
 
   // 渲染的时候也需要同步歌词时间
-  updateTime()
+  // updateTime()
   // console.log(lyricList, "----------");
-  console.log(audio, '1111111111111111111')
+  // console.log(audio, '1111111111111111111')
 }) // 开始获取歌词
+
 const updateTime = () => {
-  interVal = setInterval(() => {
-    store.updateCurrentTime(store.$state, audio.value?.currentTime)
-  }, 100)
+  // interVal.value = null
+  interVal.value = setInterval(() => {
+    audio.value && store.updateCurrentTime(audio.value.currentTime)
+  }, 1000)
 }
 // onUpdated(async () => {
 //   let res = await isMusicAvailable(playList.value[playListIndex.value]?.id);
@@ -34,8 +45,8 @@ const updateTime = () => {
 // });
 const play = () => {
   /* 判断是否已暂停 */
-  if (audio.value.paused) {
-    console.log('点击了播放')
+  if (audio.value && audio.value.paused) {
+    // console.log('点击了播放')
     store.currentTime = audio.value.currentTime
     /* 调用audio的播放功能方法 */
     audio.value.play()
@@ -44,15 +55,15 @@ const play = () => {
     // 触发定时器
     updateTime()
   }
-  else if (!audio.value.paused) {
+  else if (audio.value && !audio.value.paused) {
     console.log(audio)
-    store.updateCurrentTime(store.$state,audio.value.currentTime)
+    store.updateCurrentTime(audio.value.currentTime)
     /* 调用暂停方法 */
     audio.value.pause()
     // 让其隐藏播放按钮
     store.updateIsShow(store.$state, true)
     // 清除定时器
-    clearInterval(interVal)
+    clearInterval(interVal.value)
   }
 }
 
@@ -60,13 +71,14 @@ const toMusicDetail = () => {
   store.updateDetailShow(store.$state)
 }
 const addDuration = () => {
-  store.updateDuration(store.$state, audio?.value?.duration)
+  if (audio.value) {
+    store.updateDuration(store.$state, audio.value.duration)
+  }
 }
 onUpdated(() => {
   /* 将id传给获取歌词的方法 */
   store.getLyric(store.playList[store.playListIndex].id)
   // 渲染的时候也需要同步歌词时间
-  updateTime()
   addDuration()
 })
 </script>

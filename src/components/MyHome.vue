@@ -42,7 +42,7 @@ onMounted(async () => {
     })
   }
   else {
-    user.value = JSON.parse(localStorage.getItem('userInfo'))
+    user.value = JSON.parse(localStorage.getItem('userInfo') || "")
     console.log(user.value, '本地用户信息')
     uid.value = user.value.account.id
     nickname.value = user.value.profile?.nickname

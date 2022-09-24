@@ -34,7 +34,7 @@ onMounted(async () => {
   console.log(recSongListRes, '推荐歌单')
   state.songList = recSongListRes.recommend
 })
-const filter = (num) => {
+const filter = (num: number) => {
   if (num > 100000000)
     return `${(num / 100000000).toFixed(1)}亿`
   else if (num > 10000)
@@ -42,12 +42,12 @@ const filter = (num) => {
   else return num
 }
 // 修改歌曲信息并进行播放
-const updateSongList = (index) => {
+const updateSongList = (index: number) => {
   store.updatePlayList(store.$state, state.songs) // 将歌单列表传进默认列表
   store.updatePlayListIndex(index) // 将索引值传给默认索引
   store.updateIsShow(store.$state, true) // 修改为暂停图标
 }
-const toMusicDetail = (id) => {
+const toMusicDetail = (id: number) => {
   router.push({
     path: '/TopListDetail',
     query: {

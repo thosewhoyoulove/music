@@ -9,23 +9,23 @@
 import getFindSongList from '~/api/RecommendSongList'
 const router = useRouter()
 const loading = ref(true)
-const state = reactive({
-  musicList: [],
-})
+// 定义歌单列表
+let playListSet = reactive<PlayList[]>([])
+
 onMounted(async () => {
   const res = await getFindSongList()
-  console.log(res.result)
-  state.musicList = res.result
+  // console.log(res.result, "components/FindMusic....res.result")
+  playListSet = res.result
   loading.value = false
 })
-const filter = (num) => {
+const transform = (num: number) => {
   if (num > 100000000)
     return `${(num / 100000000).toFixed(1)}亿`
   else if (num > 10000)
     return `${(num / 10000).toFixed(0)}万`
   else return num
 }
-const toMusicDetail = (id) => {
+const toMusicDetail = (id: number) => {
   router.push({
     path: '/RecMusicListDetail',
     query: {
@@ -56,22 +56,22 @@ const toMusicDetail = (id) => {
         :show-indicators="false"
       >
         <van-swipe-item
-          v-for="item in state.musicList"
-          :key="item"
-          @click="toMusicDetail(item.id)"
+          v-for="playList in playListSet"
+          :key="playList.id"
+          @click="toMusicDetail(playList.id)"
         >
           <div class="relative">
             <img
               class="h-8rem m-1 rounded-xl p-1"
-              :src="item.picUrl"
+              :src="playList.picUrl"
               alt="这是首页推荐歌单的封面"
             >
             <div class="text-style text-left text-13px px-1">
-              {{ item.name }}
+              {{ playList.name }}
             </div>
             <span class="play-icon text-12px px-2 py-0.5 rounded-xl absolute">
               <span><van-icon name="play-circle-o" /></span>
-              <span class="mx-1">{{ filter(item.playCount) }}</span>
+              <span class="mx-1">{{ transform(playList.playCount) }}</span>
             </span>
           </div>
         </van-swipe-item>
