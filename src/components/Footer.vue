@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-18 14:40:55
+ * @LastEditTime: 2022-09-23 21:53:01
 -->
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
@@ -23,7 +23,7 @@ const { playList, playListIndex, isShow, isDetailShow }
   = storeToRefs(store)
 
 onMounted(async () => {
-  store.getLyric(playList.value[playListIndex.value]?.id)
+  store.getLyric(playList.value[playListIndex.value]?.id);
   // let res = await isMusicAvailable(playList.value[playListIndex.value]?.id);
   // console.log(res, "音乐是否可用");
 
@@ -49,9 +49,9 @@ const play = () => {
     // console.log('点击了播放')
     store.currentTime = audio.value.currentTime
     /* 调用audio的播放功能方法 */
-    audio.value.play()
+    audio.value.play();
     // 让其显示播放按钮
-    store.updateIsShow(store.$state, false)
+    store.updateIsShow(store.$state, false);
     // 触发定时器
     updateTime()
   }
@@ -59,17 +59,17 @@ const play = () => {
     console.log(audio)
     store.updateCurrentTime(audio.value.currentTime)
     /* 调用暂停方法 */
-    audio.value.pause()
+    audio.value.pause();
     // 让其隐藏播放按钮
-    store.updateIsShow(store.$state, true)
+    store.updateIsShow(store.$state, true);
     // 清除定时器
     clearInterval(interVal.value)
   }
-}
+};
 
 const toMusicDetail = () => {
-  store.updateDetailShow(store.$state)
-}
+  store.updateDetailShow(store.$state);
+};
 const addDuration = () => {
   if (audio.value) {
     store.updateDuration(store.$state, audio.value.duration)
@@ -77,7 +77,7 @@ const addDuration = () => {
 }
 onUpdated(() => {
   /* 将id传给获取歌词的方法 */
-  store.getLyric(store.playList[store.playListIndex].id)
+  store.getLyric(store.playList[store.playListIndex].id);
   // 渲染的时候也需要同步歌词时间
   addDuration()
 })
@@ -85,35 +85,29 @@ onUpdated(() => {
 
 <template>
   <div
-    class="
-      w-100%
-      h-20vw
-      bottom-0
-      fixed
-      items-center
-      justify-between
-      bg-white
-      border-t border-hex-ccc
-      flex
-      px-1
-      z-30
-    "
+    class="w-100% h-20vw bottom-0 fixed items-center justify-between bg-white flex px-1 z-30"
   >
-    <span class="flex items-center" @click="toMusicDetail">
-      <img
-        class="w-3rem h-3rem rounded"
-        :src="playList[playListIndex]?.al?.picUrl"
-        alt="这是底部播放组件专辑的封面"
-      >
-      <Vue3Marquee class="text-sm my-2 px-2 w-30">
+    <div class="flex items-center" @click="toMusicDetail">
+      <div class="relative w-2.7rem h-2.7rem bg-#000 rounded-full">
+        <img
+          class="w-2rem h-2rem rounded-full absolute z-10 left-50% top-50% -translate-x-1/2 -translate-y-1/2"
+          :src="playList[playListIndex]?.al?.picUrl"
+          alt="这是底部播放组件专辑的封面"
+        />
+      </div>
+      <Vue3Marquee class="text-xs my-2 px-2 w-30">
         {{ playList[playListIndex]?.name }}
       </Vue3Marquee>
-    </span>
-    <span class="flex pr-1.5rem">
-      <span v-if="isShow" class="text-lg px-2" @click="play"><van-icon name="play-circle-o" /></span>
-      <span v-if="!isShow" class="text-lg px-2" @click="play"><van-icon name="pause-circle-o" /></span>
-      <span class="text-xl"><van-icon name="bars" /></span>
-    </span>
+    </div>
+    <div class="flex pr-1.5rem">
+      <div v-if="isShow" class="text-lg px-2" @click="play">
+        <van-icon size="1.8rem" name="play-circle-o" />
+      </div>
+      <div v-if="!isShow" class="text-lg px-2" @click="play">
+        <van-icon size="1.8rem" name="pause-circle-o" />
+      </div>
+      <div class="text-xl"><van-icon size="1.8rem" name="bars" /></div>
+    </div>
     <audio
       ref="audio"
       loop
@@ -132,4 +126,3 @@ onUpdated(() => {
     />
   </van-popup>
 </template>
-

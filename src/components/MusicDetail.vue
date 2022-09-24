@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-22 21:03:00
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-19 19:31:23
+ * @LastEditTime: 2022-09-22 17:05:41
 -->
 <script setup lang="ts">
 import { Vue3Marquee } from "vue3-marquee";
@@ -202,10 +202,19 @@ watch(
     getNewComment(props.musicList.id);
   }
 );
+//过滤评论数
+const filter = num =>{
+  if(num > 1000000) return '100w+'
+  else if (num > 100000) return '10w+';
+  else if (num > 10000) return '1w+';
+  else if(num>1000) return '999+';
+  else return num;
+}
+
 </script>
 
 <template>
-  <div class="w-100% h-604px relative">
+  <div class="w-100% h-37.75rem relative">
     <div class="absolute -z-1 blur-3xl h-100% w-100% bg-red"></div>
     <img
       class="absolute -z-1 blur-100px h-100% w-100% bg-pink brightness-50"
@@ -217,7 +226,7 @@ watch(
         <van-icon name="arrow-left"></van-icon>
       </div>
       <!-- 歌名跑马灯 -->
-      <div class="col absolute left-10 -top-1">
+      <div class="col absolute left-10 -top-0.25rem">
         <Vue3Marquee class="text-sm my-2 text-hex-ccc w-30">{{
           props.musicList.name
         }}</Vue3Marquee
@@ -239,7 +248,7 @@ watch(
       <div class="text-xl text-hex-ccc"><van-icon name="share-o"></van-icon></div>
     </div>
     <!-- 磁盘大图 --><img
-      class="rounded-1/2 w-45 h-45 absolute top-25% left-22% -translate-x-1/2 animate__animated animate__bounceIn"
+      class="rounded-1/2 w-11.25rem h-11.25rem absolute top-25% left-22% -translate-x-1/2 animate__animated animate__bounceIn"
       v-show="!isLyricShow"
       :src="props.musicList.al.picUrl"
       alt="这是歌曲详情的磁盘图"
@@ -264,21 +273,18 @@ watch(
       </p>
     </div>
     <!-- 点击展示歌词，并增加了动画效果 -->
-    <div class="flex h-10 justify-around mt-24.375rem text-md items-center" v-show="!isLyricShow">
-      <span><van-icon size="18px" name="like-o"></van-icon></span>
-      <span><van-icon style="transform: rotate(180deg)" size="18px" name="upgrade"></van-icon></span>
-      <span><van-icon size="18px" name="music-o"></van-icon></span>
-      <span class="relative bottom-0" @click="toCommentDetail"><van-icon size="18px" name="comment-o"></van-icon>
-        <van-badge
-          class="absolute"
+    <div class="flex h-2.5rem justify-around mt-24.375rem text-md items-center" v-show="!isLyricShow">
+      <div><van-icon size="1.125rem" name="like-o"></van-icon></div
+      ><div ><van-icon style="transform: rotate(180deg)" size="1.125rem" name="upgrade"></van-icon></div
+      ><div><van-icon size="1.125rem" name="music-o"></van-icon></div
+      ><div class="relative bottom-0" @click="toCommentDetail"
+        ><van-icon size="1.125rem" name="comment-o"></van-icon
+        ><div
+          class="absolute bg-hex-ccf text-.1rem -top-0.25rem -right-1.225rem z-10 scale-x-75 w-2.5rem text-center justify-center"
           v-if="totalComment > 0"
-          style="background: transparent; border-width: 0; transition: all linear .5s;"
-          color="#ccfc"
-          :content="totalComment"
-          max="100000"
-        ></van-badge>
-      </span>
-      <span style="transform: rotate(90deg)"><van-icon size="18px" name="ellipsis"></van-icon></span>
+          style="background: transparent; border-width: 0"
+        >{{filter(totalComment)}}</div></div
+      ><div style="transform: rotate(90deg)"><van-icon size="1.125rem" name="ellipsis"></van-icon></div>
     </div>
     <div
       class="absolute top-78% mx-2 flex w-90% bg-transparent justify-around items-center text-xs text-hex-bbb"
@@ -311,11 +317,7 @@ watch(
 </template>
 
 <style lang="less" scoped>
-.van-badge--top-right {
-  top: 0.3125rem;
-  right: -0.625rem;
-  color: #003248;
-}
+
 
 input[type="range"] {
   -webkit-appearance: none; /*清除系统默认样式*/
@@ -344,8 +346,8 @@ input[type="range"]::-webkit-slider-thumb {
   //溢出滚动
   overflow: scroll;
   p {
-    width: 200px;
-    font-size: 10px;
+    width: 12.5rem;
+    font-size: 0.625rem;
     color: rgb(195, 239, 244);
     margin-bottom: 1rem;
   }

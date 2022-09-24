@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 19:13:33
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-16 19:35:42
+ * @LastEditTime: 2022-09-22 16:18:04
 -->
 <script setup lang="ts">
 import { getSingleCatPlayList, getSongList } from '~/api/SongList'
@@ -67,18 +67,18 @@ const toMusicDetail = (id) => {
             <img
               class="w-20 h-20 rounded-xl p-1"
               :src="item.coverImgUrl"
-              alt="这是歌单广场的封面"
+              alt="加载失败"
             >
             <div class="text-style w-20 text-left text-13px px-1">
               {{ item.name }}
             </div>
             <div
               class="
-                flex play-icon text-12px px-2 py-0.5 rounded-xl absolute
+                flex play-icon px-0.5 text-1px py-0.5 rounded-xl absolute
               "
             >
               <div><van-icon name="play-circle-o" /></div>
-              <div class="mx-1">
+              <div class="mx-1 ">
                 {{ filter(item.playCount) }}
               </div>
             </div>

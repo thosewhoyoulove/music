@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-17 15:53:02
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-06 19:20:19
+ * @LastEditTime: 2022-09-21 20:34:27
  */
 import request from '~/utils/request'
 //获取歌单详情 (包括推荐歌单和热门歌单)
@@ -19,10 +19,10 @@ export function getSongListDetail(data) {
 // 可选参数 : limit : 限制获取歌曲的数量，默认值为当前歌单的歌曲数量
 
 // 可选参数 : offset : 默认值为0
-export function getAllSong(data) {
+export function getAllSong(data, limit) {
     return request({
-        method: 'get',
-        url: `/playlist/track/all?id=${data}&limit=25&offset=1`
+        method: 'post',
+        url: `/playlist/track/all?id=${data}&limit=${limit}&offset=0`
     })
 }
 
@@ -39,7 +39,7 @@ export function getAllSong(data) {
 // before: 分页参数,取上一页最后一项的 time 获取下一页数据(获取超过 5000 条评论的时候需要用到)
 export function getSongListComment(data) {
     return request({
-        method: 'get',
+        method: 'post',
         url: `/comment/playlist?id=${data}&limit=100&offset=0` //搜索的是100条，但渲染的值是热门评论，只有15条
     })
 }
