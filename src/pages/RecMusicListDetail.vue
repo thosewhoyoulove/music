@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-23 22:24:38
+ * @LastEditTime: 2022-09-24 16:20:31
 -->
 <script setup lang="ts">
 import { getAllSong, getSongListDetail } from "~/api/SongListDetail";
@@ -48,10 +48,18 @@ const toCommentDetail = () => {
     },
   });
 };
+//
+const filterTotal = (num) => {
+  if (num > 1000000) return "100w+";
+  else if (num > 100000) return "10w+";
+  else if (num > 10000) return "1w+";
+  else if (num > 1000) return "999+";
+  else return num;
+};
 </script>
 
 <template>
-  <div class="bg-white w-100% h-50vh relative mx-2">
+  <div class="bg-white w-100% h-42vh relative px-2">
     <img
       class="w-100% h-100% rounded-xl absolute blur-xl"
       :src="state.playlist.coverImgUrl"
@@ -91,7 +99,7 @@ const toCommentDetail = () => {
         </div>
         <div
           v-if="state.playlist.description"
-          class="flex text-hex-ccc text-.5rem mt-3 text-left w-100% h-4 pr-2"
+          class="flex text-hex-ccc text-.5rem mt-3 text-left w-100% h-4 leading-1rem pr-2"
         >
           <div class="text-style">
             {{ state.playlist.description }}
@@ -103,28 +111,32 @@ const toCommentDetail = () => {
       </div>
     </div>
 
-    <div class="relative flex mt-6 text-light-900 justify-around">
-      <div class="flex items-center justify-between">
-        <van-button style="background: transparent" round
-          ><van-icon color="#ccc" size="1rem" name="share-o" />
-          <div class="px-1 text-light-900">
-            {{ state?.playlist?.shareCount }}
-          </div></van-button
-        >
+    <div
+      class="relative flex mt-6 text-light-900 bg-white justify-around mx-auto w-80vw h-5vh rounded-full"
+    >
+      <div class="flex items-center justify-between z-10">
+        <div class="flex items-center bg-hex-" color="#FE3641">
+          <van-icon size="1rem" name="add-o" />
+          <div class="px-1 text-10px">{{ filterTotal(state?.playlist?.subscribedCount) }}</div>
+        </div>
       </div>
-      <div @click="toCommentDetail">
-        <van-button style="background: transparent" round
-          ><van-icon color="#ccc" size="1rem" name="chat-o" />
-          <div class="px-1 text-light-900">
-            {{ state?.playlist?.commentCount }}
-          </div></van-button
-        >
+      <div class="-mx-8 flex items-center">|</div>
+      <div class="flex items-center justify-between z-10" @click="toCommentDetail">
+        <div class="flex items-center" style="background: transparent">
+          <van-icon color="#ccc" size="1rem" name="chat-o" />
+          <div class="px-1  text-10px text-light-900">
+            {{ filterTotal(state?.playlist?.commentCount) }}
+          </div>
+        </div>
       </div>
-      <div>
-        <van-button color="#FE3641" round
-          ><van-icon size="1rem" name="add-o" />
-          <div class="px-1">{{ state?.playlist?.subscribedCount }}</div></van-button
-        >
+      <div class="-mx-8 flex items-center">|</div>
+      <div class="flex items-center justify-between z-10">
+        <div class="flex items-center" style="background: transparent">
+          <van-icon color="#ccc" size="1rem" name="share-o" />
+          <div class="px-1  text-10px text-light-900">
+            {{ filterTotal(state?.playlist?.shareCount) }}
+          </div>
+        </div>
       </div>
     </div>
   </div>
