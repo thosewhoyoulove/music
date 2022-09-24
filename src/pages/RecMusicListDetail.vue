@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-24 16:20:31
+ * @LastEditTime: 2022-09-24 16:32:20
 -->
 <script setup lang="ts">
 import { getAllSong, getSongListDetail } from "~/api/SongListDetail";
@@ -78,7 +78,7 @@ const filterTotal = (num) => {
         :src="state.playlist.coverImgUrl"
         alt="正在加载"
       />
-      <div class="play-icon text-.5rem px-.5 py-0.5 rounded-xl absolute flex">
+      <div v-if="!state.playlist.playCount" class="play-icon text-.5rem px-1 py-0.5 rounded-xl absolute flex">
         <div><van-icon name="play-circle-o" /></div>
         <div class="mx-1">{{ filter(state.playlist.playCount) }}</div>
       </div>
@@ -112,19 +112,19 @@ const filterTotal = (num) => {
     </div>
 
     <div
-      class="relative flex mt-6 text-light-900 bg-white justify-around mx-auto w-80vw h-5vh rounded-full"
+      class="relative flex mt-6 text-hex-aaa bg-white justify-around mx-auto w-80vw h-5vh rounded-full"
     >
       <div class="flex items-center justify-between z-10">
-        <div class="flex items-center bg-hex-" color="#FE3641">
-          <van-icon size="1rem" name="add-o" />
+        <div class="flex items-center">
+          <van-icon size="1rem" name="add"  color="#FE3641" />
           <div class="px-1 text-10px">{{ filterTotal(state?.playlist?.subscribedCount) }}</div>
         </div>
       </div>
       <div class="-mx-8 flex items-center">|</div>
       <div class="flex items-center justify-between z-10" @click="toCommentDetail">
         <div class="flex items-center" style="background: transparent">
-          <van-icon color="#ccc" size="1rem" name="chat-o" />
-          <div class="px-1  text-10px text-light-900">
+          <van-icon color="#aaa" size="1rem" name="chat" />
+          <div class="px-1  text-10px text-hex-aaa">
             {{ filterTotal(state?.playlist?.commentCount) }}
           </div>
         </div>
@@ -132,8 +132,8 @@ const filterTotal = (num) => {
       <div class="-mx-8 flex items-center">|</div>
       <div class="flex items-center justify-between z-10">
         <div class="flex items-center" style="background: transparent">
-          <van-icon color="#ccc" size="1rem" name="share-o" />
-          <div class="px-1  text-10px text-light-900">
+          <van-icon color="#aaa" size="1rem" name="share" />
+          <div class="px-1  text-10px text-hex-aaa">
             {{ filterTotal(state?.playlist?.shareCount) }}
           </div>
         </div>
@@ -142,7 +142,7 @@ const filterTotal = (num) => {
   </div>
   <div class="w-100% pb-15">
     <van-list>
-      <div class="flex h-3rem text-md ml-2">
+      <div class="flex h-3rem text-md ml-2 items-center">
         <div><van-icon size="1.5rem" name="play-circle-o" /></div>
         <div class="flex ml-2">全部播放</div>
       </div>
@@ -150,13 +150,13 @@ const filterTotal = (num) => {
       <ul
         v-for="(item, index) in state.songlist"
         :key="index"
-        class="flex justify-between h-3rem my-1 text-sm"
+        class="flex justify-between h-3rem my-.5 text-sm"
       >
-        <div class="flex justify-between">
+        <div class="flex justify-between items-center">
           <div class="flex w-10 justify-center text-.1rem items-center">
             {{ index + 1 }}
           </div>
-          <img class="w-3rem h-3rem rounded" :src="item.al.picUrl" alt="图片加载失败" />
+          <img class="w-2rem h-2rem rounded" :src="item.al.picUrl" alt="图片加载失败" />
           <div class="flex-col ml-2 text-style" @click="updateSongList(index)">
             <div class="flex">
               <div
@@ -195,8 +195,8 @@ const filterTotal = (num) => {
 .play-icon {
   background: rgba(0, 0, 0, 0.3);
   color: #fff;
-  top: 0.5rem;
-  left: 4rem;
+  top: 0.6rem;
+  left: 3.6rem;
 }
 </style>
 
