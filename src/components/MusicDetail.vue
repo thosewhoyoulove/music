@@ -203,7 +203,7 @@ watch(
   }
 );
 //过滤评论数
-const filter = num =>{
+const transform = (num:number) =>{
   if(num > 1000000) return '100w+'
   else if (num > 100000) return '10w+';
   else if (num > 10000) return '1w+';
@@ -283,7 +283,7 @@ const filter = num =>{
           class="absolute bg-hex-ccf text-.1rem -top-0.25rem -right-1.225rem z-10 scale-x-75 w-2.5rem text-center justify-center"
           v-if="totalComment > 0"
           style="background: transparent; border-width: 0"
-        >{{filter(totalComment)}}</div></div
+        >{{transform(totalComment)}}</div></div
       ><div style="transform: rotate(90deg)"><van-icon size="1.125rem" name="ellipsis"></van-icon></div>
     </div>
     <div

@@ -63,15 +63,15 @@ const toMusicDetail = (id: number) => {
           <div class="relative">
             <img
               class="h-6rem w-6rem rounded-xl p-1"
-              :src="item.picUrl"
+              :src="playList.picUrl"
               alt="这是首页推荐歌单的封面"
             >
             <div class="text-style text-left text-10px px-1">
-              {{ item.name }}
+              {{ playList.name }}
             </div>
             <div class="play-icon flex text-.5rem px-2 py-0.5 rounded-xl absolute">
               <div><van-icon name="play-circle-o" /></div>
-              <div class="mx-1">{{ filter(item.playCount) }}</div>
+              <div class="mx-1">{{ transform(playList.playCount) }}</div>
             </div>
           </div>
         </van-swipe-item>
