@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-16 22:44:19
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-25 09:53:13
+ * @LastEditTime: 2022-09-25 10:15:45
 -->
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
@@ -308,7 +308,7 @@ const caidan = () =>{
         </van-tab> -->
       </van-tabs>
     </div>
-    <div class="text-xl absolute top-0 right-0 w-250px" @click="toSearch">
+    <div class="text-xl absolute top-0 right-0 w-90vw" @click="toSearch">
       <van-cell-group inset>
         <van-field
           input-align="center"
@@ -330,9 +330,6 @@ const caidan = () =>{
 }
 .van-tab {
   padding: 10px;
-  --van-padding-base: 6px;
-}
-:root {
   --van-padding-base: 6px;
 }
 .text-style {
