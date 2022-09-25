@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-12 17:02:36
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-21 21:03:35
+ * @LastEditTime: 2022-09-25 10:57:24
 -->
 <script setup lang="ts">
 import { Dialog, Loading, Notify } from "vant";
@@ -130,13 +130,13 @@ const toDetail = (item) => {
 </script>
 
 <template>
-  <div v-if="cookie" class="w-100% pt-2">
+  <div v-if="cookie" class="w-100vw ">
     <img
-      class="absolute h-50 w-95% rounded-lg"
+      class="absolute h-50 w-100vw pt-2 px-2"
       :src="user?.profile?.backgroundUrl"
       alt=""
     />
-    <div class="relative w-95% h-35 top-30 rounded bg-white">
+    <div class="relative w-100vw h-35 top-30 rounded bg-white">
       <img
         class="absolute h-15 w-15 rounded-full -top-20% left-50% -translate-x-1/2"
         :src="user?.profile?.avatarUrl"
@@ -170,10 +170,10 @@ const toDetail = (item) => {
         编辑资料
       </div>
     </div>
-    <div class="w-95% mt-30 mb-15 rounded">
+    <div class="w-100vw mt-30 mb-15 rounded px-2">
       <van-tabs v-model:active="active" background="#f6f7f9" @click-tab="tabChange">
         <van-tab v-for="(item, index) in choice" :key="index" :title="item">
-          <div v-show="active == 0" class="bg-white rounded-lg px-3 text-left">
+          <div v-show="active == 0" class="bg-white rounded-lg px-2 text-left">
             <div class="font-550 mt-2 pt-5">基本信息</div>
             <div class="text-10px text-hex-bcb py-2">
               村龄: {{ age }}年({{ createTime }}注册)
@@ -306,12 +306,18 @@ const toDetail = (item) => {
   </div>
 </template>
 
-<style scoped>
+<style >
 .text-style {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.van-cell{
+  padding: .25rem .1rem 
+}
+.van-collapse-item__content{
+  padding:.25rem .1rem 
 }
 </style>
