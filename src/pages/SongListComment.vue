@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-24 19:17:32
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-25 11:25:31
+ * @LastEditTime: 2022-09-25 11:45:45
 -->
 
 <script setup lang="ts">
@@ -95,14 +95,14 @@ const filter = (num) => {
                     :key="index"
                     class="mt-3 break-all relative"
                   >
-                    <div class="flex justify-between">
+                    <div class="flex justify-between border-b border-hex-ddd">
                       <div class="flex px-2">
                         <img
-                          class="w-2rem h-2rem rounded-full"
+                          class="w-2rem h-2rem rounded-full border-0"
                           :src="item.user?.avatarUrl"
                           alt="这是歌单评论的用户头像"
                         />
-                        <div class="col ml-2 text-left w-60 border-b border-hex-ddd">
+                        <div class="col ml-2 text-left">
                           <div class="text-xs">
                             {{ item?.user?.nickname }}
                           </div>
@@ -145,14 +145,14 @@ const filter = (num) => {
                     :key="index"
                     class="mt-3 break-all relative"
                   >
-                    <div class="flex justify-between">
+                    <div class="flex justify-between border-b border-hex-ddd">
                       <div class="flex px-2">
                         <img
                           class="w-2rem h-2rem rounded-full"
                           :src="item.user?.avatarUrl"
                           alt="这是歌单评论的用户头像"
                         />
-                        <div class="col ml-2 text-left w-60 border-b border-hex-ddd">
+                        <div class="col ml-2 text-left">
                           <div class="text-xs">
                             {{ item?.user?.nickname }}
                           </div>

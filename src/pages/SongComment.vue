@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-25 12:42:09
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-25 11:27:24
+ * @LastEditTime: 2022-09-25 11:45:32
 -->
 <script setup lang="ts">
 import { getMusic, getMusicComment } from "~/api/SongDetail";
@@ -107,14 +107,14 @@ const filter = (num) => {
                   :key="index"
                   class="mt-3 break-all relative"
                 >
-                  <div class="flex justify-between">
+                  <div class="flex justify-between border-b border-hex-ddd">
                     <div class="flex px-2">
                       <img
                         class="w-2rem h-2rem rounded-full"
                         :src="item.user?.avatarUrl"
                         alt="这是歌曲评论用户的头像"
                       />
-                      <div class="col ml-2 text-left w-60 border-b border-hex-ddd">
+                      <div class="col ml-2 text-left">
                         <div class="text-xs">
                           {{ item?.user?.nickname }}
                         </div>
@@ -157,14 +157,14 @@ const filter = (num) => {
                   :key="index"
                   class="mt-3 break-all"
                 >
-                  <div class="flex justify-between relative">
+                  <div class="flex justify-between relative border-b border-hex-ddd">
                     <div class="flex px-2">
                       <img
                         class="w-2rem h-2rem rounded-full"
                         :src="item.user?.avatarUrl"
                         alt="这是歌曲评论用户的头像"
                       />
-                      <div class="col ml-2 text-left w-60 border-b border-hex-ddd">
+                      <div class="col ml-2 text-left">
                         <div class="text-xs">
                           {{ item?.user?.nickname }}
                         </div>
