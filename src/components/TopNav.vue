@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-16 22:44:19
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-25 10:15:45
+ * @LastEditTime: 2022-09-25 10:39:04
 -->
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
@@ -75,7 +75,7 @@ const caidan = () =>{
 
 <template>
   <div class="w-100% h-100% flex justify-between items-center relative">
-    <div class="text-xl absolute left-0 top-0 z-5" @click="show = true">
+    <div class="text-xl pt-1 pl-1 absolute left-0 top-0 z-5" @click="show = true">
       <van-icon name="bars" />
     </div>
     <!-- 侧边弹出框 -->
@@ -280,7 +280,7 @@ const caidan = () =>{
         />
       </div>
     </van-popup>
-    <div class="flex mx-auto mt-5 justify-between items-center text-md font-500 ">
+    <div class="flex mx-auto mt-7 justify-between items-center text-md font-500 ">
       <van-tabs v-model:active="activeName" class="bg-hex-F6F7F9" background="#F6F7F9">
         <van-tab title="我的" name="a">
           <div class="w-100vw">
@@ -308,7 +308,7 @@ const caidan = () =>{
         </van-tab> -->
       </van-tabs>
     </div>
-    <div class="text-xl absolute top-0 right-0 w-90vw" @click="toSearch">
+    <div class="text-xl absolute top-0 right-0 w-90vw pt-1" @click="toSearch">
       <van-cell-group inset>
         <van-field
           input-align="center"
