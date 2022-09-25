@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 20:03:07
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-25 10:04:37
+ * @LastEditTime: 2022-09-25 10:48:52
 -->
 <script setup lang="ts">
 import getFindSongList from '~/api/RecommendSongList'
@@ -40,24 +40,24 @@ const toMusicDetail = (id: number) => {
 </script>
 
 <template>
-  <div class="w-100% h-5rem">
+  <div class="w-100vw h-50vh">
     <div
-      class="flex justify-between items-center mt-2 w-100% h-1.8rem mb-.2rem"
+      class="flex justify-between items-center mt-2 w-100% h-1.8rem mb-.2rem px-2"
     >
       <div class="font-900">
         发现歌单
       </div>
-      <div class="text-13px border border-hex-bbb pl-2.5 mr-2 rounded-xl pt-.5">
+      <div class="text-.5rem border border-hex-bbb pl-2.5 mr-2 rounded-xl pt-.5">
         查看更多<van-icon name="arrow" />
       </div>
     </div>
-    <div class="w-100% h-14.5rem bg-hex-F6F7F9 z-10">
+    <div class="w-100vw bg-hex-F6F7F9 z-10 px-2">
       <van-skeleton :row="6" round :loading="loading" />
       <van-swipe
         class="h-100%"
         :loop="false"
         :width="110"
-        :height="110"
+        
         :show-indicators="false"
       >
         <van-swipe-item
@@ -67,7 +67,7 @@ const toMusicDetail = (id: number) => {
         >
           <div class="relative">
             <img
-              class="h-6rem w-6rem rounded-xl p-1"
+              class="h-7rem w-7rem rounded-xl p-1"
               :src="playList.picUrl"
               alt="这是首页推荐歌单的封面"
             >
@@ -98,6 +98,6 @@ const toMusicDetail = (id: number) => {
   background: rgba(0, 0, 0, 0.3);
   color: #fff;
   top: .6rem;
-  right: 1.3rem;
+  right: 1rem;
 }
 </style>
