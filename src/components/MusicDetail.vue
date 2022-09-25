@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-22 21:03:00
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-25 09:58:34
+ * @LastEditTime: 2022-09-25 17:18:13
 -->
 <script setup lang="ts">
 import { Vue3Marquee } from "vue3-marquee";
@@ -24,19 +24,13 @@ const totalComment = ref(0);
 
 const { playList, playListIndex, duration } = storeToRefs(store);
 
-const transformTime = (time: string | number):string => {
+const transformTime = (time: string | number): string => {
+  const minRes =
+    typeof time == "string" ? Math.floor(parseInt(time) / 60) : Math.floor(time / 60);
 
-  const minRes = 
-    typeof time == "string" 
-      ? Math.floor(parseInt(time) / 60) 
-      : Math.floor(time / 60);
+  let secRes = typeof time == "string" ? parseInt(time) % 60 : time % 60;
 
-  let secRes = 
-    typeof time == "string" 
-      ? parseInt(time) % 60 
-      : time % 60;
-
-  secRes = Number(secRes.toFixed(0))
+  secRes = Number(secRes.toFixed(0));
   // console.log(secRes)
   let res = "";
 
@@ -82,9 +76,9 @@ const change = (event: Event) => {
   // console.log(transformTime(target.target.value), "value");
   // console.log((event.target as HTMLInputElement).value, "value");
   // timeValue.value = Number(target.target.value)
-  const value = (event.target as HTMLInputElement).value
+  const value = (event.target as HTMLInputElement).value;
   nowTime.value = transformTime(value);
-  store.updateCurrentTime(Number(value))
+  store.updateCurrentTime(Number(value));
 };
 
 const back = () => {
@@ -128,7 +122,7 @@ const goPlay = (num: number) => {
 // let curSec = ref(0)
 const lyric = computed<LyricItem[]>(() => {
   let arr: Array<LyricItem> = [];
-  console.log(store.lyricList, "components/MusicDetail....lyricList")
+  console.log(store.lyricList, "components/MusicDetail....lyricList");
   if (store.lyricList.lyric) {
     /* 将歌词进行换行符分割 */
     /* 1.先用数组split方法对歌词的换行进行分割
@@ -146,8 +140,8 @@ const lyric = computed<LyricItem[]>(() => {
       let lrc = item.slice(11, item.length);
       // 每句歌词显示的时间,要与audio标签的currentTime对应才能显示active的歌词
       let time = parseInt(min) * 60 * 1000 + parseInt(sec) * 1000 + parseInt(mill);
-      
-      let pre = 0
+
+      let pre = 0;
       // 因为两句歌词后面的毫秒为两位数，则要进行处理
       if (isNaN(Number(mill))) {
         mill = item.slice(7, 9);
@@ -203,18 +197,17 @@ watch(
   }
 );
 //过滤评论数
-const transform = (num:number) =>{
-  if(num > 1000000) return '100w+'
-  else if (num > 100000) return '10w+';
-  else if (num > 10000) return '1w+';
-  else if(num>1000) return '999+';
+const transform = (num: number) => {
+  if (num > 1000000) return "100w+";
+  else if (num > 100000) return "10w+";
+  else if (num > 10000) return "1w+";
+  else if (num > 1000) return "999+";
   else return num;
-}
-
+};
 </script>
 
 <template>
-  <div class="w-100% h-37.75rem relative">
+  <div class="w-100% h-100vh relative">
     <div class="absolute -z-1 blur-3xl h-100% w-100% bg-red"></div>
     <img
       class="absolute -z-1 blur-100px h-100% w-100% bg-pink brightness-50"
@@ -231,13 +224,8 @@ const transform = (num:number) =>{
           props.musicList.name
         }}</Vue3Marquee
         ><!-- 艺人名字 -->
-        <div
-          v-for="(item, index) in props.musicList.ar"
-          :key="index"
-        >
-          <router-link 
-            class="flex items-center ml-5"
-            :to="`artist/${item.id}`">
+        <div v-for="(item, index) in props.musicList.ar" :key="index">
+          <router-link class="flex items-center ml-5" :to="`artist/${item.id}`">
             <div class="text-xs text-hex-ccc px-1">{{ item.name }}</div>
             <div class="text-xs text-hex-aaa">
               <van-icon color="#fff" name="arrow"></van-icon>
@@ -247,13 +235,33 @@ const transform = (num:number) =>{
       </div>
       <div class="text-xl text-hex-ccc"><van-icon name="share-o"></van-icon></div>
     </div>
-    <!-- 磁盘大图 --><img
-      class="rounded-1/2 w-11.25rem h-11.25rem absolute top-25% left-22% -translate-x-1/2 animate__animated animate__bounceIn"
+    <!-- 磁盘大图 -->
+    <div
       v-show="!isLyricShow"
-      :src="props.musicList.al.picUrl"
-      alt="这是歌曲详情的磁盘图"
-      @click="isLyricShow = true"
-    />
+      :class="[
+        isShow ? '' : '',
+        'top-40%',
+        'left-50%',
+        '-translate-y-1/2',
+        '-translate-x-1/2',
+      ]"
+      style="
+        position: absolute;
+        width: 14rem;
+        height: 14rem;
+        background-color: rgba(0, 0, 0, var(--tw-bg-opacity));
+        --tw-bg-opacity: 1;
+        border-radius: 50%;
+      "
+    >
+      <img
+        class="rounded-1/2 w-11rem h-11rem animate__animated animate__bounceIn ml-6 mt-6"
+        v-show="!isLyricShow"
+        :src="props.musicList.al.picUrl"
+        alt="这是歌曲详情的磁盘图"
+        @click="isLyricShow = true"
+      />
+    </div>
     <div
       class="musicLyricList animate__animated animate__backInDown"
       v-show="isLyricShow"
@@ -273,21 +281,35 @@ const transform = (num:number) =>{
       </p>
     </div>
     <!-- 点击展示歌词，并增加了动画效果 -->
-    <div class="flex h-2.5rem justify-around mt-24.375rem text-md items-center" v-show="!isLyricShow">
-      <div><van-icon size="1.125rem" name="like-o"></van-icon></div
-      ><div ><van-icon style="transform: rotate(180deg)" size="1.125rem" name="upgrade"></van-icon></div
-      ><div><van-icon size="1.125rem" name="music-o"></van-icon></div
-      ><div class="relative bottom-0" @click="toCommentDetail"
-        ><van-icon size="1.125rem" name="comment-o"></van-icon
-        ><div
+    <div
+      class="flex h-2.5rem justify-around mt-65vh text-md items-center"
+      v-show="!isLyricShow"
+    >
+      <div><van-icon size="1.125rem" name="like-o"></van-icon></div>
+      <div>
+        <van-icon
+          style="transform: rotate(180deg)"
+          size="1.125rem"
+          name="upgrade"
+        ></van-icon>
+      </div>
+      <div><van-icon size="1.125rem" name="music-o"></van-icon></div>
+      <div class="relative bottom-0" @click="toCommentDetail">
+        <van-icon size="1.125rem" name="comment-o"></van-icon>
+        <div
           class="absolute bg-hex-ccf text-.1rem -top-0.25rem -right-1.225rem z-10 scale-x-75 w-2.5rem text-center justify-center"
           v-if="totalComment > 0"
           style="background: transparent; border-width: 0"
-        >{{transform(totalComment)}}</div></div
-      ><div style="transform: rotate(90deg)"><van-icon size="1.125rem" name="ellipsis"></van-icon></div>
+        >
+          {{ transform(totalComment) }}
+        </div>
+      </div>
+      <div style="transform: rotate(90deg)">
+        <van-icon size="1.125rem" name="ellipsis"></van-icon>
+      </div>
     </div>
     <div
-      class="absolute top-78% mx-2 flex w-90% bg-transparent justify-around items-center text-xs text-hex-bbb"
+      class="absolute top-78vh mx-2 flex w-95vw bg-transparent justify-around items-center text-xs text-hex-bbb"
     >
       <div class="flex w-5 mr-2">{{ nowTime }}</div>
       <input
@@ -301,7 +323,7 @@ const transform = (num:number) =>{
       />
       <div class="flex w-5 mx-1">{{ totalTime }}</div>
     </div>
-    <div class="absolute top-85% w-100% flex justify-around text-xl items-center">
+    <div class="absolute top-85vh w-100vw flex justify-around text-xl items-center">
       <div><van-icon name="replay"></van-icon></div>
       <div @click="goPlay(-1)"><van-icon name="arrow-left"></van-icon></div>
       <div class="text-3xl" v-show="isShow" @click="playMusic">
@@ -317,8 +339,6 @@ const transform = (num:number) =>{
 </template>
 
 <style lang="less" scoped>
-
-
 input[type="range"] {
   -webkit-appearance: none; /*清除系统默认样式*/
   width: 100%;
@@ -337,8 +357,8 @@ input[type="range"]::-webkit-slider-thumb {
 }
 /* 歌词 */
 .musicLyricList {
-  width: 100%;
-  height: 24rem;
+  width: 100vw;
+  height: 60vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -346,7 +366,7 @@ input[type="range"]::-webkit-slider-thumb {
   //溢出滚动
   overflow: scroll;
   p {
-    width: 12.5rem;
+    width: 60vw;
     font-size: 0.625rem;
     color: rgb(195, 239, 244);
     margin-bottom: 1rem;
@@ -357,5 +377,24 @@ input[type="range"]::-webkit-slider-thumb {
     font-size: 1.1rem;
     overflow-wrap: break-word;
   }
+}
+
+@keyframes rotate_ar {
+  0% {
+    transform: rotateZ(0deg);
+  }
+
+  100% {
+    transform: rotateZ(360deg);
+  }
+}
+
+.animate-active {
+  animation: rotate_ar 10s linear infinite;
+  animation-play-state: running;
+}
+.animate-paused {
+  animation: rotate_ar 10s linear infinite;
+  animation-play-state: paused;
 }
 </style>
