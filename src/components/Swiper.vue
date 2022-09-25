@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:49:56
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-24 17:09:09
+ * @LastEditTime: 2022-09-25 10:36:14
 -->
 <script setup lang="ts">
 import { onMounted, reactive } from 'vue'
@@ -20,16 +20,16 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="pt-2 w-100vw">
+  <div class="pt-2 w-100vw px-2">
     <van-skeleton :row="4" round :loading="loading" />
-    <van-swipe class="w-100vw rounded-xl" :autoplay="3000" lazy-render>
+    <van-swipe  class="rounded-xl" :autoplay="3000" lazy-render>
       <van-swipe-item
         v-for="image in state.image"
         :key="image"
-        class="w-100vw h-40"
+        class=""
       >
         <img
-          class="h-30 w-95vw h-100% rounded-xl"
+          class="h-30 w-100vw rounded-xl"
           :src="image.pic"
           alt="这是首页轮播图"
         >
