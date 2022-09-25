@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-25 12:42:09
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-19 16:53:40
+ * @LastEditTime: 2022-09-25 11:18:17
 -->
 <script setup lang="ts">
 import { getMusic, getMusicComment } from '~/api/SongDetail'
@@ -61,7 +61,7 @@ const filter = (num) => {
 </script>
 
 <template>
-  <div class="w-100% h-100% bg-white text-sm">
+  <div class="w-100% h-100% bg-white text-sm pb-15">
     <div class="font-700 text-left ml-5">
       评论({{ total }})
     </div>
@@ -90,7 +90,7 @@ const filter = (num) => {
       </div>
     </div>
     <div>
-      <van-list class="mb-15">
+      <van-list>
         <div class="text-left font-600 ml-5">
           评论区
         </div>
@@ -102,7 +102,7 @@ const filter = (num) => {
                 color="#666"
                 type="spinner"
                 class="mt-5"
-                size="24px"
+                size="1.5rem"
                 vertical
               >
                 加载中...
@@ -114,34 +114,34 @@ const filter = (num) => {
                 <ul
                   v-for="(item, index) in state.comment"
                   :key="index"
-                  class="mt-3 border-b border-gray-500 break-all relative"
+                  class="mt-3 break-all relative"
                 >
                   <div class="flex justify-between">
-                    <div class="flex">
+                    <div class="flex px-2">
                       <img
-                        class="w-3rem h-3rem rounded-full"
+                        class="w-2rem h-2rem rounded-full"
                         :src="item.user?.avatarUrl"
                         alt="这是歌曲评论用户的头像"
                       >
-                      <div class="col ml-1 text-left w-60">
-                        <div class="text-sm font-600">
+                      <div class="col ml-1 text-left w-60  border-b border-hex-ddd">
+                        <div class="text-xs">
                           {{ item?.user?.nickname }}
                         </div>
-                        <div class="text-10px">
+                        <div class="text-0.625rem text-hex-ccc">
                           {{ item.timeStr }}
                         </div>
-                        <div class="text-13px">
+                        <div class="text-.9rem my-3">
                           {{ item.content }}
                         </div>
                       </div>
                     </div>
 
-                    <div class="flex absolute right-0">
-                      <div class="text-10px mr-.5 color-#ccc">
+                    <div class="flex absolute right-3">
+                      <div class="text-0.625rem mr-.5 color-#ccc">
                         {{ item.likedCount }}
                       </div>
                       <div class="flex my-1">
-                        <van-icon size="10px" name="thumb-circle-o" />
+                        <van-icon size="0.625rem" name="thumb-circle-o" />
                       </div>
                     </div>
                   </div>
@@ -154,7 +154,7 @@ const filter = (num) => {
                 color="#666"
                 type="spinner"
                 class="mt-5"
-                size="24px"
+                size="1.5rem"
                 vertical
               >
                 加载中...
@@ -166,34 +166,34 @@ const filter = (num) => {
                 <ul
                   v-for="(item, index) in state.comment"
                   :key="index"
-                  class="mt-3 border-b border-gray-500 break-all"
+                  class="mt-3 break-all"
                 >
                   <div class="flex justify-between relative">
-                    <div class="flex">
+                    <div class="flex px-2">
                       <img
-                        class="w-3rem h-3rem rounded-full"
+                        class="w-2rem h-2rem rounded-full"
                         :src="item.user?.avatarUrl"
                         alt="这是歌曲评论用户的头像"
                       >
-                      <div class="col ml-1 text-left w-60">
-                        <div class="text-sm font-600">
+                      <div class="col ml-1 text-left w-60  border-b  border-hex-ddd">
+                        <div class="text-xs">
                           {{ item?.user?.nickname }}
                         </div>
-                        <div class="text-10px">
+                        <div class="text-0.625rem text-hex-ccc">
                           {{ item.timeStr }}
                         </div>
-                        <div class="text-13px">
+                        <div class="text-.5rem my-3">
                           {{ item.content }}
                         </div>
                       </div>
                     </div>
 
-                    <div class="flex absolute z-10 right-0">
-                      <div class="text-10px mr-.5 color-#ccc">
+                    <div class="flex absolute z-10 right-3">
+                      <div class="text-0.625rem mr-.5 color-#ccc">
                         {{ filter(item.likedCount) }}
                       </div>
                       <div class="flex my-1">
-                        <van-icon size="10px" name="thumb-circle-o" />
+                        <van-icon size="0.625rem" name="thumb-circle-o" />
                       </div>
                     </div>
                   </div>
