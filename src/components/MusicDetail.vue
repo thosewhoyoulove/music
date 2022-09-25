@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-22 21:03:00
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-25 17:18:13
+ * @LastEditTime: 2022-09-25 17:42:28
 -->
 <script setup lang="ts">
 import { Vue3Marquee } from "vue3-marquee";
@@ -297,7 +297,7 @@ const transform = (num: number) => {
       <div class="relative bottom-0" @click="toCommentDetail">
         <van-icon size="1.125rem" name="comment-o"></van-icon>
         <div
-          class="absolute bg-hex-ccf text-.1rem -top-0.25rem -right-1.225rem z-10 scale-x-75 w-2.5rem text-center justify-center"
+          class="absolute bg-hex-ccf text-.1rem -top-1vh -right-7vw scale-x-75 w-11vw text-center justify-center"
           v-if="totalComment > 0"
           style="background: transparent; border-width: 0"
         >
