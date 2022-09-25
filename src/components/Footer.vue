@@ -3,24 +3,25 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-23 21:53:01
+ * @LastEditTime: 2022-09-25 15:57:49
 -->
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
-import { useStore } from '~/store/index'
+import { storeToRefs } from "pinia";
+import { useStore } from "~/store/index";
 
-const audio = ref<HTMLElement & {
-  paused: boolean,
-  pause: () => void,
-  play: () => void,
-  currentTime: number,
-  duration: number
-}>() // 获取audio属性
+const audio = ref<
+  HTMLElement & {
+    paused: boolean;
+    pause: () => void;
+    play: () => void;
+    currentTime: number;
+    duration: number;
+  }
+>(); // 获取audio属性
 
-const store = useStore()
-let interVal = ref<any>() // 设置定时器
-const { playList, playListIndex, isShow, isDetailShow }
-  = storeToRefs(store)
+const store = useStore();
+let interVal = ref<any>(); // 设置定时器
+const { playList, playListIndex, isShow, isDetailShow } = storeToRefs(store);
 
 onMounted(async () => {
   store.getLyric(playList.value[playListIndex.value]?.id);
@@ -31,14 +32,14 @@ onMounted(async () => {
   // updateTime()
   // console.log(lyricList, "----------");
   // console.log(audio, '1111111111111111111')
-}) // 开始获取歌词
+}); // 开始获取歌词
 
 const updateTime = () => {
   // interVal.value = null
   interVal.value = setInterval(() => {
-    audio.value && store.updateCurrentTime(audio.value.currentTime)
-  }, 1000)
-}
+    audio.value && store.updateCurrentTime(audio.value.currentTime);
+  }, 1000);
+};
 // onUpdated(async () => {
 //   let res = await isMusicAvailable(playList.value[playListIndex.value]?.id);
 //   console.log(res, "音乐是否可用");
@@ -47,23 +48,22 @@ const play = () => {
   /* 判断是否已暂停 */
   if (audio.value && audio.value.paused) {
     // console.log('点击了播放')
-    store.currentTime = audio.value.currentTime
+    store.currentTime = audio.value.currentTime;
     /* 调用audio的播放功能方法 */
     audio.value.play();
     // 让其显示播放按钮
     store.updateIsShow(store.$state, false);
     // 触发定时器
-    updateTime()
-  }
-  else if (audio.value && !audio.value.paused) {
-    console.log(audio)
-    store.updateCurrentTime(audio.value.currentTime)
+    updateTime();
+  } else if (audio.value && !audio.value.paused) {
+    console.log(audio);
+    store.updateCurrentTime(audio.value.currentTime);
     /* 调用暂停方法 */
     audio.value.pause();
     // 让其隐藏播放按钮
     store.updateIsShow(store.$state, true);
     // 清除定时器
-    clearInterval(interVal.value)
+    clearInterval(interVal.value);
   }
 };
 
@@ -72,23 +72,36 @@ const toMusicDetail = () => {
 };
 const addDuration = () => {
   if (audio.value) {
-    store.updateDuration(store.$state, audio.value.duration)
+    store.updateDuration(store.$state, audio.value.duration);
   }
-}
+};
 onUpdated(() => {
   /* 将id传给获取歌词的方法 */
   store.getLyric(store.playList[store.playListIndex].id);
   // 渲染的时候也需要同步歌词时间
-  addDuration()
-})
+  addDuration();
+});
+
+//动态绑定样式
+const playClass = reactive({});
 </script>
 
 <template>
   <div
-    class="w-100% h-20vw bottom-0 fixed items-center justify-between bg-white flex px-1 z-30"
+    class="w-100% h-5rem bottom-0 fixed items-center justify-between bg-white flex px-1 z-30"
   >
     <div class="flex items-center" @click="toMusicDetail">
-      <div class="relative w-2.7rem h-2.7rem bg-#000 rounded-full">
+      <div
+        :class="[isShow ? 'animate-spin-paused' : 'animate-spin-active']"
+        style="
+          position: relative;
+          width: 2.7rem;
+          height: 2.7rem;
+          background-color: rgba(0, 0, 0, var(--tw-bg-opacity));
+          --tw-bg-opacity: 1;
+          border-radius: 9999px;
+        "
+      >
         <img
           class="w-2rem h-2rem rounded-full absolute z-10 left-50% top-50% -translate-x-1/2 -translate-y-1/2"
           :src="playList[playListIndex]?.al?.picUrl"
@@ -126,3 +139,23 @@ onUpdated(() => {
     />
   </van-popup>
 </template>
+<style>
+   @keyframes rotate_ar {
+    0% {
+      transform: rotateZ(0deg);
+    }
+
+    100% {
+      transform: rotateZ(360deg);
+    }
+  }
+
+.animate-spin-active {
+  animation: rotate_ar 10s linear infinite;
+  animation-play-state: running;
+}
+.animate-spin-paused{
+  animation: rotate_ar 10s linear infinite;
+  animation-play-state: paused;
+}
+</style>
