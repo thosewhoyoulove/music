@@ -3,19 +3,23 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 20:03:07
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-24 16:55:31
+ * @LastEditTime: 2022-09-25 10:04:37
 -->
 <script setup lang="ts">
 import getFindSongList from '~/api/RecommendSongList'
 const router = useRouter()
 const loading = ref(true)
 // 定义歌单列表
-let playListSet = reactive<PlayList[]>([])
+let playListSet = reactive({
+  state:[]
+})
 
 onMounted(async () => {
   const res = await getFindSongList()
-  // console.log(res.result, "components/FindMusic....res.result")
-  playListSet = res.result
+  console.log(res.result, "components/FindMusic....res.result")
+  playListSet.state = res.result
+  console.log(playListSet,'playListSet');
+  
   loading.value = false
 })
 const transform = (num: number) => {
@@ -47,16 +51,17 @@ const toMusicDetail = (id: number) => {
         查看更多<van-icon name="arrow" />
       </div>
     </div>
-    <div class="w-100% h-14.5rem bg-hex-F6F7F9">
+    <div class="w-100% h-14.5rem bg-hex-F6F7F9 z-10">
       <van-skeleton :row="6" round :loading="loading" />
       <van-swipe
         class="h-100%"
         :loop="false"
         :width="110"
+        :height="110"
         :show-indicators="false"
       >
         <van-swipe-item
-          v-for="playList in playListSet"
+          v-for="playList in playListSet.state"
           :key="playList.id"
           @click="toMusicDetail(playList.id)"
         >

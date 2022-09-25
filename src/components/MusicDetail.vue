@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-22 21:03:00
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-22 17:05:41
+ * @LastEditTime: 2022-09-25 09:58:34
 -->
 <script setup lang="ts">
 import { Vue3Marquee } from "vue3-marquee";
@@ -37,7 +37,7 @@ const transformTime = (time: string | number):string => {
       : time % 60;
 
   secRes = Number(secRes.toFixed(0))
-  console.log(secRes)
+  // console.log(secRes)
   let res = "";
 
   if (secRes < 10) {
