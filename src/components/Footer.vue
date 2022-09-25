@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-25 15:57:49
+ * @LastEditTime: 2022-09-25 16:55:41
 -->
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
@@ -82,8 +82,6 @@ onUpdated(() => {
   addDuration();
 });
 
-//动态绑定样式
-const playClass = reactive({});
 </script>
 
 <template>
@@ -139,7 +137,7 @@ const playClass = reactive({});
     />
   </van-popup>
 </template>
-<style>
+<style scoped>
    @keyframes rotate_ar {
     0% {
       transform: rotateZ(0deg);
