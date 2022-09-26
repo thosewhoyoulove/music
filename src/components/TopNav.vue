@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-16 22:44:19
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-25 10:39:04
+ * @LastEditTime: 2022-09-25 17:49:34
 -->
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
@@ -82,7 +82,7 @@ const caidan = () =>{
     <van-popup
       v-model:show="show"
       position="left"
-      :style="{ height: '100%', width: '70%' }"
+      :style="{ height: '100vh', width: '70vw' }"
     >
       <div class="w-100% h-100% col p-2 bg-hex-F4F5F5">
         <div class="flex px-2 justify-between items-center">
@@ -265,10 +265,10 @@ const caidan = () =>{
           </div>
         </div>
         <div
-          class="w-100% font-550 text-15px p-2 mt-5 rounded-lg items-center bg-white color-red py-2"
+          class="w-100% font-550 text-16px p-2 mt-5 rounded-lg items-center bg-white color-red py-2"
           @click="isDialogShow = true"
         >
-          <div class="w-11.875rem text-center">退出登录</div>
+          <div class="w-100% text-center">退出登录</div>
         </div>
         <VanDialog
           v-model:show="isDialogShow"

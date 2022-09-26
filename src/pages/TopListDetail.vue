@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 17:07:32
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-21 20:44:24
+ * @LastEditTime: 2022-09-26 16:47:35
 -->
 <script setup lang="ts">
 import { getAllSong, getSongListDetail } from "~/api/SongListDetail";

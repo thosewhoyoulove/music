@@ -1,3 +1,10 @@
+/*
+ * @Description: 
+ * @Author: 曹俊
+ * @Date: 2022-09-24 20:05:34
+ * @LastEditors: 曹俊
+ * @LastEditTime: 2022-09-26 17:22:52
+ */
 import { defineStore} from 'pinia'
 import { Names } from "../names";
 import { getMusicLyric } from '~/api/SongDetail'
@@ -22,7 +29,7 @@ export const useStore = defineStore(Names.playList, {
             this.duration = value
         },//歌曲的总时长
         async updateCurrentTime(value: number){
-            console.log(value, typeof value, "更改时间")
+            // console.log(value, typeof value, "更改时间")
             this.currentTime = value
         },//歌曲的现在时长
         pushPlayList (value:any) {
