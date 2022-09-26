@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-12 17:02:36
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-25 10:57:24
+ * @LastEditTime: 2022-09-26 20:27:31
 -->
 <script setup lang="ts">
 import { Dialog, Loading, Notify } from "vant";
@@ -132,11 +132,11 @@ const toDetail = (item) => {
 <template>
   <div v-if="cookie" class="w-100vw ">
     <img
-      class="absolute h-50 w-100vw pt-2 px-2"
+      class="absolute h-50 w-100vw pt-2 px-3"
       :src="user?.profile?.backgroundUrl"
       alt=""
     />
-    <div class="relative w-100vw h-35 top-30 rounded bg-white">
+    <div class="relative w-100vw h-35 top-30 rounded bg-white px-3">
       <img
         class="absolute h-15 w-15 rounded-full -top-20% left-50% -translate-x-1/2"
         :src="user?.profile?.avatarUrl"
@@ -255,7 +255,7 @@ const toDetail = (item) => {
             <ul
               v-for="(item, index) in events"
               :key="index"
-              class="mt-2 border-b border-gray-500 break-all relative pt-5"
+              class="mt-2 border-b border-gray-500 break-all relative pt-5 pb-3"
             >
               <div class="flex justify-between">
                 <div class="flex">
@@ -306,7 +306,7 @@ const toDetail = (item) => {
   </div>
 </template>
 
-<style >
+<style>
 .text-style {
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -315,7 +315,7 @@ const toDetail = (item) => {
   text-overflow: ellipsis;
 }
 .van-cell{
-  padding: .25rem .1rem 
+  padding: .25rem 
 }
 .van-collapse-item__content{
   padding:.25rem .1rem 

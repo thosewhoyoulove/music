@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-17 15:53:02
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-21 20:34:27
+ * @LastEditTime: 2022-09-26 20:44:30
  */
 import request from '~/utils/request'
 //获取歌单详情 (包括推荐歌单和热门歌单)
@@ -19,10 +19,10 @@ export function getSongListDetail(data) {
 // 可选参数 : limit : 限制获取歌曲的数量，默认值为当前歌单的歌曲数量
 
 // 可选参数 : offset : 默认值为0
-export function getAllSong(data, limit) {
+export function getAllSong(data, limit, offset = 0) {
     return request({
         method: 'post',
-        url: `/playlist/track/all?id=${data}&limit=${limit}&offset=0`
+        url: `/playlist/track/all?id=${data}&limit=${limit}&offset${offset}`
     })
 }
 

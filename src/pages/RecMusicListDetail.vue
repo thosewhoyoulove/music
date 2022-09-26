@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-24 16:32:20
+ * @LastEditTime: 2022-09-26 21:32:26
 -->
 <script setup lang="ts">
 import { getAllSong, getSongListDetail } from "~/api/SongListDetail";
@@ -15,23 +15,44 @@ const state = reactive({
   playlist: {}, // 歌单信息
   songlist: [], // 歌曲信息
 });
-const limit = route.query.limit || ref(25); //接收我的歌单歌曲的数量，默认为25
-const loading = ref(true);
+const offset = ref(0);
+const limit = route.query.limit; //接收个人主页我的歌单歌曲的数量
+const totalSong = ref(0);//总的歌曲数
+const loading = ref(true); //骨架屏是否显示
+const SongNum = ref(20); //开始获取歌曲的数量
+const listLoading = ref(false); //下拉刷新
+const finished = ref(false); //是否结束
 const id = route.query.id;
 onMounted(async () => {
   console.log(id);
   const res = await getSongListDetail(id);
   state.playlist = res.playlist; // 歌单信息
   console.log(state.playlist, "歌单信息");
-  const songlist = await getAllSong(id, limit);
-
-  state.songlist = songlist.songs;
+  const totalRes = await getAllSong(id, 10000);//获取歌单歌曲总数
+  console.log(totalRes, "totalRes");
+  totalSong.value = totalRes.songs.length;
+  const songlistRes = await getAllSong(id, SongNum.value, offset.value);
+  state.songlist = songlistRes.songs;
   loading.value = false;
-  console.log(state.songlist, "歌曲信息");
+  if (state.songlist.length == limit || state.songlist.length == totalSong.value) {
+    finished.value = true;
+  }
 });
 const filter = (num) => {
   if (num > 100000000) return `${(num / 100000000).toFixed(0)}亿`;
   else if (num > 10000) return `${(num / 10000).toFixed(0)}万`;
+};
+//加载页面
+const onLoad = async () => {
+  offset.value += 10;
+  SongNum.value += 10;
+  const songlistRes = await getAllSong(id, SongNum.value, offset.value);
+  console.log(songlistRes, "歌曲信息");
+  state.songlist = songlistRes.songs;
+  listLoading.value = false;
+  if (state.songlist.length == limit || state.songlist.length == totalSong.value) {
+    finished.value = true;
+  }
 };
 // 修改歌曲信息并进行播放
 
@@ -78,7 +99,10 @@ const filterTotal = (num) => {
         :src="state.playlist.coverImgUrl"
         alt="正在加载"
       />
-      <div v-if="!state.playlist.playCount" class="play-icon text-.5rem px-1 py-0.5 rounded-xl absolute flex">
+      <div
+        v-if="!state.playlist.playCount"
+        class="play-icon text-.5rem px-1 py-0.5 rounded-xl absolute flex"
+      >
         <div><van-icon name="play-circle-o" /></div>
         <div class="mx-1">{{ filter(state.playlist.playCount) }}</div>
       </div>
@@ -116,15 +140,17 @@ const filterTotal = (num) => {
     >
       <div class="flex items-center justify-between z-10">
         <div class="flex items-center">
-          <van-icon size="1rem" name="add"  color="#FE3641" />
-          <div class="px-1 text-10px">{{ filterTotal(state?.playlist?.subscribedCount) }}</div>
+          <van-icon size="1rem" name="add" color="#FE3641" />
+          <div class="px-1 text-10px">
+            {{ filterTotal(state?.playlist?.subscribedCount) }}
+          </div>
         </div>
       </div>
       <div class="-mx-8 flex items-center">|</div>
       <div class="flex items-center justify-between z-10" @click="toCommentDetail">
         <div class="flex items-center" style="background: transparent">
           <van-icon color="#aaa" size="1rem" name="chat" />
-          <div class="px-1  text-10px text-hex-aaa">
+          <div class="px-1 text-10px text-hex-aaa">
             {{ filterTotal(state?.playlist?.commentCount) }}
           </div>
         </div>
@@ -133,20 +159,24 @@ const filterTotal = (num) => {
       <div class="flex items-center justify-between z-10">
         <div class="flex items-center" style="background: transparent">
           <van-icon color="#aaa" size="1rem" name="share" />
-          <div class="px-1  text-10px text-hex-aaa">
+          <div class="px-1 text-10px text-hex-aaa">
             {{ filterTotal(state?.playlist?.shareCount) }}
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="w-100% pb-15">
-    <van-list>
+  <div class="w-100% pb-18">
+    <van-list
+      v-model:loading="listLoading"
+      :finished="finished"
+      finished-text="没有更多了"
+      @load="onLoad"
+    >
       <div class="flex h-3rem text-md ml-2 items-center">
         <div><van-icon size="1.5rem" name="play-circle-o" /></div>
         <div class="flex ml-2">全部播放</div>
       </div>
-      <van-skeleton :row="20" round :loading="loading" />
       <ul
         v-for="(item, index) in state.songlist"
         :key="index"
@@ -156,22 +186,17 @@ const filterTotal = (num) => {
           <div class="flex w-10 justify-center text-.1rem items-center">
             {{ index + 1 }}
           </div>
-          <img class="w-2rem h-2rem rounded" :src="item.al.picUrl" alt="图片加载失败" />
           <div class="flex-col ml-2 text-style" @click="updateSongList(index)">
-            <div class="flex">
-              <div
-                class="flex w-45 text-left text-md font-extrabold text-style break-all"
-              >
-                {{ item.name }}
-              </div>
+            <div class="flex text-left text-md font-extrabold text-style break-all">
+              {{ item.name }}
             </div>
 
-            <div class="flex w-45 text-left">
-              <div class="text-xs w-10 text-style text-gray-500">
+            <div class="flex text-left">
+              <div class="text-xs text-style text-gray-500">
                 {{ item.ar[0].name }}
               </div>
               <div class="text-xs text-gray-500 px-1">-</div>
-              <div class="text-xs w-30 text-style text-gray-500">{{ item.al.name }}</div>
+              <div class="text-xs text-style text-gray-500">{{ item.al.name }}</div>
             </div>
           </div>
         </div>
