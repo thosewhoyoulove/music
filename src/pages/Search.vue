@@ -3,88 +3,87 @@
  * @Author: 曹俊
  * @Date: 2022-08-27 11:27:10
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-17 19:58:53
+ * @LastEditTime: 2022-09-26 17:00:35
 -->
 <script setup lang="ts">
-import { Dialog, Notify } from 'vant'
-import { storeToRefs } from 'pinia'
-import { getSearchMusic } from '~/api/Search'
-import { useStore } from '~/store/index'
-const store = useStore()
-const route = useRoute()
-const { isShow } = storeToRefs(store)
-const VanDialog = Dialog.Component
-const keyWordList = ref([]) // 历史记录存放数组
-const keyWord = ref('') // 搜索关键词
-const searchList = ref([]) // 存放搜索结果的数组
-const defaultSearchKeyWord = ref(route.query.showKeyword)
+import { Dialog, Notify } from "vant";
+import { storeToRefs } from "pinia";
+import { getSearchMusic } from "~/api/Search";
+import { useStore } from "~/store/index";
+const store = useStore();
+const route = useRoute();
+const { isShow } = storeToRefs(store);
+const VanDialog = Dialog.Component;
+const keyWordList = ref([]); // 历史记录存放数组
+const keyWord = ref(""); // 搜索关键词
+const searchList = ref([]); // 存放搜索结果的数组
+const defaultSearchKeyWord = ref(route.query.showKeyword);
 const onSearch = async () => {
   // 如果输入为空，则直接搜索默认值
-  if (keyWord.value == '') {
-    keyWord.value = route.query.realkeyword
+  if (keyWord.value == "") {
+    keyWord.value = route.query.realkeyword;
     // 数组向前追加元素
-    keyWordList.value.unshift(keyWord.value)
+    keyWordList.value.unshift(keyWord.value);
     // 去重,这里用到Set语法
-    keyWordList.value = [...new Set(keyWordList.value)]
-    localStorage.setItem('keyWordList', JSON.stringify(keyWordList.value))
+    keyWordList.value = [...new Set(keyWordList.value)];
+    localStorage.setItem("keyWordList", JSON.stringify(keyWordList.value));
     // keyWord.value = ""
-    console.log(keyWord.value)
+    console.log(keyWord.value);
 
-    const res = await getSearchMusic(keyWord.value)
-    searchList.value = res?.result?.songs
-    console.log(searchList.value)
-  }
-  else {
-    console.log(keyWord.value)
+    const res = await getSearchMusic(keyWord.value);
+    searchList.value = res?.result?.songs;
+    console.log(searchList.value);
+  } else {
+    console.log(keyWord.value);
 
     // 数组向前追加元素
-    keyWordList.value.unshift(keyWord.value)
+    keyWordList.value.unshift(keyWord.value);
     // 去重,这里用到Set语法
-    keyWordList.value = [...new Set(keyWordList.value)]
-    localStorage.setItem('keyWordList', JSON.stringify(keyWordList.value))
+    keyWordList.value = [...new Set(keyWordList.value)];
+    localStorage.setItem("keyWordList", JSON.stringify(keyWordList.value));
     // keyWord.value = ""
-    const res = await getSearchMusic(keyWord.value)
-    searchList.value = res?.result?.songs
+    const res = await getSearchMusic(keyWord.value);
+    searchList.value = res?.result?.songs;
   }
   // 固定长度
   if (keyWordList.value.length > 10)
-    keyWordList.value.splice(keyWordList.value.length - 1)
-}
+    keyWordList.value.splice(keyWordList.value.length - 1);
+};
 onMounted(() => {
-  keyWordList.value = JSON.parse(localStorage.getItem('keyWordList')) || []
-})
+  keyWordList.value = JSON.parse(localStorage.getItem("keyWordList")) || [];
+});
 
 // 点击删除按钮展示弹出框
-const isDialogShow = ref(false)
+const isDialogShow = ref(false);
 const showDelete = () => {
-  isDialogShow.value = true
-}
+  isDialogShow.value = true;
+};
 const onDialogCancel = () => {
-  isDialogShow.value = false
-}
+  isDialogShow.value = false;
+};
 const onDialogConfirm = () => {
-  localStorage.removeItem('keyWordList')
-  keyWordList.value = []
-  isDialogShow.value = false
-  Notify({ type: 'success', message: '删除成功' })
-}
+  localStorage.removeItem("keyWordList");
+  keyWordList.value = [];
+  isDialogShow.value = false;
+  Notify({ type: "success", message: "删除成功" });
+};
 // 点击搜索历史实现搜索
 const searchHistory = async (item) => {
-  keyWord.value = item
-  const res = await getSearchMusic(item)
-  searchList.value = res?.result?.songs
-  console.log(searchList.value)
-}
+  keyWord.value = item;
+  const res = await getSearchMusic(item);
+  searchList.value = res?.result?.songs;
+  console.log(searchList.value);
+};
 // 点击列表播放歌曲
 const updateIndex = (item: any, index: any): any => {
-  store.updatePlayList(store.$state, searchList.value)
-  store.updatePlayListIndex(index)
-  store.updateIsShow(store.$state, true)
-}
+  store.updatePlayList(store.$state, searchList.value);
+  store.updatePlayListIndex(index);
+  store.updateIsShow(store.$state, true);
+};
 </script>
 
 <template>
-  <div class="w-100% h-100%  rounded bg-hex-eee p-1 mb-15">
+  <div class="w-100% h-100% rounded bg-hex-eee p-1">
     <div>
       <van-search
         v-model="keyWord"
@@ -94,9 +93,7 @@ const updateIndex = (item: any, index: any): any => {
         @keydown.enter="onSearch"
       >
         <template #action>
-          <div @click="onSearch">
-            搜索
-          </div>
+          <div @click="onSearch">搜索</div>
         </template>
       </van-search>
     </div>
@@ -105,20 +102,13 @@ const updateIndex = (item: any, index: any): any => {
       <span
         v-for="(item, index) in keyWordList"
         :key="index"
-        class="
-          text-xs
-          inline-block
-          mt-1
-          mx-1
-          py-.2rem
-          px-.6rem
-          bg-white
-          rounded-full
-          border
-        "
+        class="text-xs inline-block mt-1 mx-1 py-.2rem px-.6rem bg-white rounded-full border"
         @click="searchHistory(item, index)"
-      >{{ item }}</span>
-      <span class="absolute top-.15rem right-.4" @click="showDelete"><van-icon name="delete-o" /></span>
+        >{{ item }}</span
+      >
+      <span class="absolute top-.15rem right-.4" @click="showDelete"
+        ><van-icon name="delete-o"
+      /></span>
     </div>
     <div v-if="searchList.length" class="bg-white mt-5 rounded-lg p-1">
       <div class="flex justify-between p-1 m-1 border-b-hex-ccc border-b">
@@ -129,26 +119,37 @@ const updateIndex = (item: any, index: any): any => {
         </div>
       </div>
 
-      <van-list>
+      <van-list class="pb-15">
         <ul
           v-for="(item, index) in searchList"
           :key="index"
-          class="flex border-b-hex-ccc border-b justify-between"
+          class="flex border-b-hex-ccc border-b justify-between pb-1"
           @click="updateIndex(item, index)"
         >
-          <div class="col text-left m-2 text-style">
-            <div>{{ item.name }}</div>
-            <div class="flex text-xs">
+          <div class="flex justify-between">
+            <div class="flex w-10 justify-center text-.1rem items-center">
+              {{ index + 1 }}
+            </div>
+            <div class="col text-left m-2 text-style">
               <div
-                v-for="(ar, index) in searchList[index].ar"
-                :key="index"
+                class="flex text-md w-45 text-left font-extrabold text-style break-all"
               >
-                {{ ar.name }}
+                {{ item.name }}
               </div>
-              -
-              <div>{{ item.al.name }}</div>
+              <div class="flex w-45 text-left">
+                <div v-for="(ar, index) in searchList[index].ar" :key="index">
+                  <div class="text-xs text-style text-gray-500">
+                    {{ item.ar[index].name }}
+                  </div>
+                </div>
+                <div v-if="item.al.name" class="text-xs pr-1 text-gray-500">-</div>
+                <div class="text-xs w-30 text-style text-gray-500">
+                  {{ item.al.name }}
+                </div>
+              </div>
             </div>
           </div>
+
           <div class="flex justify-between items-center">
             <div v-if="item.mv !== 0">
               <van-icon name="tv-o" />
