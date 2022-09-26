@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 20:03:07
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-25 10:48:52
+ * @LastEditTime: 2022-09-26 20:08:03
 -->
 <script setup lang="ts">
 import getFindSongList from '~/api/RecommendSongList'
@@ -47,7 +47,7 @@ const toMusicDetail = (id: number) => {
       <div class="font-900">
         发现歌单
       </div>
-      <div class="text-.5rem border border-hex-bbb pl-2.5 mr-2 rounded-xl pt-.5">
+      <div @click="router.push({path:'/TopList'})" class="text-.5rem border border-hex-bbb pl-2.5 mr-2 rounded-xl pt-.5">
         查看更多<van-icon name="arrow" />
       </div>
     </div>
