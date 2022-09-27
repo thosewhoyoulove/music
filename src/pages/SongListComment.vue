@@ -88,8 +88,9 @@ const filter = (num) => {
                 >
                   加载中...
                 </van-loading>
-                <div v-show="!state.comment.length">暂无评论</div>
+                
                 <div v-show="!showLoading">
+                  <div v-show="!state.comment.length">暂无评论</div>
                   <ul
                     v-for="(item, index) in state.comment"
                     :key="index"
@@ -138,8 +139,9 @@ const filter = (num) => {
                 >
                   加载中...
                 </van-loading>
-                <div v-show="!state.comment.length">暂无评论</div>
+                
                 <div v-show="!showLoading">
+                  <div v-show="!state.comment.length">暂无评论</div>
                   <ul
                     v-for="(item, index) in state.comment"
                     :key="index"

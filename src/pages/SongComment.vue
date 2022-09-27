@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-25 12:42:09
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-25 11:45:32
+ * @LastEditTime: 2022-09-27 14:23:17
 -->
 <script setup lang="ts">
 import { getMusic, getMusicComment } from "~/api/SongDetail";
@@ -100,8 +100,9 @@ const filter = (num) => {
               >
                 加载中...
               </van-loading>
-              <div v-show="!state.comment.length">暂无评论</div>
+              
               <div v-show="!showLoading">
+                <div v-show="!state.comment.length">暂无评论</div>
                 <ul
                   v-for="(item, index) in state.comment"
                   :key="index"
@@ -150,8 +151,9 @@ const filter = (num) => {
               >
                 加载中...
               </van-loading>
-              <div v-show="!state.comment.length">暂无评论</div>
+              
               <div v-show="!showLoading">
+                <div v-show="!state.comment.length">暂无评论</div>
                 <ul
                   v-for="(item, index) in state.comment"
                   :key="index"
