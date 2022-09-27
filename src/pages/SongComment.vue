@@ -1,4 +1,5 @@
-~<!--;  
+~
+<!--;  
  * @Description:
  * @Author: 曹俊
  * @Date: 2022-08-25 12:42:09
@@ -8,12 +9,12 @@
 <script setup lang="ts">
 import { getMusic, getMusicComment } from "~/api/SongDetail";
 const route = useRoute();
-const limit = ref(15);
-const offset = ref(1);
+const limit = ref(15); //下拉刷新加载提示
+const offset = ref(1); //分页数
 const listLoading = ref(false); //下拉刷新加载提示
 const finished = ref(false); //是否结束
 const id = route.query.id;
-const totalHot = ref(0)
+const totalHot = ref(0); //热门评论的数量
 const state = reactive({
   songDetail: [], // 歌曲信息
   comment: [], // 歌曲评论
@@ -30,30 +31,27 @@ onMounted(async () => {
   state.songDetail = res.songs;
   console.log(res, "歌曲信息");
   // 获取歌曲评论
-  const comment = await getMusicComment(id, limit.value,0);
+  const comment = await getMusicComment(id, limit.value, 0);
   console.log(comment, "歌曲评论");
   total.value = comment.total;
   state.comment = comment.hotComments;
-  totalHot.value = comment.hotComments.length
+  totalHot.value = comment.hotComments.length; //获取热门评论
   showLoading.value = false;
 });
 const tabChange = async () => {
-  finished.value= false
+  finished.value = false;
   showLoading.value = true;
   if (active.value == 0) {
     state.comment = [];
     const res = await getMusicComment(id, limit.value, offset.value);
     state.comment = res.comments;
-    setTimeout(() => {
-      showLoading.value = false;
-    }, 1000);
+    showLoading.value = false;
   } else if (active.value == 1) {
+    limit.value = 15; //将获取值评论数为15
     state.comment = [];
-    const res = await getMusicComment(id);
+    const res = await getMusicComment(id, limit.value, 0);
     state.comment = res.hotComments;
-    setTimeout(() => {
-      showLoading.value = false;
-    }, 700);
+    showLoading.value = false;
   }
 };
 const filter = (num) => {
@@ -61,9 +59,8 @@ const filter = (num) => {
   else if (num > 10000) return `${(num / 10000).toFixed(1)}万`;
 };
 const onLoad = async () => {
-  
   if (active.value == 0) {
-    finished.value= false
+    finished.value = false;
     offset.value += 1;
     const res = await getMusicComment(id, limit.value * offset.value, offset.value);
     state.comment = state.comment.concat(
@@ -73,21 +70,15 @@ const onLoad = async () => {
     if (res.more === false) {
       finished.value = true;
     }
-    console.log(state.comment, "res刷新");
-  } else if (active.value == 1) { 
-    finished.value= false
+  } else if (active.value == 1) {
+    finished.value = false;
     offset.value = 0;
-    const res = await getMusicComment(id, limit.value * offset.value,offset.value);
-    console.log(res,'这是我要的res');
-    
-    state.comment = state.comment.concat(
-      res.hotComments.slice(state.comment.length, 15)
-    );
+    const res = await getMusicComment(id, limit.value * offset.value, offset.value);
+    state.comment = state.comment.concat(res.hotComments.slice(state.comment.length, 15));
     listLoading.value = false;
     if (state.comment.length == totalHot.value) {
       finished.value = true;
     }
-    console.log(state.comment, "res刷新");
   }
 };
 </script>
@@ -135,7 +126,6 @@ const onLoad = async () => {
               >
                 加载中...
               </van-loading>
-
               <div v-show="!showLoading">
                 <div v-show="!state.comment?.length">暂无评论</div>
                 <van-list
@@ -191,7 +181,6 @@ const onLoad = async () => {
               >
                 加载中...
               </van-loading>
-
               <div v-show="!showLoading">
                 <div v-show="!state.comment?.length">暂无评论</div>
                 <van-list
@@ -223,7 +212,6 @@ const onLoad = async () => {
                         </div>
                       </div>
                     </div>
-
                     <div class="flex absolute z-10 right-3">
                       <div class="text-0.625rem mr-.5 color-#ccc">
                         {{ filter(item.likedCount) }}
