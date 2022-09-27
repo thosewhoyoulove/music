@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-26 21:32:26
+ * @LastEditTime: 2022-09-27 09:36:55
 -->
 <script setup lang="ts">
 import { getAllSong, getSongListDetail } from "~/api/SongListDetail";
@@ -187,7 +187,7 @@ const filterTotal = (num) => {
             {{ index + 1 }}
           </div>
           <div class="flex-col ml-2 text-style" @click="updateSongList(index)">
-            <div class="flex text-left text-md font-extrabold text-style break-all">
+            <div class="flex text-left text-md font-extrabold text-style break-all w-45">
               {{ item.name }}
             </div>
 
