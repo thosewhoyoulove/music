@@ -37,9 +37,9 @@ export function getAllSong(data, limit, offset = 0) {
 // offset: 偏移数量 , 用于分页 , 如 :( 评论页数 -1)*20, 其中 20 为 limit 的值
 
 // before: 分页参数,取上一页最后一项的 time 获取下一页数据(获取超过 5000 条评论的时候需要用到)
-export function getSongListComment(data) {
+export function getSongListComment(data, limit, offset = 0) {
     return request({
         method: 'post',
-        url: `/comment/playlist?id=${data}&limit=100&offset=0` //搜索的是100条，但渲染的值是热门评论，只有15条
+        url: `/comment/playlist?id=${data}&limit=${limit}&offset=${offset}` //搜索的是100条，但渲染的值是热门评论，只有15条
     })
 }
