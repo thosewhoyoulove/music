@@ -23,10 +23,10 @@ export function getMusic(data) {
     })
 }
 // 获取歌曲的评论
-export function getMusicComment(data) {
+export function getMusicComment(data, limit, offset) {
     return request({
         method: 'get',
-        url: `/comment/music?id=${data}&limit=100&offset=0`,
+        url: `/comment/music?id=${data}&limit=${limit}&offset=${offset}`,
     })
 }
 

@@ -1,14 +1,19 @@
-<!--
+~<!--;  
  * @Description:
  * @Author: 曹俊
  * @Date: 2022-08-25 12:42:09
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-27 14:23:17
+ * @LastEditTime: 2022-09-27 15:05:45
 -->
 <script setup lang="ts">
 import { getMusic, getMusicComment } from "~/api/SongDetail";
 const route = useRoute();
+const limit = ref(15);
+const offset = ref(1);
+const listLoading = ref(false); //下拉刷新加载提示
+const finished = ref(false); //是否结束
 const id = route.query.id;
+const totalHot = ref(0)
 const state = reactive({
   songDetail: [], // 歌曲信息
   comment: [], // 歌曲评论
@@ -19,25 +24,25 @@ const active = ref(0);
 const choice = ref(["最新", "最热"]);
 const showLoading = ref(true); // 展示加载的图标
 onMounted(async () => {
+  active.value = 1;
   // 获取歌曲信息
   const res = await getMusic(id);
   state.songDetail = res.songs;
   console.log(res, "歌曲信息");
   // 获取歌曲评论
-  const comment = await getMusicComment(id);
+  const comment = await getMusicComment(id, limit.value,0);
   console.log(comment, "歌曲评论");
-  active.value = 1;
   total.value = comment.total;
   state.comment = comment.hotComments;
-  setTimeout(() => {
-    showLoading.value = false;
-  }, 700);
+  totalHot.value = comment.hotComments.length
+  showLoading.value = false;
 });
 const tabChange = async () => {
+  finished.value= false
   showLoading.value = true;
   if (active.value == 0) {
     state.comment = [];
-    const res = await getMusicComment(id);
+    const res = await getMusicComment(id, limit.value, offset.value);
     state.comment = res.comments;
     setTimeout(() => {
       showLoading.value = false;
@@ -55,10 +60,40 @@ const filter = (num) => {
   if (num < 10000) return num;
   else if (num > 10000) return `${(num / 10000).toFixed(1)}万`;
 };
+const onLoad = async () => {
+  
+  if (active.value == 0) {
+    finished.value= false
+    offset.value += 1;
+    const res = await getMusicComment(id, limit.value * offset.value, offset.value);
+    state.comment = state.comment.concat(
+      res.comments.slice(state.comment.length, limit.value * offset.value)
+    );
+    listLoading.value = false;
+    if (res.more === false) {
+      finished.value = true;
+    }
+    console.log(state.comment, "res刷新");
+  } else if (active.value == 1) { 
+    finished.value= false
+    offset.value = 0;
+    const res = await getMusicComment(id, limit.value * offset.value,offset.value);
+    console.log(res,'这是我要的res');
+    
+    state.comment = state.comment.concat(
+      res.hotComments.slice(state.comment.length, 15)
+    );
+    listLoading.value = false;
+    if (state.comment.length == totalHot.value) {
+      finished.value = true;
+    }
+    console.log(state.comment, "res刷新");
+  }
+};
 </script>
 
 <template>
-  <div class="w-100% h-100% bg-white text-sm pb-15">
+  <div class="w-100% h-100% bg-white text-sm pb-20">
     <div class="text-left ml-5 mt-3">评论({{ total }})</div>
     <div class="flex break-all m-1 px-1">
       <img
@@ -85,7 +120,7 @@ const filter = (num) => {
       </div>
     </div>
     <div>
-      <van-list>
+      <div>
         <div class="text-left font-600 ml-5">评论区</div>
         <van-tabs v-model:active="active" @click-tab="tabChange">
           <van-tab v-for="(item, index) in choice" :key="index" :title="item">
@@ -100,15 +135,20 @@ const filter = (num) => {
               >
                 加载中...
               </van-loading>
-              
+
               <div v-show="!showLoading">
-                <div v-show="!state.comment.length">暂无评论</div>
-                <ul
-                  v-for="(item, index) in state.comment"
-                  :key="index"
-                  class="mt-3 break-all relative"
+                <div v-show="!state.comment?.length">暂无评论</div>
+                <van-list
+                  v-model:loading="listLoading"
+                  :finished="finished"
+                  finished-text="没有更多了"
+                  @load="onLoad"
                 >
-                  <div class="flex justify-between border-b border-hex-ddd">
+                  <div
+                    v-for="(item, index) in state.comment"
+                    :key="index"
+                    class="flex justify-between border-b border-hex-ddd mt-3 break-all relative"
+                  >
                     <div class="flex px-2">
                       <img
                         class="w-2rem h-2rem rounded-full"
@@ -137,7 +177,7 @@ const filter = (num) => {
                       </div>
                     </div>
                   </div>
-                </ul>
+                </van-list>
               </div>
             </div>
             <div v-show="active == 1">
@@ -151,15 +191,20 @@ const filter = (num) => {
               >
                 加载中...
               </van-loading>
-              
+
               <div v-show="!showLoading">
-                <div v-show="!state.comment.length">暂无评论</div>
-                <ul
-                  v-for="(item, index) in state.comment"
-                  :key="index"
-                  class="mt-3 break-all"
+                <div v-show="!state.comment?.length">暂无评论</div>
+                <van-list
+                  v-model:loading="listLoading"
+                  :finished="finished"
+                  finished-text="没有更多了"
+                  @load="onLoad"
                 >
-                  <div class="flex justify-between relative border-b border-hex-ddd">
+                  <div
+                    v-for="(item, index) in state.comment"
+                    :key="index"
+                    class="flex justify-between relative border-b border-hex-ddd mt-3 break-all"
+                  >
                     <div class="flex px-2">
                       <img
                         class="w-2rem h-2rem rounded-full"
@@ -188,12 +233,12 @@ const filter = (num) => {
                       </div>
                     </div>
                   </div>
-                </ul>
+                </van-list>
               </div>
             </div>
           </van-tab>
         </van-tabs>
-      </van-list>
+      </div>
     </div>
   </div>
 </template>

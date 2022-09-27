@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-24 19:17:32
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-25 11:45:45
+ * @LastEditTime: 2022-09-27 14:28:14
 -->
 
 <script setup lang="ts">
@@ -20,10 +20,11 @@ const choice = ref(["最新", "最热"]);
 const showLoading = ref(true);
 const id = route.query.id;
 onMounted(async () => {
+  active.value = 1;
   const data = await getSongListDetail(id); // 歌单信息
   state.playlist = data.playlist;
   const res = await getSongListComment(id); // 歌单评论
-  active.value = 1;
+
   total.value = res.total;
   state.comment = res.hotComments;
   console.log(state.comment, total);
@@ -88,7 +89,7 @@ const filter = (num) => {
                 >
                   加载中...
                 </van-loading>
-                
+
                 <div v-show="!showLoading">
                   <div v-show="!state.comment.length">暂无评论</div>
                   <ul
@@ -139,7 +140,7 @@ const filter = (num) => {
                 >
                   加载中...
                 </van-loading>
-                
+
                 <div v-show="!showLoading">
                   <div v-show="!state.comment.length">暂无评论</div>
                   <ul
