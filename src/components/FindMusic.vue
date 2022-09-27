@@ -3,63 +3,54 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 20:03:07
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-26 20:08:03
+ * @LastEditTime: 2022-09-27 11:09:22
 -->
 <script setup lang="ts">
-import getFindSongList from '~/api/RecommendSongList'
-const router = useRouter()
-const loading = ref(true)
+import getFindSongList from "~/api/RecommendSongList";
+const router = useRouter();
+const loading = ref(true);
 // 定义歌单列表
 let playListSet = reactive({
-  state:[]
-})
+  state: [],
+});
 
 onMounted(async () => {
-  const res = await getFindSongList()
-  console.log(res.result, "components/FindMusic....res.result")
-  playListSet.state = res.result
-  console.log(playListSet,'playListSet');
-  
-  loading.value = false
-})
+  const res = await getFindSongList();
+  console.log(res.result, "components/FindMusic....res.result");
+  playListSet.state = res.result;
+  console.log(playListSet, "playListSet");
+
+  loading.value = false;
+});
 const transform = (num: number) => {
-  if (num > 100000000)
-    return `${(num / 100000000).toFixed(1)}亿`
-  else if (num > 10000)
-    return `${(num / 10000).toFixed(0)}万`
-  else return num
-}
+  if (num > 100000000) return `${(num / 100000000).toFixed(1)}亿`;
+  else if (num > 10000) return `${(num / 10000).toFixed(0)}万`;
+  else return num;
+};
 const toMusicDetail = (id: number) => {
   router.push({
-    path: '/RecMusicListDetail',
+    path: "/RecMusicListDetail",
     query: {
       id,
     },
-  })
-}
+  });
+};
 </script>
 
 <template>
   <div class="w-100vw h-50vh">
-    <div
-      class="flex justify-between items-center mt-2 w-100% h-1.8rem mb-.2rem px-2"
-    >
-      <div class="font-900">
-        发现歌单
-      </div>
-      <div @click="router.push({path:'/TopList'})" class="text-.5rem border border-hex-bbb pl-2.5 mr-2 rounded-xl pt-.5">
+    <div class="flex justify-between items-center mt-2 w-100% h-1.8rem mb-.2rem px-2">
+      <div class="font-900">发现歌单</div>
+      <div
+        @click="router.push({ path: '/TopList' })"
+        class="text-.5rem border border-hex-bbb pl-2.5 mr-2 rounded-xl pt-.5"
+      >
         查看更多<van-icon name="arrow" />
       </div>
     </div>
     <div class="w-100vw bg-hex-F6F7F9 z-10 px-2">
       <van-skeleton :row="6" round :loading="loading" />
-      <van-swipe
-        class="h-100%"
-        :loop="false"
-        :width="110"
-        
-        :show-indicators="false"
-      >
+      <van-swipe class="h-100%" :loop="false" :width="110" :show-indicators="false">
         <van-swipe-item
           v-for="playList in playListSet.state"
           :key="playList.id"
@@ -70,11 +61,11 @@ const toMusicDetail = (id: number) => {
               class="h-7rem w-7rem rounded-xl p-1"
               :src="playList.picUrl"
               alt="这是首页推荐歌单的封面"
-            >
+            />
             <div class="text-style text-left text-10px px-1">
               {{ playList.name }}
             </div>
-            <div class="play-icon flex text-.5rem px-2 py-0.5 rounded-xl absolute">
+            <div class="play-icon flex text-.5rem px-2 rounded-xl absolute">
               <div><van-icon name="play-circle-o" /></div>
               <div class="mx-1">{{ transform(playList.playCount) }}</div>
             </div>
@@ -97,7 +88,7 @@ const toMusicDetail = (id: number) => {
 .play-icon {
   background: rgba(0, 0, 0, 0.3);
   color: #fff;
-  top: .6rem;
+  top: 0.5rem;
   right: 1rem;
 }
 </style>

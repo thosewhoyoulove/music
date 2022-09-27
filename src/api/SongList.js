@@ -27,9 +27,9 @@ export function getSongList() {
 // 接口地址 : /top/playlist
 
 // 调用例子 : /top/playlist?limit=10&order=new
-export function getSingleCatPlayList(cat) {
+export function getSingleCatPlayList(limit, cat, offset) {
     return request({
         method: 'get',
-        url: `/top/playlist?limit=33&order=hot&cat=${cat}`,
+        url: `/top/playlist?limit=${limit}&order=hot&cat=${cat}&offset=${offset}`,
     })
 }

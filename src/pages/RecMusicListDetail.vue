@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-27 10:02:05
+ * @LastEditTime: 2022-09-27 11:00:40
 -->
 <script setup lang="ts">
 import { getAllSong, getSongListDetail } from "~/api/SongListDetail";
@@ -17,9 +17,9 @@ const state = reactive({
 });
 const offset = ref(0);
 const limit = route.query.limit; //接收个人主页我的歌单歌曲的数量
-const totalSong = ref(0);//总的歌曲数
+const totalSong = ref(0); //总的歌曲数
 const SongNum = ref(20); //开始获取歌曲的数量
-const listLoading = ref(false); //下拉刷新
+const listLoading = ref(false); //下拉刷新加载提示
 const finished = ref(false); //是否结束
 const id = route.query.id;
 onMounted(async () => {
@@ -27,7 +27,7 @@ onMounted(async () => {
   const res = await getSongListDetail(id);
   state.playlist = res.playlist; // 歌单信息
   console.log(state.playlist, "歌单信息");
-  const totalRes = await getAllSong(id, 10000);//获取歌单歌曲总数
+  const totalRes = await getAllSong(id, 10000); //获取歌单歌曲总数
   console.log(totalRes, "totalRes");
   totalSong.value = totalRes.songs.length;
   const songlistRes = await getAllSong(id, SongNum.value, offset.value);
