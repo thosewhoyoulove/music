@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-24 19:17:32
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-27 21:39:25
+ * @LastEditTime: 2022-09-27 21:54:51
 -->
 
 <script setup lang="ts">
@@ -143,6 +143,17 @@ const onLoad = async () => {
                           <div class="text-.9rem my-3">
                             {{ item.content }}
                           </div>
+                          <div
+                            v-if="item.beReplied.length"
+                            class="flex items-center mb-2"
+                          >
+                            <div class="text-12px text-hex-0284c7">
+                              {{ item.beReplied.length }}条回复
+                            </div>
+                            <div class="ml-1">
+                              <van-icon size=".8125rem" color="#0284c7" name="arrow" />
+                            </div>
+                          </div>
                         </div>
                       </div>
                       <div class="flex absolute right-3">
@@ -196,6 +207,17 @@ const onLoad = async () => {
                           </div>
                           <div class="text-.9rem my-3">
                             {{ item.content }}
+                          </div>
+                          <div
+                            v-if="item.beReplied.length"
+                            class="flex items-center mb-2"
+                          >
+                            <div class="text-12px text-hex-0284c7">
+                              {{ item.beReplied.length }}条回复
+                            </div>
+                            <div class="ml-1">
+                              <van-icon size=".8125rem" color="#0284c7" name="arrow" />
+                            </div>
                           </div>
                         </div>
                       </div>

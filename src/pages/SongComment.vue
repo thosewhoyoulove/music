@@ -155,6 +155,14 @@ const onLoad = async () => {
                         <div class="text-.9rem my-3">
                           {{ item.content }}
                         </div>
+                        <div v-if="item.beReplied.length" class="flex items-center mb-2">
+                          <div class="text-12px text-hex-0284c7">
+                            {{ item.beReplied.length }}条回复
+                          </div>
+                          <div class="ml-1">
+                            <van-icon size=".8125rem" color="#0284c7" name="arrow" />
+                          </div>
+                        </div>
                       </div>
                     </div>
 
@@ -209,6 +217,14 @@ const onLoad = async () => {
                         </div>
                         <div class="text-.9rem my-3">
                           {{ item.content }}
+                        </div>
+                        <div v-if="item.beReplied.length" class="flex items-center mb-2">
+                          <div class="text-12px text-hex-0284c7">
+                            {{ item.beReplied.length }}条回复
+                          </div>
+                          <div class="ml-1">
+                            <van-icon size=".8125rem" color="#0284c7" name="arrow" />
+                          </div>
                         </div>
                       </div>
                     </div>
