@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 17:07:32
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-27 09:48:08
+ * @LastEditTime: 2022-09-27 10:08:35
 -->
 <script setup lang="ts">
 import { getAllSong, getSongListDetail } from "~/api/SongListDetail";
@@ -15,10 +15,8 @@ const state = reactive({
   playlist: {}, // 歌单信息
   songlist: [], // 歌曲信息
 });
-const offset = ref(0);
-const limit = route.query.limit; //接收个人主页我的歌单歌曲的数量
-const totalSong = ref(0);//总的歌曲数
-const loading = ref(true); //骨架屏是否显示
+const offset = ref(0); //偏移量
+const totalSong = ref(0); //总的歌曲数
 const SongNum = ref(20); //开始获取歌曲的数量
 const listLoading = ref(false); //下拉刷新
 const finished = ref(false); //是否结束
@@ -27,11 +25,10 @@ onMounted(async () => {
   const res = await getSongListDetail(id);
   state.playlist = res.playlist; // 歌单信息
   console.log(state.playlist, "歌单信息");
-  const totalRes = await getAllSong(id, 10000);//获取歌单歌曲总数
+  const totalRes = await getAllSong(id, 10000); //获取歌单歌曲总数
   totalSong.value = totalRes.songs.length;
   const songlistRes = await getAllSong(id, SongNum.value, offset.value);
   state.songlist = songlistRes.songs;
-  loading.value = false;
   console.log(state.songlist, "歌曲信息");
 });
 //加载页面
@@ -42,7 +39,7 @@ const onLoad = async () => {
   console.log(songlistRes, "歌曲信息");
   state.songlist = songlistRes.songs;
   listLoading.value = false;
-  if (state.songlist.length == limit || state.songlist.length == totalSong.value) {
+  if (state.songlist.length == totalSong.value) {
     finished.value = true;
   }
 };
@@ -154,13 +151,12 @@ const filterTotal = (num) => {
             <div class="flex text-left text-md font-extrabold text-style break-all w-45">
               {{ item.name }}
             </div>
-
             <div class="flex text-left">
               <div class="text-xs text-style text-gray-500">
                 {{ item.ar[0].name }}
               </div>
               <div class="text-xs text-gray-500 px-1">-</div>
-              <div class="text-xs text-style text-gray-500">{{ item.al.name }}</div>
+              <div class="text-xs text-style text-gray-500 w-40">{{ item.al.name }}</div>
             </div>
           </div>
         </div>

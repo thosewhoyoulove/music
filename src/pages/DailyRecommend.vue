@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 19:07:49
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-23 21:42:40
+ * @LastEditTime: 2022-09-27 10:06:55
 -->
 <script setup lang="ts">
 import {
@@ -12,8 +12,8 @@ import {
 } from "~/api/RecommendSongList";
 import { useStore } from "~/store/index";
 const store = useStore();
-const loading = ref(true);
 const router = useRouter();
+const finished = ref(false); //是否结束
 // 获取时间
 const day = new Date();
 const Day = ref(day.getUTCDate());
@@ -26,15 +26,14 @@ const state = reactive({
   songList: [],
 });
 onMounted(async () => {
-  const recSongRes = await getDailyRecommendSongs()
-  state.songs = recSongRes.data.dailySongs
-  console.log(recSongRes, '推荐歌曲')
-  loading.value = false
-  const recSongListRes = await getDailyRecommendSongList()
-  console.log(recSongListRes, '推荐歌单')
-  state.songList = recSongListRes.recommend
-})
-
+  const recSongRes = await getDailyRecommendSongs();
+  state.songs = recSongRes.data.dailySongs;
+  console.log(recSongRes, "推荐歌曲");
+  const recSongListRes = await getDailyRecommendSongList();
+  console.log(recSongListRes, "推荐歌单");
+  state.songList = recSongListRes.recommend;
+  finished.value = true;
+});
 const filter = (num) => {
   if (num > 100000000) return `${(num / 100000000).toFixed(1)}亿`;
   else if (num > 10000) return `${(num / 10000).toFixed(0)}万`;
@@ -75,37 +74,37 @@ const toMusicDetail = (id) => {
     <van-tabs v-model:active="active" @click-tab="tabChange">
       <van-tab v-for="(item, index) in choice" :key="index" :title="item">
         <div v-show="active == 0">
-          <div class="w-100% mb-15">
-            <van-list>
-              <div class="flex h-3rem leading-12 text-md">
-                <span><van-icon name="play-circle-o" /></span>
-                <span class="flex">全部播放</span>
+          <div v-if="!state.songList.length"><van-loading size="24px">加载中...</van-loading></div>
+          <div v-if="state.songList.length" class="w-100% mb-15">
+            <van-list :finished="finished" finished-text="没有更多了">
+              <div class="flex h-3rem text-md ml-2 items-center">
+                <div><van-icon size="1.5rem" name="play-circle-o" /></div>
+                <div class="flex ml-2">全部播放</div>
               </div>
-              <van-skeleton :row="15" round :loading="loading" />
               <ul
                 v-for="(item, index) in state.songs"
                 :key="index"
                 class="flex justify-between h-3rem my-1 text-sm"
               >
-                <div class="flex justify-between">
-                  <div class="flex w-10 justify-center text-10px items-center">
+                <div class="flex justify-between items-center">
+                  <div class="flex w-10 justify-center text-.1rem items-center">
                     {{ index + 1 }}
                   </div>
-                  <img
-                    class="w-3rem h-3rem rounded"
-                    :src="item.al.picUrl"
-                    alt="加载失败"
-                  />
-                  <div class="flex-col ml-2 text-style  text-left" @click="updateSongList(index)">
-                    <div class="flex">
-                      <div class="flex  w-45 text-md font-extrabold text-style break-all">
-                        {{ item.name }}
-                      </div>
+                  <div class="flex-col ml-2 text-style" @click="updateSongList(index)">
+                    <div
+                      class="flex text-left text-md font-extrabold text-style break-all w-45"
+                    >
+                      {{ item.name }}
                     </div>
-                    <div class="w-45 flex">
-                      <span class="text-xs w-10 text-style text-gray-500">{{ item.ar[0].name }}</span>
-                      <span class="text-xs text-gray-500 px-1">-</span>
-                      <span class="text-xs w-30 text-style text-gray-500">{{ item.al.name }}</span>
+
+                    <div class="flex text-left">
+                      <div class="text-xs text-style text-gray-500">
+                        {{ item.ar[0].name }}
+                      </div>
+                      <div class="text-xs text-gray-500 px-1">-</div>
+                      <div class="text-xs text-style text-gray-500 w-40">
+                        {{ item.al.name }}
+                      </div>
                     </div>
                   </div>
                 </div>

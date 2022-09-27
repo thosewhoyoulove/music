@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-27 09:36:55
+ * @LastEditTime: 2022-09-27 10:02:05
 -->
 <script setup lang="ts">
 import { getAllSong, getSongListDetail } from "~/api/SongListDetail";
@@ -18,7 +18,6 @@ const state = reactive({
 const offset = ref(0);
 const limit = route.query.limit; //接收个人主页我的歌单歌曲的数量
 const totalSong = ref(0);//总的歌曲数
-const loading = ref(true); //骨架屏是否显示
 const SongNum = ref(20); //开始获取歌曲的数量
 const listLoading = ref(false); //下拉刷新
 const finished = ref(false); //是否结束
@@ -33,7 +32,6 @@ onMounted(async () => {
   totalSong.value = totalRes.songs.length;
   const songlistRes = await getAllSong(id, SongNum.value, offset.value);
   state.songlist = songlistRes.songs;
-  loading.value = false;
   if (state.songlist.length == limit || state.songlist.length == totalSong.value) {
     finished.value = true;
   }
@@ -196,7 +194,7 @@ const filterTotal = (num) => {
                 {{ item.ar[0].name }}
               </div>
               <div class="text-xs text-gray-500 px-1">-</div>
-              <div class="text-xs text-style text-gray-500">{{ item.al.name }}</div>
+              <div class="text-xs text-style text-gray-500 w-40">{{ item.al.name }}</div>
             </div>
           </div>
         </div>
