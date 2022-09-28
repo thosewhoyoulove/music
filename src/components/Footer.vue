@@ -3,12 +3,12 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-25 16:55:41
+ * @LastEditTime: 2022-09-28 15:33:09
 -->
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useStore } from "~/store/index";
-
+import { Notify } from "vant";
 const audio = ref<
   HTMLElement & {
     paused: boolean;
@@ -21,12 +21,17 @@ const audio = ref<
 
 const store = useStore();
 let interVal = ref<any>(); // 设置定时器
-const { playList, playListIndex, isShow, isDetailShow } = storeToRefs(store);
-
+const { playList, playListIndex, isShow, isDetailShow,shouldNext } = storeToRefs(store);
+// let Audio = document.getElementById('Audio')
 onMounted(async () => {
   store.getLyric(playList.value[playListIndex.value]?.id);
   // let res = await isMusicAvailable(playList.value[playListIndex.value]?.id);
   // console.log(res, "音乐是否可用");
+  // if(Audio){
+  //    setTimeout(() => {
+  //   Audio.currentTime = 16.00
+  // }, 2000);
+  // }
 
   // 渲染的时候也需要同步歌词时间
   // updateTime()
@@ -34,16 +39,29 @@ onMounted(async () => {
   // console.log(audio, '1111111111111111111')
 }); // 开始获取歌词
 
-const updateTime = () => {
-  // interVal.value = null
-  interVal.value = setInterval(() => {
-    audio.value && store.updateCurrentTime(audio.value.currentTime);
-  }, 1000);
+// const updateTime = () => {
+//   // interVal.value = null
+//   interVal.value = setInterval(() => {
+//     audio.value && store.updateCurrentTime(audio.value.currentTime);
+//   }, 1000);
+// };
+
+const timeupdate = (e: any) => {
+  store.currentTime = e.target.currentTime;
+  // console.log(audio.value?.currentTime);
+
+  // audio.value.currentTime = parseInt(e.target.currentTime)
 };
 // onUpdated(async () => {
 //   let res = await isMusicAvailable(playList.value[playListIndex.value]?.id);
 //   console.log(res, "音乐是否可用");
 // });
+const onError = () => {
+  shouldNext.value = true
+  Notify({ type: "primary", message: "当前歌曲为VIP专享音乐，即将播放下一首" });
+  store.updatePlayListIndex(store.playListIndex++)
+  store.currentTime = 0;
+};
 const play = () => {
   /* 判断是否已暂停 */
   if (audio.value && audio.value.paused) {
@@ -54,9 +72,9 @@ const play = () => {
     // 让其显示播放按钮
     store.updateIsShow(store.$state, false);
     // 触发定时器
-    updateTime();
+    // updateTime();
   } else if (audio.value && !audio.value.paused) {
-    console.log(audio);
+    // console.log(audio);
     store.updateCurrentTime(audio.value.currentTime);
     /* 调用暂停方法 */
     audio.value.pause();
@@ -77,11 +95,10 @@ const addDuration = () => {
 };
 onUpdated(() => {
   /* 将id传给获取歌词的方法 */
-  store.getLyric(store.playList[store.playListIndex].id);
+  store.getLyric(store.playList[store.playListIndex]?.id);
   // 渲染的时候也需要同步歌词时间
   addDuration();
 });
-
 </script>
 
 <template>
@@ -122,6 +139,8 @@ onUpdated(() => {
     <audio
       ref="audio"
       loop
+      @error="onError"
+      @timeupdate="timeupdate"
       :src="` https://music.163.com/song/media/outer/url?id=${playList[playListIndex].id}.mp3`"
     />
   </div>
@@ -134,25 +153,26 @@ onUpdated(() => {
       :music-list="playList[playListIndex]"
       :play="play"
       :add-duration="addDuration"
+      :onError = "onError"
     />
   </van-popup>
 </template>
 <style scoped>
-   @keyframes rotate_ar {
-    0% {
-      transform: rotateZ(0deg);
-    }
-
-    100% {
-      transform: rotateZ(360deg);
-    }
+@keyframes rotate_ar {
+  0% {
+    transform: rotateZ(0deg);
   }
+
+  100% {
+    transform: rotateZ(360deg);
+  }
+}
 
 .animate-spin-active {
   animation: rotate_ar 10s linear infinite;
   animation-play-state: running;
 }
-.animate-spin-paused{
+.animate-spin-paused {
   animation: rotate_ar 10s linear infinite;
   animation-play-state: paused;
 }

@@ -3,26 +3,31 @@
  * @Author: 曹俊
  * @Date: 2022-08-22 21:03:00
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-25 17:42:28
+ * @LastEditTime: 2022-09-28 15:34:16
 -->
 <script setup lang="ts">
 import { Vue3Marquee } from "vue3-marquee";
-import { getMusicComment } from "~/api/SongDetail";
+import { getMusicComment,getMusic } from "~/api/SongDetail";
 import "vue3-marquee/dist/style.css";
 import { storeToRefs } from "pinia";
 import { useStore } from "~/store/index";
+import { Notify } from "vant";
 
 const props = defineProps<{
   musicList: CurrentMusic;
   play: () => void;
   addDuration: Function;
+
 }>();
 const router = useRouter();
 const store = useStore();
 const isLyricShow = ref(false); // 歌词是否显示
 const totalComment = ref(0);
-
-const { playList, playListIndex, duration } = storeToRefs(store);
+const fee = ref(0)//歌曲是 0: 免费或无版权
+  // 1: VIP 歌曲
+  // 4: 购买专辑
+  // 8: 非会员可免费播放低音质，会员可播放高音质及下载
+const { playList, playListIndex, duration,shouldNext } = storeToRefs(store);
 
 const transformTime = (time: string | number): string => {
   const minRes =
@@ -50,11 +55,20 @@ const totalTime = ref(transformTime(duration.value)); //获取总时长
 const { isShow, isDetailShow } = storeToRefs(store);
 
 onMounted(async () => {
-  const res = await getMusicComment(props.musicList.id);
+  const res = await getMusicComment(props.musicList.id,100,0);//参数有三个
   totalComment.value = res.total;
   console.log(totalComment.value, "音乐评论数");
   totalTime.value = transformTime(duration.value); //有时候接口数据获取不到的话就会丢失响应式，再赋值一次
   // console.log(store.lyricList.lyric);
+  let musicDetailRes = await getMusic(props.musicList.id)
+  fee.value= musicDetailRes.songs[0].fee
+  console.log(fee.value,'歌曲类别');
+  // if(fee.value == 1){
+  //   Notify({type:'primary',message:'当前歌曲为VIP专享音乐，即将播放下一首'})
+  //   goPlay(1)
+  //   store.$state.currentTime = 0
+  // }
+  console.log(musicDetailRes,'musicDetailRes');
   props.addDuration();
   setInterval(() => {
     nowTime.value = transformTime(store.currentTime); //每隔一秒更改一次当前时间
@@ -99,16 +113,24 @@ const toCommentDetail = () => {
 //切换歌曲更新评论数
 const getNewComment = async (id: number) => {
   if (store.shouldUpdate) {
-    const res = await getMusicComment(props.musicList.id);
+    const res = await getMusicComment(props.musicList.id,10,0);
     totalComment.value = res.total;
     console.log(totalComment.value, "更新后的评论总数");
     store.shouldUpdate = false;
   }
 };
 // 下一首上一首操作
-const goPlay = (num: number) => {
+const goPlay = async(num: number) => {
   console.log("点击了切换歌曲");
   store.updateIsShow(store.$state, true);
+  let musicDetailRes = await getMusic(props.musicList.id)
+  fee.value= musicDetailRes.songs[0].fee
+  console.log(fee.value,'歌曲类别');
+  if(fee.value == 1){
+    Notify({type:'primary',message:'当前歌曲为VIP专享音乐，即将播放下一首'})
+    goPlay(1)
+    store.$state.currentTime = 0
+  }
   // 如果是第一首，上一首应该是最后一首
   // 如果是最后一首，下一首应该是第一首
   let index = playListIndex.value + num;
@@ -196,6 +218,18 @@ watch(
     getNewComment(props.musicList.id);
   }
 );
+watch( () =>store.shouldNext, (newVal) =>{
+  console.log(newVal);
+  
+  if(newVal == true) {
+    console.log('出错了');
+    
+    goPlay(1)
+    store.shouldNext = false
+  }
+  
+})
+
 //过滤评论数
 const transform = (num: number) => {
   if (num > 1000000) return "100w+";
