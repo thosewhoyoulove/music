@@ -3,12 +3,12 @@
  * @Author: 曹俊
  * @Date: 2022-08-27 11:27:10
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-26 17:00:35
+ * @LastEditTime: 2022-09-29 17:29:22
 -->
 <script setup lang="ts">
 import { Dialog, Notify } from "vant";
 import { storeToRefs } from "pinia";
-import { getSearchMusic } from "~/api/Search";
+import { getSearchMusic, getSearchHotDetail, getSearchHot } from "~/api/Search";
 import { useStore } from "~/store/index";
 const store = useStore();
 const route = useRoute();
@@ -16,7 +16,9 @@ const { isShow } = storeToRefs(store);
 const VanDialog = Dialog.Component;
 const keyWordList = ref([]); // 历史记录存放数组
 const keyWord = ref(""); // 搜索关键词
-const searchList = ref([]); // 存放搜索结果的数组
+const searchList = ref([]); // 存放搜索结果的数组;
+const searchHotList = ref([]); //热门搜索列表(简略)
+const searchHotDetailList = ref([]); //热门搜索列表(详细)
 const defaultSearchKeyWord = ref(route.query.showKeyword);
 const onSearch = async () => {
   // 如果输入为空，则直接搜索默认值
@@ -49,8 +51,15 @@ const onSearch = async () => {
   if (keyWordList.value.length > 10)
     keyWordList.value.splice(keyWordList.value.length - 1);
 };
-onMounted(() => {
+onMounted(async () => {
   keyWordList.value = JSON.parse(localStorage.getItem("keyWordList")) || [];
+  let hotList = await getSearchHot(); //获取热门搜索列表(简略)
+  searchHotList.value = hotList.result.hots;
+  console.log(searchHotList.value, "searchHotList.value");
+
+  let hotDetailList = await getSearchHotDetail(); // 获取热门搜索列表(详细)
+  searchHotDetailList.value = hotDetailList.data;
+  console.log(searchHotDetailList.value, "searchHotDetailList.value");
 });
 
 // 点击删除按钮展示弹出框
@@ -67,7 +76,7 @@ const onDialogConfirm = () => {
   isDialogShow.value = false;
   Notify({ type: "success", message: "删除成功" });
 };
-// 点击搜索历史实现搜索
+// 点击搜索历史,推荐实现搜索
 const searchHistory = async (item) => {
   keyWord.value = item;
   const res = await getSearchMusic(item);
@@ -83,7 +92,7 @@ const updateIndex = (item: any, index: any): any => {
 </script>
 
 <template>
-  <div class="w-100% h-100% rounded bg-hex-eee p-1">
+  <div class="w-100% h-100vh rounded bg-hex-eee">
     <div>
       <van-search
         v-model="keyWord"
@@ -97,19 +106,51 @@ const updateIndex = (item: any, index: any): any => {
         </template>
       </van-search>
     </div>
+    <!-- 历史记录 -->
     <div v-if="keyWordList.length" class="text-left ml-2.5 relative my-2">
-      <span class="text-sm font-700">历史记录:</span>
-      <span
+      <div class="text-xs">历史记录:</div>
+      <div
         v-for="(item, index) in keyWordList"
         :key="index"
         class="text-xs inline-block mt-1 mx-1 py-.2rem px-.6rem bg-white rounded-full border"
-        @click="searchHistory(item, index)"
-        >{{ item }}</span
+        @click="searchHistory(item)"
       >
-      <span class="absolute top-.15rem right-.4" @click="showDelete"
-        ><van-icon name="delete-o"
-      /></span>
+        {{ item }}
+      </div>
+      <div class="absolute top-.15rem right-.4" @click="showDelete">
+        <van-icon name="delete-o" />
+      </div>
     </div>
+    <!-- 推荐(简略) -->
+    <div class="text-left ml-2.5 my-2">
+      <div class="text-xs">推荐:</div>
+      <div
+        v-for="{ first } in searchHotList.slice(0, 3)"
+        class="text-xs inline-block mt-1 mx-1 py-.2rem px-.6rem bg-white rounded-full border"
+        @click="searchHistory(first)"
+      >
+        {{ first }}
+      </div>
+    </div>
+    <!-- 推荐(详情) -->
+    <div class="bg-white rounded-lg text-left relative my-2 pb-20">
+      <div class="flex mx-4 h-8 items-center border-b border-hex-ccc">热搜榜</div>
+      <div
+        class="mx-2 my-1 flex"
+        v-for="(item, index) in searchHotDetailList"
+        :key="index"
+        @click="searchHistory(item.searchWord)"
+      >
+        <div class="w-10 text-center">
+          {{ index + 1 }}
+        </div>
+
+        <div class="text-left">
+          {{ item.searchWord }}
+        </div>
+      </div>
+    </div>
+
     <div v-if="searchList.length" class="bg-white mt-5 rounded-lg p-1">
       <div class="flex justify-between p-1 m-1 border-b-hex-ccc border-b">
         <div>单曲</div>
@@ -119,7 +160,7 @@ const updateIndex = (item: any, index: any): any => {
         </div>
       </div>
 
-      <van-list class="pb-15">
+      <van-list class="pb-20">
         <ul
           v-for="(item, index) in searchList"
           :key="index"
