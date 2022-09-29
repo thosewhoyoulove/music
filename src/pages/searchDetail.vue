@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-29 16:04:43
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-29 20:24:44
+ * @LastEditTime: 2022-09-29 21:55:08
 -->
 <template>
   <van-tabs v-model:active="active" @change="change">
@@ -13,7 +13,7 @@
       :title="item"
       @click="change(item, index)"
     >
-      <van-list class="pb-20">
+      <van-list class="pb-20" v-show="index == 0">
         <div
           v-for="(item, index) in searchList"
           :key="index"
@@ -43,7 +43,6 @@
               </div>
             </div>
           </div>
-
           <div class="flex justify-between items-center">
             <div v-if="item.mv !== 0">
               <van-icon name="tv-o" />
@@ -54,12 +53,50 @@
           </div>
         </div>
       </van-list>
+      <van-list class="pb-20" v-show="index == 1">
+        <div
+          v-for="(item, index) in searchList"
+          :key="index"
+          class="flex border-b-hex-ccc border-b justify-between pb-1"
+        >
+          <div class="flex justify-between items-center pl-1">
+            <img class="w-10 h-10 rounded" :src="item.al.picUrl" alt="" />
+            <div class="col text-left m-2 text-style">
+              <div
+                class="flex text-md w-45 text-left font-extrabold text-style break-all"
+              >
+                {{ item.name }}
+              </div>
+              <div class="flex w-45 text-left">
+                <div v-for="(ar, index) in searchList[index].ar" :key="index">
+                  <div class="text-xs text-style text-gray-500">
+                    {{ item.ar[index].name }}
+                  </div>
+                </div>
+                <div class="text-xs" v-if="item.publishTime">
+                  -{{ formatMsToDate(item.publishTime) }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </van-list>
+      <van-list class="pb-20" v-show="index == 2">
+        <div class="mx-2">
+            <img class="w-10 h-10 rounded-full" :src="artistDetail.cover" alt="">
+            <div class="flex">
+                <div>{{artistDetail.name}}</div>
+                <div></div>
+            </div>
+        </div>
+      </van-list>
     </van-tab>
   </van-tabs>
 </template>
 
 <script setup lang="ts">
 import { getSearchMusic } from "~/api/Search";
+import {getArtistDetail} from '~/api/artist'
 import { useStore } from "~/store/index";
 const store = useStore();
 const route = useRoute();
@@ -78,8 +115,10 @@ const tabs = ref([
   "声音",
 ]); // 所有搜索标签
 let type = ref(1);
+const artistId = ref(-1);
 let searchKey = route.query.searchKey;
 const searchList = ref([]);
+let artistDetail = ref({})
 onMounted(async () => {
   console.log(searchKey, "searchKey");
   let res = await getSearchMusic(searchKey, type.value);
@@ -97,59 +136,84 @@ const change = async (item, index) => {
   if (item === 0) {
     //标签为单曲
     type.value = 1;
-    let res = await getSearchMusic(searchKey, type.value);
+    let res = await getSearchMusic(searchKey, 1);
     searchList.value = res?.result?.songs;
   } else if (item === 1) {
     //标签为专辑
     type.value = 10;
-    let res = await getSearchMusic(searchKey, type.value);
-    console.log(res,'专辑');
-    
+    let res = await getSearchMusic(searchKey, 1);
+    searchList.value = res?.result?.songs;
+    console.log(res, "专辑");
   } else if (item === 2) {
     //标签为歌手
     type.value = 100;
-    let res = await getSearchMusic(searchKey, type.value);
-    console.log(res,'歌手');
+    
+    let res = await getSearchMusic(searchKey,1);
+    console.log(res,'res');
+    
+    artistId.value = res.result.songs[0].ar[0].id
+    let artistRes = await getArtistDetail(artistId.value)
+    artistDetail.value = artistRes.data.artist
+    console.log(artistId.value,artistRes, "歌手的id");
+    console.log(artistDetail.value,'artistDetail.value');
+    
   } else if (item === 3) {
     //标签为歌单
     type.value = 1000;
-    let res = await getSearchMusic(searchKey, type.value);
-    console.log(res,'歌单');
+    let res = await getSearchMusic(searchKey, 1);
+    console.log(res, "歌单");
   } else if (item === 4) {
     //标签为用户
     type.value = 1002;
-    let res = await getSearchMusic(searchKey, type.value);
-    console.log(res,'用户');
+    let res = await getSearchMusic(searchKey,1);
+    console.log(res, "用户");
   } else if (item === 5) {
     //标签为MV
     type.value = 1004;
-    let res = await getSearchMusic(searchKey, type.value);
-    console.log(res,'MV');
+    let res = await getSearchMusic(searchKey,1);
+    console.log(res, "MV");
   } else if (item === 6) {
     //标签为歌词
     type.value = 1006;
-    let res = await getSearchMusic(searchKey, type.value);
-    console.log(res,'歌词');
+    let res = await getSearchMusic(searchKey,1);
+    console.log(res, "歌词");
   } else if (item === 7) {
     //标签为电台
     type.value = 1009;
-    let res = await getSearchMusic(searchKey, type.value);
-    console.log(res,'电台');
+    let res = await getSearchMusic(searchKey, 1);
+    console.log(res, "电台");
   } else if (item === 8) {
     //标签为视频
     type.value = 1014;
-    let res = await getSearchMusic(searchKey, type.value);
-    console.log(res,'视频');
+    let res = await getSearchMusic(searchKey, 1);
+    console.log(res, "视频");
   } else if (item === 9) {
     //标签为综合
     type.value = 1018;
-    let res = await getSearchMusic(searchKey, type.value);
-    console.log(res,'综合');
+    let res = await getSearchMusic(searchKey,1);
+    console.log(res, "综合");
   } else if (item === 10) {
     //标签为声音
     type.value = 2000;
-    let res = await getSearchMusic(searchKey, type.value);
-    console.log(res,'声音');
+    let res = await getSearchMusic(searchKey, 1);
+    console.log(res, "声音");
+  }
+};
+//格式化专辑出版时间
+const addZero = (num) => {
+  if (parseInt(num) < 10) num = `0${num}`;
+  return num;
+};
+const formatMsToDate = (ms) => {
+  if (ms) {
+    const oDate = new Date(ms);
+    const oYear = oDate.getFullYear();
+    const oMonth = oDate.getMonth() + 1;
+    const oDay = oDate.getDay();
+    const oTime = `${oYear}.${addZero(oMonth)}.${addZero(oDay)}`;
+    return oTime;
+  } else {
+    return "";
   }
 };
 </script>
