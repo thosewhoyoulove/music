@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-27 11:44:35
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-29 16:18:12
+ * @LastEditTime: 2022-09-29 20:12:07
  */
 //搜索歌曲
 //必选参数 : keywords : 关键词
@@ -13,10 +13,10 @@
 // type: 搜索类型；默认为 1 即单曲 , 取值意义 : 1: 单曲, 10: 专辑, 100: 歌手, 1000: 歌单, 1002: 用户, 1004: MV, 1006: 歌词, 1009: 电台, 1014: 视频, 1018:综合, 2000:声音(搜索声音返回字段格式会不一样)
 import request from '~/utils/request'
 
-export function getSearchMusic(data) {
+export function getSearchMusic(keywords, type) {
     return request({
         method: 'get',
-        url: `/cloudsearch?keywords=${data}`,
+        url: `/cloudsearch?keywords=${keywords}?type=${type}`,
     })
 }
 
