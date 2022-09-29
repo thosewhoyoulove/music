@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-16 22:44:19
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-25 17:49:34
+ * @LastEditTime: 2022-09-29 16:05:55
 -->
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
@@ -314,6 +314,7 @@ const caidan = () =>{
           input-align="center"
           left-icon="search"
           center
+          disabled
           :placeholder="showKeyword"
         />
       </van-cell-group>
