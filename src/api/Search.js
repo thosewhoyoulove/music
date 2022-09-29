@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-27 11:44:35
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-09 14:35:34
+ * @LastEditTime: 2022-09-29 16:18:12
  */
 //搜索歌曲
 //必选参数 : keywords : 关键词
@@ -24,9 +24,33 @@ export function getSearchMusic(data) {
 // 说明 : 调用此接口 , 可获取默认搜索关键词
 
 // 接口地址 : /search/default
-export function getSearchKeyWord(data) {
+export function getSearchKeyWord() {
     return request({
         method: 'get',
         url: '/search/default',
+    })
+}
+// 热搜列表(简略)
+// 说明: 调用此接口, 可获取热门搜索列表
+
+// 接口地址: /search/hot
+export function getSearchHot() {
+    return request({
+        method: 'get',
+        url: '/search/hot',
+    })
+}
+
+// 调用例子: /search/hot
+// 热搜列表(详细)
+// 说明: 调用此接口, 可获取热门搜索列表
+
+// 接口地址: /search/hot / detail
+
+// 调用例子: /search/hot /detaill
+export function getSearchHotDetail() {
+    return request({
+        method: 'get',
+        url: '/search/hot/detail',
     })
 }
