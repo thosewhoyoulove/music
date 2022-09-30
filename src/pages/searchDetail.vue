@@ -238,7 +238,7 @@ const toArtistDetail = () =>{
       path:'/Artist',
       query:{
         artistId:artistId.value,
-        isSub:isSub.value
+        isSub:Number(isSub.value)
       }
     })
 }

@@ -21,3 +21,21 @@ export function getArtistDetail(id) {
         url: `artist/detail?id=${id}`,
     })
 }
+// 歌手粉丝数量
+// 说明: 调用此接口, 传入歌手 id, 可获取歌手粉丝数量
+
+// 必选参数: id: 歌手 id
+
+// 可选参数: limit: 取出粉丝数量, 默认为 20
+
+// offset: 偏移数量, 用于分页, 如: (评论页数 - 1) * 10, 其中 10 为 limit 的值
+
+// 接口地址: /artist/follow / count
+
+// 调用例子: /artist/follow / count ? id = 2116
+export function getArtistFollowCount(id) {
+    return request({
+        method: 'post',
+        url: `/artist/follow/count?id=${id}`,
+    })
+}
