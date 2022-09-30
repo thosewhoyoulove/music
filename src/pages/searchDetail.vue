@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-29 16:04:43
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-30 11:53:31
+ * @LastEditTime: 2022-09-30 11:59:33
 -->
 <template>
   <van-tabs v-model:active="active" @change="change">
@@ -83,7 +83,7 @@
       </van-list>
       <van-list class="pb-20" v-show="index == 2">
         <div class="mx-2 flex justify-between items-center">
-          <div class="flex items-center">
+          <div @click="toArtistDetail" class="flex items-center">
             <img class="w-10 h-10 rounded-full" :src="artistDetail.cover" alt="" />
             <div class="flex ml-2">{{ artistDetail.name }}</div>
           </div>
@@ -110,8 +110,9 @@ import { getArtistSublist } from "~/api/user";
 import { useStore } from "~/store/index";
 const store = useStore();
 const route = useRoute();
+const router = useRouter()
 const active = ref();
-const isSub = ref(false);
+const isSub = ref(false);//是否关注该歌手
 const tabs = ref([
   "单曲",
   "专辑",
@@ -126,7 +127,7 @@ const tabs = ref([
   "声音",
 ]); // 所有搜索标签
 let type = ref(1);
-const artistId = ref(-1);
+const artistId = ref(-1);//歌手id,只有一个歌手
 let searchKey = route.query.searchKey;
 const searchList = ref([]);
 let artistIdSubList = reactive([]); //关注的歌手列表
@@ -231,6 +232,16 @@ const formatMsToDate = (ms) => {
     return "";
   }
 };
+//跳转歌手主页
+const toArtistDetail = () =>{
+    router.push({
+      path:'/Artist',
+      query:{
+        artistId:artistId.value,
+        isSub:isSub.value
+      }
+    })
+}
 </script>
 
 <style scoped></style>
