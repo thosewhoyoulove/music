@@ -3,12 +3,12 @@
  * @Author: 曹俊
  * @Date: 2022-08-27 11:27:10
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-29 19:58:13
+ * @LastEditTime: 2022-09-30 10:38:15
 -->
 <script setup lang="ts">
 import { Dialog, Notify } from "vant";
 import { storeToRefs } from "pinia";
-import { getSearchMusic, getSearchHotDetail, getSearchHot } from "~/api/Search";
+import { getCloudSearch, getSearchHotDetail, getSearchHot } from "~/api/Search";
 import { useStore } from "~/store/index";
 const store = useStore();
 const route = useRoute();
@@ -17,7 +17,7 @@ const VanDialog = Dialog.Component;
 const keyWordList = ref([]); // 历史记录存放数组
 const keyWord = ref(""); // 搜索关键词
 const searchList = ref([]); // 存放搜索结果的数组;
-const searchHotList = ref([]); //热门搜索列表(简略)
+const searchHotList = ref([{first:'他只是经过'},{first:'会不会'},{first:'永不失联的爱'}]); //热门搜索列表(简略)
 const searchHotDetailList = ref([]); //热门搜索列表(详细)
 const defaultSearchKeyWord = ref(route.query.showKeyword);
 const onSearch = async () => {

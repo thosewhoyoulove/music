@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-29 16:04:43
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-29 21:55:08
+ * @LastEditTime: 2022-09-30 11:53:31
 -->
 <template>
   <van-tabs v-model:active="active" @change="change">
@@ -82,12 +82,21 @@
         </div>
       </van-list>
       <van-list class="pb-20" v-show="index == 2">
-        <div class="mx-2">
-            <img class="w-10 h-10 rounded-full" :src="artistDetail.cover" alt="">
-            <div class="flex">
-                <div>{{artistDetail.name}}</div>
-                <div></div>
-            </div>
+        <div class="mx-2 flex justify-between items-center">
+          <div class="flex items-center">
+            <img class="w-10 h-10 rounded-full" :src="artistDetail.cover" alt="" />
+            <div class="flex ml-2">{{ artistDetail.name }}</div>
+          </div>
+          <div v-if="!isSub" class="flex">
+            <van-button icon="plus" color="#f00" plain size="mini" type="primary"
+              >关注</van-button
+            >
+          </div>
+          <div v-if="isSub" class="flex">
+            <van-button icon="success" color="#bbb" plain size="mini" type="primary"
+              >已关注</van-button
+            >
+          </div>
         </div>
       </van-list>
     </van-tab>
@@ -95,12 +104,14 @@
 </template>
 
 <script setup lang="ts">
-import { getSearchMusic } from "~/api/Search";
-import {getArtistDetail} from '~/api/artist'
+import { getCloudSearch, getSearch } from "~/api/Search";
+import { getArtistDetail } from "~/api/artist";
+import { getArtistSublist } from "~/api/user";
 import { useStore } from "~/store/index";
 const store = useStore();
 const route = useRoute();
 const active = ref();
+const isSub = ref(false);
 const tabs = ref([
   "单曲",
   "专辑",
@@ -118,12 +129,17 @@ let type = ref(1);
 const artistId = ref(-1);
 let searchKey = route.query.searchKey;
 const searchList = ref([]);
-let artistDetail = ref({})
+let artistIdSubList = reactive([]); //关注的歌手列表
+let artistDetail = ref({});
 onMounted(async () => {
   console.log(searchKey, "searchKey");
-  let res = await getSearchMusic(searchKey, type.value);
+  let res = await getCloudSearch(searchKey, type.value);
   searchList.value = res?.result?.songs;
   console.log(searchList.value);
+  let artistSubListRes = await getArtistSublist();
+  console.log(artistSubListRes, "artistSubListRes");
+  artistIdSubList = artistSubListRes.data.map((item) => item.id);
+  console.log(artistIdSubList, "artistSubList");
 });
 // 点击列表播放歌曲
 const updateIndex = (item: any, index: any): any => {
@@ -136,66 +152,65 @@ const change = async (item, index) => {
   if (item === 0) {
     //标签为单曲
     type.value = 1;
-    let res = await getSearchMusic(searchKey, 1);
+    let res = await getCloudSearch(searchKey, 1);
     searchList.value = res?.result?.songs;
   } else if (item === 1) {
     //标签为专辑
     type.value = 10;
-    let res = await getSearchMusic(searchKey, 1);
+    let res = await getCloudSearch(searchKey, 1);
     searchList.value = res?.result?.songs;
     console.log(res, "专辑");
   } else if (item === 2) {
     //标签为歌手
     type.value = 100;
-    
-    let res = await getSearchMusic(searchKey,1);
-    console.log(res,'res');
-    
-    artistId.value = res.result.songs[0].ar[0].id
-    let artistRes = await getArtistDetail(artistId.value)
-    artistDetail.value = artistRes.data.artist
-    console.log(artistId.value,artistRes, "歌手的id");
-    console.log(artistDetail.value,'artistDetail.value');
-    
+    let res = await getSearch(searchKey, type.value);
+    console.log(res, "res");
+    artistId.value  = res.result.songs[0].artists[0].id;
+    isSub.value =  artistIdSubList.includes(artistId.value)//在用户关注的列表寻找这个歌手的id
+    let artistRes = await getArtistDetail(artistId.value);
+    artistDetail.value = artistRes.data.artist;
+    console.log(artistId.value, artistRes, "歌手的id");
+    console.log(artistDetail.value, "artistDetail.value");
+    console.log(isSub.value, "是否关注");
   } else if (item === 3) {
     //标签为歌单
     type.value = 1000;
-    let res = await getSearchMusic(searchKey, 1);
+    let res = await getCloudSearch(searchKey, 1);
     console.log(res, "歌单");
   } else if (item === 4) {
     //标签为用户
     type.value = 1002;
-    let res = await getSearchMusic(searchKey,1);
+    let res = await getCloudSearch(searchKey, 1);
     console.log(res, "用户");
   } else if (item === 5) {
     //标签为MV
     type.value = 1004;
-    let res = await getSearchMusic(searchKey,1);
+    let res = await getCloudSearch(searchKey, 1);
     console.log(res, "MV");
   } else if (item === 6) {
     //标签为歌词
     type.value = 1006;
-    let res = await getSearchMusic(searchKey,1);
+    let res = await getCloudSearch(searchKey, 1);
     console.log(res, "歌词");
   } else if (item === 7) {
     //标签为电台
     type.value = 1009;
-    let res = await getSearchMusic(searchKey, 1);
+    let res = await getCloudSearch(searchKey, 1);
     console.log(res, "电台");
   } else if (item === 8) {
     //标签为视频
     type.value = 1014;
-    let res = await getSearchMusic(searchKey, 1);
+    let res = await getCloudSearch(searchKey, 1);
     console.log(res, "视频");
   } else if (item === 9) {
     //标签为综合
     type.value = 1018;
-    let res = await getSearchMusic(searchKey,1);
+    let res = await getCloudSearch(searchKey, 1);
     console.log(res, "综合");
   } else if (item === 10) {
     //标签为声音
     type.value = 2000;
-    let res = await getSearchMusic(searchKey, 1);
+    let res = await getCloudSearch(searchKey, 1);
     console.log(res, "声音");
   }
 };

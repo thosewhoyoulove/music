@@ -134,3 +134,17 @@ export function getUserLevel() {
         url: `/user/level?cookie=${encodeURIComponent(cookie)}`,
     })
 }
+
+// 收藏的歌手列表
+// 说明: 调用此接口, 可获取收藏的歌手列表
+
+// 接口地址: /artist/sublist
+
+// 调用例子: /artist/sublist
+export function getArtistSublist() {
+    const cookie = localStorage.getItem('cookie')
+    return request({
+        method: 'post',
+        url: `/artist/sublist?cookie=${encodeURIComponent(cookie)}`,
+    })
+}
