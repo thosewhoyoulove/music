@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-29 21:20:28
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-01 20:07:34
+ * @LastEditTime: 2022-10-01 21:00:59
  */
 // 获取歌手详情
 // 说明: 调用此接口, 传入歌手 id, 可获得获取歌手详情
@@ -54,5 +54,24 @@ export function getArtistTopSong(id) {
     return request({
         method: 'post',
         url: `/artist/top/song?id=${id}`,
+    })
+}
+
+// 获取歌手专辑
+// 说明: 调用此接口, 传入歌手 id, 可获得歌手专辑内容
+
+// 必选参数: id: 歌手 id
+
+// 可选参数: limit: 取出数量, 默认为 30
+
+// offset: 偏移数量, 用于分页, 如: (页数 - 1) * 30, 其中 30 为 limit 的值, 默认 为 0
+
+// 接口地址: /artist/album
+
+// 调用例子: /artist/album ? id = 6452 & limit = 5(周杰伦)
+export function getArtistAlbum(id) {
+    return request({
+        method: 'post',
+        url: `/artist/album?id=${id}`,
     })
 }

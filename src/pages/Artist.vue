@@ -41,7 +41,7 @@
 
       <div
         shadow="~ md gray-400/15"
-        class="absolute top-75% left-50% -translate-x-1/2 flex items-center"
+        class="absolute top-80% left-50% -translate-x-1/2 flex items-center"
         v-if="!isSub"
         @click="Follow"
       >
@@ -60,14 +60,8 @@
       </div>
     </div>
   </div>
-  <van-tabs class="pb-20" background="#eee" v-model:active="active" @change="change" sticky>
-    <van-tab
-      class=""
-      v-for="(item, index) in tabs"
-      :key="index"
-      :title="item"
-      @click="change(item, index)"
-    >
+  <van-tabs class="pb-20" background="#eee" v-model:active="active" sticky>
+    <van-tab v-for="(item, index) in tabs" :key="index" :title="item">
       <div class="text-left mt-2 pl-4" v-show="index == 0">
         <div class="font-600">艺人百科</div>
         <div class="flex items-center text-xs mt-1">
@@ -84,21 +78,19 @@
         <div class="font-sans text-xs mt-1">艺人名：{{ artistDetail?.artist?.name }}</div>
         <div class="text-xs">歌手简介：{{ artistDetail?.artist?.briefDesc }}</div>
       </div>
-      <van-list class="" v-show="index == 1">
-      <div class="text-left ml-4 pt-4 font-550 text-sm">热门五十首</div>
+      <van-list v-show="index == 1">
+        <div class="text-left ml-4 pt-4 font-550 text-sm">热门五十首</div>
         <div
           v-for="(item, index) in artistTopSong"
           :key="index"
           class="flex justify-between pb-1 mt-2"
         >
           <div class="flex justify-between items-center">
-            <div class="flex w-10 justify-center text-.1rem items-center">
+            <div class="flex w-10 justify-center text-xs items-center">
               {{ index + 1 }}
             </div>
             <div class="flex-col ml-2 text-style" @click="updateSongList(index)">
-              <div
-                class="flex text-left text-sm text-style break-all w-45"
-              >
+              <div class="flex text-left text-sm text-style break-all w-45">
                 {{ item.name }}
               </div>
 
@@ -114,21 +106,45 @@
             </div>
           </div>
           <div class="flex">
-          <div v-if="item.mv" class="mr-5">
-            <van-icon size="1rem" name="tv-o" />
+            <div v-if="item.mv" class="mr-5">
+              <van-icon size="1rem" name="tv-o" />
+            </div>
           </div>
-        </div>
         </div>
 
         <div class="text-sm flex justify-center items-center h-10 text-hex-bbb">
-        <div class="mr-1">
-          全部演唱
+          <div class="mr-1">全部演唱</div>
+          <div>
+            <van-icon name="arrow" />
+          </div>
         </div>
-        <div>
-          <van-icon name="arrow" />
+      </van-list>
+      <van-list class="" v-show="index == 2">
+        <div class="text-left ml-4 pt-4 mb-3 font-550 text-sm">专辑</div>
+        <div
+          v-for="(item, index) in albumList"
+          :key="index"
+          class="flex justify-between p-1 "
+        >
+          <div class="flex justify-between items-center pl-1">
+            <img class="w-13 h-13 rounded" :src="item.picUrl" alt="" />
+            <div class="col text-left m-2 text-style">
+              <div class="flex text-sm text-left text-style break-all">
+                <div class=" text-style">
+                  {{ item.name }}
+                </div>
+                <div class="text-style ml-2 text-hex-bbb" v-if="item.alias.length">
+                  ({{ item.alias[0] }})
+                </div>
+              </div>
+
+              <div class="flex w-45 text-left text-xs">
+                <div>{{ formatMsToDate(item.publishTime) }}</div>
+                <div class="ml-1">{{ item.size }}首</div>
+              </div>
+            </div>
+          </div>
         </div>
-        </div>
-        
       </van-list>
     </van-tab>
   </van-tabs>
@@ -136,7 +152,12 @@
 
 <script setup lang="ts">
 import { Notify } from "vant";
-import { getArtistDetail, getArtistFollowCount, getArtistTopSong } from "~/api/artist";
+import {
+  getArtistDetail,
+  getArtistFollowCount,
+  getArtistTopSong,
+  getArtistAlbum,
+} from "~/api/artist";
 import { isFollow } from "~/api/user";
 const route = useRoute();
 const router = useRouter();
@@ -147,6 +168,7 @@ let follow = ref({}); //获取用户对歌手的关注信息
 const tabs = ref(["主页", "歌曲", "专辑", "动态", "视频"]);
 const active = ref(0);
 let artistTopSong = ref([]);
+let albumList = ref([]);
 onMounted(async () => {
   console.log(artistId, isSub.value);
   let artistDetailRes = await getArtistDetail(artistId);
@@ -158,12 +180,33 @@ onMounted(async () => {
   let artistTopSongRes = await getArtistTopSong(artistId);
   artistTopSong.value = artistTopSongRes.songs;
   console.log(artistTopSongRes, "歌手热门五十");
+  let res = await getArtistAlbum(artistId);
+  console.log(res, "res");
+
+  albumList.value = res?.hotAlbums;
 });
 //格式化粉丝数
 const filter = (num) => {
   if (num > 100000000) return `${(num / 100000000).toFixed(1)}亿`;
   else if (num > 10000) return `${(num / 10000).toFixed(1)}万`;
   else return num;
+};
+//格式化专辑出版时间
+const addZero = (num) => {
+  if (parseInt(num) < 10) num = `0${num}`;
+  return num;
+};
+const formatMsToDate = (ms) => {
+  if (ms) {
+    const oDate = new Date(ms);
+    const oYear = oDate.getFullYear();
+    const oMonth = oDate.getMonth() + 1;
+    const oDay = oDate.getDay();
+    const oTime = `${oYear}-${addZero(oMonth)}-${addZero(oDay)}`;
+    return oTime;
+  } else {
+    return "";
+  }
 };
 //点击关注或者已关注
 const Follow = async () => {
@@ -195,4 +238,12 @@ const Follow = async () => {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.text-style {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+</style>

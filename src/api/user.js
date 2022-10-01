@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-17 15:53:02
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-01 19:17:59
+ * @LastEditTime: 2022-10-01 20:50:15
  */
 import request from '~/utils/request'
 import { storeToRefs } from "pinia";
@@ -144,7 +144,7 @@ export function getUserLevel() {
 export function getArtistSublist() {
     const cookie = localStorage.getItem('cookie')
     return request({
-        method: 'post',
+        method: 'get',
         url: `/artist/sublist?cookie=${encodeURIComponent(cookie)}`,
     })
 }
