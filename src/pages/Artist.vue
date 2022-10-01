@@ -3,13 +3,9 @@
  -->
 
 <template>
-  <div>
-    <img
-      class="absolute h-50 w-100vw pt-2 px-3"
-      :src="artistDetail?.artist?.cover"
-      alt=""
-    />
-    <div class="relative w-100vw h-35 top-40 rounded bg-white px-3">
+  <div class="h-55vh bg-hex-eee w-100vw">
+    <img class="absolute h-50 w-100vw" :src="artistDetail?.artist?.cover" alt="" />
+    <div class="relative h-40 top-40 rounded-lg bg-white mx-3">
       <img
         v-if="artistDetail?.user?.avatarUrl"
         class="absolute h-15 w-15 rounded-full -top-20% left-50% -translate-x-1/2"
@@ -37,7 +33,7 @@
         <div class="">{{ filter(follow?.fansCnt) }} 粉丝</div>
       </div>
       <div
-       v-if="artistDetail?.identify?.imageDesc"
+        v-if="artistDetail?.identify?.imageDesc"
         class="absolute top-65% left-50% -translate-x-1/2 flex items-center font-sans text-10px text-hex-aab"
       >
         {{ artistDetail?.identify?.imageDesc }}
@@ -64,6 +60,37 @@
       </div>
     </div>
   </div>
+  <van-tabs class="pb-20" background="#eee" v-model:active="active" @change="change">
+    <van-tab class=""
+      v-for="(item, index) in tabs"
+      :key="index"
+      :title="item"
+      @click="change(item, index)"
+    >
+    <div class="text-left mt-2 pl-4" v-show="index == 0">
+        <div class="font-600">艺人百科</div>
+        <div class="flex items-center text-xs mt-1">
+          <img
+          v-if="artistDetail?.user?.avatarDetail?.identityIconUrl"
+          class="w-3 h-3 mr-1"
+          :src="artistDetail?.user?.avatarDetail?.identityIconUrl"
+          alt=""
+        />
+        <div>
+          {{ artistDetail?.identify?.imageDesc }}
+        </div>
+        
+        </div>
+        <div class="font-sans text-xs mt-1">
+          艺人名：{{ artistDetail?.artist?.name }}
+        </div>
+        <div class="text-xs">
+        歌手简介：{{artistDetail?.artist?.briefDesc}}
+        </div>
+    </div>
+    
+    </van-tab>
+  </van-tabs>
 </template>
 
 <script setup lang="ts">
@@ -76,6 +103,8 @@ let artistId = parseInt(route.query.artistId); //接收的是字符串的id
 let artistDetail = ref({});
 let isSub = ref(Number(route.query.isSub)); //接收的是数字0或1
 let follow = ref({}); //获取用户对歌手的关注信息
+const tabs = ref(["主页", "歌曲", "专辑", "动态", "视频"]);
+const active = ref(0);
 onMounted(async () => {
   console.log(artistId, isSub.value);
   let artistDetailRes = await getArtistDetail(artistId);

@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-16 22:44:19
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-29 16:05:55
+ * @LastEditTime: 2022-10-01 19:45:17
 -->
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
@@ -281,7 +281,7 @@ const caidan = () =>{
       </div>
     </van-popup>
     <div class="flex mx-auto mt-7 justify-between items-center text-md font-500 ">
-      <van-tabs v-model:active="activeName" class="bg-hex-F6F7F9" background="#F6F7F9">
+      <van-tabs v-model:active="activeName" background="#F6F7F9">
         <van-tab title="我的" name="a">
           <div class="w-100vw">
             <my-home />
