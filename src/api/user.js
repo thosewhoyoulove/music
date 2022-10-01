@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-17 15:53:02
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-15 21:53:08
+ * @LastEditTime: 2022-10-01 19:17:59
  */
 import request from '~/utils/request'
 import { storeToRefs } from "pinia";
@@ -146,5 +146,25 @@ export function getArtistSublist() {
     return request({
         method: 'post',
         url: `/artist/sublist?cookie=${encodeURIComponent(cookie)}`,
+    })
+}
+
+// 收藏 / 取消收藏歌手
+// 说明: 调用此接口, 可收藏歌手
+
+// 必选参数:
+
+//     id: 歌手 id
+
+// t: 操作, 1 为收藏, 其他为取消收藏
+
+// 接口地址: /artist/sub
+
+// 调用例子: /artist/sub ? id = 6452 & t = 1
+export function isFollow(id, t) {
+    const cookie = localStorage.getItem('cookie')
+    return request({
+        method: 'post',
+        url: `/artist/sub?id=${id}&t=${t}?cookie=${encodeURIComponent(cookie)}`,
     })
 }
