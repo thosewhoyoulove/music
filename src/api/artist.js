@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-29 21:20:28
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-29 21:55:05
+ * @LastEditTime: 2022-10-01 20:07:34
  */
 // 获取歌手详情
 // 说明: 调用此接口, 传入歌手 id, 可获得获取歌手详情
@@ -37,5 +37,22 @@ export function getArtistFollowCount(id) {
     return request({
         method: 'post',
         url: `/artist/follow/count?id=${id}`,
+    })
+}
+// 歌手热门 50 首歌曲
+// 说明: 调用此接口, 可获取歌手热门 50 首歌曲
+
+// 必选参数:
+
+//     id: 歌手 id
+
+// 接口地址: /artist/top / song
+
+// 调用例子: /artist/top / song ? id = 6452
+
+export function getArtistTopSong(id) {
+    return request({
+        method: 'post',
+        url: `/artist/top/song?id=${id}`,
     })
 }

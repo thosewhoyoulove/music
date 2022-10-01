@@ -60,42 +60,83 @@
       </div>
     </div>
   </div>
-  <van-tabs class="pb-20" background="#eee" v-model:active="active" @change="change">
-    <van-tab class=""
+  <van-tabs class="pb-20" background="#eee" v-model:active="active" @change="change" sticky>
+    <van-tab
+      class=""
       v-for="(item, index) in tabs"
       :key="index"
       :title="item"
       @click="change(item, index)"
     >
-    <div class="text-left mt-2 pl-4" v-show="index == 0">
+      <div class="text-left mt-2 pl-4" v-show="index == 0">
         <div class="font-600">艺人百科</div>
         <div class="flex items-center text-xs mt-1">
           <img
-          v-if="artistDetail?.user?.avatarDetail?.identityIconUrl"
-          class="w-3 h-3 mr-1"
-          :src="artistDetail?.user?.avatarDetail?.identityIconUrl"
-          alt=""
-        />
+            v-if="artistDetail?.user?.avatarDetail?.identityIconUrl"
+            class="w-3 h-3 mr-1"
+            :src="artistDetail?.user?.avatarDetail?.identityIconUrl"
+            alt=""
+          />
+          <div>
+            {{ artistDetail?.identify?.imageDesc }}
+          </div>
+        </div>
+        <div class="font-sans text-xs mt-1">艺人名：{{ artistDetail?.artist?.name }}</div>
+        <div class="text-xs">歌手简介：{{ artistDetail?.artist?.briefDesc }}</div>
+      </div>
+      <van-list class="" v-show="index == 1">
+      <div class="text-left ml-4 pt-4 font-550 text-sm">热门五十首</div>
+        <div
+          v-for="(item, index) in artistTopSong"
+          :key="index"
+          class="flex justify-between pb-1 mt-2"
+        >
+          <div class="flex justify-between items-center">
+            <div class="flex w-10 justify-center text-.1rem items-center">
+              {{ index + 1 }}
+            </div>
+            <div class="flex-col ml-2 text-style" @click="updateSongList(index)">
+              <div
+                class="flex text-left text-sm text-style break-all w-45"
+              >
+                {{ item.name }}
+              </div>
+
+              <div class="flex text-left">
+                <div class="text-xs text-style text-gray-500">
+                  {{ item.ar[0].name }}
+                </div>
+                <div class="text-xs text-gray-500 px-1">-</div>
+                <div class="text-xs text-style text-gray-500 w-40">
+                  {{ item.al.name }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="flex">
+          <div v-if="item.mv" class="mr-5">
+            <van-icon size="1rem" name="tv-o" />
+          </div>
+        </div>
+        </div>
+
+        <div class="text-sm flex justify-center items-center h-10 text-hex-bbb">
+        <div class="mr-1">
+          全部演唱
+        </div>
         <div>
-          {{ artistDetail?.identify?.imageDesc }}
+          <van-icon name="arrow" />
+        </div>
         </div>
         
-        </div>
-        <div class="font-sans text-xs mt-1">
-          艺人名：{{ artistDetail?.artist?.name }}
-        </div>
-        <div class="text-xs">
-        歌手简介：{{artistDetail?.artist?.briefDesc}}
-        </div>
-    </div>
-    
+      </van-list>
     </van-tab>
   </van-tabs>
 </template>
 
 <script setup lang="ts">
 import { Notify } from "vant";
-import { getArtistDetail, getArtistFollowCount } from "~/api/artist";
+import { getArtistDetail, getArtistFollowCount, getArtistTopSong } from "~/api/artist";
 import { isFollow } from "~/api/user";
 const route = useRoute();
 const router = useRouter();
@@ -105,6 +146,7 @@ let isSub = ref(Number(route.query.isSub)); //接收的是数字0或1
 let follow = ref({}); //获取用户对歌手的关注信息
 const tabs = ref(["主页", "歌曲", "专辑", "动态", "视频"]);
 const active = ref(0);
+let artistTopSong = ref([]);
 onMounted(async () => {
   console.log(artistId, isSub.value);
   let artistDetailRes = await getArtistDetail(artistId);
@@ -113,6 +155,9 @@ onMounted(async () => {
   let followCountRes = await getArtistFollowCount(artistId);
   follow.value = followCountRes.data;
   console.log(follow.value, "follow.value");
+  let artistTopSongRes = await getArtistTopSong(artistId);
+  artistTopSong.value = artistTopSongRes.songs;
+  console.log(artistTopSongRes, "歌手热门五十");
 });
 //格式化粉丝数
 const filter = (num) => {
