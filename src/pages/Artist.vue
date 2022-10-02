@@ -89,7 +89,7 @@
               {{ index + 1 }}
             </div>
             <div class="flex-col ml-2 text-style" @click="updateSongList(index)">
-              <div class="flex text-left text-sm text-style break-all w-45">
+              <div class="flex text-left text-sm text-style break-all w-50">
                 {{ item.name }}
               </div>
 

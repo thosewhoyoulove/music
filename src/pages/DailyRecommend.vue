@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 19:07:49
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-02 16:33:50
+ * @LastEditTime: 2022-10-02 16:54:18
 -->
 <script setup lang="ts">
 import {
@@ -86,16 +86,16 @@ const toMusicDetail = (id) => {
               <div
                 v-for="(item, index) in state.songs"
                 :key="index"
-                class="flex justify-between h-3rem my-1 text-sm"
+                class="flex justify-between text-xs"
                 @click="updateSongList(index)"
               >
                 <div class="flex justify-between items-center">
-                  <div class="flex w-10 justify-center text-xs items-center">
+                  <div class="flex w-10 justify-center items-center">
                     {{ index + 1 }}
                   </div>
 
-                  <div class="col text-left m-2">
-                    <div class="flex text-md text-left text-style">
+                  <div class="col text-left m-2 w-50">
+                    <div class="flex text-left text-style mb-1">
                       {{ item.name }}
                     </div>
 
@@ -105,13 +105,13 @@ const toMusicDetail = (id) => {
                         v-for="(ar, index) in state.songs[index].ar"
                         :key="index"
                       >
-                        <div class="text-xs text-gray-500">
+                        <div class="text-gray-500">
                           {{ item.ar[index].name }}
                         </div>
                       </div>
 
-                      <div v-if="item.al.name" class="text-xs px-1 text-gray-500">-</div>
-                      <div class="text-xs w-30 text-style text-gray-500">
+                      <div v-if="item.al.name" class="px-1 text-gray-500">-</div>
+                      <div class="w-30 text-style text-gray-500">
                         {{ item.al.name }}
                       </div>
                     </div>

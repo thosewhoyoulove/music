@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 17:07:32
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-02 16:31:44
+ * @LastEditTime: 2022-10-02 16:54:11
 -->
 <script setup lang="ts">
 import { getAllSong, getSongListDetail } from "~/api/SongListDetail";
@@ -141,16 +141,16 @@ const filterTotal = (num) => {
       <div
         v-for="(item, index) in state.songlist"
         :key="index"
-        class="flex justify-between h-3rem my-1 text-sm pr-1"
+        class="flex justify-between text-xs"
         @click="updateSongList(index)"
       >
         <div class="flex justify-between items-center">
-          <div class="flex w-10 justify-center text-xs items-center">
+          <div class="flex w-10 justify-center items-center">
             {{ index + 1 }}
           </div>
 
-          <div class="col text-left m-2">
-            <div class="flex text-md text-left text-style">
+          <div class="col text-left m-2 w-50">
+            <div class="flex text-md text-left text-style mb-1">
               {{ item.name }}
             </div>
 

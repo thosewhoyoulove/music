@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-29 16:04:43
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-02 16:33:37
+ * @LastEditTime: 2022-10-02 16:53:57
 -->
 <template>
   <van-tabs v-model:active="active" @change="change">
@@ -17,7 +17,7 @@
         <div
           v-for="(item, index) in searchList"
           :key="index"
-          class="flex justify-between pb-1"
+          class="flex justify-between text-xs"
           @click="updateIndex(item, index)"
         >
           <div class="flex justify-between items-center">
@@ -25,8 +25,8 @@
               {{ index + 1 }}
             </div>
 
-            <div class="col text-left m-2">
-              <div class="flex text-md text-left text-style">
+            <div class="col text-left m-2 w-50">
+              <div class="flex text-left text-style mb-1">
                 {{ item.name }}
               </div>
 
@@ -36,13 +36,13 @@
                   v-for="(ar, index) in searchList[index].ar"
                   :key="index"
                 >
-                  <div class="text-xs text-gray-500">
+                  <div class="text-gray-500">
                     {{ item.ar[index].name }}
                   </div>
                 </div>
 
-                <div v-if="item.al.name" class="text-xs px-1 text-gray-500">-</div>
-                <div class="text-xs w-30 text-style text-gray-500">
+                <div v-if="item.al.name" class="px-1 text-gray-500">-</div>
+                <div class="w-30 text-style text-gray-500">
                   {{ item.al.name }}
                 </div>
               </div>
