@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 17:07:32
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-27 10:08:35
+ * @LastEditTime: 2022-10-02 16:31:44
 -->
 <script setup lang="ts">
 import { getAllSong, getSongListDetail } from "~/api/SongListDetail";
@@ -138,25 +138,37 @@ const filterTotal = (num) => {
         <div><van-icon size="1.5rem" name="play-circle-o" /></div>
         <div class="flex ml-2">全部播放</div>
       </div>
-      <ul
+      <div
         v-for="(item, index) in state.songlist"
         :key="index"
         class="flex justify-between h-3rem my-1 text-sm pr-1"
+        @click="updateSongList(index)"
       >
         <div class="flex justify-between items-center">
-          <div class="flex w-10 justify-center text-.1rem items-center">
+          <div class="flex w-10 justify-center text-xs items-center">
             {{ index + 1 }}
           </div>
-          <div class="flex-col ml-2 text-style" @click="updateSongList(index)">
-            <div class="flex text-left text-md font-extrabold text-style break-all w-45">
+
+          <div class="col text-left m-2">
+            <div class="flex text-md text-left text-style">
               {{ item.name }}
             </div>
+
             <div class="flex text-left">
-              <div class="text-xs text-style text-gray-500">
-                {{ item.ar[0].name }}
+              <div
+                class="flex text-style"
+                v-for="(ar, index) in state.songlist[index].ar"
+                :key="index"
+              >
+                <div class="text-xs text-gray-500">
+                  {{ item.ar[index].name }}
+                </div>
               </div>
-              <div class="text-xs text-gray-500 px-1">-</div>
-              <div class="text-xs text-style text-gray-500 w-40">{{ item.al.name }}</div>
+
+              <div v-if="item.al.name" class="text-xs px-1 text-gray-500">-</div>
+              <div class="text-xs w-30 text-style text-gray-500">
+                {{ item.al.name }}
+              </div>
             </div>
           </div>
         </div>
@@ -165,7 +177,7 @@ const filterTotal = (num) => {
             <van-icon size="1rem" name="tv-o" />
           </div>
         </div>
-      </ul>
+      </div>
     </van-list>
   </div>
 </template>

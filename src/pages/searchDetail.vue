@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-29 16:04:43
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-02 16:28:44
+ * @LastEditTime: 2022-10-02 16:33:37
 -->
 <template>
   <van-tabs v-model:active="active" @change="change">
@@ -21,7 +21,7 @@
           @click="updateIndex(item, index)"
         >
           <div class="flex justify-between items-center">
-            <div class="flex w-6 justify-center text-xs items-center">
+            <div class="flex w-10 justify-center text-xs items-center">
               {{ index + 1 }}
             </div>
 

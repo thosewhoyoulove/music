@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 19:07:49
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-02 16:27:48
+ * @LastEditTime: 2022-10-02 16:33:50
 -->
 <script setup lang="ts">
 import {
@@ -90,7 +90,7 @@ const toMusicDetail = (id) => {
                 @click="updateSongList(index)"
               >
                 <div class="flex justify-between items-center">
-                  <div class="flex w-6 justify-center text-xs items-center">
+                  <div class="flex w-10 justify-center text-xs items-center">
                     {{ index + 1 }}
                   </div>
 
