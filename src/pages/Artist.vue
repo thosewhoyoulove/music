@@ -5,18 +5,17 @@
 <template>
   <div class="h-55vh bg-hex-eee w-100vw">
     <img class="absolute h-50 w-100vw" :src="artistDetail?.artist?.cover" alt="" />
-    <div class="relative h-40 top-40 rounded-lg bg-white mx-3">
+    <div class="relative h-50 top-40 rounded-lg bg-white mx-3">
       <img
         v-if="artistDetail?.user?.avatarUrl"
-        class="absolute h-15 w-15 rounded-full -top-20% left-50% -translate-x-1/2"
+        class="absolute h-15 w-15 rounded-full -top-15% left-50% -translate-x-1/2"
         :src="artistDetail?.user?.avatarUrl"
         alt=""
       />
-      <div class="absolute flex items-center top-30% left-50% -translate-x-1/2">
+      <div class="absolute flex items-center top-20% left-50% -translate-x-1/2">
         <div class="font-sans font-650">
           {{ artistDetail?.artist?.name }}
         </div>
-
         <img
           v-if="artistDetail?.user?.avatarDetail?.identityIconUrl"
           class="w-4 h-4 ml-1"
@@ -26,7 +25,7 @@
       </div>
 
       <div
-        class="absolute top-50% left-50% -translate-x-1/2 flex items-center font-sans text-10px text-hex-aab"
+        class="absolute top-35% left-50% -translate-x-1/2 flex font-sans text-10px text-hex-aab"
       >
         <div class="">{{ follow?.followCnt }} 关注</div>
         <div class="mx-1">|</div>
@@ -34,14 +33,14 @@
       </div>
       <div
         v-if="artistDetail?.identify?.imageDesc"
-        class="absolute top-65% left-50% -translate-x-1/2 flex items-center font-sans text-10px text-hex-aab"
+        class="absolute top-45% left-50% -translate-x-1/2 flex font-sans text-10px text-hex-aab"
       >
         {{ artistDetail?.identify?.imageDesc }}
       </div>
 
       <div
         shadow="~ md gray-400/15"
-        class="absolute top-80% left-50% -translate-x-1/2 flex items-center"
+        class="absolute top-65% left-50% -translate-x-1/2 flex items-center"
         v-if="!isSub"
         @click="Follow"
       >
@@ -124,13 +123,13 @@
         <div
           v-for="(item, index) in albumList"
           :key="index"
-          class="flex justify-between p-1 "
+          class="flex justify-between p-1"
         >
           <div class="flex justify-between items-center pl-1">
             <img class="w-13 h-13 rounded" :src="item.picUrl" alt="" />
             <div class="col text-left m-2 text-style">
               <div class="flex text-sm text-left text-style break-all">
-                <div class=" text-style">
+                <div class="text-style">
                   {{ item.name }}
                 </div>
                 <div class="text-style ml-2 text-hex-bbb" v-if="item.alias.length">

@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-29 16:04:43
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-01 19:44:30
+ * @LastEditTime: 2022-10-02 16:08:38
 -->
 <template>
   <van-tabs v-model:active="active" @change="change">
@@ -17,26 +17,24 @@
         <div
           v-for="(item, index) in searchList"
           :key="index"
-          class="flex border-b-hex-ccc border-b justify-between pb-1"
+          class="flex justify-between pb-1"
           @click="updateIndex(item, index)"
         >
-          <div class="flex justify-between">
-            <div class="flex w-10 justify-center text-.1rem items-center">
+          <div class="flex justify-between items-center">
+            <div class="flex w-10 justify-center text-xs items-center">
               {{ index + 1 }}
             </div>
             <div class="col text-left m-2 text-style">
-              <div
-                class="flex text-md w-45 text-left font-extrabold text-style break-all"
-              >
+              <div class="flex text-md w-45 text-left text-style break-all">
                 {{ item.name }}
               </div>
-              <div class="flex w-45 text-left">
+              <div class="flex text-left">
                 <div v-for="(ar, index) in searchList[index].ar" :key="index">
                   <div class="text-xs text-style text-gray-500">
                     {{ item.ar[index].name }}
                   </div>
                 </div>
-                <div v-if="item.al.name" class="text-xs pr-1 text-gray-500">-</div>
+                <div v-if="item.al.name" class="text-xs px-1 text-gray-500">-</div>
                 <div class="text-xs w-30 text-style text-gray-500">
                   {{ item.al.name }}
                 </div>
@@ -44,11 +42,8 @@
             </div>
           </div>
           <div class="flex justify-between items-center">
-            <div v-if="item.mv !== 0">
+            <div class="mr-5" v-if="item.mv !== 0">
               <van-icon name="tv-o" />
-            </div>
-            <div style="transform: rotate(90deg)">
-              <van-icon name="ellipsis" />
             </div>
           </div>
         </div>
@@ -57,24 +52,23 @@
         <div
           v-for="(item, index) in searchList"
           :key="index"
-          class="flex border-b-hex-ccc border-b justify-between pb-1"
+          class="flex justify-between pb-1"
         >
           <div class="flex justify-between items-center pl-1">
-            <img class="w-10 h-10 rounded" :src="item.al.picUrl" alt="" />
+            <img class="w-13 h-13 rounded" :src="item.al.picUrl" alt="" />
             <div class="col text-left m-2 text-style">
-              <div
-                class="flex text-md w-45 text-left font-extrabold text-style break-all"
-              >
+              <div class="flex text-sm w-45 text-left text-style break-all">
                 {{ item.name }}
               </div>
               <div class="flex w-45 text-left">
                 <div v-for="(ar, index) in searchList[index].ar" :key="index">
-                  <div class="text-xs text-style text-gray-500">
+                  <div class="text-xs text-style text-gray-500 pr-1">
                     {{ item.ar[index].name }}
                   </div>
                 </div>
-                <div class="text-xs" v-if="item.publishTime">
-                  -{{ formatMsToDate(item.publishTime) }}
+
+                <div class="text-xs ml-1" v-if="item.publishTime">
+                  {{ formatMsToDate(item.publishTime) }}
                 </div>
               </div>
             </div>
@@ -110,9 +104,9 @@ import { getArtistSublist } from "~/api/user";
 import { useStore } from "~/store/index";
 const store = useStore();
 const route = useRoute();
-const router = useRouter()
+const router = useRouter();
 const active = ref();
-const isSub = ref(false);//是否关注该歌手
+const isSub = ref(false); //是否关注该歌手
 const tabs = ref([
   "单曲",
   "专辑",
@@ -127,7 +121,7 @@ const tabs = ref([
   "声音",
 ]); // 所有搜索标签
 let type = ref(1);
-const artistId = ref(-1);//歌手id,只有一个歌手
+const artistId = ref(-1); //歌手id,只有一个歌手
 let searchKey = route.query.searchKey;
 const searchList = ref([]);
 let artistIdSubList = reactive([]); //关注的歌手列表
@@ -166,8 +160,8 @@ const change = async (item, index) => {
     type.value = 100;
     let res = await getSearch(searchKey, type.value);
     console.log(res, "res");
-    artistId.value  = res.result.songs[0].artists[0].id;
-    isSub.value =  artistIdSubList.includes(artistId.value)//在用户关注的列表寻找这个歌手的id
+    artistId.value = res.result.songs[0].artists[0].id;
+    isSub.value = artistIdSubList.includes(artistId.value); //在用户关注的列表寻找这个歌手的id
     let artistRes = await getArtistDetail(artistId.value);
     artistDetail.value = artistRes.data.artist;
     console.log(artistId.value, artistRes, "歌手的id");
@@ -233,15 +227,23 @@ const formatMsToDate = (ms) => {
   }
 };
 //跳转歌手主页
-const toArtistDetail = () =>{
-    router.push({
-      path:'/Artist',
-      query:{
-        artistId:artistId.value,
-        isSub:Number(isSub.value)
-      }
-    })
-}
+const toArtistDetail = () => {
+  router.push({
+    path: "/Artist",
+    query: {
+      artistId: artistId.value,
+      isSub: Number(isSub.value),
+    },
+  });
+};
 </script>
 
-<style scoped></style>
+<style scoped>
+.text-style {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+</style>
