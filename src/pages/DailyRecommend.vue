@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 19:07:49
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-27 10:06:55
+ * @LastEditTime: 2022-10-02 16:27:48
 -->
 <script setup lang="ts">
 import {
@@ -74,46 +74,55 @@ const toMusicDetail = (id) => {
     <van-tabs v-model:active="active" @click-tab="tabChange">
       <van-tab v-for="(item, index) in choice" :key="index" :title="item">
         <div v-show="active == 0">
-          <div v-if="!state.songList.length"><van-loading size="24px">加载中...</van-loading></div>
+          <div v-if="!state.songList.length">
+            <van-loading size="24px">加载中...</van-loading>
+          </div>
           <div v-if="state.songList.length" class="w-100% mb-15">
             <van-list :finished="finished" finished-text="没有更多了">
               <div class="flex h-3rem text-md ml-2 items-center">
                 <div><van-icon size="1.5rem" name="play-circle-o" /></div>
                 <div class="flex ml-2">全部播放</div>
               </div>
-              <ul
+              <div
                 v-for="(item, index) in state.songs"
                 :key="index"
                 class="flex justify-between h-3rem my-1 text-sm"
+                @click="updateSongList(index)"
               >
                 <div class="flex justify-between items-center">
-                  <div class="flex w-10 justify-center text-.1rem items-center">
+                  <div class="flex w-6 justify-center text-xs items-center">
                     {{ index + 1 }}
                   </div>
-                  <div class="flex-col ml-2 text-style" @click="updateSongList(index)">
-                    <div
-                      class="flex text-left text-md font-extrabold text-style break-all w-45"
-                    >
+
+                  <div class="col text-left m-2">
+                    <div class="flex text-md text-left text-style">
                       {{ item.name }}
                     </div>
 
                     <div class="flex text-left">
-                      <div class="text-xs text-style text-gray-500">
-                        {{ item.ar[0].name }}
+                      <div
+                        class="flex text-style"
+                        v-for="(ar, index) in state.songs[index].ar"
+                        :key="index"
+                      >
+                        <div class="text-xs text-gray-500">
+                          {{ item.ar[index].name }}
+                        </div>
                       </div>
-                      <div class="text-xs text-gray-500 px-1">-</div>
-                      <div class="text-xs text-style text-gray-500 w-40">
+
+                      <div v-if="item.al.name" class="text-xs px-1 text-gray-500">-</div>
+                      <div class="text-xs w-30 text-style text-gray-500">
                         {{ item.al.name }}
                       </div>
                     </div>
                   </div>
                 </div>
-                <div class="flex">
-                  <div v-if="item.mv" class="flex mr-5">
-                    <van-icon size="1.3rem" name="tv-o" />
+                <div class="flex justify-between items-center">
+                  <div class="mr-5" v-if="item.mv !== 0">
+                    <van-icon name="tv-o" />
                   </div>
                 </div>
-              </ul>
+              </div>
             </van-list>
           </div>
         </div>
