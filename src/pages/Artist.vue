@@ -51,7 +51,7 @@
       <div
         shadow="~ md gray-400/15"
         v-if="isSub"
-        class="absolute top-80% left-50% -translate-x-1/2 flex items-center flex py-1 px-2 text-xs border-hex-eeb border rounded-2xl text-hex-aab bg-hex-ddd"
+        class="absolute top-65% left-50% -translate-x-1/2 flex items-center flex py-1 px-2 text-xs border-hex-eeb border rounded-2xl text-hex-aab bg-hex-ddd"
         @click="Follow"
       >
         <div>已关注</div>
