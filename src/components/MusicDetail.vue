@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-22 21:03:00
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-28 15:34:16
+ * @LastEditTime: 2022-10-02 19:42:50
 -->
 <script setup lang="ts">
 import { Vue3Marquee } from "vue3-marquee";
@@ -238,6 +238,17 @@ const transform = (num: number) => {
   else if (num > 1000) return "999+";
   else return num;
 };
+//跳转歌手主页
+const toArtistDetail = (item:any) => {
+  console.log(item);
+  isDetailShow.value = false
+  router.push({
+    path: "/Artist",
+    query: {
+      artistId: item.id
+    },
+  });
+};
 </script>
 
 <template>
@@ -259,12 +270,12 @@ const transform = (num: number) => {
         }}</Vue3Marquee
         ><!-- 艺人名字 -->
         <div v-for="(item, index) in props.musicList.ar" :key="index">
-          <router-link class="flex items-center ml-5" :to="`artist/${item.id}`">
+          <div class="flex items-center ml-5" @click="toArtistDetail(item)">
             <div class="text-xs text-hex-ccc px-1">{{ item.name }}</div>
             <div class="text-xs text-hex-aaa">
               <van-icon color="#fff" name="arrow"></van-icon>
             </div>
-          </router-link>
+          </div>
         </div>
       </div>
       <div class="text-xl text-hex-ccc"><van-icon name="share-o"></van-icon></div>

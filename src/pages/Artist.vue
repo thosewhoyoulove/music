@@ -157,26 +157,36 @@ import {
   getArtistTopSong,
   getArtistAlbum,
 } from "~/api/artist";
-import { isFollow } from "~/api/user";
+import { isFollow, getArtistSublist } from "~/api/user";
 const route = useRoute();
-const router = useRouter();
-let artistId = parseInt(route.query.artistId); //接收的是字符串的id
-let artistDetail = ref({});
-let isSub = ref(Number(route.query.isSub)); //接收的是数字0或1
+let artistId = parseInt(route.query.artistId as any); //接收的是字符串的id
+let artistDetail: any = ref({});
+let state = reactive({
+  artistIdSubList: [] as any[],
+}); //关注的歌手列表
+let isSub = ref(false); //是否关注该歌手
 let follow = ref({}); //获取用户对歌手的关注信息
 const tabs = ref(["主页", "歌曲", "专辑", "动态", "视频"]);
 const active = ref(0);
 let artistTopSong = ref([]);
-let albumList = ref([]);
+let albumList:any = ref([]);
 onMounted(async () => {
   console.log(artistId, isSub.value);
-  let artistDetailRes = await getArtistDetail(artistId);
+  let artistSubListRes = await getArtistSublist();
+  state.artistIdSubList = artistSubListRes.data.map((item: any) => item.id);
+  console.log(state.artistIdSubList, "state.artistIdSubList");
+
+  isSub.value = state.artistIdSubList.includes(artistId); //在用户关注的列表寻找这个歌手的id
+  console.log(isSub.value, "hoisahiodhoaishd");
+
+  let artistDetailRes = await getArtistDetail(artistId); //获取歌手详情
   artistDetail.value = artistDetailRes.data;
   console.log(artistDetail.value, "artistDetail.value");
-  let followCountRes = await getArtistFollowCount(artistId);
+  let followCountRes = await getArtistFollowCount(artistId); //获取歌手的关注数
   follow.value = followCountRes.data;
+
   console.log(follow.value, "follow.value");
-  let artistTopSongRes = await getArtistTopSong(artistId);
+  let artistTopSongRes = await getArtistTopSong(artistId); //获取歌手热门的五十首
   artistTopSong.value = artistTopSongRes.songs;
   console.log(artistTopSongRes, "歌手热门五十");
   let res = await getArtistAlbum(artistId);
@@ -209,24 +219,24 @@ const formatMsToDate = (ms) => {
 };
 //点击关注或者已关注
 const Follow = async () => {
-  if (isSub.value == 0) {
+  if (isSub.value == false) {
     //未关注
     let res = await isFollow(artistId, 1);
     console.log(res);
 
     if (res.code == 200) {
       // console.log(res);
-      isSub.value = 1;
+      isSub.value = true;
       Notify({ type: "success", message: "关注成功" });
       console.log(isSub.value, "isSub");
       // router.go(0);
     } else {
       Notify({ type: "danger", message: res.message });
     }
-  } else if (isSub.value == 1) {
+  } else if (isSub.value == true) {
     let res = await isFollow(artistId, 0);
     if (res.code == 200) {
-      isSub.value = 0;
+      isSub.value = false;
       Notify({ type: "success", message: "取消关注成功" });
       console.log(isSub.value, "isSub");
       // router.go(0);

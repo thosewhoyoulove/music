@@ -3,17 +3,18 @@
  * @Author: 曹俊
  * @Date: 2022-09-29 16:04:43
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-02 16:53:57
+ * @LastEditTime: 2022-10-02 19:51:40
 -->
 <template>
-  <van-tabs v-model:active="active" @change="change">
+  <van-tabs v-model:active="active" @change="change" >
     <van-tab
       v-for="(item, index) in tabs"
+    
       :key="index"
       :title="item"
       @click="change(item, index)"
     >
-      <van-list class="pb-20" v-show="index == 0">
+      <van-list class="pb-20 mt-2" v-show="index == 0">
         <div
           v-for="(item, index) in searchList"
           :key="index"
@@ -55,7 +56,7 @@
           </div>
         </div>
       </van-list>
-      <van-list class="pb-20" v-show="index == 1">
+      <van-list class="pb-20 mt-2" v-show="index == 1">
         <div
           v-for="(item, index) in searchList"
           :key="index"
@@ -82,7 +83,7 @@
           </div>
         </div>
       </van-list>
-      <van-list class="pb-20" v-show="index == 2">
+      <van-list class="pb-20 mt-2" v-show="index == 2">
         <div class="mx-2 flex justify-between items-center">
           <div @click="toArtistDetail" class="flex items-center">
             <img class="w-10 h-10 rounded-full" :src="artistDetail.cover" alt="" />
@@ -131,7 +132,10 @@ let type = ref(1);
 const artistId = ref(-1); //歌手id,只有一个歌手
 let searchKey = route.query.searchKey;
 const searchList = ref([]);
-let artistIdSubList = reactive([]); //关注的歌手列表
+let state = reactive({
+  artistIdSubList:[] as any[]
+
+}); //关注的歌手列表
 let artistDetail = ref({});
 onMounted(async () => {
   console.log(searchKey, "searchKey");
@@ -140,8 +144,8 @@ onMounted(async () => {
   console.log(searchList.value);
   let artistSubListRes = await getArtistSublist();
   console.log(artistSubListRes, "artistSubListRes");
-  artistIdSubList = artistSubListRes.data.map((item) => item.id);
-  console.log(artistIdSubList, "artistSubList");
+  state.artistIdSubList = artistSubListRes.data.map((item:any) => item.id);
+  console.log(state.artistIdSubList, "state.artistSubList");
 });
 // 点击列表播放歌曲
 const updateIndex = (item: any, index: any): any => {
@@ -168,7 +172,7 @@ const change = async (item, index) => {
     let res = await getSearch(searchKey, type.value);
     console.log(res, "res");
     artistId.value = res.result.songs[0].artists[0].id;
-    isSub.value = artistIdSubList.includes(artistId.value); //在用户关注的列表寻找这个歌手的id
+    isSub.value = state.artistIdSubList.includes(artistId.value); //在用户关注的列表寻找这个歌手的id
     let artistRes = await getArtistDetail(artistId.value);
     artistDetail.value = artistRes.data.artist;
     console.log(artistId.value, artistRes, "歌手的id");
@@ -245,7 +249,7 @@ const toArtistDetail = () => {
 };
 </script>
 
-<style scoped>
+<style >
 .text-style {
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -253,4 +257,5 @@ const toArtistDetail = () => {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 </style>
