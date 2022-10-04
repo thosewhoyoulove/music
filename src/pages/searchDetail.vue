@@ -3,13 +3,12 @@
  * @Author: 曹俊
  * @Date: 2022-09-29 16:04:43
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-02 19:51:40
+ * @LastEditTime: 2022-10-04 11:40:02
 -->
 <template>
-  <van-tabs v-model:active="active" @change="change" >
+  <van-tabs v-model:active="active" @change="change">
     <van-tab
       v-for="(item, index) in tabs"
-    
       :key="index"
       :title="item"
       @click="change(item, index)"
@@ -84,18 +83,22 @@
         </div>
       </van-list>
       <van-list class="pb-20 mt-2" v-show="index == 2">
-        <div class="mx-2 flex justify-between items-center">
-          <div @click="toArtistDetail" class="flex items-center">
-            <img class="w-10 h-10 rounded-full" :src="artistDetail.cover" alt="" />
-            <div class="flex ml-2">{{ artistDetail.name }}</div>
+        <div
+          v-for="(item, index) in state.artistList"
+          :key="index"
+          class="flex justify-between mb-2"
+        >
+          <div class="flex items-center">
+            <img class="w-10 h-10 rounded-full p-1" :src="item.imgPic" alt="" />
+            <div class="flex-col ml-2">{{ item.name }}</div>
           </div>
-          <div v-if="!isSub" class="flex">
-            <van-button icon="plus" color="#f00" plain size="mini" type="primary"
+          <div v-if="!item.isSub" class="flex mr-3">
+            <van-button icon="plus" round color="#f00" plain size="small" type="primary"
               >关注</van-button
             >
           </div>
-          <div v-if="isSub" class="flex">
-            <van-button icon="success" color="#bbb" plain size="mini" type="primary"
+          <div v-if="item.isSub" class="flex mr-3">
+            <van-button icon="success" round color="#bbb" plain size="mini" type="primary"
               >已关注</van-button
             >
           </div>
@@ -131,12 +134,13 @@ const tabs = ref([
 let type = ref(1);
 const artistId = ref(-1); //歌手id,只有一个歌手
 let searchKey = route.query.searchKey;
-const searchList = ref([]);
+const searchList: any = ref([]);
 let state = reactive({
-  artistIdSubList:[] as any[]
-
-}); //关注的歌手列表
-let artistDetail = ref({});
+  artistIdSubList: [] as any[], //关注的歌手列表
+  artistList: [] as any[], //搜索的歌手id列表
+  isSubMap: [] as any[], //是否关注的map
+});
+let artistCover: any = ref();
 onMounted(async () => {
   console.log(searchKey, "searchKey");
   let res = await getCloudSearch(searchKey, type.value);
@@ -144,7 +148,7 @@ onMounted(async () => {
   console.log(searchList.value);
   let artistSubListRes = await getArtistSublist();
   console.log(artistSubListRes, "artistSubListRes");
-  state.artistIdSubList = artistSubListRes.data.map((item:any) => item.id);
+  state.artistIdSubList = artistSubListRes.data.map((item: any) => item.id);
   console.log(state.artistIdSubList, "state.artistSubList");
 });
 // 点击列表播放歌曲
@@ -171,13 +175,41 @@ const change = async (item, index) => {
     type.value = 100;
     let res = await getSearch(searchKey, type.value);
     console.log(res, "res");
-    artistId.value = res.result.songs[0].artists[0].id;
-    isSub.value = state.artistIdSubList.includes(artistId.value); //在用户关注的列表寻找这个歌手的id
-    let artistRes = await getArtistDetail(artistId.value);
-    artistDetail.value = artistRes.data.artist;
-    console.log(artistId.value, artistRes, "歌手的id");
-    console.log(artistDetail.value, "artistDetail.value");
-    console.log(isSub.value, "是否关注");
+    let songsRes = res.result.songs.map((item: any) => item.artists);
+    state.artistList = songsRes.flat(); //将歌手的数组扁平化
+    let map = new Map();
+    for (let item of state.artistList) {
+      console.log(item.name, "item");
+      if (!map.has(item.name)) {
+        map.set(item.name, item);
+      }
+    } //将数组进行去重
+    console.log(map.values(), "map");
+    state.artistList = [...map.values()]; //将map转化为数组
+    console.log(state.artistList, "state.artistIdList");
+
+    for (let i = 0; i < state.artistList.length; i++) {
+      //遍历歌手数组，如果用户的关注列表有这个歌手id就添加isSub属性为true，否则为false
+      if (state.artistIdSubList.includes(state.artistList[i].id)) {
+        Object.defineProperty(state.artistList[i], "isSub", {
+          value: true,
+        });
+      } else {
+        Object.defineProperty(state.artistList[i], "isSub", {
+          value: false,
+        });
+      }
+    }
+    for (let i = 0; i < state.artistList.length; i++) {
+      //遍历歌手数组，调用接口对每一个歌手进行详情请求得到头像URI并添加imgPic属性
+      let artistRes = await getArtistDetail(state.artistList[i].id);
+      console.log(artistRes, "artistRes");
+      artistCover.value = artistRes.data.artist.cover;
+      Object.defineProperty(state.artistList[i], "imgPic", {
+        value: artistCover.value,
+      });
+    }
+    console.log(state.artistList, "这是新的state.artistList");
   } else if (item === 3) {
     //标签为歌单
     type.value = 1000;
@@ -249,7 +281,7 @@ const toArtistDetail = () => {
 };
 </script>
 
-<style >
+<style>
 .text-style {
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -257,5 +289,7 @@ const toArtistDetail = () => {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
+:root {
+  --van-button-small-height: 1.5rem;
+}
 </style>
