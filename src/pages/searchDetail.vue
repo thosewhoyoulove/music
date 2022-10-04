@@ -3,10 +3,10 @@
  * @Author: 曹俊
  * @Date: 2022-09-29 16:04:43
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-04 11:40:02
+ * @LastEditTime: 2022-10-04 12:07:04
 -->
 <template>
-  <van-tabs v-model:active="active" @change="change">
+  <van-tabs v-model:active="active" @change="change" sticky>
     <van-tab
       v-for="(item, index) in tabs"
       :key="index"
@@ -87,6 +87,7 @@
           v-for="(item, index) in state.artistList"
           :key="index"
           class="flex justify-between mb-2"
+          @click="toArtistDetail(item)"
         >
           <div class="flex items-center">
             <img class="w-10 h-10 rounded-full p-1" :src="item.imgPic" alt="" />
@@ -174,12 +175,15 @@ const change = async (item, index) => {
     //标签为歌手
     type.value = 100;
     let res = await getSearch(searchKey, type.value);
-    console.log(res, "res");
+    
     let songsRes = res.result.songs.map((item: any) => item.artists);
+    console.log(songsRes, "songsRes");
     state.artistList = songsRes.flat(); //将歌手的数组扁平化
+    console.log(state.artistList,'state.artistList');
+    
     let map = new Map();
     for (let item of state.artistList) {
-      console.log(item.name, "item");
+      // console.log(item.name, "item");
       if (!map.has(item.name)) {
         map.set(item.name, item);
       }
@@ -270,12 +274,12 @@ const formatMsToDate = (ms) => {
   }
 };
 //跳转歌手主页
-const toArtistDetail = () => {
+const toArtistDetail = (item:any) => {
+  console.log(item);
   router.push({
     path: "/Artist",
     query: {
-      artistId: artistId.value,
-      isSub: Number(isSub.value),
+      artistId: item.id
     },
   });
 };
