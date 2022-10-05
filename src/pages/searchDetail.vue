@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-29 16:04:43
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-05 16:57:14
+ * @LastEditTime: 2022-10-05 20:38:50
 -->
 <template>
   <van-tabs v-model:active="active" @change="change" sticky>
@@ -14,9 +14,9 @@
       @click="change(item, index)"
     >
       <van-list class="pb-20 mt-2" v-show="index == 0">
-        <div v-show="loading"><van-loading size="24px">加载中...</van-loading></div>
+        <div v-if="loading"><van-loading size="24px">加载中...</van-loading></div>
         <div
-          v-show="!loading"
+          v-if="!loading"
           v-for="(item, index) in searchList"
           :key="index"
           class="flex justify-between text-xs"
@@ -58,9 +58,9 @@
         </div>
       </van-list>
       <van-list class="pb-20 mt-2" v-show="index == 1">
-        <div v-show="loading"><van-loading size="24px">加载中...</van-loading></div>
+        <div v-if="loading"><van-loading size="24px">加载中...</van-loading></div>
         <div
-          v-show="!loading"
+          v-if="!loading"
           v-for="(item, index) in searchList"
           :key="index"
           class="flex justify-between pb-1"
@@ -87,9 +87,9 @@
         </div>
       </van-list>
       <van-list class="pb-20 mt-2" v-show="index == 2">
-        <div v-show="loading"><van-loading size="24px">加载中...</van-loading></div>
+        <div v-if="loading"><van-loading size="24px">加载中...</van-loading></div>
         <div
-          v-show="!loading"
+          v-if="!loading"
           v-for="(item, index) in state.artistList"
           :key="index"
           class="flex justify-between mb-2"
@@ -124,7 +124,6 @@ const store = useStore();
 const route = useRoute();
 const router = useRouter();
 const active = ref();
-const isSub = ref(false); //是否关注该歌手
 const tabs = ref([
   "单曲",
   "专辑",
@@ -154,9 +153,7 @@ onMounted(async () => {
   searchList.value = res?.result?.songs;
   console.log(searchList.value);
   let artistSubListRes = await getArtistSublist();
-  console.log(artistSubListRes, "artistSubListRes");
-  state.artistIdSubList = artistSubListRes.data.map((item: any) => item.id);
-  console.log(state.artistIdSubList, "state.artistSubList");
+  state.artistIdSubList = artistSubListRes.data.map((item: any) => item.id); //关注歌手的id列表
   loading.value = false;
 });
 // 点击列表播放歌曲
@@ -168,20 +165,20 @@ const updateIndex = (item: any, index: any): any => {
 const change = async (item, index) => {
   loading.value = true;
   console.log(item, index);
-  if (item === 0) {
+  if (index === 0 || item === 0) {
     //标签为单曲
     type.value = 1;
     let res = await getCloudSearch(searchKey, 1);
     searchList.value = res?.result?.songs;
     loading.value = false;
-  } else if (item === 1) {
+  } else if (index === 1 || item === 1) {
     //标签为专辑
     type.value = 10;
     let res = await getCloudSearch(searchKey, 1);
     searchList.value = res?.result?.songs;
     console.log(res, "专辑");
     loading.value = false;
-  } else if (item === 2) {
+  } else if (index === 2 || item === 2) {
     //标签为歌手
     type.value = 100;
     let res = await getSearch(searchKey, type.value);
@@ -297,11 +294,11 @@ const toArtistDetail = (item: any) => {
 const toMv = (item: any) => {
   console.log(item);
   router.push({
-    path:'MV',
-    query:{
-      mvId:item.mv
-    }
-  })
+    path: "/MV",
+    query: {
+      mvId: item.mv,
+    },
+  });
 };
 </script>
 
