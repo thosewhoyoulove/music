@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-27 11:00:40
+ * @LastEditTime: 2022-10-05 16:53:13
 -->
 <script setup lang="ts">
 import { getAllSong, getSongListDetail } from "~/api/SongListDetail";
@@ -74,6 +74,15 @@ const filterTotal = (num) => {
   else if (num > 10000) return "1w+";
   else if (num > 1000) return "999+";
   else return num;
+};
+const toMv = (item: any) => {
+  console.log(item);
+  router.push({
+    path:'MV',
+    query:{
+      mvId:item.mv
+    }
+  })
 };
 </script>
 
@@ -199,7 +208,7 @@ const filterTotal = (num) => {
           </div>
         </div>
 
-        <div class="flex mr-5" v-if="item.mv">
+        <div @click="toMv(item)" class="flex mr-5" v-if="item.mv">
           <van-icon size="1rem" name="tv-o" />
         </div>
       </ul>

@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 19:07:49
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-02 16:54:18
+ * @LastEditTime: 2022-10-05 16:57:48
 -->
 <script setup lang="ts">
 import {
@@ -52,6 +52,15 @@ const toMusicDetail = (id) => {
       id,
     },
   });
+};
+const toMv = (item: any) => {
+  console.log(item);
+  router.push({
+    path:'MV',
+    query:{
+      mvId:item.mv
+    }
+  })
 };
 </script>
 
@@ -118,7 +127,7 @@ const toMusicDetail = (id) => {
                   </div>
                 </div>
                 <div class="flex justify-between items-center">
-                  <div class="mr-5" v-if="item.mv !== 0">
+                  <div @click="toMv(item)" class="mr-5" v-if="item.mv !== 0">
                     <van-icon name="tv-o" />
                   </div>
                 </div>

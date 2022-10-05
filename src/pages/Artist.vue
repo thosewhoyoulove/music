@@ -105,7 +105,7 @@
             </div>
           </div>
           <div class="flex">
-            <div v-if="item.mv" class="mr-5">
+            <div @click="toMv(item)" v-if="item.mv" class="mr-5">
               <van-icon size="1rem" name="tv-o" />
             </div>
           </div>
@@ -159,6 +159,7 @@ import {
 } from "~/api/artist";
 import { isFollow, getArtistSublist } from "~/api/user";
 const route = useRoute();
+const router = useRouter()
 let artistId = parseInt(route.query.artistId as any); //接收的是字符串的id
 let artistDetail: any = ref({});
 let state = reactive({
@@ -169,7 +170,7 @@ let follow = ref({}); //获取用户对歌手的关注信息
 const tabs = ref(["主页", "歌曲", "专辑", "动态", "视频"]);
 const active = ref(0);
 let artistTopSong = ref([]);
-let albumList:any = ref([]);
+let albumList: any = ref([]);
 onMounted(async () => {
   console.log(artistId, isSub.value);
   let artistSubListRes = await getArtistSublist();
@@ -195,17 +196,17 @@ onMounted(async () => {
   albumList.value = res?.hotAlbums;
 });
 //格式化粉丝数
-const filter = (num) => {
+const filter = (num: number) => {
   if (num > 100000000) return `${(num / 100000000).toFixed(1)}亿`;
   else if (num > 10000) return `${(num / 10000).toFixed(1)}万`;
   else return num;
 };
 //格式化专辑出版时间
-const addZero = (num) => {
+const addZero = (num: string | number) => {
   if (parseInt(num) < 10) num = `0${num}`;
   return num;
 };
-const formatMsToDate = (ms) => {
+const formatMsToDate = (ms: string | number | Date) => {
   if (ms) {
     const oDate = new Date(ms);
     const oYear = oDate.getFullYear();
@@ -244,6 +245,15 @@ const Follow = async () => {
       Notify({ type: "danger", message: res.message });
     }
   }
+};
+const toMv = (item: any) => {
+  console.log(item);
+  router.push({
+    path:'MV',
+    query:{
+      mvId:item.mv
+    }
+  })
 };
 </script>
 

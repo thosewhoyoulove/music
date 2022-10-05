@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-29 16:04:43
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-04 12:39:44
+ * @LastEditTime: 2022-10-05 16:57:14
 -->
 <template>
   <van-tabs v-model:active="active" @change="change" sticky>
@@ -51,7 +51,7 @@
             </div>
           </div>
           <div class="flex justify-between items-center">
-            <div class="mr-5" v-if="item.mv !== 0">
+            <div @click="toMv(item)" class="mr-5" v-if="item.mv !== 0">
               <van-icon name="tv-o" />
             </div>
           </div>
@@ -293,6 +293,15 @@ const toArtistDetail = (item: any) => {
       artistId: item.id,
     },
   });
+};
+const toMv = (item: any) => {
+  console.log(item);
+  router.push({
+    path:'MV',
+    query:{
+      mvId:item.mv
+    }
+  })
 };
 </script>
 
