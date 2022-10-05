@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:49:56
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-25 10:36:14
+ * @LastEditTime: 2022-10-04 16:30:27
 -->
 <script setup lang="ts">
 import { onMounted, reactive } from 'vue'
@@ -14,6 +14,8 @@ const state = reactive({
 })
 onMounted(async () => {
   const res = await getBanner()
+  console.log(res,'res');
+  
   state.image = res.banners
   loading.value = false
 })
