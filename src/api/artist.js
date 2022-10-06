@@ -21,7 +21,7 @@ export function getArtistDetail(id) {
         url: `artist/detail?id=${id}`,
     })
 }
-// 歌手粉丝数量
+// 歌手粉丝数量,可以用这个接口来检测用户是否关注该歌手
 // 说明: 调用此接口, 传入歌手 id, 可获取歌手粉丝数量
 
 // 必选参数: id: 歌手 id
@@ -34,9 +34,10 @@ export function getArtistDetail(id) {
 
 // 调用例子: /artist/follow / count ? id = 2116
 export function getArtistFollowCount(id) {
+    const cookie = localStorage.getItem('cookie')
     return request({
         method: 'post',
-        url: `/artist/follow/count?id=${id}`,
+        url: `/artist/follow/count?id=${id}&cookie=${encodeURIComponent(cookie)}`,
     })
 }
 // 歌手热门 50 首歌曲

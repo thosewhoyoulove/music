@@ -158,33 +158,39 @@ import {
   getArtistAlbum,
 } from "~/api/artist";
 import { isFollow, getArtistSublist } from "~/api/user";
+import { useStore } from "~/store/index";
+const store = useStore();
 const route = useRoute();
-const router = useRouter()
+const router = useRouter();
 let artistId = parseInt(route.query.artistId as any); //接收的是字符串的id
 let artistDetail: any = ref({});
 let state = reactive({
   artistIdSubList: [] as any[],
 }); //关注的歌手列表
 let isSub = ref(false); //是否关注该歌手
-let follow = ref({}); //获取用户对歌手的关注信息
-const tabs = ref(["主页", "歌曲", "专辑", "动态", "视频"]);
+let follow: any = ref({}); //获取用户对歌手的关注信息
+const tabs: any = ref(["主页", "歌曲", "专辑", "动态", "视频"]);
 const active = ref(0);
-let artistTopSong = ref([]);
+let artistTopSong: any = ref([]);
 let albumList: any = ref([]);
 onMounted(async () => {
   console.log(artistId, isSub.value);
-  let artistSubListRes = await getArtistSublist();
-  state.artistIdSubList = artistSubListRes.data.map((item: any) => item.id);
-  console.log(state.artistIdSubList, "state.artistIdSubList");
+  //通过判断用户的关注列表有没有给歌手的ID来判断用户是否关注改歌手，有点不及时，可以直接用粉丝数那个接口带上用户信息即可获取用户的关注信息
+  // let artistSubListRes = await getArtistSublist();
+  // state.artistIdSubList = artistSubListRes.data.map((item: any) => item.id);
+  // console.log(state.artistIdSubList, "state.artistIdSubList");
 
-  isSub.value = state.artistIdSubList.includes(artistId); //在用户关注的列表寻找这个歌手的id
-  console.log(isSub.value, "hoisahiodhoaishd");
+  // isSub.value = state.artistIdSubList.includes(artistId); //在用户关注的列表寻找这个歌手的id
+  // console.log(isSub.value, "hoisahiodhoaishd");
 
   let artistDetailRes = await getArtistDetail(artistId); //获取歌手详情
   artistDetail.value = artistDetailRes.data;
   console.log(artistDetail.value, "artistDetail.value");
   let followCountRes = await getArtistFollowCount(artistId); //获取歌手的关注数
   follow.value = followCountRes.data;
+  console.log(follow.value, "用户的关注信息");
+
+  isSub.value = followCountRes.data.isFollow; //是否关注该歌手
 
   console.log(follow.value, "follow.value");
   let artistTopSongRes = await getArtistTopSong(artistId); //获取歌手热门的五十首
@@ -228,6 +234,8 @@ const Follow = async () => {
     if (res.code == 200) {
       // console.log(res);
       isSub.value = true;
+      let followCountRes = await getArtistFollowCount(artistId); //获取歌手的关注数
+      follow.value = followCountRes.data;
       Notify({ type: "success", message: "关注成功" });
       console.log(isSub.value, "isSub");
       // router.go(0);
@@ -246,14 +254,21 @@ const Follow = async () => {
     }
   }
 };
+//跳转MV详情页面
 const toMv = (item: any) => {
   console.log(item);
   router.push({
-    path:'MV',
-    query:{
-      mvId:item.mv
-    }
-  })
+    path: "MV",
+    query: {
+      mvId: item.mv,
+    },
+  });
+};
+// 修改歌曲信息并进行播放
+const updateSongList = (index: any) => {
+  store.updatePlayList(store.$state, state.songs); // 将歌单列表传进默认列表
+  store.updatePlayListIndex(index); // 将索引值传给默认索引
+  store.updateIsShow(store.$state, true); // 修改为暂停图标
 };
 </script>
 

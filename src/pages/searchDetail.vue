@@ -3,16 +3,11 @@
  * @Author: 曹俊
  * @Date: 2022-09-29 16:04:43
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-05 20:38:50
+ * @LastEditTime: 2022-10-06 18:59:39
 -->
 <template>
   <van-tabs v-model:active="active" @change="change" sticky>
-    <van-tab
-      v-for="(item, index) in tabs"
-      :key="index"
-      :title="item"
-      @click="change(item, index)"
-    >
+    <van-tab v-for="(item, index) in tabs" :key="index" :title="item">
       <van-list class="pb-20 mt-2" v-show="index == 0">
         <div v-if="loading"><van-loading size="24px">加载中...</van-loading></div>
         <div
@@ -93,9 +88,8 @@
           v-for="(item, index) in state.artistList"
           :key="index"
           class="flex justify-between mb-2"
-          @click="toArtistDetail(item)"
         >
-          <div class="flex items-center">
+          <div @click="toArtistDetail(item)" class="flex items-center">
             <img class="w-10 h-10 rounded-full p-1" :src="item.imgPic" alt="" />
             <div class="flex-col ml-2">{{ item.name }}</div>
           </div>
@@ -117,7 +111,7 @@
 
 <script setup lang="ts">
 import { getCloudSearch, getSearch } from "~/api/Search";
-import { getArtistDetail } from "~/api/artist";
+import { getArtistDetail, getArtistFollowCount } from "~/api/artist";
 import { getArtistSublist } from "~/api/user";
 import { useStore } from "~/store/index";
 const store = useStore();
@@ -198,10 +192,11 @@ const change = async (item, index) => {
     console.log(map.values(), "map");
     state.artistList = [...map.values()]; //将map转化为数组
     console.log(state.artistList, "state.artistIdList");
-
+    //遍历歌手数组，调用获取粉丝量的接口可以获得是否关注
     for (let i = 0; i < state.artistList.length; i++) {
-      //遍历歌手数组，如果用户的关注列表有这个歌手id就添加isSub属性为true，否则为false
-      if (state.artistIdSubList.includes(state.artistList[i].id)) {
+      let followCountRes = await getArtistFollowCount(state.artistList[i].id);
+      console.log(followCountRes, "歌手的关注信息");
+      if (followCountRes.data.isFollow) {
         Object.defineProperty(state.artistList[i], "isSub", {
           value: true,
         });
@@ -211,6 +206,17 @@ const change = async (item, index) => {
         });
       }
     }
+    //遍历歌手数组，如果用户的关注列表有这个歌手id就添加isSub属性为true，否则为false
+    // if (state.artistIdSubList.includes(state.artistList[i].id)) {
+    //   Object.defineProperty(state.artistList[i], "isSub", {
+    //     value: true,
+    //   });
+    // } else {
+    //   Object.defineProperty(state.artistList[i], "isSub", {
+    //     value: false,
+    //   });
+    // }
+
     for (let i = 0; i < state.artistList.length; i++) {
       //遍历歌手数组，调用接口对每一个歌手进行详情请求得到头像URI并添加imgPic属性
       let artistRes = await getArtistDetail(state.artistList[i].id);
