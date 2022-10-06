@@ -42,3 +42,18 @@ export function getMvDetail(id) {
         url: `/mv/detail?mvid=${id}`,
     })
 }
+
+// 相似 mv
+// 说明: 调用此接口, 传入 mvid 可获取相似 mv
+
+// 必选参数: mvid: mv id
+
+// 接口地址: /simi/mv
+
+// 调用例子: /simi/mv ? mvid = 5436712
+export function getSimiMv(id) {
+    return request({
+        method: 'post',
+        url: `/simi/mv?mvid=${id}`,
+    })
+}
