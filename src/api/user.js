@@ -165,6 +165,6 @@ export function isFollow(id, t) {
     const cookie = localStorage.getItem('cookie')
     return request({
         method: 'post',
-        url: `/artist/sub?id=${id}&t=${t}?cookie=${encodeURIComponent(cookie)}`,
+        url: `/artist/sub?id=${id}&t=${t}&cookie=${encodeURIComponent(cookie)}`,
     })
 }
