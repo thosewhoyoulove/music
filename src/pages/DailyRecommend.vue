@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 19:07:49
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-05 16:57:48
+ * @LastEditTime: 2022-10-06 19:13:02
 -->
 <script setup lang="ts">
 import {
@@ -40,7 +40,7 @@ const filter = (num) => {
   else return num;
 };
 // 修改歌曲信息并进行播放
-const updateSongList = (index) => {
+const updateSongList = (index:any) => {
   store.updatePlayList(store.$state, state.songs); // 将歌单列表传进默认列表
   store.updatePlayListIndex(index); // 将索引值传给默认索引
   store.updateIsShow(store.$state, true); // 修改为暂停图标
@@ -80,7 +80,7 @@ const toMv = (item: any) => {
     </div>
   </div>
   <div class="w-100% pb-5">
-    <van-tabs v-model:active="active" @click-tab="tabChange">
+    <van-tabs v-model:active="active">
       <van-tab v-for="(item, index) in choice" :key="index" :title="item">
         <div v-show="active == 0">
           <div v-if="!state.songList.length">

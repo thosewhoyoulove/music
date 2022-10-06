@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-12 17:02:36
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-26 20:27:31
+ * @LastEditTime: 2022-10-06 19:09:14
 -->
 <script setup lang="ts">
 import { Dialog, Loading, Notify } from "vant";
@@ -20,24 +20,23 @@ const VanDialog = Dialog.Component;
 const router = useRouter();
 const store = useStore();
 const userInfo = userStore();
-const cookie = ref(localStorage.getItem("cookie"));
+const cookie: any = ref(localStorage.getItem("cookie"));
 const nickname = ref("");
 const createTime = ref("");
-const { isLogin, user } = storeToRefs(userInfo);
-const userDetail = ref({}); // 存储用户详情信息
+const { user }: any = storeToRefs(userInfo);
+const userDetail: any = ref({}); // 存储用户详情信息
 const showLoading = ref(true);
 const uid = ref(0);
 const choice = ref(["主页", "动态"]);
 const active = ref(0);
 const gender = ref();
-const age = ref(0);
-const signature = ref("");
-const events = ref([]);
-const pics = ref([]);
+const age: any = ref(0);
+const signature:any = ref("");
+const events:any = ref([]);
 //个人歌单
-const activeNames = ref("创建的歌单");
-const createdList = ref([]); //
-const subList = ref([]);
+const activeNames: any = ref("创建的歌单");
+const createdList: any = ref([]); //
+const subList: any = ref([]);
 onMounted(async () => {
   if (!cookie.value) {
     store.updateIsShow(store.$state, true);
@@ -45,7 +44,7 @@ onMounted(async () => {
       path: "/LoginOrReg",
     });
   } else {
-    user.value = JSON.parse(localStorage.getItem("userInfo"));
+    user.value = JSON.parse(localStorage.getItem("userInfo") as string);
     console.log(user.value, "本地用户信息");
     uid.value = user.value.account.id;
     nickname.value = user.value.profile?.nickname;
@@ -60,8 +59,8 @@ onMounted(async () => {
     console.log(userDetail, "用户详情对象");
     const res2 = await getUserPlaylist(uid.value); // 获取用户歌单
     console.log(uid.value, res2, "用户歌单");
-    createdList.value = res2.playlist.filter((item) => item.subscribed === false); //获取创建的歌单
-    subList.value = res2.playlist.filter((item) => item.subscribed === true); //获取收藏的歌单
+    createdList.value = res2.playlist.filter((item: any) => item.subscribed === false); //获取创建的歌单
+    subList.value = res2.playlist.filter((item: any) => item.subscribed === true); //获取收藏的歌单
     console.log(createdList.value, "创建的歌曲列表");
 
     const eventRes = await getUserEvent(uid.value);
@@ -70,12 +69,12 @@ onMounted(async () => {
     showLoading.value = false;
   }
 });
-const addZero = (num) => {
+const addZero = (num: any) => {
   if (parseInt(num) < 10) num = `0${num}`;
 
   return num;
 };
-const formatMsToDate = (ms) => {
+const formatMsToDate = (ms: any) => {
   if (ms) {
     const oDate = new Date(ms);
     const oYear = oDate.getFullYear();
@@ -88,7 +87,7 @@ const formatMsToDate = (ms) => {
     return "";
   }
 };
-const getAge = (ms) => {
+const getAge = (ms: any) => {
   if (ms) {
     const date = new Date();
     const oDate = new Date(ms);
@@ -117,7 +116,7 @@ const toMyFolloweds = () => {
     },
   });
 };
-const toDetail = (item) => {
+const toDetail = (item: any) => {
   router.push({
     path: "/RecMusicListDetail",
     query: {
@@ -130,7 +129,7 @@ const toDetail = (item) => {
 </script>
 
 <template>
-  <div v-if="cookie" class="w-100vw ">
+  <div v-if="cookie" class="w-100vw">
     <img
       class="absolute h-50 w-100vw pt-2 px-3"
       :src="user?.profile?.backgroundUrl"
@@ -171,7 +170,7 @@ const toDetail = (item) => {
       </div>
     </div>
     <div class="w-100vw mt-30 mb-15 rounded px-2">
-      <van-tabs v-model:active="active" background="#f6f7f9" @click-tab="tabChange">
+      <van-tabs v-model:active="active" background="#f6f7f9">
         <van-tab v-for="(item, index) in choice" :key="index" :title="item">
           <div v-show="active == 0" class="bg-white rounded-lg px-2 text-left">
             <div class="font-550 mt-2 pt-5">基本信息</div>
@@ -314,10 +313,10 @@ const toDetail = (item) => {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.van-cell{
-  padding: .25rem 
+.van-cell {
+  padding: 0.25rem;
 }
-.van-collapse-item__content{
-  padding:.25rem .1rem 
+.van-collapse-item__content {
+  padding: 0.25rem 0.1rem;
 }
 </style>
