@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-10-05 14:58:36
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-07 15:20:41
+ * @LastEditTime: 2022-10-07 15:54:47
 -->
 <template>
   <div class="relative">
@@ -11,7 +11,7 @@
       <video class="h-200px max-w-100%" :src="videoSrc" controls></video>
     </div>
     <div class="flex justify-between p-1 items-center">
-      <div class="flex items-center text-xs">
+      <div @click="toArtistDetail(artistId)" class="flex items-center text-xs">
         <img class="h-10 w-10 rounded-full" :src="artistDetail?.artist?.cover" alt="" />
         <div class="col text-left ml-2">
           <div>{{ artistDetail?.artist?.name }}</div>
@@ -47,10 +47,10 @@
         <div class="absolute left-32 mt-15 text-hex-fff scale-50">
           {{ formatMsToDate(duration) }}
         </div>
-        <div class="flex-col text-left text-xs">
+        <div class="flex-col text-left text-xs w-40">
           <div class="flex ml-1 mb-4 mt-1">
             <div class="scale-70"><van-tag color="#f00" plain>MV</van-tag></div>
-            <div>{{ name }}</div>
+            <div class=" text-style">{{ name }}</div>
           </div>
           <div class="ml-2 text-hex-bbb">
             <div>{{ artistName }}</div>
@@ -69,29 +69,47 @@ import { Notify } from "vant";
 const route = useRoute();
 const router = useRouter();
 let mvId: any = parseInt(route.query.mvId as string);
-let videoSrc = ref();
+let videoSrc = ref(
+  "http://vodkgeyttp8.vod.126.net/cloudmusic/MTAwMDAiMCQ4ICUgOCFhZg==/mv/420144/abbd384e937b34ee7c22eebdd238dbb9.mp4?wsSecret=f62101e3bed0acaf2a8e6581fbc208b0&wsTime=1665127998"
+);
 let mvDetail: any = ref({});
-let artistId = ref(0);
+let artistId = parseInt(route.query.artistId as string);
 let artistDetail: any = ref({});
 let videoCount = ref(0);
 let fansCnt = ref(0); //歌手的粉丝数
 let isFollow = ref(false);
 let mvList = ref([]); //推荐的MV列表
 onMounted(async () => {
+  console.log(artistId, "歌手id");
+
   let res = await getMvUrl(mvId); //获取MV播放地址
-  console.log(res, "res");
-  videoSrc.value = res.data.url;
+  console.log(res, "mv播放地址");
+  if (res.data.url == null) {
+    console.log(111);
+    Notify({ type: "warning", message: res.data.msg });
+    let artistDetailRes = await getArtistDetail(artistId); //获取歌手详情
+    artistDetail.value = artistDetailRes.data;
+    videoCount.value = artistDetailRes.data.videoCount;
+    let artistFollowRes = await getArtistFollowCount(artistId);
+    console.log(artistFollowRes, "歌手的粉丝数");
+    fansCnt.value = artistFollowRes.data.fansCnt;
+    isFollow.value = artistFollowRes.data.isFollow;
+    let simiMvRes = await getSimiMv(mvId);
+    mvList.value = simiMvRes.mvs;
+  } else {
+    videoSrc.value = res.data.url;
+  }
   let mvDetailRes = await getMvDetail(mvId); //获取MV详情
-  console.log(mvDetailRes, "mvDetailRes");
+  console.log(mvDetailRes, "mv详情");
   mvDetail.value = mvDetailRes.data;
-  artistId.value = mvDetailRes.data.artistId; //获取歌手ID
+  artistId = mvDetailRes.data.artistId; //获取歌手ID
   console.log(mvDetail.value, "mvDetail");
-  let artistDetailRes = await getArtistDetail(artistId.value); //获取歌手详情
+  let artistDetailRes = await getArtistDetail(artistId); //获取歌手详情
   console.log(artistDetailRes, "artistDetailRes");
   artistDetail.value = artistDetailRes.data;
   videoCount.value = artistDetailRes.data.videoCount;
   console.log(artistDetail.value, "歌手详情");
-  let artistFollowRes = await getArtistFollowCount(artistId.value);
+  let artistFollowRes = await getArtistFollowCount(artistId);
   console.log(artistFollowRes, "歌手的粉丝数");
   fansCnt.value = artistFollowRes.data.fansCnt;
   isFollow.value = artistFollowRes.data.isFollow;
@@ -132,7 +150,7 @@ const switchId = async (id: any) => {
   let res = await getMvUrl(id); //获取MV播放地址
   console.log(res, "res");
   nextTick(() => {
-    if (res.data.url==null) {
+    if (res.data.url == null) {
       console.log(111);
       Notify({ type: "warning", message: res.data.msg });
     } else {
@@ -141,6 +159,24 @@ const switchId = async (id: any) => {
     }
   });
 };
+//跳转歌手主页
+const toArtistDetail = (artistId: any) => {
+  console.log(artistId);
+  router.push({
+    path: "/Artist",
+    query: {
+      artistId: artistId,
+    },
+  });
+};
 </script>
 
-<style scoped></style>
+<style scoped>
+  .text-style {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+</style>
