@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-10-05 14:58:36
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-06 21:05:10
+ * @LastEditTime: 2022-10-07 15:20:41
 -->
 <template>
   <div class="relative">
@@ -65,8 +65,9 @@
 <script setup lang="ts">
 import { getArtistDetail, getArtistFollowCount } from "~/api/artist";
 import { getMvUrl, getMvDetail, getSimiMv } from "~/api/MV";
+import { Notify } from "vant";
 const route = useRoute();
-const router = useRouter()
+const router = useRouter();
 let mvId: any = parseInt(route.query.mvId as string);
 let videoSrc = ref();
 let mvDetail: any = ref({});
@@ -122,16 +123,24 @@ const formatMsToDate = (ms: number) => {
   }
 };
 //跳转MV详情页面
-const switchId = async(id:any) =>{
-  mvId = parseInt(id)
+const switchId = async (id: any) => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+  mvId = parseInt(id);
   let res = await getMvUrl(id); //获取MV播放地址
   console.log(res, "res");
-  nextTick(() =>{
-    videoSrc.value = res.data.url;
-    console.log(videoSrc.value,'新地址');
-  })
-  
-}
+  nextTick(() => {
+    if (res.data.url==null) {
+      console.log(111);
+      Notify({ type: "warning", message: res.data.msg });
+    } else {
+      videoSrc.value = res.data.url;
+      console.log(videoSrc.value, "新地址");
+    }
+  });
+};
 </script>
 
 <style scoped></style>
