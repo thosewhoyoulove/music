@@ -261,6 +261,7 @@ const toMv = (item: any) => {
     path: "MV",
     query: {
       mvId: item.mv,
+      artistId: item.ar[0].id,
     },
   });
 };

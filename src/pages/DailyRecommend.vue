@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 19:07:49
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-06 19:13:02
+ * @LastEditTime: 2022-10-07 15:52:53
 -->
 <script setup lang="ts">
 import {
@@ -40,7 +40,7 @@ const filter = (num) => {
   else return num;
 };
 // 修改歌曲信息并进行播放
-const updateSongList = (index:any) => {
+const updateSongList = (index: any) => {
   store.updatePlayList(store.$state, state.songs); // 将歌单列表传进默认列表
   store.updatePlayListIndex(index); // 将索引值传给默认索引
   store.updateIsShow(store.$state, true); // 修改为暂停图标
@@ -56,11 +56,12 @@ const toMusicDetail = (id) => {
 const toMv = (item: any) => {
   console.log(item);
   router.push({
-    path:'MV',
-    query:{
-      mvId:item.mv
-    }
-  })
+    path: "MV",
+    query: {
+      mvId: item.mv,
+      artistId: item.ar[0].id,
+    },
+  });
 };
 </script>
 

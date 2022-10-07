@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-29 16:04:43
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-06 18:59:39
+ * @LastEditTime: 2022-10-07 15:50:03
 -->
 <template>
   <van-tabs v-model:active="active" @change="change" sticky>
@@ -298,11 +298,12 @@ const toArtistDetail = (item: any) => {
   });
 };
 const toMv = (item: any) => {
-  console.log(item);
+  console.log(item.ar[0].id); //暂时只传一个歌手的i,后续有需要再设计多个歌手
   router.push({
     path: "/MV",
     query: {
       mvId: item.mv,
+      artistId: item.ar[0].id,
     },
   });
 };

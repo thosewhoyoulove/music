@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-05 16:53:13
+ * @LastEditTime: 2022-10-07 16:02:02
 -->
 <script setup lang="ts">
 import { getAllSong, getSongListDetail } from "~/api/SongListDetail";
@@ -78,11 +78,12 @@ const filterTotal = (num) => {
 const toMv = (item: any) => {
   console.log(item);
   router.push({
-    path:'MV',
-    query:{
-      mvId:item.mv
-    }
-  })
+    path: "MV",
+    query: {
+      mvId: item.mv,
+      artistId: item.ar[0].id,
+    },
+  });
 };
 </script>
 
