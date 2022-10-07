@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-10-05 14:58:36
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-07 15:54:47
+ * @LastEditTime: 2022-10-07 19:33:53
 -->
 <template>
   <div class="relative">
@@ -11,29 +11,28 @@
       <video class="h-200px max-w-100%" :src="videoSrc" controls></video>
     </div>
     <div class="flex justify-between p-1 items-center">
-      <div @click="toArtistDetail(artistId)" class="flex items-center text-xs">
+      <div @click="toArtistDetail(artistId)" class="flex items-center">
         <img class="h-10 w-10 rounded-full" :src="artistDetail?.artist?.cover" alt="" />
         <div class="col text-left ml-2">
-          <div>{{ artistDetail?.artist?.name }}</div>
-          <div class="flex justify-between">
+          <div class="scale-60 -translate-x-1/5">{{ artistDetail?.artist?.name }}</div>
+          <div class="flex justify-between scale-60 -translate-x-1/5">
             <div>{{ filter(fansCnt) }}粉丝</div>
             <div class="ml-1">{{ videoCount }}视频</div>
           </div>
         </div>
       </div>
-      <div shadow="~ md gray-400/15" class="flex" v-if="!isFollow" @click="Follow">
+      <div shadow="~ md gray-400/15" class="flex" v-if="!isSub" @click="Follow">
         <van-button icon="plus" color="#f00" plain size="mini" type="primary"
           >关注</van-button
         >
       </div>
       <div
         shadow="~ md gray-400/15"
-        v-if="isFollow"
+        v-if="isSub"
         class="flex items-center flex py-1 px-2 text-xs border-hex-eeb border rounded-2xl text-hex-aab bg-hex-ddd"
         @click="Follow"
       >
         <div>已关注</div>
-        <div class="font-thin ml-1">{{ follow?.followDay?.slice(3) }}</div>
       </div>
     </div>
     <van-list class="pb-20">
@@ -50,7 +49,7 @@
         <div class="flex-col text-left text-xs w-40">
           <div class="flex ml-1 mb-4 mt-1">
             <div class="scale-70"><van-tag color="#f00" plain>MV</van-tag></div>
-            <div class=" text-style">{{ name }}</div>
+            <div class="text-style">{{ name }}</div>
           </div>
           <div class="ml-2 text-hex-bbb">
             <div>{{ artistName }}</div>
@@ -59,13 +58,28 @@
         </div>
       </div>
     </van-list>
+
+    <VanDialog
+      class="text-xs"
+      v-model:show="isDialogShow"
+      title="取消关注后，'关注时长'将重新计算"
+      show-cancel-button
+      width="18.75rem"
+      confirmButtonColor="#f00"
+      confirmButtonText="继续关注"
+      cancelButtonText="仍要取消"
+      @cancel="onDialogCancel"
+      @confirm="onDialogConfirm"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { getArtistDetail, getArtistFollowCount } from "~/api/artist";
 import { getMvUrl, getMvDetail, getSimiMv } from "~/api/MV";
-import { Notify } from "vant";
+import { isFollow } from "~/api/user";
+import { Notify, Dialog } from "vant";
+const VanDialog = Dialog.Component;
 const route = useRoute();
 const router = useRouter();
 let mvId: any = parseInt(route.query.mvId as string);
@@ -77,8 +91,9 @@ let artistId = parseInt(route.query.artistId as string);
 let artistDetail: any = ref({});
 let videoCount = ref(0);
 let fansCnt = ref(0); //歌手的粉丝数
-let isFollow = ref(false);
+let isSub = ref();
 let mvList = ref([]); //推荐的MV列表
+let isDialogShow = ref(false);
 onMounted(async () => {
   console.log(artistId, "歌手id");
 
@@ -93,29 +108,29 @@ onMounted(async () => {
     let artistFollowRes = await getArtistFollowCount(artistId);
     console.log(artistFollowRes, "歌手的粉丝数");
     fansCnt.value = artistFollowRes.data.fansCnt;
-    isFollow.value = artistFollowRes.data.isFollow;
+    isSub.value = artistFollowRes.data.isFollow;
     let simiMvRes = await getSimiMv(mvId);
     mvList.value = simiMvRes.mvs;
   } else {
     videoSrc.value = res.data.url;
+    let mvDetailRes = await getMvDetail(mvId); //获取MV详情
+    console.log(mvDetailRes, "mv详情");
+    mvDetail.value = mvDetailRes.data;
+    artistId = mvDetailRes.data.artistId; //获取歌手ID
+    console.log(mvDetail.value, "mvDetail");
+    let artistDetailRes = await getArtistDetail(artistId); //获取歌手详情
+    console.log(artistDetailRes, "artistDetailRes");
+    artistDetail.value = artistDetailRes.data;
+    videoCount.value = artistDetailRes.data.videoCount;
+    console.log(artistDetail.value, "歌手详情");
+    let artistFollowRes = await getArtistFollowCount(artistId);
+    console.log(artistFollowRes, "歌手的粉丝数");
+    fansCnt.value = artistFollowRes.data.fansCnt;
+    isSub.value = artistFollowRes.data.isFollow;
+    let simiMvRes = await getSimiMv(mvId);
+    mvList.value = simiMvRes.mvs;
+    console.log(mvList.value, "相似MV");
   }
-  let mvDetailRes = await getMvDetail(mvId); //获取MV详情
-  console.log(mvDetailRes, "mv详情");
-  mvDetail.value = mvDetailRes.data;
-  artistId = mvDetailRes.data.artistId; //获取歌手ID
-  console.log(mvDetail.value, "mvDetail");
-  let artistDetailRes = await getArtistDetail(artistId); //获取歌手详情
-  console.log(artistDetailRes, "artistDetailRes");
-  artistDetail.value = artistDetailRes.data;
-  videoCount.value = artistDetailRes.data.videoCount;
-  console.log(artistDetail.value, "歌手详情");
-  let artistFollowRes = await getArtistFollowCount(artistId);
-  console.log(artistFollowRes, "歌手的粉丝数");
-  fansCnt.value = artistFollowRes.data.fansCnt;
-  isFollow.value = artistFollowRes.data.isFollow;
-  let simiMvRes = await getSimiMv(mvId);
-  mvList.value = simiMvRes.mvs;
-  console.log(mvList.value, "相似MV");
 });
 
 //格式化粉丝数h和播放量
@@ -169,10 +184,53 @@ const toArtistDetail = (artistId: any) => {
     },
   });
 };
+//点击关注或者已关注
+const Follow = async () => {
+  if (isSub.value == false) {
+    //未关注
+    let res = await isFollow(artistId, 1);
+    console.log(res);
+
+    if (res.code == 200) {
+      // console.log(res);
+      nextTick(() => {
+        isSub.value = true;
+      });
+
+      let followCountRes = await getArtistFollowCount(artistId); //获取歌手的关注数
+      Notify({ type: "success", message: "关注成功" });
+      console.log(isSub.value, "isSub");
+      // router.go(0);
+    } else {
+      Notify({ type: "danger", message: res.message });
+    }
+  } else if (isSub.value == true) {
+    isDialogShow.value = true;
+  }
+};
+//继续关注
+const onDialogConfirm = () => {
+  isDialogShow.value = false;
+};
+//仍要取消
+const onDialogCancel = async () => {
+  let res = await isFollow(artistId, 0);
+  if (res.code == 200) {
+    nextTick(() => {
+      isSub.value = false;
+    });
+    Notify({ type: "success", message: "取消关注成功" });
+    console.log(isSub.value, "isSub");
+    // router.go(0);
+  } else {
+    Notify({ type: "danger", message: res.message });
+  }
+  isDialogShow.value = false;
+};
 </script>
 
 <style scoped>
-  .text-style {
+.text-style {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
