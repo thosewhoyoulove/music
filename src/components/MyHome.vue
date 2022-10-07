@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-12 17:02:36
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-06 19:09:14
+ * @LastEditTime: 2022-10-07 19:48:11
 -->
 <script setup lang="ts">
 import { Dialog, Loading, Notify } from "vant";
@@ -170,7 +170,7 @@ const toDetail = (item: any) => {
       </div>
     </div>
     <div class="w-100vw mt-30 mb-15 rounded px-2">
-      <van-tabs v-model:active="active" background="#f6f7f9">
+      <van-tabs v-model:active="active" background="#f6f7f9" sticky>
         <van-tab v-for="(item, index) in choice" :key="index" :title="item">
           <div v-show="active == 0" class="bg-white rounded-lg px-2 text-left">
             <div class="font-550 mt-2 pt-5">基本信息</div>
