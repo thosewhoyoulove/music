@@ -147,10 +147,22 @@
       </van-list>
     </van-tab>
   </van-tabs>
+  <VanDialog
+    class="text-xs"
+    v-model:show="isDialogShow"
+    title="取消关注后，'关注时长'将重新计算"
+    show-cancel-button
+    width="18.75rem"
+    confirmButtonColor="#f00"
+    confirmButtonText="继续关注"
+    cancelButtonText="仍要取消"
+    @cancel="onDialogCancel"
+    @confirm="onDialogConfirm"
+  />
 </template>
 
 <script setup lang="ts">
-import { Notify } from "vant";
+import { Notify, Dialog } from "vant";
 import {
   getArtistDetail,
   getArtistFollowCount,
@@ -159,16 +171,18 @@ import {
 } from "~/api/artist";
 import { isFollow, getArtistSublist } from "~/api/user";
 import { useStore } from "~/store/index";
+const VanDialog = Dialog.Component;
 const store = useStore();
 const route = useRoute();
 const router = useRouter();
 let artistId = parseInt(route.query.artistId as any); //接收的是字符串的id
 let artistDetail: any = ref({});
+let isDialogShow = ref(false);
 let state = reactive({
   artistIdSubList: [] as any[],
 }); //关注的歌手列表
 let isSub = ref(false); //是否关注该歌手
-let follow: any = ref({}); //获取用户对歌手的关注信息
+let follow: any = ref({followDay:'已关注1天'}); //获取用户对歌手的关注信息
 const tabs: any = ref(["主页", "歌曲", "专辑", "动态", "视频"]);
 const active = ref(0);
 let artistTopSong: any = ref([]);
@@ -233,9 +247,11 @@ const Follow = async () => {
 
     if (res.code == 200) {
       // console.log(res);
-      isSub.value = true;
+      nextTick(() => {
+        isSub.value = true;
+        follow.value.followDay = '已关注1天'
+      });
       let followCountRes = await getArtistFollowCount(artistId); //获取歌手的关注数
-      follow.value = followCountRes.data;
       Notify({ type: "success", message: "关注成功" });
       console.log(isSub.value, "isSub");
       // router.go(0);
@@ -243,16 +259,27 @@ const Follow = async () => {
       Notify({ type: "danger", message: res.message });
     }
   } else if (isSub.value == true) {
-    let res = await isFollow(artistId, 0);
-    if (res.code == 200) {
-      isSub.value = false;
-      Notify({ type: "success", message: "取消关注成功" });
-      console.log(isSub.value, "isSub");
-      // router.go(0);
-    } else {
-      Notify({ type: "danger", message: res.message });
-    }
+    isDialogShow.value = true;
   }
+};
+//继续关注
+const onDialogConfirm = () => {
+  isDialogShow.value = false;
+};
+//仍要取消
+const onDialogCancel = async () => {
+  let res = await isFollow(artistId, 0);
+  if (res.code == 200) {
+    nextTick(() => {
+      isSub.value = false;
+    });
+    Notify({ type: "success", message: "取消关注成功" });
+    console.log(isSub.value, "isSub");
+    // router.go(0);
+  } else {
+    Notify({ type: "danger", message: res.message });
+  }
+  isDialogShow.value = false;
 };
 //跳转MV详情页面
 const toMv = (item: any) => {
