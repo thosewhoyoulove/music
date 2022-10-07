@@ -54,9 +54,10 @@ export function getUserAcount() {
 // 调用例子 : /user/playlist?uid=32953014
 
 export function getUserPlaylist(uid) {
+    const cookie = localStorage.getItem('cookie')
     return request({
         method: 'post',
-        url: `/user/playlist?uid=${uid}`,
+        url: `/user/playlist?uid=${uid}&cookie=${encodeURIComponent(cookie)}`,
     })
 }
 

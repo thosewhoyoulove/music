@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-12 17:02:36
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-07 19:48:11
+ * @LastEditTime: 2022-10-07 20:52:05
 -->
 <script setup lang="ts">
 import { Dialog, Loading, Notify } from "vant";
@@ -81,7 +81,6 @@ const formatMsToDate = (ms: any) => {
     const oMonth = oDate.getMonth() + 1;
     const oDay = oDate.getDay();
     const oTime = `${oYear}年${addZero(oMonth)}月${addZero(oDay)}日`;
-    console.log(oTime);
     return oTime;
   } else {
     return "";

@@ -3,14 +3,15 @@
  * @Author: 曹俊
  * @Date: 2022-08-17 15:53:02
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-26 20:44:30
+ * @LastEditTime: 2022-10-07 20:54:50
  */
 import request from '~/utils/request'
 //获取歌单详情 (包括推荐歌单和热门歌单)
 export function getSongListDetail(data) {
+    const cookie = localStorage.getItem('cookie')
     return request({
-        method: 'get',
-        url: `/playlist/detail?id=${data}`,
+        method: 'post',
+        url: `/playlist/detail?id=${data}&cookie=${encodeURIComponent(cookie)}`,
     })
 }
 //获取歌单所有歌曲
@@ -20,9 +21,10 @@ export function getSongListDetail(data) {
 
 // 可选参数 : offset : 默认值为0
 export function getAllSong(data, limit, offset = 0) {
+    const cookie = localStorage.getItem('cookie')
     return request({
         method: 'post',
-        url: `/playlist/track/all?id=${data}&limit=${limit}&offset${offset}`
+        url: `/playlist/track/all?id=${data}&limit=${limit}&offset${offset}&cookie=${encodeURIComponent(cookie)}`
     })
 }
 
