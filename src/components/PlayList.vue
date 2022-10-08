@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-10-08 14:46:58
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-08 20:26:54
+ * @LastEditTime: 2022-10-08 20:36:47
 -->
 <template>
   <van-action-sheet
@@ -26,14 +26,14 @@
           <div class="flex w-auto h-5 items-center">
             <div class="text-style text-sm">{{ item.name }}</div>
             <div class="mx-1">-</div>
-            <div v-for="arItem in playList[listIndex].ar" :key="index">
+            <div v-for="arItem in playList[listIndex].ar" :key="listIndex">
               <div class="flex items-center w-auto">
                 <div class="text-hex-bbb text-xs text-style">{{ arItem.name }}</div>
               </div>
             </div>
           </div>
 
-          <div><van-icon size="mini" color="#ccc" name="cross" /></div>
+          <div @click="deleteItem(item,listIndex)"><van-icon size="mini" color="#ccc" name="cross" /></div>
         </div>
       </van-list>
     </div>
@@ -44,11 +44,16 @@
 import { storeToRefs } from "pinia";
 import { useStore } from "~/store/index";
 const store = useStore();
-const { isPlayListShow, playList, playListIndex } = storeToRefs(store);
+const { isPlayListShow, playList } = storeToRefs(store);
 const listLoading = ref(false);
 onMounted(() => {
   console.log(playList.value);
 });
+//删除某一项
+const deleteItem = (item:any,listIndex:number) =>{
+  console.log(item,listIndex);
+  playList.value.splice(listIndex,1)
+}
 </script>
 
 <style>
