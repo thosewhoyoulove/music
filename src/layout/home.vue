@@ -6,16 +6,13 @@
  * @LastEditTime: 2022-09-25 10:29:19
 -->
 <template>
-  <van-nav-bar
-       title="云音乐"
-  />
+  <van-nav-bar title="云音乐" />
   <div class="text-center text-gray-700 dark:text-gray-200" bg="[#f6f7f9]">
     <router-view />
   </div>
 </template>
 <style>
-.van-nav-bar__content{
-  height:2rem;
+.van-nav-bar__content {
+  height: 2rem;
 }
-
 </style>

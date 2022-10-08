@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-08 20:18:15
+ * @LastEditTime: 2022-10-08 21:02:04
 -->
 <script setup lang="ts">
 import { getAllSong, getSongListDetail } from "~/api/SongListDetail";
@@ -92,7 +92,7 @@ const toMv = (item: any) => {
 </script>
 
 <template>
-  <div class="bg-white w-100% h-42vh relative px-2">
+  <div class="bg-white w-100% h-42vh relative">
     <img
       class="w-100% h-100% rounded-xl absolute blur-xl"
       :src="state.playlist.coverImgUrl"
