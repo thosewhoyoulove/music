@@ -3,12 +3,12 @@
  * @Author: 曹俊
  * @Date: 2022-10-05 14:58:36
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-07 19:33:53
+ * @LastEditTime: 2022-10-08 20:40:11
 -->
 <template>
   <div class="relative">
     <div>
-      <video class="h-200px max-w-100%" :src="videoSrc" controls></video>
+      <video class :src="videoSrc" controls></video>
     </div>
     <div class="flex justify-between p-1 items-center">
       <div @click="toArtistDetail(artistId)" class="flex items-center">
