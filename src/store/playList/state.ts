@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-24 20:05:34
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-28 15:28:39
+ * @LastEditTime: 2022-10-08 14:59:03
  */
 export type Artist = {
     id: number,
@@ -39,7 +39,8 @@ export type State = {
     lyricList: LyricList,//歌词
     audioTime: number,
     shouldUpdate: boolean,//是否更新歌词评论数
-    shouldNext:boolean//检测歌曲是否能播放
+    shouldNext:boolean,//检测歌曲是否能播放
+    isPlayListShow:boolean//播放列表是否展示，false为隐藏
 }
 
 export const generateState: () => State = () => ({
@@ -67,5 +68,6 @@ export const generateState: () => State = () => ({
             version: 0
         },//歌词
         shouldUpdate: false,//是否更新歌词评论数
-        shouldNext:false
+        shouldNext:false,
+        isPlayListShow:false
     })

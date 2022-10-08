@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-28 15:33:09
+ * @LastEditTime: 2022-10-08 14:59:53
 -->
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
@@ -21,7 +21,7 @@ const audio = ref<
 
 const store = useStore();
 let interVal = ref<any>(); // 设置定时器
-const { playList, playListIndex, isShow, isDetailShow,shouldNext } = storeToRefs(store);
+const { playList, playListIndex, isShow, isDetailShow,shouldNext,isPlayListShow } = storeToRefs(store);
 // let Audio = document.getElementById('Audio')
 onMounted(async () => {
   store.getLyric(playList.value[playListIndex.value]?.id);
@@ -103,7 +103,7 @@ onUpdated(() => {
 
 <template>
   <div
-    class="w-100% h-5rem bottom-0 fixed items-center justify-between bg-white flex px-1 z-30"
+    class="w-100% h-5rem bottom-0 fixed items-center justify-between bg-white flex px-1"
   >
     <div class="flex items-center" @click="toMusicDetail">
       <div
@@ -128,13 +128,13 @@ onUpdated(() => {
       </Vue3Marquee>
     </div>
     <div class="flex pr-1.5rem">
-      <div v-if="isShow" class="text-lg px-2" @click="play">
+      <div v-if="isShow" class="text-lg mx-2" @click="play">
         <van-icon size="1.8rem" name="play-circle-o" />
       </div>
-      <div v-if="!isShow" class="text-lg px-2" @click="play">
+      <div v-if="!isShow" class="text-lg mx-2" @click="play">
         <van-icon size="1.8rem" name="pause-circle-o" />
       </div>
-      <div class="text-xl"><van-icon size="1.8rem" name="bars" /></div>
+      <div @click="isPlayListShow = true" class="text-xl"><van-icon size="1.8rem" name="bars" /></div>
     </div>
     <audio
       ref="audio"

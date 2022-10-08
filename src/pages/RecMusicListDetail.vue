@@ -3,12 +3,14 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-07 16:02:02
+ * @LastEditTime: 2022-10-08 15:48:38
 -->
 <script setup lang="ts">
 import { getAllSong, getSongListDetail } from "~/api/SongListDetail";
+import { storeToRefs } from "pinia";
 import { useStore } from "~/store/index";
 const store = useStore();
+const { playList } = storeToRefs(store);
 const router = useRouter();
 const route = useRoute();
 const state = reactive({
@@ -31,6 +33,8 @@ onMounted(async () => {
   console.log(totalRes, "totalRes");
   totalSong.value = totalRes.songs.length;
   const songlistRes = await getAllSong(id, SongNum.value, offset.value);
+ 
+  
   state.songlist = songlistRes.songs;
   if (state.songlist.length == limit || state.songlist.length == totalSong.value) {
     finished.value = true;
@@ -47,6 +51,8 @@ const onLoad = async () => {
   const songlistRes = await getAllSong(id, SongNum.value, offset.value);
   console.log(songlistRes, "歌曲信息");
   state.songlist = songlistRes.songs;
+  playList.value = songlistRes.songs
+  console.log(playList.value,'播放列表');
   listLoading.value = false;
   if (state.songlist.length == limit || state.songlist.length == totalSong.value) {
     finished.value = true;

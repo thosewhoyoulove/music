@@ -3,13 +3,13 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-24 16:57:41
+ * @LastEditTime: 2022-10-08 16:40:05
 -->
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useStore } from "~/store/index";
 const store = useStore();
-const { isFooterShow } = storeToRefs(store);
+const { isFooterShow, isPlayListShow } = storeToRefs(store);
 const router = useRouter();
 const route = useRoute();
 const isShow = ref(false); // 控制回到顶部的箭头的展示
@@ -35,7 +35,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <main  text="center gray-700 dark:gray-200 font-mono">
+  <main text="center gray-700 dark:gray-200 font-mono">
     <router-view />
   </main>
   <!-- 全局增加一个回到顶端的按钮 -->
@@ -60,6 +60,7 @@ onUnmounted(() => {
       </svg>
     </van-sticky>
   </div>
+  <PlayList v-show="isPlayListShow">111</PlayList>
   <Footer v-if="isFooterShow" />
 </template>
 
