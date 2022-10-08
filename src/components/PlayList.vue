@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-10-08 14:46:58
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-08 17:17:34
+ * @LastEditTime: 2022-10-08 18:19:05
 -->
 <template>
   <van-action-sheet
@@ -11,23 +11,29 @@
     title=""
     @click="isPlayListShow = false"
   >
-    <div class="relative h-100vh w-100vw mt-5 px-3">
+    <div class="relative h-100vh w-100vw mt-5 px-4">
       <van-list
         v-model:loading="listLoading"
         :finished="finished"
         finished-text="没有更多了"
         @load="onLoad"
-        class="absolute bg-white col items-center"
+        class="absolute w-100vw bg-white col items-center"
         @click.stop
       >
-        <div class="mt-2 text-lg">当前播放</div>
+        <div class="flex items-center mt-2">
+          <div class="text-lg">当前播放</div>
+          <div class="text-xs text-hex-bbb">
+            ({{ playList.length }})
+          </div>
+        </div>
+
         <div
           class="flex text-left items-center justify-between my-2"
           v-for="(item, listIndex) in playList"
           :key="listIndex"
         >
           <div class="flex w-auto h-5 items-center">
-            <div class=" text-style">{{ item.name }}</div>
+            <div class="text-style">{{ item.name }}</div>
             <div class="mx-1">-</div>
             <div v-for="arItem in playList[listIndex].ar" :key="index">
               <div class="flex items-center w-auto">
