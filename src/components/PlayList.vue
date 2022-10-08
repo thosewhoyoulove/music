@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-10-08 14:46:58
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-08 20:36:47
+ * @LastEditTime: 2022-10-08 21:09:24
 -->
 <template>
   <van-action-sheet
@@ -11,17 +11,18 @@
     title=""
     @click="isPlayListShow = false"
   >
-    <div class="relative h-100vh w-100vw mt-5 px-4">
-      <van-list class="absolute w-100vw bg-white col items-center" @click.stop>
+    <div class="relative h-100vh mt-5">
+      <van-list class="absolute w-100vw bg-white col items-center px-8" @click.stop>
         <div class="flex items-center mt-2">
           <div class="text-lg scale-75 -ml-2">当前播放</div>
           <div class="text-xs text-hex-bbb">({{ playList.length }})</div>
         </div>
 
         <div
-          class="flex text-left items-center justify-between my-2"
+          class="flex text-left items-center justify-between my-6"
           v-for="(item, listIndex) in playList"
           :key="listIndex"
+          @click="updateSongList(listIndex)"
         >
           <div class="flex w-auto h-5 items-center">
             <div class="text-style text-sm">{{ item.name }}</div>
@@ -44,8 +45,7 @@
 import { storeToRefs } from "pinia";
 import { useStore } from "~/store/index";
 const store = useStore();
-const { isPlayListShow, playList } = storeToRefs(store);
-const listLoading = ref(false);
+const { isPlayListShow, playList,isDetailShow } = storeToRefs(store);
 onMounted(() => {
   console.log(playList.value);
 });
@@ -54,6 +54,14 @@ const deleteItem = (item:any,listIndex:number) =>{
   console.log(item,listIndex);
   playList.value.splice(listIndex,1)
 }
+// 修改歌曲信息并进行播放
+const updateSongList = (index: any) => {
+  store.updatePlayList(store.$state, playList.value); // 将歌单列表传进默认列表
+  store.updatePlayListIndex(index); // 将索引值传给默认索引
+  store.updateIsShow(store.$state, true); // 修改为暂停图标
+  isPlayListShow.value = false
+  isDetailShow.value = true
+};
 </script>
 
 <style>
