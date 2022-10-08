@@ -3,16 +3,18 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 19:07:49
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-07 15:52:53
+ * @LastEditTime: 2022-10-08 20:23:50
 -->
 <script setup lang="ts">
 import {
   getDailyRecommendSongList,
   getDailyRecommendSongs,
 } from "~/api/RecommendSongList";
+import { storeToRefs } from "pinia";
 import { useStore } from "~/store/index";
 const store = useStore();
 const router = useRouter();
+const { playList } = storeToRefs(store);
 const finished = ref(false); //是否结束
 // 获取时间
 const day = new Date();
@@ -21,13 +23,14 @@ const month = new Date();
 const Month = ref(month.getMonth() + 1);
 const choice = ref(["推荐歌曲", "推荐歌单"]);
 const active = ref(0);
-const state = reactive({
+const state: any = reactive({
   songs: [],
   songList: [],
 });
 onMounted(async () => {
   const recSongRes = await getDailyRecommendSongs();
   state.songs = recSongRes.data.dailySongs;
+  playList.value = recSongRes.data.dailySongs;
   console.log(recSongRes, "推荐歌曲");
   const recSongListRes = await getDailyRecommendSongList();
   console.log(recSongListRes, "推荐歌单");
@@ -104,7 +107,7 @@ const toMv = (item: any) => {
                     {{ index + 1 }}
                   </div>
 
-                  <div class="col text-left m-2 w-50">
+                  <div class="col text-left m-2 w-auto">
                     <div class="flex text-left text-style mb-1">
                       {{ item.name }}
                     </div>
@@ -115,13 +118,13 @@ const toMv = (item: any) => {
                         v-for="(ar, index) in state.songs[index].ar"
                         :key="index"
                       >
-                        <div class="text-gray-500">
+                        <div class="text-gray-500 mr-1">
                           {{ item.ar[index].name }}
                         </div>
                       </div>
 
                       <div v-if="item.al.name" class="px-1 text-gray-500">-</div>
-                      <div class="w-30 text-style text-gray-500">
+                      <div class="w-auto text-style text-gray-500">
                         {{ item.al.name }}
                       </div>
                     </div>

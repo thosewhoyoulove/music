@@ -3,17 +3,19 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 17:07:32
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-07 16:01:56
+ * @LastEditTime: 2022-10-08 20:10:48
 -->
 <script setup lang="ts">
 import { getAllSong, getSongListDetail } from "~/api/SongListDetail";
+import { storeToRefs } from "pinia";
 import { useStore } from "~/store/index";
 const store = useStore();
+const { playList } = storeToRefs(store);
 const route = useRoute();
 const router = useRouter();
-const state = reactive({
+const state: any = reactive({
   playlist: {}, // 歌单信息
-  songlist: [], // 歌曲信息
+  songlist: [] as any[], // 歌曲信息
 });
 const offset = ref(0); //偏移量
 const totalSong = ref(0); //总的歌曲数
@@ -24,6 +26,7 @@ const id = parseInt(route.query.id);
 onMounted(async () => {
   const res = await getSongListDetail(id);
   state.playlist = res.playlist; // 歌单信息
+
   console.log(state.playlist, "歌单信息");
   const totalRes = await getAllSong(id, 10000); //获取歌单歌曲总数
   totalSong.value = totalRes.songs.length;
@@ -38,13 +41,14 @@ const onLoad = async () => {
   const songlistRes = await getAllSong(id, SongNum.value, offset.value);
   console.log(songlistRes, "歌曲信息");
   state.songlist = songlistRes.songs;
+  playList.value = songlistRes.songs;
   listLoading.value = false;
   if (state.songlist.length == totalSong.value) {
     finished.value = true;
   }
 };
 // 修改歌曲信息并进行播放
-const updateSongList = (index) => {
+const updateSongList = (index: any) => {
   store.updatePlayList(store.$state, state.songlist); // 将歌单列表传进默认列表
   store.updatePlayListIndex(index); // 将索引值传给默认索引
   store.updateIsShow(store.$state, true); // 修改为暂停图标
@@ -58,7 +62,7 @@ const toCommentDetail = () => {
     },
   });
 };
-const filterTotal = (num) => {
+const filterTotal = (num: any) => {
   if (num > 1000000) return "100w+";
   else if (num > 100000) return "10w+";
   else if (num > 10000) return "1w+";
@@ -109,7 +113,7 @@ const toMv = (item: any) => {
     <div
       class="relative flex mt-6 text-hex-aaa bg-white justify-around mx-auto w-80vw h-5vh rounded-full"
     >
-      <div class="flex items-center justify-between z-10">
+      <div class="flex items-center justify-between">
         <div class="flex items-center">
           <van-icon size="1rem" name="add" color="#FE3641" />
           <div class="px-1 text-10px">
@@ -159,7 +163,7 @@ const toMv = (item: any) => {
             {{ index + 1 }}
           </div>
 
-          <div class="col text-left m-2 w-50">
+          <div class="col text-left m-2 w-auto">
             <div class="flex text-md text-left text-style mb-1">
               {{ item.name }}
             </div>
@@ -170,13 +174,13 @@ const toMv = (item: any) => {
                 v-for="(ar, index) in state.songlist[index].ar"
                 :key="index"
               >
-                <div class="text-xs text-gray-500">
+                <div class="text-xs text-gray-500 mr-1">
                   {{ item.ar[index].name }}
                 </div>
               </div>
 
               <div v-if="item.al.name" class="text-xs px-1 text-gray-500">-</div>
-              <div class="text-xs w-30 text-style text-gray-500">
+              <div class="text-xs w-auto text-style text-gray-500">
                 {{ item.al.name }}
               </div>
             </div>

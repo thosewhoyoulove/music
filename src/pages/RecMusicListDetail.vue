@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-08 15:48:38
+ * @LastEditTime: 2022-10-08 20:18:15
 -->
 <script setup lang="ts">
 import { getAllSong, getSongListDetail } from "~/api/SongListDetail";
@@ -13,7 +13,7 @@ const store = useStore();
 const { playList } = storeToRefs(store);
 const router = useRouter();
 const route = useRoute();
-const state = reactive({
+const state: any = reactive({
   playlist: {}, // 歌单信息
   songlist: [], // 歌曲信息
 });
@@ -33,8 +33,6 @@ onMounted(async () => {
   console.log(totalRes, "totalRes");
   totalSong.value = totalRes.songs.length;
   const songlistRes = await getAllSong(id, SongNum.value, offset.value);
- 
-  
   state.songlist = songlistRes.songs;
   if (state.songlist.length == limit || state.songlist.length == totalSong.value) {
     finished.value = true;
@@ -51,8 +49,8 @@ const onLoad = async () => {
   const songlistRes = await getAllSong(id, SongNum.value, offset.value);
   console.log(songlistRes, "歌曲信息");
   state.songlist = songlistRes.songs;
-  playList.value = songlistRes.songs
-  console.log(playList.value,'播放列表');
+  playList.value = songlistRes.songs;
+  console.log(playList.value, "播放列表");
   listLoading.value = false;
   if (state.songlist.length == limit || state.songlist.length == totalSong.value) {
     finished.value = true;
@@ -191,26 +189,37 @@ const toMv = (item: any) => {
         <div><van-icon size="1.5rem" name="play-circle-o" /></div>
         <div class="flex ml-2">全部播放</div>
       </div>
-      <ul
+      <div
         v-for="(item, index) in state.songlist"
         :key="index"
-        class="flex justify-between h-3rem my-.5 text-sm"
+        class="flex justify-between text-xs"
+        @click="updateSongList(index)"
       >
         <div class="flex justify-between items-center">
-          <div class="flex w-10 justify-center text-.1rem items-center">
+          <div class="flex w-10 justify-center items-center">
             {{ index + 1 }}
           </div>
-          <div class="flex-col ml-2 text-style" @click="updateSongList(index)">
-            <div class="flex text-left text-md font-extrabold text-style break-all w-45">
+
+          <div class="col text-left m-2 w-auto">
+            <div class="flex text-left text-style mb-1">
               {{ item.name }}
             </div>
 
-            <div class="flex text-left">
-              <div class="text-xs text-style text-gray-500">
-                {{ item.ar[0].name }}
+            <div class="flex text-left w-auto">
+              <div
+                class="flex text-style"
+                v-for="(ar, index) in state.songlist[index].ar"
+                :key="index"
+              >
+                <div class="text-gray-500 mr-1">
+                  {{ item.ar[index].name }}
+                </div>
               </div>
-              <div class="text-xs text-gray-500 px-1">-</div>
-              <div class="text-xs text-style text-gray-500 w-40">{{ item.al.name }}</div>
+
+              <div v-if="item.al.name" class="px-1 text-gray-500">-</div>
+              <div class="w-auto text-style text-gray-500">
+                {{ item.al.name }}
+              </div>
             </div>
           </div>
         </div>
@@ -218,7 +227,7 @@ const toMv = (item: any) => {
         <div @click="toMv(item)" class="flex mr-5" v-if="item.mv">
           <van-icon size="1rem" name="tv-o" />
         </div>
-      </ul>
+      </div>
     </van-list>
   </div>
 </template>
