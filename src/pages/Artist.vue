@@ -82,34 +82,42 @@
         <div
           v-for="(item, index) in artistTopSong"
           :key="index"
-          class="flex justify-between pb-1 mt-2"
+          class="flex justify-between text-xs"
           @click="updateSongList(index)"
         >
           <div class="flex justify-between items-center">
-            <div class="flex mx-3 w-5 justify-center text-xs items-center">
+            <div class="flex mx-2 w-5 justify-center items-center">
               {{ index + 1 }}
             </div>
-            <div class="flex-col ml-2 text-style">
-              <div class="flex text-left text-sm text-style break-all w-auto">
+
+            <div class="col text-left m-2 w-auto">
+              <div class="flex text-left text-style mb-1">
                 {{ item.name }}
               </div>
 
-              <div class="flex text-left">
-                <div class="text-xs text-style text-gray-500">
-                  {{ item.ar[0].name }}
+              <div class="flex text-left w-auto">
+                <div
+                  class="flex text-style"
+                  v-for="(ar, index) in artistTopSong[index].ar"
+                  :key="index"
+                >
+                  <div class="text-gray-500 mr-1">
+                    {{ item.ar[index].name }}
+                  </div>
                 </div>
-                <div class="text-xs text-gray-500 px-1">-</div>
-                <div class="text-xs text-style text-gray-500 w-40">
+
+                <div v-if="item.al.name" class="px-1 text-gray-500">-</div>
+                <div class="w-auto text-style text-gray-500">
                   {{ item.al.name }}
                 </div>
               </div>
             </div>
           </div>
           <div class="flex justify-between items-center">
-          <div @click="toMv(item)" class="mr-5" v-if="item.mv !== 0">
-            <van-icon name="tv-o" />
+            <div @click="toMv(item)" class="mr-5" v-if="item.mv !== 0">
+              <van-icon name="tv-o" />
+            </div>
           </div>
-        </div>
         </div>
 
         <div class="text-sm flex justify-center items-center h-10 text-hex-bbb">
