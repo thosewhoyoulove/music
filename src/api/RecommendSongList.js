@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-17 15:53:02
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-11 10:41:38
+ * @LastEditTime: 2022-10-09 15:15:53
  */
 import request from '~/utils/request'
 //获取发现歌曲，不需要登录
@@ -22,7 +22,7 @@ export default function getFindSongList() {
 export function getDailyRecommendSongList() {
     const cookie = localStorage.getItem('cookie')
     return request({
-        method: 'get',
+        method: 'post',
         url: `/recommend/resource?cookie=${encodeURIComponent(cookie)}`,
     })
 }
@@ -30,7 +30,7 @@ export function getDailyRecommendSongList() {
 export function getDailyRecommendSongs() {
     const cookie = localStorage.getItem('cookie')
     return request({
-        method: 'get',
+        method: 'post',
         url: `/recommend/songs?cookie=${encodeURIComponent(cookie)}`,
     })
 }

@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 19:07:49
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-08 20:23:50
+ * @LastEditTime: 2022-10-09 15:25:15
 -->
 <script setup lang="ts">
 import {
@@ -69,13 +69,13 @@ const toMv = (item: any) => {
 </script>
 
 <template>
-  <div class="w-100% h-30vh relative bg-hex-DB2C1F">
+  <div class="w-auto h-30vh relative bg-hex-DB2C1F">
     <img
       class="w-10 h-10 rounded-xl absolute left-50% top-40% -translate-x-1/2"
       src="/logo.png"
       alt="背景图"
     />
-    <div class="flex w-50 items-center text-white pt-34">
+    <div class="flex w-auto items-center text-white pt-34">
       <div class="font-500 ml-3">
         {{ Month }}
       </div>
@@ -83,14 +83,14 @@ const toMv = (item: any) => {
       <div>{{ Day }}</div>
     </div>
   </div>
-  <div class="w-100% pb-5">
+  <div class="w-100vw pb-5">
     <van-tabs v-model:active="active">
       <van-tab v-for="(item, index) in choice" :key="index" :title="item">
         <div v-show="active == 0">
           <div v-if="!state.songList.length">
             <van-loading size="24px">加载中...</van-loading>
           </div>
-          <div v-if="state.songList.length" class="w-100% mb-15">
+          <div v-if="state.songList.length" class="w-100vw mb-15">
             <van-list :finished="finished" finished-text="没有更多了">
               <div class="flex h-3rem text-md ml-2 items-center">
                 <div><van-icon size="1.5rem" name="play-circle-o" /></div>
@@ -148,7 +148,7 @@ const toMv = (item: any) => {
           >
             <div class="relative">
               <img class="w-21 h-21 rounded-xl p-1" :src="item.picUrl" alt="正在加载" />
-              <div class="text-style w-20 text-left text-13px px-1">
+              <div class="text-style w-20 text-left text-xs px-1">
                 {{ item.name }}
               </div>
               <div class="flex play-icon text-10px px-2 py-0.5 rounded-xl absolute">

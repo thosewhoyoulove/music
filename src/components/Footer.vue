@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-08 14:59:53
+ * @LastEditTime: 2022-10-09 15:29:25
 -->
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
@@ -103,7 +103,7 @@ onUpdated(() => {
 
 <template>
   <div
-    class="w-100% h-5rem bottom-0 fixed items-center justify-between bg-white flex px-1"
+    class="w-100vw h-5rem bottom-0 fixed items-center justify-between bg-white flex px-1"
   >
     <div class="flex items-center" @click="toMusicDetail">
       <div

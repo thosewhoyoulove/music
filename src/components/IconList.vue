@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 19:16:37
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-19 20:51:59
+ * @LastEditTime: 2022-10-09 15:24:40
 -->
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
@@ -48,7 +48,7 @@ const toTopList = () => {
 </script>
 
 <template>
-  <div class="flex mt-2 justify-between items-center text-13px">
+  <div class="flex mt-2 justify-between items-center text-xs">
     <div class="flex-1" @click="toDailyRecommend">
       <svg
         t="1660821482291"
