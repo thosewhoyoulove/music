@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-09 17:15:35
+ * @LastEditTime: 2022-10-09 21:51:13
 -->
 <script setup lang="ts">
 import { getAllSong, getSongListDetail } from "~/api/SongListDetail";
@@ -58,7 +58,7 @@ const onLoad = async () => {
 };
 // 修改歌曲信息并进行播放
 
-const updateSongList = (index) => {
+const updateSongList = (index: any) => {
   store.updatePlayList(store.$state, state.songlist); // 将歌单列表传进默认列表
   store.updatePlayListIndex(index); // 将索引值传给默认索引
   store.updateIsShow(store.$state, true); // 修改为暂停图标
@@ -113,7 +113,7 @@ const toMv = (item: any) => {
       />
       <div
         v-if="!state.playlist.playCount"
-        class="play-icon text-.5rem px-1 py-0.5 rounded-xl absolute flex"
+        class="play-icon text-xs px-1 py-0.5 rounded-xl absolute flex"
       >
         <div><van-icon name="play-circle-o" /></div>
         <div class="mx-1">{{ filter(state.playlist.playCount) }}</div>
@@ -129,13 +129,13 @@ const toMv = (item: any) => {
             :src="state?.playlist?.creator?.avatarUrl"
             alt="正在加载"
           />
-          <div class="text-hex-ccc text-.5rem ml-2">
+          <div class="text-hex-ccc text-xs ml-2">
             {{ state?.playlist?.creator?.nickname }}
           </div>
         </div>
         <div
           v-if="state.playlist.description"
-          class="flex text-hex-ccc text-.5rem mt-3 text-left w-100% h-4 leading-1rem pr-2"
+          class="flex text-hex-ccc text-xs mt-3 text-left w-100% h-4 leading-1rem pr-2"
         >
           <div class="text-style">
             {{ state.playlist.description }}
