@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 17:07:32
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-08 20:10:48
+ * @LastEditTime: 2022-10-09 16:54:45
 -->
 <script setup lang="ts">
 import { getAllSong, getSongListDetail } from "~/api/SongListDetail";
@@ -82,7 +82,7 @@ const toMv = (item: any) => {
 </script>
 
 <template>
-  <div class="bg-white w-100% h-42vh relative">
+  <div class="bg-white w-100vw h-42vh relative">
     <img
       class="w-100% h-100% rounded-xl absolute blur-xl"
       :src="state.playlist.coverImgUrl"
@@ -159,12 +159,12 @@ const toMv = (item: any) => {
         @click="updateSongList(index)"
       >
         <div class="flex justify-between items-center">
-          <div class="flex w-10 justify-center items-center">
+          <div class="flex mx-3 w-5 justify-center items-center">
             {{ index + 1 }}
           </div>
 
-          <div class="col text-left m-2 w-auto">
-            <div class="flex text-md text-left text-style mb-1">
+          <div class="col text-left m-2">
+            <div class="flex text-left text-style mb-1">
               {{ item.name }}
             </div>
 
@@ -174,7 +174,7 @@ const toMv = (item: any) => {
                 v-for="(ar, index) in state.songlist[index].ar"
                 :key="index"
               >
-                <div class="text-xs text-gray-500 mr-1">
+                <div class="text-xs text-gray-500 mr-1 w-auto">
                   {{ item.ar[index].name }}
                 </div>
               </div>
@@ -184,11 +184,13 @@ const toMv = (item: any) => {
                 {{ item.al.name }}
               </div>
             </div>
+
+            
           </div>
         </div>
-        <div class="flex">
-          <div @click="toMv(item)" v-if="item.mv" class="mr-5">
-            <van-icon size="1rem" name="tv-o" />
+        <div class="flex justify-between items-center">
+          <div @click="toMv(item)" class="mr-5" v-if="item.mv !== 0">
+            <van-icon name="tv-o" />
           </div>
         </div>
       </div>

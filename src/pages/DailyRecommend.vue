@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 19:07:49
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-09 15:25:15
+ * @LastEditTime: 2022-10-09 16:52:03
 -->
 <script setup lang="ts">
 import {
@@ -103,7 +103,7 @@ const toMv = (item: any) => {
                 @click="updateSongList(index)"
               >
                 <div class="flex justify-between items-center">
-                  <div class="flex w-10 justify-center items-center">
+                  <div class="flex mx-3 w-5 justify-center items-center">
                     {{ index + 1 }}
                   </div>
 

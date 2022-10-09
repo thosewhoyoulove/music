@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-08 21:02:04
+ * @LastEditTime: 2022-10-09 16:51:32
 -->
 <script setup lang="ts">
 import { getAllSong, getSongListDetail } from "~/api/SongListDetail";
@@ -196,7 +196,7 @@ const toMv = (item: any) => {
         @click="updateSongList(index)"
       >
         <div class="flex justify-between items-center">
-          <div class="flex w-10 justify-center items-center">
+          <div class="flex mx-3 w-5 justify-center items-center">
             {{ index + 1 }}
           </div>
 
@@ -224,8 +224,10 @@ const toMv = (item: any) => {
           </div>
         </div>
 
-        <div @click="toMv(item)" class="flex mr-5" v-if="item.mv">
-          <van-icon size="1rem" name="tv-o" />
+        <div class="flex justify-between items-center">
+          <div @click="toMv(item)" class="mr-5" v-if="item.mv !== 0">
+            <van-icon name="tv-o" />
+          </div>
         </div>
       </div>
     </van-list>
