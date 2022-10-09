@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-09 16:51:32
+ * @LastEditTime: 2022-10-09 17:15:35
 -->
 <script setup lang="ts">
 import { getAllSong, getSongListDetail } from "~/api/SongListDetail";
@@ -223,7 +223,6 @@ const toMv = (item: any) => {
             </div>
           </div>
         </div>
-
         <div class="flex justify-between items-center">
           <div @click="toMv(item)" class="mr-5" v-if="item.mv !== 0">
             <van-icon name="tv-o" />

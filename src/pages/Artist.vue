@@ -83,13 +83,14 @@
           v-for="(item, index) in artistTopSong"
           :key="index"
           class="flex justify-between pb-1 mt-2"
+          @click="updateSongList(index)"
         >
           <div class="flex justify-between items-center">
-            <div class="flex w-10 justify-center text-xs items-center">
+            <div class="flex mx-3 w-5 justify-center text-xs items-center">
               {{ index + 1 }}
             </div>
-            <div class="flex-col ml-2 text-style" @click="updateSongList(index)">
-              <div class="flex text-left text-sm text-style break-all w-50">
+            <div class="flex-col ml-2 text-style">
+              <div class="flex text-left text-sm text-style break-all w-auto">
                 {{ item.name }}
               </div>
 
@@ -104,11 +105,11 @@
               </div>
             </div>
           </div>
-          <div class="flex">
-            <div @click="toMv(item)" v-if="item.mv" class="mr-5">
-              <van-icon size="1rem" name="tv-o" />
-            </div>
+          <div class="flex justify-between items-center">
+          <div @click="toMv(item)" class="mr-5" v-if="item.mv !== 0">
+            <van-icon name="tv-o" />
           </div>
+        </div>
         </div>
 
         <div class="text-sm flex justify-center items-center h-10 text-hex-bbb">
@@ -182,7 +183,7 @@ let state = reactive({
   artistIdSubList: [] as any[],
 }); //关注的歌手列表
 let isSub = ref(false); //是否关注该歌手
-let follow: any = ref({followDay:'已关注1天'}); //获取用户对歌手的关注信息
+let follow: any = ref({ followDay: "已关注1天" }); //获取用户对歌手的关注信息
 const tabs: any = ref(["主页", "歌曲", "专辑", "动态", "视频"]);
 const active = ref(0);
 let artistTopSong: any = ref([]);
@@ -249,7 +250,7 @@ const Follow = async () => {
       // console.log(res);
       nextTick(() => {
         isSub.value = true;
-        follow.value.followDay = '已关注1天'
+        follow.value.followDay = "已关注1天";
       });
       let followCountRes = await getArtistFollowCount(artistId); //获取歌手的关注数
       Notify({ type: "success", message: "关注成功" });
@@ -294,7 +295,7 @@ const toMv = (item: any) => {
 };
 // 修改歌曲信息并进行播放
 const updateSongList = (index: any) => {
-  store.updatePlayList(store.$state, state.songs); // 将歌单列表传进默认列表
+  store.updatePlayList(store.$state, artistTopSong.value); // 将歌单列表传进默认列表
   store.updatePlayListIndex(index); // 将索引值传给默认索引
   store.updateIsShow(store.$state, true); // 修改为暂停图标
 };
