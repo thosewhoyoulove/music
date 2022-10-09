@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-29 16:04:43
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-07 15:50:03
+ * @LastEditTime: 2022-10-09 21:15:49
 -->
 <template>
   <van-tabs v-model:active="active" @change="change" sticky>
@@ -59,6 +59,7 @@
           v-for="(item, index) in searchList"
           :key="index"
           class="flex justify-between pb-1"
+          @click="toAlbum(item)"
         >
           <div class="flex justify-between items-center pl-1">
             <img class="w-13 h-13 rounded" :src="item.al.picUrl" alt="" />
@@ -297,6 +298,7 @@ const toArtistDetail = (item: any) => {
     },
   });
 };
+//跳转MV界面
 const toMv = (item: any) => {
   console.log(item.ar[0].id); //暂时只传一个歌手的i,后续有需要再设计多个歌手
   router.push({
@@ -304,6 +306,16 @@ const toMv = (item: any) => {
     query: {
       mvId: item.mv,
       artistId: item.ar[0].id,
+    },
+  });
+};
+//跳转专辑界面
+const toAlbum = (item: any) => {
+  console.log(item.al.id);
+  router.push({
+    path: "/Album",
+    query: {
+      albumId: item.al.id,
     },
   });
 };
