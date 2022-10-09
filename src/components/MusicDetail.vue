@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-22 21:03:00
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-02 19:42:50
+ * @LastEditTime: 2022-10-09 20:23:25
 -->
 <script setup lang="ts">
 import { Vue3Marquee } from "vue3-marquee";
@@ -252,14 +252,14 @@ const toArtistDetail = (item:any) => {
 </script>
 
 <template>
-  <div class="w-100% h-100vh relative">
-    <div class="absolute -z-1 blur-3xl h-100% w-100% bg-red"></div>
+  <div class="w-100vw h-100vh relative">
+    <div class="absolute -z-1 blur-3xl h-100% bg-red"></div>
     <img
-      class="absolute -z-1 blur-100px h-100% w-100% bg-pink brightness-50"
+      class="absolute -z-1 h-100% bg-pink brightness-50"
       :src="props.musicList.al.picUrl"
       alt="背景虚化"
     />
-    <div class="flex justify-between mt-4 px-5 relative">
+    <div class="flex justify-between top-5 px-5 relative">
       <div class="text-xl text-hex-ccc" @click="back">
         <van-icon name="arrow-left"></van-icon>
       </div>
@@ -330,19 +330,20 @@ const toArtistDetail = (item:any) => {
       class="flex h-2.5rem justify-around mt-65vh text-md items-center"
       v-show="!isLyricShow"
     >
-      <div><van-icon size="1.125rem" name="like-o"></van-icon></div>
+      <div><van-icon color="#fff" size="1.125rem" name="like-o"></van-icon></div>
       <div>
         <van-icon
+        color="#fff"
           style="transform: rotate(180deg)"
           size="1.125rem"
           name="upgrade"
         ></van-icon>
       </div>
-      <div><van-icon size="1.125rem" name="music-o"></van-icon></div>
+      <div><van-icon color="#fff" size="1.125rem" name="music-o"></van-icon></div>
       <div class="relative bottom-0" @click="toCommentDetail">
-        <van-icon size="1.125rem" name="comment-o"></van-icon>
+        <van-icon color="#fff" size="1.125rem" name="comment-o"></van-icon>
         <div
-          class="absolute bg-hex-ccf text-.1rem -top-1vh -right-7vw scale-x-75 w-11vw text-center justify-center"
+          class="absolute  text-hex-fff text-.1rem -top-1vh -right-7vw scale-x-75 w-11vw text-center justify-center"
           v-if="totalComment > 0"
           style="background: transparent; border-width: 0"
         >
@@ -350,7 +351,7 @@ const toArtistDetail = (item:any) => {
         </div>
       </div>
       <div style="transform: rotate(90deg)">
-        <van-icon size="1.125rem" name="ellipsis"></van-icon>
+        <van-icon color="#fff" size="1.125rem" name="ellipsis"></van-icon>
       </div>
     </div>
     <div
@@ -358,7 +359,7 @@ const toArtistDetail = (item:any) => {
     >
       <div class="flex w-5 mr-2">{{ nowTime }}</div>
       <input
-        class="flex justify-between mx-1"
+        class="flex justify-between"
         v-model="store.currentTime"
         type="range"
         min="0"
@@ -366,19 +367,19 @@ const toArtistDetail = (item:any) => {
         step="0.01"
         @change="change"
       />
-      <div class="flex w-5 mx-1">{{ totalTime }}</div>
+      <div class="flex w-5 mx-2">{{ totalTime }}</div>
     </div>
     <div class="absolute top-85vh w-100vw flex justify-around text-xl items-center">
-      <div><van-icon name="replay"></van-icon></div>
-      <div @click="goPlay(-1)"><van-icon name="arrow-left"></van-icon></div>
-      <div class="text-3xl" v-show="isShow" @click="playMusic">
-        <van-icon name="play-circle-o"></van-icon>
+      <div><van-icon color="#fff" name="replay"></van-icon></div>
+      <div @click="goPlay(-1)"><van-icon color="#fff" name="arrow-left"></van-icon></div>
+      <div class="text-4xl" v-show="isShow" @click="playMusic">
+        <van-icon color="#fff" name="play-circle-o"></van-icon>
       </div>
-      <div class="text-3xl" v-show="!isShow" @click="play">
-        <van-icon name="pause-circle-o"></van-icon>
+      <div class="text-4xl" v-show="!isShow" @click="play">
+        <van-icon color="#fff" name="pause-circle-o"></van-icon>
       </div>
-      <div @click="goPlay(1)"><van-icon name="arrow"></van-icon></div>
-      <div><van-icon name="bars"></van-icon></div>
+      <div @click="goPlay(1)"><van-icon color="#fff" name="arrow"></van-icon></div>
+      <div><van-icon color="#fff" name="bars"></van-icon></div>
     </div>
   </div>
 </template>
