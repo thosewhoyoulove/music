@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-10-09 21:08:11
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-10 12:32:46
+ * @LastEditTime: 2022-10-10 15:56:30
 -->
 
 <script setup lang="ts">
@@ -72,6 +72,14 @@ const toArtistDetail = (id:any) => {
     path: "/Artist",
     query: {
       artistId: id,
+    },
+  });
+};
+const toCommentDetail = () => {
+  router.push({
+    path: "/AlbumComment",
+    query: {
+      albumId,
     },
   });
 };
@@ -147,7 +155,7 @@ const toArtistDetail = (id:any) => {
         </div>
       </div>
       <div class="-mx-8 flex items-center">|</div>
-      <div class="flex items-center justify-between z-10" @click="toCommentDetail">
+      <div class="flex items-center justify-between z-10" @click="toCommentDetail(id)">
         <div class="flex items-center" style="background: transparent">
           <van-icon color="#aaa" size="1rem" name="chat" />
           <div class="px-1 text-10px text-hex-aaa">
