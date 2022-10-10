@@ -133,6 +133,7 @@
           v-for="(item, index) in albumList"
           :key="index"
           class="flex justify-between p-1"
+          @click="toAlbum(item)"
         >
           <div class="flex justify-between items-center pl-1">
             <img class="w-13 h-13 rounded" :src="item.picUrl" alt="" />
@@ -187,7 +188,7 @@ const router = useRouter();
 let artistId = parseInt(route.query.artistId as any); //接收的是字符串的id
 let artistDetail: any = ref({});
 let isDialogShow = ref(false);
-let state = reactive({
+let state:any = reactive({
   artistIdSubList: [] as any[],
 }); //关注的歌手列表
 let isSub = ref(false); //是否关注该歌手
@@ -306,6 +307,16 @@ const updateSongList = (index: any) => {
   store.updatePlayList(store.$state, artistTopSong.value); // 将歌单列表传进默认列表
   store.updatePlayListIndex(index); // 将索引值传给默认索引
   store.updateIsShow(store.$state, true); // 修改为暂停图标
+};
+//跳转专辑界面
+const toAlbum = (item: any) => {
+  console.log(item);
+  router.replace({
+    path: "/Album",
+    query: {
+      albumId: item.id,
+    },
+  });
 };
 </script>
 
