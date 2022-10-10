@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-29 16:04:43
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-09 21:15:49
+ * @LastEditTime: 2022-10-10 12:45:23
 -->
 <template>
   <van-tabs v-model:active="active" @change="change" sticky>
@@ -58,23 +58,23 @@
           v-if="!loading"
           v-for="(item, index) in searchList"
           :key="index"
-          class="flex justify-between pb-1"
+          class="flex justify-between text-xs"
           @click="toAlbum(item)"
         >
           <div class="flex justify-between items-center pl-1">
-            <img class="w-13 h-13 rounded" :src="item.al.picUrl" alt="" />
+            <img class="w-13 h-13 rounded-lg p-1" :src="item.al.picUrl" alt="" />
             <div class="col text-left m-2 text-style">
-              <div class="flex text-sm w-45 text-left text-style break-all">
+              <div class="flex text-sm w-auto text-left text-style break-all">
                 {{ item.name }}
               </div>
-              <div class="flex w-45 text-left">
+              <div class="flex w-auto text-left items-center">
                 <div v-for="(ar, index) in searchList[index].ar" :key="index">
-                  <div class="text-xs text-style text-gray-500 pr-1">
+                  <div class="flex text-xs text-style text-gray-500 pr-.5">
                     {{ item.ar[index].name }}
                   </div>
                 </div>
 
-                <div class="text-xs ml-1" v-if="item.publishTime">
+                <div class="flex scale-80" v-if="item.publishTime">
                   {{ formatMsToDate(item.publishTime) }}
                 </div>
               </div>
@@ -272,7 +272,7 @@ const change = async (item, index) => {
   }
 };
 //格式化专辑出版时间
-const addZero = (num) => {
+const addZero = (num:any) => {
   if (parseInt(num) < 10) num = `0${num}`;
   return num;
 };

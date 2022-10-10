@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-09 21:51:13
+ * @LastEditTime: 2022-10-10 12:38:51
 -->
 <script setup lang="ts">
 import { getAllSong, getSongListDetail } from "~/api/SongListDetail";
@@ -38,7 +38,7 @@ onMounted(async () => {
     finished.value = true;
   }
 });
-const filter = (num) => {
+const filter = (num:any) => {
   if (num > 100000000) return `${(num / 100000000).toFixed(0)}亿`;
   else if (num > 10000) return `${(num / 10000).toFixed(0)}万`;
 };
