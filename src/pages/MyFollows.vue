@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-15 15:07:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-07 20:26:51
+ * @LastEditTime: 2022-10-10 20:04:56
 -->
 <script setup lang="ts">
 import { getUserFolloweds, getUserFollows } from "~/api/user";
@@ -51,7 +51,7 @@ const toArtistDetail = (item:any) => {
 
 <template>
   <div>
-    <van-tabs v-model:active="active" @click-tab="tabChange" class="pb-20">
+    <van-tabs v-model:active="active" @click-tab="tabChange" class="pb-20" sticky>
       <van-tab v-for="(item, index) in choice" :key="index" :title="item">
         <div
           v-for="(item, index) in followsList"
@@ -64,7 +64,7 @@ const toArtistDetail = (item:any) => {
             <img class="rounded-full w-11 h-11 m-2" :src="item.avatarUrl" alt="" />
             <img
               v-if="item?.avatarDetail?.identityIconUrl"
-              class="w-5 h-5 absolute rounded-full left-10 bottom-1 z-10"
+              class="w-5 h-5 absolute rounded-full left-10 bottom-1 "
               :src="item?.avatarDetail?.identityIconUrl"
               alt=""
             />
@@ -88,7 +88,7 @@ const toArtistDetail = (item:any) => {
             <img class="rounded-full w-11 h-11 m-2" :src="item.avatarUrl" alt="" />
             <img
               v-if="item?.avatarDetail?.identityIconUrl"
-              class="w-5 h-5 absolute rounded-full left-10 bottom-1 z-10"
+              class="w-5 h-5 absolute rounded-full left-10 bottom-1"
               :src="item?.avatarDetail?.identityIconUrl"
               alt=""
             />

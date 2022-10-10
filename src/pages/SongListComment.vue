@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-24 19:17:32
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-10 13:04:36
+ * @LastEditTime: 2022-10-10 20:05:25
 -->
 
 <script setup lang="ts">
@@ -101,7 +101,7 @@ const onLoad = async () => {
       <div>
         <div>
           <div class="text-left font-600 ml-5">评论区</div>
-          <van-tabs v-model:active="active" @click-tab="tabChange">
+          <van-tabs v-model:active="active" @click-tab="tabChange" sticky>
             <van-tab v-for="(item, index) in choice" :key="index" :title="item">
               <div v-show="active == 0">
                 <van-loading

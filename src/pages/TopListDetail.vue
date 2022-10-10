@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 17:07:32
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-09 16:54:45
+ * @LastEditTime: 2022-10-10 17:12:10
 -->
 <script setup lang="ts">
 import { getAllSong, getSongListDetail } from "~/api/SongListDetail";
@@ -22,7 +22,7 @@ const totalSong = ref(0); //总的歌曲数
 const SongNum = ref(20); //开始获取歌曲的数量
 const listLoading = ref(false); //下拉刷新
 const finished = ref(false); //是否结束
-const id = parseInt(route.query.id);
+const id = parseInt(route.query.id as string);
 onMounted(async () => {
   const res = await getSongListDetail(id);
   state.playlist = res.playlist; // 歌单信息
@@ -174,7 +174,7 @@ const toMv = (item: any) => {
                 v-for="(ar, index) in state.songlist[index].ar"
                 :key="index"
               >
-                <div class="text-xs text-gray-500 mr-1 w-auto">
+                <div class="text-xs text-gray-500 mr-1 w-auto   ">
                   {{ item.ar[index].name }}
                 </div>
               </div>

@@ -3,11 +3,11 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 19:13:33
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-27 11:08:42
+ * @LastEditTime: 2022-10-10 20:04:18
 -->
 <script setup lang="ts">
 import { getSingleCatPlayList, getSongList } from "~/api/SongList";
-const allSongList = ref([]); // 所有的热门歌单
+const allSongList:any = ref([]); // 所有的热门歌单
 const router = useRouter();
 const singleSongList = ref([]);
 const active = ref();
@@ -45,7 +45,7 @@ const onLoad = async () => {
     finished.value = true;
   }
 };
-const change = async (item, index) => {
+const change = async (item:any, index:any) => {
   cat.value = index; //切换的时候变换种类
   console.log(cat.value, "cat.value");
   loading.value = true;
@@ -61,12 +61,12 @@ const change = async (item, index) => {
   console.log(singleSongList.value, `歌单种类:${index}!!!`);
   loading.value = false;
 };
-const filter = (num) => {
+const filter = (num:any) => {
   if (num > 100000000) return `${(num / 100000000).toFixed(1)}亿`;
   else if (num > 10000) return `${(num / 10000).toFixed(0)}万`;
   else return num;
 };
-const toMusicDetail = (id) => {
+const toMusicDetail = (id:any) => {
   router.push({
     path: "/TopListDetail",
     query: {
@@ -78,7 +78,7 @@ const toMusicDetail = (id) => {
 
 <template>
   <div class="pb-20">
-    <van-tabs v-model:active="active" @change="change">
+    <van-tabs v-model:active="active" @change="change" sticky>
       <van-tab
         v-for="(item, index) in allSongList"
         :key="index"

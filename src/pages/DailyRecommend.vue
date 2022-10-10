@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-06 19:07:49
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-09 16:52:03
+ * @LastEditTime: 2022-10-10 20:02:40
 -->
 <script setup lang="ts">
 import {
@@ -84,7 +84,7 @@ const toMv = (item: any) => {
     </div>
   </div>
   <div class="w-100vw pb-5">
-    <van-tabs v-model:active="active">
+    <van-tabs v-model:active="active" sticky>
       <van-tab v-for="(item, index) in choice" :key="index" :title="item">
         <div v-show="active == 0">
           <div v-if="!state.songList.length">
