@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-12 17:02:36
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-07 20:52:05
+ * @LastEditTime: 2022-10-10 16:38:50
 -->
 <script setup lang="ts">
 import { Dialog, Loading, Notify } from "vant";
@@ -253,7 +253,7 @@ const toDetail = (item: any) => {
             <ul
               v-for="(item, index) in events"
               :key="index"
-              class="mt-2 border-b border-gray-500 break-all relative pt-5 pb-3"
+              class="mt-2 break-all relative pt-5 pb-3"
             >
               <div class="flex justify-between">
                 <div class="flex">
