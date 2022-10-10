@@ -3,13 +3,13 @@
  * @Author: 曹俊
  * @Date: 2022-08-24 19:17:32
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-27 21:54:51
+ * @LastEditTime: 2022-10-10 13:04:36
 -->
 
 <script setup lang="ts">
 import { getSongListComment, getSongListDetail } from "~/api/SongListDetail";
 const route = useRoute();
-const state = reactive({
+const state: any = reactive({
   playlist: {}, // 歌单信息
   comment: [], // 歌单评论
 });
@@ -52,7 +52,7 @@ const tabChange = async () => {
     showLoading.value = false;
   }
 };
-const filter = (num) => {
+const filter = (num: any) => {
   if (num < 10000) return num;
   else if (num > 10000) return `${(num / 10000).toFixed(1)}万`;
 };
@@ -125,7 +125,7 @@ const onLoad = async () => {
                     <div
                       v-for="(item, index) in state.comment"
                       :key="index"
-                      class="flex justify-between border-b border-hex-ddd mt-3 break-all relative"
+                      class="flex justify-between mt-3 break-all relative"
                     >
                       <div class="flex px-2">
                         <img
@@ -190,7 +190,7 @@ const onLoad = async () => {
                     <div
                       v-for="(item, index) in state.comment"
                       :key="index"
-                      class="flex justify-between border-b border-hex-ddd mt-3 break-all relative"
+                      class="flex justify-between mt-3 break-all relative"
                     >
                       <div class="flex px-2">
                         <img

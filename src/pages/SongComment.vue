@@ -15,7 +15,7 @@ const listLoading = ref(false); //下拉刷新加载提示
 const finished = ref(false); //是否结束
 const id = route.query.id;
 const totalHot = ref(0); //热门评论的数量
-const state = reactive({
+const state: any = reactive({
   songDetail: [], // 歌曲信息
   comment: [], // 歌曲评论
 });
@@ -54,7 +54,7 @@ const tabChange = async () => {
     showLoading.value = false;
   }
 };
-const filter = (num) => {
+const filter = (num: any) => {
   if (num < 10000) return num;
   else if (num > 10000) return `${(num / 10000).toFixed(1)}万`;
 };
@@ -137,7 +137,7 @@ const onLoad = async () => {
                   <div
                     v-for="(item, index) in state.comment"
                     :key="index"
-                    class="flex justify-between border-b border-hex-ddd mt-3 break-all relative"
+                    class="flex justify-between  mt-3 break-all relative"
                   >
                     <div class="flex px-2">
                       <img
@@ -200,7 +200,7 @@ const onLoad = async () => {
                   <div
                     v-for="(item, index) in state.comment"
                     :key="index"
-                    class="flex justify-between relative border-b border-hex-ddd mt-3 break-all"
+                    class="flex justify-between relative mt-3 break-all"
                   >
                     <div class="flex px-2">
                       <img
