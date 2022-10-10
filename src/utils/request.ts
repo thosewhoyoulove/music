@@ -4,7 +4,7 @@ import { Cookies } from 'js-cookie';
  * @Author: 曹俊
  * @Date: 2022-08-17 15:49:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-06 16:16:15
+ * @LastEditTime: 2022-10-10 20:50:52
  */
 import axios from 'axios'
 import { getToken, removeToken, removeName, removeAvatar } from './cookie'
@@ -15,8 +15,8 @@ import { storeToRefs } from "pinia";
 const service = axios.create({
     // 请求路由
     // baseURL: 'http://localhost:3000/', //本地开启后端服务
-    baseURL: 'https://netease-cloud-music-api-five-ebon.vercel.app/', //线上测试
-    // baseURL: 'https://www.caojunshuaige.top/',//将vercel的地址解析到自己的域名
+    // baseURL: 'https://netease-cloud-music-api-five-ebon.vercel.app/', //线上测试
+    baseURL: 'https://www.caojunshuaige.top/',//将vercel的地址解析到自己的域名
     // 请求超时时间
     timeout: 10000,
     withCredentials: true
