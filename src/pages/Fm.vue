@@ -3,15 +3,15 @@
  * @Author: 曹俊
  * @Date: 2022-09-19 20:52:39
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-21 16:02:18
+ * @LastEditTime: 2022-10-10 20:23:30
 -->
 <script setup lang="ts">
 import { getFm, deleteFm } from "~/api/FM";
 import { likeMusic } from "~/api/SongDetail";
-import { storeToRefs } from "pinia";
 import { useStore } from "~/store/index";
 import { Toast } from "vant";
 const store = useStore();
+const router = useRouter();
 const playListIndex = ref(0);
 const state = reactive({
   playList: [
@@ -52,7 +52,7 @@ const goPlay = (num: number) => {
   else if (index == state.playList.length) index = 0;
   playListIndex.value = index;
 };
-const deleteFmItem = async (id) => {
+const deleteFmItem = async (id: any) => {
   console.log(state.playList[playListIndex.value].id);
 
   let res = await deleteFm(state.playList[playListIndex.value].id); //加入到垃圾箱
@@ -82,18 +82,28 @@ watch(
     }
   }
 );
-const like = async (id) => {
+const like = async (id: any) => {
   let likeRes = await likeMusic(state.playList[playListIndex.value].id);
   console.log(likeRes);
   if (likeRes.code === 200) {
     Toast.success("收藏成功");
   } else Toast.fail("收藏失败");
 };
+//跳转歌手主页
+const toArtistDetail = (item: any) => {
+  console.log(item.id);
+  router.push({
+    path: "/Artist",
+    query: {
+      artistId: item.id,
+    },
+  });
+};
 </script>
 
 <template>
   <img
-    class="absolute -z-1 blur-3xl h-100% w-100% bg-pink brightness-50"
+    class="absolute -z-1 blur-3xl h-100vh bg-pink brightness-50"
     :src="state.playList[playListIndex]?.album.blurPicUrl"
     alt="背景虚化"
   />
@@ -104,21 +114,20 @@ const like = async (id) => {
       :src="state.playList[playListIndex]?.album.picUrl"
       alt=""
     />
-    <div
-      class="col absolute left-55% -translate-x-1/2 top-22.375rem z-10 w-100% text-left"
-    >
+    <div class="col absolute left-50% -translate-x-1/2 top-22.375rem text-left">
       <div class="text-xs my-1 text-hex-fff">
         {{ state.playList[playListIndex]?.name }}
       </div>
       <!-- 艺人名字 -->
       <div
-        class="flex items-center my-1"
+        class="flex items-center my-1 w-auto "
         v-for="(item, index) in state.playList[playListIndex]?.artists"
         :key="index"
+        @click="toArtistDetail(item)"
       >
-        <div class="text-10px text-hex-ccc x-1">{{ item.name }}</div>
-        <div class="text-10px text-hex-aaa">
-          <van-icon color="#fff" name="arrow"></van-icon>
+        <div class="text-xs text-hex-ccc">{{ item.name }}</div>
+        <div class="text-xs text-hex-aaa ml-.5">
+          <van-icon color="#aaa" name="arrow"></van-icon>
         </div>
       </div>
     </div>
@@ -137,7 +146,7 @@ const like = async (id) => {
         <div @click="deleteFmItem(id)">
           <van-icon color="#fff" name="delete-o" />
         </div>
-        <div class="text-10px" @click="goPlay(-1)">
+        <div class="text-xs" @click="goPlay(-1)">
           <van-button
             size="small"
             style="background: transparent; border-width: 0"
@@ -145,7 +154,7 @@ const like = async (id) => {
             >上一首</van-button
           >
         </div>
-        <div class="text-10px" @click="goPlay(1)">
+        <div class="text-xs" @click="goPlay(1)">
           <van-button
             size="small"
             style="background: transparent; border-width: 0"
