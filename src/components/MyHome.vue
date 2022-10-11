@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-12 17:02:36
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-10 16:38:50
+ * @LastEditTime: 2022-10-11 20:39:47
 -->
 <script setup lang="ts">
 import { Dialog, Loading, Notify } from "vant";
@@ -69,6 +69,7 @@ onMounted(async () => {
     showLoading.value = false;
   }
 });
+//注册时间
 const addZero = (num: any) => {
   if (parseInt(num) < 10) num = `0${num}`;
 
@@ -125,6 +126,14 @@ const toDetail = (item: any) => {
     },
   });
 };
+const toUserInfo = () =>{
+  router.push({
+    path:'/UserInfo',
+    query:{
+
+    }
+  })
+}
 </script>
 
 <template>
@@ -163,12 +172,13 @@ const toDetail = (item: any) => {
       </div>
 
       <div
+      @click="toUserInfo"
         class="rounded-2xl items-center flex justify-center border border-hex-ccc w-20 h-7 font-semibold tracking-widest absolute font-sans text-10px top-70% left-50% -translate-x-1/2"
       >
         编辑资料
       </div>
     </div>
-    <div class="w-100vw mt-30 mb-15 rounded px-2">
+    <div class="w-100vw mt-30 pb-20 rounded px-2">
       <van-tabs v-model:active="active" background="#f6f7f9" sticky>
         <van-tab v-for="(item, index) in choice" :key="index" :title="item">
           <div v-show="active == 0" class="bg-white rounded-lg px-2 text-left">

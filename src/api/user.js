@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-17 15:53:02
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-01 20:50:15
+ * @LastEditTime: 2022-10-11 21:16:20
  */
 import request from '~/utils/request'
 import { storeToRefs } from "pinia";
@@ -167,5 +167,32 @@ export function isFollow(id, t) {
     return request({
         method: 'post',
         url: `/artist/sub?id=${id}&t=${t}&cookie=${encodeURIComponent(cookie)}`,
+    })
+}
+// 更新用户信息
+// 说明: 登录后调用此接口, 传入相关信息, 可以更新用户信息
+
+// 必选参数:
+
+//     gender: 性别 0: 保密 1: 男性 2: 女性
+
+// birthday: 出生日期, 时间戳 unix timestamp
+
+// nickname: 用户昵称
+
+// province: 省份id
+
+// city: 城市id
+
+// signature： 用户签名
+// 接口地址: /user/update
+
+// 调用例子: /user/update ? gender = 0 & signature = 测试签名 & city = 440300 & nickname = binary & birthday = 1525918298004  & province = 440000
+
+export function updateUser(nickname, gender, birthday, signature) {
+    const cookie = localStorage.getItem('cookie')
+    return request({
+        method: 'post',
+        url: `/user/update?gender=${gender}&signature=${signature}&nickname=${nickname}&birthday=${birthday}&cookie=${encodeURIComponent(cookie)}`,
     })
 }
