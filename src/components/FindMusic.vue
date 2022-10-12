@@ -3,14 +3,14 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 20:03:07
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-27 11:09:22
+ * @LastEditTime: 2022-10-12 14:31:39
 -->
 <script setup lang="ts">
 import getFindSongList from "~/api/RecommendSongList";
 const router = useRouter();
 const loading = ref(true);
 // 定义歌单列表
-let playListSet = reactive({
+let playListSet: any = reactive({
   state: [],
 });
 
@@ -73,7 +73,9 @@ const toMusicDetail = (id: number) => {
         </van-swipe-item>
       </van-swipe>
     </div>
+    <a class="scale-70 pt-5 inline-block" href="https://beian.miit.gov.cn/" target="_blank">备案号：湘ICP备2022020251号-1</a>
   </div>
+
   <router-view />
 </template>
 
