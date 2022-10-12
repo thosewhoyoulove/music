@@ -3,16 +3,27 @@
  * @Author: 曹俊
  * @Date: 2022-10-11 16:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-11 21:21:21
+ * @LastEditTime: 2022-10-12 16:14:34
 -->
 <template>
   <div class="w-100vw h-100vh bg-hex-eee">
-    <div class="text-hex-eee">
+    <div class="text-hex-eee items-center">
       <van-cell-group class="title" inset title="我的资料">
-        <van-cell v-model:value="nickname" title="昵称" />
+        <van-cell class="cell" v-model:value="nickname" title="昵称"
+          ><template #right-icon>
+            <van-icon
+              name="edit"
+              class="flex item-center"
+              @click="toEditInfo((flag = 0))"
+            /> </template
+        ></van-cell>
         <van-cell v-model:value="gender" title="性别" />
         <van-cell @click="showCalendar = true" v-model:value="birthday" title="生日" />
-        <van-cell v-model:value="signature" title="简介" />
+        <van-cell
+          @click="toEditInfo((flag = 1))"
+          v-model:value="signature"
+          title="简介"
+        />
       </van-cell-group>
     </div>
   </div>
@@ -26,11 +37,13 @@
 </template>
 
 <script setup lang="ts">
-import { getUserAcount, getUserDetail, updateUser } from "~/api/user";
+import { getUserAcount, updateUser } from "~/api/user";
+const router = useRouter();
 const nickname = ref("");
 const gender = ref();
 const birthday = ref("");
 const signature = ref("");
+let flag = ref(-1);
 let profile: any = ref({});
 const minDate = new Date(1970, 0, 1);
 const maxDate = new Date(2024, 0, 1);
@@ -91,10 +104,21 @@ const formatMsToDate = (ms: any) => {
     return "";
   }
 };
+const toEditInfo = (flag: any) => {
+  router.push({
+    path: "/EditInfo",
+    query: {
+      flag,
+    },
+  });
+};
 </script>
 
 <style scoped>
 :deep(.title) {
   text-align: left;
+}
+:deep(.cell) {
+  align-items: center;
 }
 </style>
