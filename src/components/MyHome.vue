@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-12 17:02:36
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-11 20:39:47
+ * @LastEditTime: 2022-10-12 21:38:38
 -->
 <script setup lang="ts">
 import { Dialog, Loading, Notify } from "vant";
@@ -44,14 +44,15 @@ onMounted(async () => {
       path: "/LoginOrReg",
     });
   } else {
-    user.value = JSON.parse(localStorage.getItem("userInfo") as string);
+    const res = await getUserAcount(); // 获取账号信息
+    console.log(res, "这是用户账号信息");
+    user.value = JSON.parse(localStorage.getItem("userInfo") as string);//获取本地的信息
+    user.value= res
     console.log(user.value, "本地用户信息");
     uid.value = user.value.account.id;
     nickname.value = user.value.profile?.nickname;
     gender.value = user.value.profile?.gender;
     signature.value = user.value.profile?.signature;
-    const res = await getUserAcount(); // 获取账号信息
-    console.log(res, "这是用户账号信息");
     const res1 = await getUserDetail(uid.value); // 获取用户详细信息-关注
     userDetail.value = res1;
     createTime.value = formatMsToDate(res1.createTime); // 获取创建时间
@@ -72,9 +73,9 @@ onMounted(async () => {
 //注册时间
 const addZero = (num: any) => {
   if (parseInt(num) < 10) num = `0${num}`;
-
   return num;
 };
+//格式化时间
 const formatMsToDate = (ms: any) => {
   if (ms) {
     const oDate = new Date(ms);
