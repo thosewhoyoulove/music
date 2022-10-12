@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-09 15:16:22
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-16 19:46:14
+ * @LastEditTime: 2022-10-12 19:06:40
 -->
 <script setup lang="ts">
 import { Notify, Toast } from 'vant'
@@ -70,7 +70,7 @@ const showPassboard = ref(false) // 密码键盘是否展示
       </div>
     </div>
     <div class="w-100% flex items-center mt-5">
-      <van-form class="flex-col" @submit="onSubmit">
+      <van-form class="flex-col">
         <van-cell-group inset>
           <van-field
             v-model="eamil"

@@ -196,3 +196,17 @@ export function updateUser(nickname, gender, birthday, signature) {
         url: `/user/update?gender=${gender}&signature=${signature}&nickname=${nickname}&birthday=${birthday}&cookie=${encodeURIComponent(cookie)}`,
     })
 }
+// 重复昵称检测
+// 说明: 调用此接口, 可检测昵称是否重复, 并提供备用昵称 必选参数: nickname: 昵称
+
+// 接口地址: /nickname/check
+
+// 调用例子: /nickname/check ? nickname = binaryify
+
+export function nicknameCheck(nickname) {
+    const cookie = localStorage.getItem('cookie')
+    return request({
+        method: 'post',
+        url: `/nickname/check?nickname=${nickname}&cookie=${encodeURIComponent(cookie)}`,
+    })
+}
