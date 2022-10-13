@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-12 17:02:36
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-12 21:38:38
+ * @LastEditTime: 2022-10-12 21:40:17
 -->
 <script setup lang="ts">
 import { Dialog, Loading, Notify } from "vant";
@@ -46,7 +46,7 @@ onMounted(async () => {
   } else {
     const res = await getUserAcount(); // 获取账号信息
     console.log(res, "这是用户账号信息");
-    user.value = JSON.parse(localStorage.getItem("userInfo") as string);//获取本地的信息
+    // user.value = JSON.parse(localStorage.getItem("userInfo") as string);//获取本地的信息
     user.value= res
     console.log(user.value, "本地用户信息");
     uid.value = user.value.account.id;
