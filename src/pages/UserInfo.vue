@@ -3,18 +3,18 @@
  * @Author: 曹俊
  * @Date: 2022-10-11 16:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-12 16:14:34
+ * @LastEditTime: 2022-10-13 15:35:37
 -->
 <template>
   <div class="w-100vw h-100vh bg-hex-eee">
     <div class="text-hex-eee items-center">
       <van-cell-group class="title" inset title="我的资料">
-        <van-cell class="cell" v-model:value="nickname" title="昵称"
+        <van-cell  @click="toEditInfo((flag = 0))" class="cell" v-model:value="nickname" title="昵称"
           ><template #right-icon>
             <van-icon
               name="edit"
               class="flex item-center"
-              @click="toEditInfo((flag = 0))"
+             
             /> </template
         ></van-cell>
         <van-cell v-model:value="gender" title="性别" />

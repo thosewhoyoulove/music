@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-10-12 16:02:17
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-12 21:29:50
+ * @LastEditTime: 2022-10-13 15:39:04
 -->
 <template>
   <div class="w-100vw h-100vh">
@@ -29,7 +29,30 @@
           {{ item }}
         </div>
       </div>
-      <div @click="save(nickname)" class="absolute top-50% left-50% -translate-1/2">
+      <div
+        @click="saveNickname(nickname, isDuplicated)"
+        class="absolute top-50% left-50% -translate-1/2"
+      >
+        <van-button plain type="primary">保存</van-button>
+      </div>
+    </div>
+    <div v-if="flag == 1">
+      <van-cell-group inset>
+        <van-field
+          v-model="signature"
+          rows="2"
+          autosize
+          label="简介"
+          type="textarea"
+          maxlength="300"
+          placeholder="一句话介绍"
+          show-word-limit
+        />
+      </van-cell-group>
+      <div
+        @click="saveSignature(signature)"
+        class="absolute top-50% left-50% -translate-1/2"
+      >
         <van-button plain type="primary">保存</van-button>
       </div>
     </div>
@@ -47,29 +70,9 @@ let gender = ref();
 let birthday = ref("");
 let signature = ref("");
 let msg = ref("");
-let candidateNicknames = ref([]);
-let isDuplicated = ref(false);
+let candidateNicknames: any = ref([]);
+let isDuplicated: any = ref(false);
 let flag = parseInt(route.query.flag as string);
-//为每次输入增加防抖函数，并进行动态检测名称的合法性
-const handleEnter = _.debounce(async (nickname: any) => {
-  let res = await nicknameCheck(nickname);
-  isDuplicated.value = res.duplicated;
-  console.log(res);
-  if (res.code == 200) {
-    if (res.duplicated == true) {
-      msg.value = "该昵称已经被注册，可以选择下列名称";
-      Notify({ type: "warning", message: msg.value });
-      candidateNicknames.value = res.candidateNicknames;
-    } else if (res.duplicated == false) {
-      msg.value = "改昵称可用";
-      Notify({ type: "warning", message: msg.value });
-    }
-  }
-  if (res.code !== 200) {
-    Notify({ type: "warning", message: res.message });
-  }
-}, 1000);
-
 onMounted(async () => {
   console.log(flag);
   let infoRes = await getUserAcount();
@@ -79,17 +82,40 @@ onMounted(async () => {
   birthday.value = infoRes.profile.birthday;
   signature.value = infoRes.profile.signature;
 });
+//进入修改昵称界面
+if (flag == 0) {
+  //为每次输入增加防抖函数，并进行动态检测名称的合法性
+  const handleEnter = _.debounce(async (nickname: any) => {
+    let res = await nicknameCheck(nickname);
+    isDuplicated.value = res.duplicated;
+    console.log(res);
+    if (res.code == 200) {
+      if (res.duplicated == true) {
+        msg.value = "该昵称已经被注册，可以选择下列名称";
+        Notify({ type: "warning", message: msg.value });
+        candidateNicknames.value = res.candidateNicknames;
+      } else if (res.duplicated == false) {
+        msg.value = "改昵称可用";
+        Notify({ type: "warning", message: msg.value });
+      }
+    }
+    if (res.code !== 200) {
+      Notify({ type: "warning", message: res.message });
+    }
+  }, 1000);
+
+  watch(
+    () => nickname.value,
+    (newVal) => {
+      handleEnter(newVal);
+    }
+  );
+}
 //选择可选值
 const select = (item: any) => {
   nickname.value = item;
 };
-watch(
-  () => nickname.value,
-  (newVal) => {
-    handleEnter(newVal);
-  }
-);
-const save = async (nickname: any, isDuplicated: any) => {
+const saveNickname = async (nickname: any, isDuplicated: any) => {
   console.log(nickname);
   let infoRes = await getUserAcount();
   let oldNickname = infoRes.profile.nickname;
@@ -106,6 +132,24 @@ const save = async (nickname: any, isDuplicated: any) => {
         Notify({ type: "success", message: "修改成功" });
         router.back();
       }
+    }
+  }
+};
+//进入修改简介界面
+
+const saveSignature = async (signature: any) => {
+  let infoRes = await getUserAcount();
+  let oldSignature = infoRes.profile.signature;
+  if (signature === oldSignature) {
+    Notify({ type: "success", message: "修改成功" });
+    router.back();
+  } else {
+    let res = await updateUser(nickname.value, gender.value, birthday.value, signature);
+    if (res.code !== 200) {
+      Notify({ type: "warning", message: res.message });
+    } else if (res.code === 200) {
+      Notify({ type: "success", message: "修改成功" });
+      router.back();
     }
   }
 };
