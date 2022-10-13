@@ -34,7 +34,7 @@ export function getUserAcount() {
     const cookie = localStorage.getItem('cookie')
     return request({
         method: 'post',
-        url: `/user/account?cookie=${encodeURIComponent(cookie)}`,
+        url: `/user/account?cookie=${encodeURIComponent(cookie)}?timestamp=${Date.now()}`,
     })
 }
 
