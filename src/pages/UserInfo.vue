@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-10-11 16:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-13 16:47:19
+ * @LastEditTime: 2022-10-13 16:56:52
 -->
 <template>
   <div class="w-100vw h-100vh bg-hex-eee">
@@ -35,7 +35,7 @@
     :max-date="maxDate"
   />
   <van-overlay class="overlay" :show="showCheckBox" @click="showCheckBox = false">
-    <div class="flex items-center justify-center w-100vw h-100vh">
+    <div class="flex items-center justify-center w-100vw h-100vh relative">
       <van-radio-group v-model="gender">
         <van-cell-group
           class="flex-col items-center justify-between text-left w-90vw h-15vh"
@@ -54,6 +54,7 @@
         </van-cell-group>
       </van-radio-group>
     </div>
+    <div @click="showCheckBox = false" class="absolute top-62% left-50% -translate-1/2"><van-button size="mini" round icon="cross"  /></div>
   </van-overlay>
 </template>
 
