@@ -12,6 +12,7 @@
         "up": "taze major -I"
     },
     "dependencies": {
+        "@vant/area-data": "^1.3.2",
         "@vueuse/core": "^9.0.0",
         "animate.css": "^4.1.1",
         "axios": "^0.27.2",
