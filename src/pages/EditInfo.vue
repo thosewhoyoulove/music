@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-10-12 16:02:17
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-13 15:39:04
+ * @LastEditTime: 2022-10-14 20:01:05
 -->
 <template>
   <div class="w-100vw h-100vh">
@@ -49,6 +49,14 @@
           show-word-limit
         />
       </van-cell-group>
+      <!-- <div>
+        <van-area
+          title="标题"
+          @confirm="onConfirm"
+          :area-list="areaList"
+          value="110101"
+        />
+      </div> -->
       <div
         @click="saveSignature(signature)"
         class="absolute top-50% left-50% -translate-1/2"
@@ -60,6 +68,7 @@
 </template>
 
 <script setup lang="ts">
+import { areaList } from "@vant/area-data";
 import * as _ from "lodash";
 import { Notify } from "vant";
 import { nicknameCheck, getUserAcount, updateUser } from "~/api/user";
@@ -153,6 +162,9 @@ const saveSignature = async (signature: any) => {
     }
   }
 };
+// const onConfirm = (value: number) => {
+//   console.log(value);
+// };
 </script>
 
 <style scoped></style>
