@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-10-11 16:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-13 16:56:52
+ * @LastEditTime: 2022-10-14 19:18:42
 -->
 <template>
   <div class="w-100vw h-100vh bg-hex-eee">
@@ -54,7 +54,9 @@
         </van-cell-group>
       </van-radio-group>
     </div>
-    <div @click="showCheckBox = false" class="absolute top-62% left-50% -translate-1/2"><van-button size="mini" round icon="cross"  /></div>
+    <div @click="showCheckBox = false" class="absolute top-62% left-50% -translate-1/2">
+      <van-button size="mini" round icon="cross" />
+    </div>
   </van-overlay>
 </template>
 
@@ -76,6 +78,7 @@ const formatDate = (birthday: any) =>
   `${birthday.getFullYear()}-${birthday.getMonth() + 1}-${birthday.getDate()}`; //将选择值转化为yy-mm-dd
 //修改生日
 const onConfirm = async (value: any) => {
+  //将汉字转化为代码
   if (gender.value == "保密") {
     gender.value = 0;
   } else if (gender.value == "男") {
@@ -83,7 +86,8 @@ const onConfirm = async (value: any) => {
   } else if (gender.value == "女") {
     gender.value = 2;
   }
-  console.log(value.valueOf()); //获取指定日期的时间戳
+  console.log(value, "测试");//Sun Oct 16 2022 00:00:00 GMT+0800 (中国标准时间) '测试'
+  console.log(value.valueOf()); //获取指定日期的时间戳:1665849600000
   showCalendar.value = false;
   birthday.value = formatDate(value);
   let updateRes = await updateUser(
@@ -92,6 +96,14 @@ const onConfirm = async (value: any) => {
     value.valueOf(),
     signature.value
   );
+  //将gender转化为汉字
+  if (gender.value == 0) {
+    gender.value = "保密";
+  } else if (gender.value == 1) {
+    gender.value = "男";
+  } else if (gender.value == 2) {
+    gender.value = "女";
+  }
   console.log(updateRes);
 };
 onMounted(async () => {
@@ -112,10 +124,11 @@ onMounted(async () => {
 });
 //选择性别
 const checkGender = async (gender: any) => {
-  console.log(gender);
   let infoRes = await getUserAcount();
   let oldGender = infoRes.profile.gender;
   birthday.value = infoRes.profile.birthday;
+  console.log(birthday.value.valueOf());
+  console.log(formatMsToDate(birthday.value.valueOf()));
   if (oldGender == gender) {
     showCheckBox.value = false;
     Notify({ type: "success", message: "修改成功" });
@@ -138,7 +151,7 @@ const checkGender = async (gender: any) => {
       }
     }
   }
-  birthday.value = formatDate(birthday.value)
+  birthday.value = formatMsToDate(birthday.value);
 };
 //生日时间
 const addZero = (num: any) => {
@@ -146,6 +159,7 @@ const addZero = (num: any) => {
 
   return num;
 };
+//将毫秒数转化为yy-mm-dd
 const formatMsToDate = (ms: any) => {
   if (ms) {
     const oDate = new Date(ms);
