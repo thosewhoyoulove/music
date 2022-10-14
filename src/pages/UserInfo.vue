@@ -3,10 +3,10 @@
  * @Author: 曹俊
  * @Date: 2022-10-11 16:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-14 19:18:42
+ * @LastEditTime: 2022-10-14 19:58:22
 -->
 <template>
-  <div class="w-100vw h-100vh bg-hex-eee">
+  <div class="w-100vw h-100vh bg-hex-eee relative">
     <div class="text-hex-eee items-center">
       <van-cell-group class="title" inset title="我的资料">
         <van-cell
@@ -18,7 +18,11 @@
             <van-icon name="edit" class="flex item-center" /> </template
         ></van-cell>
         <van-cell @click="showCheckBox = true" v-model:value="gender" title="性别" />
-        <van-cell @click="showCalendar = true" v-model:value="birthday" title="生日" />
+        <van-cell
+          @click="showDatetimePicker = true"
+          v-model:value="birthday"
+          title="生日"
+        />
         <van-cell
           @click="toEditInfo((flag = 1))"
           v-model:value="signature"
@@ -27,13 +31,20 @@
       </van-cell-group>
     </div>
   </div>
-  <van-cell title="选择单个日期" :value="birthday" @click="showCalendar = true" />
-  <van-calendar
-    v-model:show="showCalendar"
-    @confirm="onConfirm"
-    :min-date="minDate"
-    :max-date="maxDate"
-  />
+
+  <div class="absolute bottom-0 w-100vw z-1">
+    <van-datetime-picker
+      v-show="showDatetimePicker"
+      @confirm="onConfirm"
+      @cancel="onCancel"
+      v-model="currentDate"
+      type="date"
+      title="选择年月日"
+      :min-date="minDate"
+      :max-date="maxDate"
+    />
+  </div>
+
   <van-overlay class="overlay" :show="showCheckBox" @click="showCheckBox = false">
     <div class="flex items-center justify-center w-100vw h-100vh relative">
       <van-radio-group v-model="gender">
@@ -61,8 +72,9 @@
 </template>
 
 <script setup lang="ts">
-import { Notify } from "vant";
+import { Notify, DatetimePicker } from "vant";
 import { getUserAcount, updateUser } from "~/api/user";
+const showDatetimePicker = ref(false);
 const router = useRouter();
 const nickname = ref("");
 const gender = ref();
@@ -74,6 +86,48 @@ const minDate = new Date(1970, 0, 1);
 const maxDate = new Date(2024, 0, 1);
 const showCalendar = ref(false); //日历组件的展示
 const showCheckBox = ref(false);
+//生日时间
+const addZero = (num: any) => {
+  if (parseInt(num) < 10) num = `0${num}`;
+
+  return num;
+};
+//将毫秒数转化为yy-mm-dd
+const formatMsToDate = (ms: any) => {
+  if (ms) {
+    const oDate = new Date(ms);
+    const oYear = oDate.getFullYear();
+    const oMonth = oDate.getMonth() + 1;
+    const oDay = oDate.getDate();
+    const oTime = `${oYear}-${addZero(oMonth)}-${addZero(oDay)}`;
+    return oTime;
+  } else {
+    return "";
+  }
+};
+//将当前时间转化为yy,mm,dd
+const getCurrentDate = (ms: any) => {
+  if (ms) {
+    const oDate = new Date(ms);
+    const oYear = oDate.getFullYear();
+    const oMonth = oDate.getMonth() + 1;
+    const oDay = oDate.getDate();
+    const oTime = `${oYear},${addZero(oMonth)},${addZero(oDay)}`;
+    return oTime;
+  } else {
+    return "";
+  }
+};
+const nowDate = getCurrentDate(Date.now()); //获取yy,mm,dd
+const currentDate = ref(new Date(nowDate)); //定义时间选择器的当前时间,只能读取yy,mm,dd
+const toEditInfo = (flag: any) => {
+  router.push({
+    path: "/EditInfo",
+    query: {
+      flag,
+    },
+  });
+};
 const formatDate = (birthday: any) =>
   `${birthday.getFullYear()}-${birthday.getMonth() + 1}-${birthday.getDate()}`; //将选择值转化为yy-mm-dd
 //修改生日
@@ -86,7 +140,7 @@ const onConfirm = async (value: any) => {
   } else if (gender.value == "女") {
     gender.value = 2;
   }
-  console.log(value, "测试");//Sun Oct 16 2022 00:00:00 GMT+0800 (中国标准时间) '测试'
+  console.log(value, "测试"); //Sun Oct 16 2022 00:00:00 GMT+0800 (中国标准时间) '测试'
   console.log(value.valueOf()); //获取指定日期的时间戳:1665849600000
   showCalendar.value = false;
   birthday.value = formatDate(value);
@@ -104,7 +158,18 @@ const onConfirm = async (value: any) => {
   } else if (gender.value == 2) {
     gender.value = "女";
   }
+  if (updateRes.code === 200) {
+    Notify({ type: "success", message: "修改成功" });
+    showDatetimePicker.value = false;
+  } else {
+    Notify({ type: "warning", message: "系统故障，请稍后再试" });
+    showDatetimePicker.value = false;
+  }
   console.log(updateRes);
+};
+//修改生日点击取消
+const onCancel = () => {
+  showDatetimePicker.value = false;
 };
 onMounted(async () => {
   let infoRes = await getUserAcount();
@@ -152,34 +217,6 @@ const checkGender = async (gender: any) => {
     }
   }
   birthday.value = formatMsToDate(birthday.value);
-};
-//生日时间
-const addZero = (num: any) => {
-  if (parseInt(num) < 10) num = `0${num}`;
-
-  return num;
-};
-//将毫秒数转化为yy-mm-dd
-const formatMsToDate = (ms: any) => {
-  if (ms) {
-    const oDate = new Date(ms);
-    const oYear = oDate.getFullYear();
-    const oMonth = oDate.getMonth() + 1;
-    const oDay = oDate.getDate();
-    const oTime = `${oYear}-${addZero(oMonth)}-${addZero(oDay)}`;
-    return oTime;
-  } else {
-    return "";
-  }
-};
-
-const toEditInfo = (flag: any) => {
-  router.push({
-    path: "/EditInfo",
-    query: {
-      flag,
-    },
-  });
 };
 </script>
 
