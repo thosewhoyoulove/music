@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-17 15:53:02
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-11 21:16:20
+ * @LastEditTime: 2022-10-20 19:41:16
  */
 import request from '~/utils/request'
 import { storeToRefs } from "pinia";
@@ -20,7 +20,7 @@ import { useStore, userStore } from "~/store/index";
 export function getUserDetail(uid) {
     const cookie = localStorage.getItem('cookie')
     return request({
-        method: 'get',
+        method: 'post',
         url: `/user/detail?uid=${uid}?cookie=${encodeURIComponent(cookie)}`,
     })
 }
@@ -145,7 +145,7 @@ export function getUserLevel() {
 export function getArtistSublist() {
     const cookie = localStorage.getItem('cookie')
     return request({
-        method: 'get',
+        method: 'post',
         url: `/artist/sublist?cookie=${encodeURIComponent(cookie)}`,
     })
 }
