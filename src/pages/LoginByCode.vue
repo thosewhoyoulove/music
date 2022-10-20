@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-09 15:26:41
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-20 20:49:13
+ * @LastEditTime: 2022-10-20 20:55:13
 -->
 <script setup lang="ts">
 import { Notify } from "vant";
@@ -65,7 +65,7 @@ onMounted(async () => {
         router.push({
           path: "/LoginOrReg",
         });
-      }, 0.5 * 60 * 1000);
+      }, 2 * 24 * 60 * 60 * 1000);
       router.push({
         path: "/",
       });
