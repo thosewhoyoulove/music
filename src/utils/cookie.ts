@@ -3,25 +3,28 @@
  * @Author: 曹俊
  * @Date: 2022-09-09 21:58:30
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-10 09:17:47
+ * @LastEditTime: 2022-10-20 19:53:16
  */
 import Cookies from 'js-cookie'
 
-const TokenKey = 'token'
+const Cookie = 'cookie'
 const nameKey = 'name'
 const avatarKey = 'avatar'
 const passwordKey = 'password'
 const emailKey = 'email'
-export function getToken() {
-  return Cookies.get(TokenKey)
+export function getCookie() {
+  return Cookies.get(Cookie)
 }
 
-export function setToken(token: string) {
-  return Cookies.set(TokenKey, token)
+export function setCookie(cookie: string) {
+  var inFifteenMinutes = new Date(new Date().getTime() + 3 * 60 * 1000);
+  return Cookies.set(Cookie, cookie, {
+    expires: inFifteenMinutes
+  })
 }
 
-export function removeToken() {
-  return Cookies.remove(TokenKey)
+export function removeCookie() {
+  return Cookies.remove(Cookie)
 }
 
 export function getName() {

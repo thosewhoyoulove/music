@@ -4,10 +4,10 @@ import { Cookies } from 'js-cookie';
  * @Author: 曹俊
  * @Date: 2022-08-17 15:49:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-10 20:50:52
+ * @LastEditTime: 2022-10-20 20:54:36
  */
 import axios from 'axios'
-import { getToken, removeToken, removeName, removeAvatar } from './cookie'
+import { getToken, removeCookie, removeName, removeAvatar } from './cookie'
 import { userStore } from "~/store/index";
 import { Notify } from "vant";
 import { storeToRefs } from "pinia";
@@ -43,7 +43,7 @@ service.interceptors.response.use(
         if (error.response && error.response.code !== 200) {
             console.log(error, '错误信息');
 
-            removeToken()
+
             removeName()
             removeAvatar()
             // location.reload()

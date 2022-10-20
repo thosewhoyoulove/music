@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-12 17:02:36
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-12 21:40:17
+ * @LastEditTime: 2022-10-20 20:21:52
 -->
 <script setup lang="ts">
 import { Dialog, Loading, Notify } from "vant";
@@ -31,8 +31,8 @@ const choice = ref(["主页", "动态"]);
 const active = ref(0);
 const gender = ref();
 const age: any = ref(0);
-const signature:any = ref("");
-const events:any = ref([]);
+const signature: any = ref("");
+const events: any = ref([]);
 //个人歌单
 const activeNames: any = ref("创建的歌单");
 const createdList: any = ref([]); //
@@ -47,7 +47,7 @@ onMounted(async () => {
     const res = await getUserAcount(); // 获取账号信息
     console.log(res, "这是用户账号信息");
     // user.value = JSON.parse(localStorage.getItem("userInfo") as string);//获取本地的信息
-    user.value= res
+    user.value = res;
     console.log(user.value, "本地用户信息");
     uid.value = user.value.account.id;
     nickname.value = user.value.profile?.nickname;
@@ -57,7 +57,7 @@ onMounted(async () => {
     userDetail.value = res1;
     createTime.value = formatMsToDate(res1.createTime); // 获取创建时间
     age.value = getAge(res1.createTime); // 获取村龄
-    console.log(userDetail, "用户详情对象");
+    console.log(userDetail.value, "用户详情对象");
     const res2 = await getUserPlaylist(uid.value); // 获取用户歌单
     console.log(uid.value, res2, "用户歌单");
     createdList.value = res2.playlist.filter((item: any) => item.subscribed === false); //获取创建的歌单
@@ -127,14 +127,12 @@ const toDetail = (item: any) => {
     },
   });
 };
-const toUserInfo = () =>{
+const toUserInfo = () => {
   router.push({
-    path:'/UserInfo',
-    query:{
-
-    }
-  })
-}
+    path: "/UserInfo",
+    query: {},
+  });
+};
 </script>
 
 <template>
@@ -173,7 +171,7 @@ const toUserInfo = () =>{
       </div>
 
       <div
-      @click="toUserInfo"
+        @click="toUserInfo"
         class="rounded-2xl items-center flex justify-center border border-hex-ccc w-20 h-7 font-semibold tracking-widest absolute font-sans text-10px top-70% left-50% -translate-x-1/2"
       >
         编辑资料

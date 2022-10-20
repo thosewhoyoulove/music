@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-09 15:26:41
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-20 18:44:38
+ * @LastEditTime: 2022-10-20 20:49:13
 -->
 <script setup lang="ts">
 import { Notify } from "vant";
@@ -54,6 +54,18 @@ onMounted(async () => {
       console.log(AcountRes, "用户账户信息");
       userInfo.updateIsLogin(true);
       userInfo.updateUserInfo(AcountRes);
+      //在登录成功后设置定时器定期使cookie过期
+      setTimeout(() => {
+        localStorage.removeItem("userInfo");
+        localStorage.removeItem("cookie");
+        userInfo.updateIsLogin(false);
+        userInfo.removeUserInfo();
+        store.updateIsShow(store.$state, true); // 修改为暂停图标
+        Notify({ type: "warning", message: "登录已过期，请重新登陆" });
+        router.push({
+          path: "/LoginOrReg",
+        });
+      }, 0.5 * 60 * 1000);
       router.push({
         path: "/",
       });
