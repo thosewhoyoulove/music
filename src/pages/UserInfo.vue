@@ -3,15 +3,16 @@
  * @Author: 曹俊
  * @Date: 2022-10-11 16:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-22 15:40:08
+ * @LastEditTime: 2022-10-22 15:58:00
 -->
 <template>
   <div class="w-100vw h-100vh bg-hex-eee relative">
     <div class="text-hex-eee items-center pt-5">
       <van-cell-group class="title" inset>
-        <van-cell title="头像" title-class="inline-block"
-          ><template #right-icon> <van-icon :name="avatarUrl" /> </template
-        ></van-cell>
+        <van-uploader :after-read="afterRead">
+          <van-cell title="头像" title-class="inline-block"
+            ><template #right-icon><van-icon :name="avatarUrl" /> </template></van-cell
+        ></van-uploader>
       </van-cell-group>
       <van-cell-group class="title" inset title="我的资料">
         <van-cell
@@ -248,6 +249,10 @@ const checkGender = async (gender: any) => {
   }
   birthday.value = formatMsToDate(birthday.value);
 };
+const afterRead = (file: any) => {
+  // 此时可以自行将文件上传至服务器
+  console.log(file);
+};
 </script>
 
 <style scoped>
@@ -269,7 +274,11 @@ const checkGender = async (gender: any) => {
 }
 :deep(.van-cell__title) {
   display: flex;
+  width: 82vw;
   height: 2rem;
   align-items: center;
+}
+:deep(.van-uploader__input) {
+  width: 100vw;
 }
 </style>
