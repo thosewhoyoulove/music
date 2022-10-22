@@ -3,11 +3,16 @@
  * @Author: 曹俊
  * @Date: 2022-10-11 16:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-14 19:58:22
+ * @LastEditTime: 2022-10-22 15:40:08
 -->
 <template>
   <div class="w-100vw h-100vh bg-hex-eee relative">
-    <div class="text-hex-eee items-center">
+    <div class="text-hex-eee items-center pt-5">
+      <van-cell-group class="title" inset>
+        <van-cell title="头像" title-class="inline-block"
+          ><template #right-icon> <van-icon :name="avatarUrl" /> </template
+        ></van-cell>
+      </van-cell-group>
       <van-cell-group class="title" inset title="我的资料">
         <van-cell
           @click="toEditInfo((flag = 0))"
@@ -19,13 +24,27 @@
         ></van-cell>
         <van-cell @click="showCheckBox = true" v-model:value="gender" title="性别" />
         <van-cell
+          v-if="haveBirthday"
           @click="showDatetimePicker = true"
           v-model:value="birthday"
           title="生日"
         />
         <van-cell
+          v-if="!haveBirthday"
+          @click="showDatetimePicker = true"
+          value="未设置"
+          title="生日"
+        />
+        <van-cell
+          v-if="signature.length"
           @click="toEditInfo((flag = 1))"
           v-model:value="signature"
+          title="简介"
+        />
+        <van-cell
+          v-if="!signature.length"
+          @click="toEditInfo((flag = 1))"
+          value="还没有简介"
           title="简介"
         />
       </van-cell-group>
@@ -79,7 +98,9 @@ const router = useRouter();
 const nickname = ref("");
 const gender = ref();
 const birthday = ref("");
+const haveBirthday = ref(false);
 const signature = ref("");
+const avatarUrl = ref("");
 let flag = ref(-1);
 let profile: any = ref({});
 const minDate = new Date(1970, 0, 1);
@@ -177,6 +198,7 @@ onMounted(async () => {
   profile.value = infoRes.profile;
   nickname.value = profile.value.nickname;
   gender.value = profile.value.gender;
+  avatarUrl.value = profile.value.avatarUrl;
   if (gender.value == 0) {
     gender.value = "保密";
   } else if (gender.value == 1) {
@@ -184,7 +206,15 @@ onMounted(async () => {
   } else if (gender.value == 2) {
     gender.value = "女";
   }
+  if (Number(birthday.value) < 0) {
+    haveBirthday.value = false;
+  } else {
+    haveBirthday.value = true;
+  }
+  console.log(haveBirthday.value, "haveBirthday.value的值");
+
   birthday.value = formatMsToDate(profile.value.birthday);
+
   signature.value = profile.value.signature;
 });
 //选择性别
@@ -223,6 +253,7 @@ const checkGender = async (gender: any) => {
 <style scoped>
 :deep(.title) {
   text-align: left;
+  align-items: center;
 }
 :deep(.cell) {
   align-items: center;
@@ -230,5 +261,15 @@ const checkGender = async (gender: any) => {
 
 :deep(.overlay) {
   background-color: rgba(0, 0, 0, 0.3);
+}
+:deep(.van-icon__image) {
+  border-radius: 50%;
+  height: 2rem;
+  width: 2rem;
+}
+:deep(.van-cell__title) {
+  display: flex;
+  height: 2rem;
+  align-items: center;
 }
 </style>
