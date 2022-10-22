@@ -3,13 +3,13 @@
  * @Author: 曹俊
  * @Date: 2022-10-11 16:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-22 15:58:00
+ * @LastEditTime: 2022-10-22 16:58:51
 -->
 <template>
   <div class="w-100vw h-100vh bg-hex-eee relative">
     <div class="text-hex-eee items-center pt-5">
       <van-cell-group class="title" inset>
-        <van-uploader :after-read="afterRead">
+        <van-uploader class="upload" :before-read="beforeRead">
           <van-cell title="头像" title-class="inline-block"
             ><template #right-icon><van-icon :name="avatarUrl" /> </template></van-cell
         ></van-uploader>
@@ -93,7 +93,8 @@
 
 <script setup lang="ts">
 import { Notify, DatetimePicker } from "vant";
-import { getUserAcount, updateUser } from "~/api/user";
+import { getUserAcount, updateUser, uploadAvatar } from "~/api/user";
+import axios from "axios";
 const showDatetimePicker = ref(false);
 const router = useRouter();
 const nickname = ref("");
@@ -249,9 +250,45 @@ const checkGender = async (gender: any) => {
   }
   birthday.value = formatMsToDate(birthday.value);
 };
-const afterRead = (file: any) => {
+//文件上传之前，会触发before-read回调函数，将其中的file传入main函数中，得到当前文件
+// 然后再调用接口上传到服务器，最后接收结果中的URL，再用nexttick渲染到视图中
+const beforeRead = async (file: any) => {
   // 此时可以自行将文件上传至服务器
+  await main(file);
   console.log(file);
+  let res = await upload(file);
+  nextTick(() => {
+    avatarUrl.value = res.data.url;
+  });
+  console.log(res);
+};
+const main = (file: any) => {
+  document.querySelector(".upload").addEventListener(
+    "change",
+    function (e) {
+      console.log(e);
+      let file: any = e.target.files[0];
+      upload(file);
+    },
+    false
+  );
+};
+const upload = async (file: any) => {
+  let cookie: any = localStorage.getItem("cookie");
+  let formData = new FormData();
+  formData.append("imgFile", file);
+  const res = await axios({
+    method: "post",
+    withCredentials: true,
+    url: `https://www.caojunshuaige.top/avatar/upload?cookie=${encodeURIComponent(
+      cookie
+    )}&imgX=0&imgY=0&timestamp=${Date.now()}`,
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+    data: formData,
+  });
+  return res.data;
 };
 </script>
 

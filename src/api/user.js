@@ -210,3 +210,32 @@ export function nicknameCheck(nickname) {
         url: `/nickname/check?nickname=${nickname}&cookie=${encodeURIComponent(cookie)}`,
     })
 }
+// 更新头像
+// 说明: 登录后调用此接口, 使用 'Content-Type': 'multipart/form-data'
+// 上传图片 formData(name 为 'imgFile'), 可更新头像(参考: https: //github.com/Binaryify/NeteaseCloudMusicApi/blob/master/public/avatar_update.html ),支持命令行调用,参考module_example目录下avatar_upload.js
+
+//         可选参数:
+
+//         imgSize: 图片尺寸, 默认为 300
+
+//         imgX: 水平裁剪偏移, 方形图片可不传, 默认为 0 imgY: 垂直裁剪偏移, 方形图片可不传, 默认为 0
+
+//         接口地址: /avatar/upload
+
+//         调用例子: /avatar/upload ? imgSize = 200
+export function uploadAvatar(file, imgSize) {
+    const cookie = localStorage.getItem('cookie')
+    let formData = new FormData()
+    formData.append('imgFile', file)
+
+    return request({
+        data: formData,
+        method: 'post',
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+        url: `/avatar/upload?cookie=${encodeURIComponent(cookie)}&imgSize=200&imgX=0&imgY=0&timestamp=${Date.now()}`,
+    })
+
+
+}

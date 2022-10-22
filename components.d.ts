@@ -19,11 +19,10 @@ declare module '@vue/runtime-core' {
     Swiper: typeof import('./src/components/Swiper.vue')['default']
     TopNav: typeof import('./src/components/TopNav.vue')['default']
     VanActionSheet: typeof import('vant/es')['ActionSheet']
-    VanArea: typeof import('vant/es')['Area']
     VanButton: typeof import('vant/es')['Button']
-    VanCalendar: typeof import('vant/es')['Calendar']
     VanCell: typeof import('vant/es')['Cell']
     VanCellGroup: typeof import('vant/es')['CellGroup']
+    VanCeupllGroup: typeof import('vant/es')['CeupllGroup']
     VanCheckbox: typeof import('vant/es')['Checkbox']
     VanCircle: typeof import('vant/es')['Circle']
     VanCollapse: typeof import('vant/es')['Collapse']
@@ -52,5 +51,6 @@ declare module '@vue/runtime-core' {
     VanTab: typeof import('vant/es')['Tab']
     VanTabs: typeof import('vant/es')['Tabs']
     VanTag: typeof import('vant/es')['Tag']
+    VanUploader: typeof import('vant/es')['Uploader']
   }
 }
