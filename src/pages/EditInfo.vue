@@ -49,14 +49,7 @@
           show-word-limit
         />
       </van-cell-group>
-      <!-- <div>
-        <van-area
-          title="标题"
-          @confirm="onConfirm"
-          :area-list="areaList"
-          value="110101"
-        />
-      </div> -->
+      
       <div
         @click="saveSignature(signature)"
         class="absolute top-50% left-50% -translate-1/2"
@@ -162,9 +155,7 @@ const saveSignature = async (signature: any) => {
     }
   }
 };
-// const onConfirm = (value: number) => {
-//   console.log(value);
-// };
+
 </script>
 
 <style scoped></style>

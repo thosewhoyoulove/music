@@ -37,6 +37,11 @@
           title="生日"
         />
         <van-cell
+          @click="showAreaPicker = true"
+          v-model:value="cityProvice"
+          title="地区"
+        />
+        <van-cell
           v-if="signature.length"
           @click="toEditInfo((flag = 1))"
           v-model:value="signature"
@@ -89,16 +94,30 @@
       <van-button size="mini" round icon="cross" />
     </div>
   </van-overlay>
+  <div class="absolute bottom-0 w-100vw z-1" v-show="showAreaPicker">
+    <van-area
+      title="标题"
+      @confirm="onConfirmArea"
+      @cancel="onCancel"
+      :area-list="areaList"
+      value="110101"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
+import { areaList } from "@vant/area-data";
 import { Notify, DatetimePicker } from "vant";
 import { getUserAcount, updateUser, uploadAvatar } from "~/api/user";
 import axios from "axios";
 const showDatetimePicker = ref(false);
+const showAreaPicker = ref(false);
 const router = useRouter();
 const nickname = ref("");
 const gender = ref();
+const city: any = ref();
+const province: any = ref();
+const cityProvice: any = ref("");
 let sex = ref("");
 const birthday = ref("");
 const haveBirthday = ref(false);
@@ -187,15 +206,25 @@ const onConfirm = async (value: any) => {
 //修改生日点击取消
 const onCancel = () => {
   showDatetimePicker.value = false;
+  showAreaPicker.value = false;
 };
 onMounted(async () => {
+  console.log(areaList, "城市代码");
+  let city_list: any = areaList.city_list;
+  let province_list: any = areaList.province_list;
   let infoRes = await getUserAcount();
   console.log(infoRes, "用户详情");
   profile.value = infoRes.profile;
   nickname.value = profile.value.nickname;
   gender.value = profile.value.gender;
   avatarUrl.value = profile.value.avatarUrl;
-  console.log(gender.value, "gender");
+  city.value = profile.value.city;
+  province.value = profile.value.province;
+  console.log(city_list[city.value], "city");
+  console.log(province_list[province.value], "province");
+  cityProvice.value = province_list[province.value] + city_list[city.value];
+  console.log(cityProvice.value);
+
   if (gender.value == 0) {
     sex.value = "保密";
   } else if (gender.value == 1) {
@@ -284,6 +313,15 @@ const upload = async (file: any) => {
     data: formData,
   });
   return res.data;
+};
+//选择地区
+const onConfirmArea = (value: any) => {
+  nextTick(() => {
+    province.value = value[0];
+    city.value = value[1];
+  });
+  showAreaPicker.value = false;
+  console.log(value[0], value[1], value[2]);
 };
 </script>
 

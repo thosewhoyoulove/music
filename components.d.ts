@@ -19,6 +19,7 @@ declare module '@vue/runtime-core' {
     Swiper: typeof import('./src/components/Swiper.vue')['default']
     TopNav: typeof import('./src/components/TopNav.vue')['default']
     VanActionSheet: typeof import('vant/es')['ActionSheet']
+    VanArea: typeof import('vant/es')['Area']
     VanButton: typeof import('vant/es')['Button']
     VanCell: typeof import('vant/es')['Cell']
     VanCellGroup: typeof import('vant/es')['CellGroup']
