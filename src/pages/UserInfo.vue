@@ -23,7 +23,7 @@
           ><template #right-icon>
             <van-icon name="edit" class="flex item-center" /> </template
         ></van-cell>
-        <van-cell @click="showCheckBox = true" v-model:value="gender" title="性别" />
+        <van-cell @click="showCheckBox = true" v-model:value="sex" title="性别" />
         <van-cell
           v-if="haveBirthday"
           @click="showDatetimePicker = true"
@@ -67,9 +67,9 @@
 
   <van-overlay class="overlay" :show="showCheckBox" @click="showCheckBox = false">
     <div class="flex items-center justify-center w-100vw h-100vh relative">
-      <van-radio-group v-model="gender">
+      <van-radio-group v-model="sex">
         <van-cell-group
-          class="flex-col items-center justify-between text-left w-90vw h-15vh"
+          class="flex-col items-center justify-between text-left w-90vw"
           inset
         >
           <van-cell title="男" clickable @click="checkGender(gender)">
@@ -99,6 +99,7 @@ const showDatetimePicker = ref(false);
 const router = useRouter();
 const nickname = ref("");
 const gender = ref();
+let sex = ref("");
 const birthday = ref("");
 const haveBirthday = ref(false);
 const signature = ref("");
@@ -155,14 +156,7 @@ const formatDate = (birthday: any) =>
   `${birthday.getFullYear()}-${birthday.getMonth() + 1}-${birthday.getDate()}`; //将选择值转化为yy-mm-dd
 //修改生日
 const onConfirm = async (value: any) => {
-  //将汉字转化为代码
-  if (gender.value == "保密") {
-    gender.value = 0;
-  } else if (gender.value == "男") {
-    gender.value = 1;
-  } else if (gender.value == "女") {
-    gender.value = 2;
-  }
+  console.log(gender.value, sex.value);
   console.log(value, "测试"); //Sun Oct 16 2022 00:00:00 GMT+0800 (中国标准时间) '测试'
   console.log(value.valueOf()); //获取指定日期的时间戳:1665849600000
   showCalendar.value = false;
@@ -173,13 +167,13 @@ const onConfirm = async (value: any) => {
     value.valueOf(),
     signature.value
   );
-  //将gender转化为汉字
+  //将gender与sex对应
   if (gender.value == 0) {
-    gender.value = "保密";
+    sex.value = "保密";
   } else if (gender.value == 1) {
-    gender.value = "男";
+    sex.value = "男";
   } else if (gender.value == 2) {
-    gender.value = "女";
+    sex.value = "女";
   }
   if (updateRes.code === 200) {
     Notify({ type: "success", message: "修改成功" });
@@ -201,19 +195,20 @@ onMounted(async () => {
   nickname.value = profile.value.nickname;
   gender.value = profile.value.gender;
   avatarUrl.value = profile.value.avatarUrl;
+  console.log(gender.value, "gender");
   if (gender.value == 0) {
-    gender.value = "保密";
+    sex.value = "保密";
   } else if (gender.value == 1) {
-    gender.value = "男";
+    sex.value = "男";
   } else if (gender.value == 2) {
-    gender.value = "女";
+    sex.value = "女";
   }
   if (Number(birthday.value) < 0) {
     haveBirthday.value = false;
   } else {
     haveBirthday.value = true;
   }
-  console.log(haveBirthday.value, "haveBirthday.value的值");
+  console.log(sex.value, "sex的值");
 
   birthday.value = formatMsToDate(profile.value.birthday);
 

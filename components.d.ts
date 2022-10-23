@@ -22,7 +22,6 @@ declare module '@vue/runtime-core' {
     VanButton: typeof import('vant/es')['Button']
     VanCell: typeof import('vant/es')['Cell']
     VanCellGroup: typeof import('vant/es')['CellGroup']
-    VanCeupllGroup: typeof import('vant/es')['CeupllGroup']
     VanCheckbox: typeof import('vant/es')['Checkbox']
     VanCircle: typeof import('vant/es')['Circle']
     VanCollapse: typeof import('vant/es')['Collapse']
