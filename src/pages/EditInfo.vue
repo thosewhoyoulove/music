@@ -126,7 +126,6 @@ const saveNickname = async (nickname: any, isDuplicated: any) => {
   let infoRes = await getUserAcount();
   let oldNickname = infoRes.profile.nickname;
   if (nickname === oldNickname) {
-    Notify({ type: "success", message: "修改成功" });
     router.back();
   } else {
     //如果该名称可以用,调用接口使其变化
@@ -154,7 +153,6 @@ const saveSignature = async (signature: any) => {
   let infoRes = await getUserAcount();
   let oldSignature = infoRes.profile.signature;
   if (signature === oldSignature) {
-    Notify({ type: "success", message: "修改成功" });
     router.back();
   } else {
     let res = await updateUser(
@@ -168,7 +166,6 @@ const saveSignature = async (signature: any) => {
     if (res.code !== 200) {
       Notify({ type: "warning", message: res.message });
     } else if (res.code === 200) {
-      Notify({ type: "success", message: "修改成功" });
       router.back();
     }
   }

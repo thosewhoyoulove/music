@@ -38,7 +38,7 @@
         />
         <van-cell
           @click="showAreaPicker = true"
-          v-model:value="cityProvice"
+          v-model:value="provinceCity"
           title="地区"
         />
         <van-cell
@@ -117,7 +117,7 @@ const nickname = ref("");
 const gender = ref();
 const province: any = ref();
 const city: any = ref();
-const cityProvice: any = ref("");
+const provinceCity: any = ref("");
 let sex = ref("");
 const birthday = ref("");
 const haveBirthday = ref(false);
@@ -197,7 +197,6 @@ const onConfirm = async (value: any) => {
     sex.value = "女";
   }
   if (updateRes.code === 200) {
-    Notify({ type: "success", message: "修改成功" });
     showDatetimePicker.value = false;
   } else {
     Notify({ type: "warning", message: "系统故障，请稍后再试" });
@@ -224,8 +223,8 @@ onMounted(async () => {
   province.value = profile.value.province;
   console.log(province_list[province.value], "province");
   console.log(city_list[city.value], "city");
-  cityProvice.value = province_list[province.value] + city_list[city.value];
-  console.log(cityProvice.value);
+  provinceCity.value = province_list[province.value] + " " + city_list[city.value];
+  console.log(provinceCity.value);
 
   if (gender.value == 0) {
     sex.value = "保密";
@@ -258,7 +257,6 @@ const checkGender = async (gender: any) => {
   console.log(formatMsToDate(birthday.value.valueOf()));
   if (oldGender == gender) {
     showCheckBox.value = false;
-    Notify({ type: "success", message: "修改成功" });
   } else {
     if (gender == 1) {
       gender = 1;
@@ -273,7 +271,6 @@ const checkGender = async (gender: any) => {
       if (res.code !== 200) {
         Notify({ type: "warning", message: res.message });
       } else if (res.code === 200) {
-        Notify({ type: "success", message: "修改成功" });
       }
     } else if (gender == 2) {
       gender = 2;
@@ -287,8 +284,6 @@ const checkGender = async (gender: any) => {
       );
       if (res.code !== 200) {
         Notify({ type: "warning", message: res.message });
-      } else if (res.code === 200) {
-        Notify({ type: "success", message: "修改成功" });
       }
     }
   }
@@ -335,13 +330,26 @@ const upload = async (file: any) => {
   return res.data;
 };
 //选择地区
-const onConfirmArea = (value: any) => {
+const onConfirmArea = async (value: any) => {
+  let infoRes = await getUserAcount();
+  birthday.value = infoRes.profile.birthday;
   nextTick(() => {
-    province.value = value[0];
-    city.value = value[1];
+    provinceCity.value = value[0].name + " " + value[1].name;
   });
   showAreaPicker.value = false;
-  console.log(value[0], value[1], value[2]);
+  let res = await updateUser(
+    nickname.value,
+    gender.value,
+    birthday.value,
+    signature.value,
+    province.value,
+    city.value
+  );
+  console.log(res);
+  if (res.code !== 200) {
+    Notify({ type: "warning", message: res.message });
+  }
+  birthday.value = formatMsToDate(birthday.value);
 };
 </script>
 
