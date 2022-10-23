@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-17 15:53:02
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-20 19:41:16
+ * @LastEditTime: 2022-10-23 19:40:43
  */
 import request from '~/utils/request'
 import { storeToRefs } from "pinia";
@@ -189,11 +189,11 @@ export function isFollow(id, t) {
 
 // 调用例子: /user/update ? gender = 0 & signature = 测试签名 & city = 440300 & nickname = binary & birthday = 1525918298004  & province = 440000
 
-export function updateUser(nickname, gender, birthday, signature) {
+export function updateUser(nickname, gender, birthday, signature, province, city) {
     const cookie = localStorage.getItem('cookie')
     return request({
         method: 'post',
-        url: `/user/update?gender=${gender}&signature=${signature}&nickname=${nickname}&birthday=${birthday}&cookie=${encodeURIComponent(cookie)}`,
+        url: `/user/update?gender=${gender}&signature=${signature}&nickname=${nickname}&birthday=${birthday}&province=${province}&city=${city}&cookie=${encodeURIComponent(cookie)}`,
     })
 }
 // 重复昵称检测

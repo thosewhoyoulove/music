@@ -49,7 +49,7 @@
           show-word-limit
         />
       </van-cell-group>
-      
+
       <div
         @click="saveSignature(signature)"
         class="absolute top-50% left-50% -translate-1/2"
@@ -71,6 +71,8 @@ let nickname = ref();
 let gender = ref();
 let birthday = ref("");
 let signature = ref("");
+let province: any = ref();
+let city: any = ref();
 let msg = ref("");
 let candidateNicknames: any = ref([]);
 let isDuplicated: any = ref(false);
@@ -83,6 +85,8 @@ onMounted(async () => {
   gender.value = infoRes.profile.gender;
   birthday.value = infoRes.profile.birthday;
   signature.value = infoRes.profile.signature;
+  city.value = infoRes.profile.city;
+  province.value = infoRes.profile.province;
 });
 //进入修改昵称界面
 if (flag == 0) {
@@ -127,7 +131,14 @@ const saveNickname = async (nickname: any, isDuplicated: any) => {
   } else {
     //如果该名称可以用,调用接口使其变化
     if (!isDuplicated) {
-      let res = await updateUser(nickname, gender.value, birthday.value, signature.value);
+      let res = await updateUser(
+        nickname,
+        gender.value,
+        birthday.value,
+        signature.value,
+        province.value,
+        city.value
+      );
       if (res.code !== 200) {
         Notify({ type: "warning", message: res.message });
       } else if (res.code === 200) {
@@ -146,7 +157,14 @@ const saveSignature = async (signature: any) => {
     Notify({ type: "success", message: "修改成功" });
     router.back();
   } else {
-    let res = await updateUser(nickname.value, gender.value, birthday.value, signature);
+    let res = await updateUser(
+      nickname.value,
+      gender.value,
+      birthday.value,
+      signature,
+      province.value,
+      city.value
+    );
     if (res.code !== 200) {
       Notify({ type: "warning", message: res.message });
     } else if (res.code === 200) {
@@ -155,7 +173,6 @@ const saveSignature = async (signature: any) => {
     }
   }
 };
-
 </script>
 
 <style scoped></style>

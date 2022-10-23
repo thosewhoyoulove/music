@@ -77,12 +77,12 @@
           class="flex-col items-center justify-between text-left w-90vw"
           inset
         >
-          <van-cell title="男" clickable @click="checkGender(gender)">
+          <van-cell title="男" clickable @click="checkGender((gender = 1))">
             <template #right-icon>
               <van-radio name="男" />
             </template>
           </van-cell>
-          <van-cell title="女" clickable @click="checkGender(gender)">
+          <van-cell title="女" clickable @click="checkGender((gender = 2))">
             <template #right-icon>
               <van-radio name="女" />
             </template>
@@ -115,8 +115,8 @@ const showAreaPicker = ref(false);
 const router = useRouter();
 const nickname = ref("");
 const gender = ref();
-const city: any = ref();
 const province: any = ref();
+const city: any = ref();
 const cityProvice: any = ref("");
 let sex = ref("");
 const birthday = ref("");
@@ -184,7 +184,9 @@ const onConfirm = async (value: any) => {
     nickname.value,
     gender.value,
     value.valueOf(),
-    signature.value
+    signature.value,
+    province.value,
+    city.value
   );
   //将gender与sex对应
   if (gender.value == 0) {
@@ -220,8 +222,8 @@ onMounted(async () => {
   avatarUrl.value = profile.value.avatarUrl;
   city.value = profile.value.city;
   province.value = profile.value.province;
-  console.log(city_list[city.value], "city");
   console.log(province_list[province.value], "province");
+  console.log(city_list[city.value], "city");
   cityProvice.value = province_list[province.value] + city_list[city.value];
   console.log(cityProvice.value);
 
@@ -245,8 +247,12 @@ onMounted(async () => {
 });
 //选择性别
 const checkGender = async (gender: any) => {
+  console.log(gender, "gender的值");
+
   let infoRes = await getUserAcount();
   let oldGender = infoRes.profile.gender;
+  console.log(oldGender, "oldGender");
+
   birthday.value = infoRes.profile.birthday;
   console.log(birthday.value.valueOf());
   console.log(formatMsToDate(birthday.value.valueOf()));
@@ -254,17 +260,31 @@ const checkGender = async (gender: any) => {
     showCheckBox.value = false;
     Notify({ type: "success", message: "修改成功" });
   } else {
-    if (gender == "男") {
+    if (gender == 1) {
       gender = 1;
-      let res = await updateUser(nickname.value, gender, birthday.value, signature.value);
+      let res = await updateUser(
+        nickname.value,
+        gender,
+        birthday.value,
+        signature.value,
+        province.value,
+        city.value
+      );
       if (res.code !== 200) {
         Notify({ type: "warning", message: res.message });
       } else if (res.code === 200) {
         Notify({ type: "success", message: "修改成功" });
       }
-    } else if (gender == "女") {
+    } else if (gender == 2) {
       gender = 2;
-      let res = await updateUser(nickname.value, gender, birthday.value, signature.value);
+      let res = await updateUser(
+        nickname.value,
+        gender,
+        birthday.value,
+        signature.value,
+        province.value,
+        city.value
+      );
       if (res.code !== 200) {
         Notify({ type: "warning", message: res.message });
       } else if (res.code === 200) {
