@@ -68,9 +68,14 @@ const onDialogConfirm = () => {
   }, 1000);
 };
 //彩蛋
-const caidan = () =>{
-  Notify({ type: 'success', message: '祝你开心每一天' });
-}
+const caidan = () => {
+  Notify({ type: "success", message: "祝你开心每一天" });
+};
+const toMyMessage = () => {
+  router.push({
+    path: "/Message",
+  });
+};
 </script>
 
 <template>
@@ -119,12 +124,15 @@ const caidan = () =>{
         <div
           class="flex-col w-100% text-sm text-left p-2 mt-5 rounded-lg items-center bg-white"
         >
-          <div class="flex justify-between border-b border-hex-ccc py-1">
+          <div
+            @click="toMyMessage"
+            class="flex justify-between border-b border-hex-ccc py-1"
+          >
             <div class="flex">
               <div class="pr-1">
                 <van-icon name="envelop-o" />
               </div>
-              <div class="">你好</div>
+              <div class="flex">我的消息</div>
             </div>
             <div class="flex">
               <van-icon name="arrow" />
@@ -280,7 +288,7 @@ const caidan = () =>{
         />
       </div>
     </van-popup>
-    <div class="flex mx-auto mt-7 justify-between items-center text-md font-500 ">
+    <div class="flex mx-auto mt-7 justify-between items-center text-md font-500">
       <van-tabs v-model:active="activeName" background="#F6F7F9" sticky>
         <van-tab title="我的" name="a">
           <div class="w-100vw">
@@ -300,7 +308,7 @@ const caidan = () =>{
         </van-tab>
         <van-tab title="声明" name="c">
           <div class="w-100vw">
-          <read></read>
+            <read></read>
           </div>
         </van-tab>
         <!-- <van-tab title="视频" name="d">
