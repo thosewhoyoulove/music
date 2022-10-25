@@ -247,7 +247,7 @@ const toUserInfo = () => {
 
           <div
             v-show="active == 1"
-            class="bg-white rounded-lg relative pl-3 w-100% text-left"
+            class="bg-white w-auto rounded-lg relative w-100% text-center"
           >
             <van-loading
               v-show="showLoading"
@@ -259,7 +259,12 @@ const toUserInfo = () => {
             >
               加载中...
             </van-loading>
+            <div class="bg-hex-f6f7f9" v-show="!showLoading">
+              <div v-if="!events.length"></div>
+              暂无动态
+            </div>
             <ul
+              v-if="events.length"
               v-for="(item, index) in events"
               :key="index"
               class="mt-2 break-all relative pt-5 pb-3"
