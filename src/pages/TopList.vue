@@ -7,10 +7,8 @@
 -->
 <script setup lang="ts">
 import { getTopListDetail } from "~/api/TopList";
-import { useStore } from "~/store/index";
-const store = useStore();
 const loading = ref(true);
-const list = ref([]);
+const list: any = ref([]);
 const router = useRouter();
 onMounted(async () => {
   const res = await getTopListDetail();
@@ -18,7 +16,7 @@ onMounted(async () => {
   loading.value = false;
   console.log(list.value, "所有榜单内容摘要");
 });
-const toTopDetail = (item, index) => {
+const toTopDetail = (item: any, index: any) => {
   router.push({
     path: "/TopListDetail",
     query: {
@@ -44,11 +42,7 @@ const toTopDetail = (item, index) => {
         alt="这是排行榜官方榜的封面"
       />
       <div class="flex-col text-left items-center text-12px font-600 ml-1 py-1">
-        <ul
-          v-for="(item, index) in list[index].tracks"
-          :key="index"
-          class="py-.5 pt-1"
-        >
+        <ul v-for="(item, index) in list[index].tracks" :key="index" class="py-.5 pt-1">
           <div class="flex">
             <div class="w-3 text-center">{{ index + 1 }}.</div>
             <div class="text-style">{{ item.first }} - {{ item.second }}</div>

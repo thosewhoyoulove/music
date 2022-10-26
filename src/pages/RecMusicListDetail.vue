@@ -38,7 +38,7 @@ onMounted(async () => {
     finished.value = true;
   }
 });
-const filter = (num:any) => {
+const filter = (num: any) => {
   if (num > 100000000) return `${(num / 100000000).toFixed(0)}亿`;
   else if (num > 10000) return `${(num / 10000).toFixed(0)}万`;
 };
@@ -72,7 +72,7 @@ const toCommentDetail = () => {
   });
 };
 //
-const filterTotal = (num) => {
+const filterTotal = (num: any) => {
   if (num > 1000000) return "100w+";
   else if (num > 100000) return "10w+";
   else if (num > 10000) return "1w+";
