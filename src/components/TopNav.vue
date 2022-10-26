@@ -10,13 +10,15 @@ import { storeToRefs } from "pinia";
 import { Dialog, Notify } from "vant";
 import { getSearchKeyWord } from "~/api/Search";
 import { useStore, userStore } from "~/store/index";
+import { getPrivateMsg } from "~/api/message";
 const VanDialog = Dialog.Component;
 const router = useRouter();
 const store = useStore();
 const userInfo = userStore();
 const { isFooterShow } = storeToRefs(store);
-const { user } = storeToRefs(userInfo); // 获得用户信息
+const { user }: any = storeToRefs(userInfo); // 获得用户信息
 const cookie = ref(localStorage.getItem("cookie"));
+let newMsgCount = ref(0);
 // 弹出框是否展示
 const show = ref(false);
 // 搜索建议关键词
@@ -25,13 +27,17 @@ const realkeyword = ref(""); // 搜索关键词
 // 默认展示发现tab
 const activeName = ref("b");
 onMounted(async () => {
+  let msgRes = await getPrivateMsg(10);
+  console.log(msgRes, "总的");
+
+  newMsgCount.value = msgRes.newMsgCount;
   const res = await getSearchKeyWord();
   isFooterShow.value = true;
   console.log(res.data);
   showKeyword.value = res.data.showKeyword;
   realkeyword.value = res.data.realkeyword;
-  console.log(JSON.parse(localStorage.getItem("userInfo")), "解析后的数据");
-  if (user.value) user.value = JSON.parse(localStorage.getItem("userInfo"));
+  console.log(JSON.parse(localStorage.getItem("userInfo") as any), "解析后的数据");
+  if (user.value) user.value = JSON.parse(localStorage.getItem("userInfo") as any);
 });
 const toSearch = () => {
   router.push({
@@ -134,8 +140,16 @@ const toMyMessage = () => {
               </div>
               <div class="flex">我的消息</div>
             </div>
-            <div class="flex">
-              <van-icon name="arrow" />
+            <div class="flex items-center">
+              <div
+                v-if="newMsgCount !== 0"
+                class="flex bg-hex-f00 text-hex-fff scale-80 rounded-full w-6 text-center"
+              >
+                <div class="w-100% text-center">{{ newMsgCount }}</div>
+              </div>
+              <div class="flex items-center">
+                <van-icon name="arrow" />
+              </div>
             </div>
           </div>
           <div class="flex justify-between border-b border-hex-ccc py-1">
@@ -145,18 +159,18 @@ const toMyMessage = () => {
               </div>
               <div>写点什么好呢</div>
             </div>
-            <div class="flex">
+            <div class="flex items-center">
               <van-icon name="arrow" />
             </div>
           </div>
-          <div class="flex justify-between border-b border-hex-ccc py-1">
+          <div class="flex justify-between py-1">
             <div class="flex">
               <div class="pr-1">
                 <van-icon name="user-circle-o" />
               </div>
               <div>那就祝你开心每一天吧</div>
             </div>
-            <div class="flex">
+            <div class="flex items-center">
               <van-icon name="arrow" />
             </div>
           </div>
@@ -171,7 +185,7 @@ const toMyMessage = () => {
               </div>
               <div class="">呜呜呜</div>
             </div>
-            <div class="flex">
+            <div class="flex items-center">
               <van-icon name="arrow" />
             </div>
           </div>
@@ -182,18 +196,18 @@ const toMyMessage = () => {
               </div>
               <div>今天是疯狂星期四</div>
             </div>
-            <div class="flex">
+            <div class="flex items-center">
               <van-icon name="arrow" />
             </div>
           </div>
-          <div class="flex justify-between border-b border-hex-ccc py-1">
+          <div class="flex justify-between py-1">
             <div class="flex">
               <div class="pr-1">
                 <van-icon name="user-circle-o" />
               </div>
               <div>我很疯狂</div>
             </div>
-            <div class="flex">
+            <div class="flex items-center">
               <van-icon name="arrow" />
             </div>
           </div>
@@ -206,9 +220,9 @@ const toMyMessage = () => {
               <div class="pr-1">
                 <van-icon name="envelop-o" />
               </div>
-              <div class="">别点我</div>
+              <div>别点我</div>
             </div>
-            <div class="flex">
+            <div class="flex items-center">
               <van-icon name="arrow" />
             </div>
           </div>
@@ -219,18 +233,18 @@ const toMyMessage = () => {
               </div>
               <div>点了也没用</div>
             </div>
-            <div class="flex">
+            <div class="flex items-center">
               <van-icon name="arrow" />
             </div>
           </div>
-          <div @click="caidan" class="flex justify-between border-b border-hex-ccc py-1">
+          <div @click="caidan" class="flex justify-between py-1">
             <div class="flex">
               <div class="pr-1">
                 <van-icon name="user-circle-o" />
               </div>
               <div>点击我</div>
             </div>
-            <div class="flex">
+            <div class="flex items-center">
               <van-icon name="arrow" />
             </div>
           </div>
@@ -245,7 +259,7 @@ const toMyMessage = () => {
               </div>
               <div class="">马上就要国庆咯</div>
             </div>
-            <div class="flex">
+            <div class="flex items-center">
               <van-icon name="arrow" />
             </div>
           </div>
@@ -256,18 +270,18 @@ const toMyMessage = () => {
               </div>
               <div>放几天假好呢</div>
             </div>
-            <div class="flex">
+            <div class="flex items-center">
               <van-icon name="arrow" />
             </div>
           </div>
-          <div class="flex justify-between border-b border-hex-ccc py-1">
+          <div class="flex justify-between py-1">
             <div class="flex">
               <div class="pr-1">
                 <van-icon name="user-circle-o" />
               </div>
               <div>那就七天吧</div>
             </div>
-            <div class="flex">
+            <div class="flex items-center">
               <van-icon name="arrow" />
             </div>
           </div>
