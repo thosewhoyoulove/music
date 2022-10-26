@@ -12,7 +12,7 @@
     finished-text="没有更多了"
     @load="onLoad"
     class="pb-3"
-    ><div v-for="(item, index) in msgs" :key="index" class="flex w-100%">
+    ><div v-for="(item, index) in msgs" :key="index" class="flex w-100vw">
       <div class="relative">
         <img class="rounded-full w-10 h-10 m-3" :src="item?.fromUser?.avatarUrl" alt="" />
         <img
@@ -22,7 +22,7 @@
           alt=""
         />
       </div>
-      <div class="col h-10 w-15.625rem text-left ml-1 mt-3 relative">
+      <div class="col h-10 w-100% text-left ml-1 mt-3 relative">
         <div class="flex w-60vw text-style">
           <div v-if="item.fromUser.remarkName" class="text-sm">
             {{ item.fromUser.remarkName }}
@@ -33,9 +33,15 @@
           <div class="scale-70 absolute top-0 right-0">
             {{ formatMsToDate(item.lastMsgTime) }}
           </div>
+          <div
+            v-if="item.newMsgCount !== 0"
+            class="flex bg-hex-f00 text-hex-fff scale-60 rounded-full w-6 text-center absolute -bottom-2 right-3"
+          >
+            <div class="w-100% text-center">{{ item.newMsgCount }}</div>
+          </div>
         </div>
 
-        <div class="text-style scale-80 -ml-7">
+        <div class="text-style text-xs mt-2 pr-6">
           {{ JSON.parse(item.lastMsg).msg }}
         </div>
       </div>
@@ -54,6 +60,7 @@ const finished = ref(false); //是否结束
 let msgs: any = ref([]); //所有的消息数组
 let limit = ref(10);
 let more: any = ref(false);
+let newMsgCount = ref(0);
 // let lastMsg: any = ref({});
 onMounted(async () => {
   isFooterShow.value = false;
