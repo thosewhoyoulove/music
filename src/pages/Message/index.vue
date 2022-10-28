@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-10-25 20:46:43
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-26 17:01:13
+ * @LastEditTime: 2022-10-28 19:55:46
 -->
 <template>
   <van-list
@@ -12,7 +12,12 @@
     finished-text="没有更多了"
     @load="onLoad"
     class="pb-3"
-    ><div v-for="(item, index) in msgs" :key="index" class="flex w-100vw">
+    ><div
+      v-for="(item, index) in msgs"
+      :key="index"
+      class="flex w-100vw"
+      @click="toMsgDetail(item)"
+    >
       <div class="relative">
         <img class="rounded-full w-10 h-10 m-3" :src="item?.fromUser?.avatarUrl" alt="" />
         <img
@@ -52,8 +57,10 @@
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { useStore } from "~/store/index";
+
 import { getPrivateMsg } from "~/api/message";
 const store = useStore();
+const router = useRouter();
 const { isFooterShow } = storeToRefs(store);
 const listLoading = ref(false); //下拉刷新加载提示
 const finished = ref(false); //是否结束
@@ -64,7 +71,6 @@ let newMsgCount = ref(0);
 // let lastMsg: any = ref({});
 onMounted(async () => {
   isFooterShow.value = false;
-
   console.log(msgs.value);
 });
 //注册时间
@@ -97,6 +103,14 @@ const onLoad = async () => {
   if (more.value == false) {
     finished.value = true;
   }
+};
+const toMsgDetail = (item: any) => {
+  router.push({
+    path: "Message/msgDetail",
+    query: {
+      uid: item.fromUser.userId,
+    },
+  });
 };
 </script>
 
