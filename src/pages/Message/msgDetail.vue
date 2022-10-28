@@ -1,0 +1,159 @@
+<!--
+ * @Description: 
+ * @Author: 曹俊
+ * @Date: 2022-10-28 16:18:24
+ * @LastEditors: 曹俊
+ * @LastEditTime: 2022-10-28 21:06:00
+-->
+<template>
+  <div class="w-100vw bg-hex-ddd" style="min-height: calc(100vh - 100px)">
+    <van-list
+      v-model:loading="listLoading"
+      :finished="finished"
+      @load="onLoad"
+      direction="up"
+      class="p-2 pb-20"
+    >
+      <div v-for="(item, index) in msgs" :key="index" class="flex-col-reverse w-100%">
+        <div class="scale-50">{{ formatMsToDate(item.time) }}</div>
+        <div :class="[item.fromUser.userId == id ? 'avatar-right' : 'avatar-left']">
+          <img class="w-7 h-7 rounded-full" :src="item.fromUser.avatarUrl" alt="" />
+          <div
+            style="
+              position: relative;
+              font-size: 0.75rem;
+              padding-left: 0.5rem;
+              word-break: break-all;
+              --tw-bg-opacity: 1;
+              background-color: rgba(255, 255, 255, var(--tw-bg-opacity));
+              border-radius: 0.5rem;
+              width: 77vw;
+            "
+            :class="[item.fromUser.userId == id ? 'word-right' : 'word-left']"
+          >
+            <div
+              :class="[item.fromUser.userId == id ? 'sharp-right' : 'sharp-left']"
+            ></div>
+            <div class="mx-2 my-1">
+              {{ JSON.parse(item.msg).msg }}
+            </div>
+          </div>
+        </div>
+      </div></van-list
+    >
+    <div class="fixed mr-1.7 right-4px bottom-40px" @click="toBottom">
+      <van-icon size="10px" name="arrow-down" />
+    </div>
+  </div>
+</template>
+
+<script lang="ts" setup>
+import { storeToRefs } from "pinia";
+import { useStore } from "~/store/index";
+import { getUserAcount } from "~/api/user";
+import { getMsgDetail } from "~/api/message";
+const store = useStore();
+const { isFooterShow } = storeToRefs(store);
+const route = useRoute();
+let uid = parseInt(route.query.uid as any);
+let id = ref(0);
+let limit = ref(30);
+let msgs: any = ref([]); //所有的消息数组
+let more: any = ref(false);
+const listLoading = ref(false); //下拉刷新加载提示
+const finished = ref(false); //是否结束
+onMounted(async () => {
+  let res = await getUserAcount();
+  console.log(res, "用户信息");
+  id.value = res.profile.userId;
+  isFooterShow.value = false;
+  window.scrollTo({
+    top: Math.max(document.body.scrollHeight, document.documentElement.scrollHeight),
+    behavior: "smooth",
+  });
+});
+//注册时间
+const addZero = (num: any) => {
+  if (parseInt(num) < 10) num = `0${num}`;
+  return num;
+};
+//格式化时间
+const formatMsToDate = (ms: any) => {
+  if (ms) {
+    const oDate = new Date(ms);
+    const oYear = oDate.getFullYear();
+    const oMonth = oDate.getMonth() + 1;
+    const oDay = oDate.getDay();
+    const oHour = oDate.getHours();
+    const oMinute = oDate.getMinutes();
+    const oTime = `${oYear}年${addZero(oMonth)}月${addZero(oDay)}日 ${addZero(
+      oHour
+    )}:${addZero(oMinute)}`;
+    return oTime;
+  } else {
+    return "";
+  }
+};
+const onLoad = async () => {
+  //最开始自动加载
+  console.log("进入了加载");
+  limit.value += 10;
+  let res = await getMsgDetail(uid, limit.value);
+  console.log(JSON.parse(res.msgs[0].msg).msg);
+  console.log(res, "新加载的");
+  msgs.value = res.msgs.reverse();
+  more.value = res.more;
+  listLoading.value = false;
+  if (more.value == false) {
+    finished.value = true;
+  }
+};
+const toBottom = () => {
+  window.scrollTo({
+    top: Math.max(document.body.scrollHeight, document.documentElement.scrollHeight),
+    behavior: "smooth",
+  });
+};
+//通过判断自己的id与发消息的id是否一直来判断最右边
+</script>
+
+<style lang="css" scoped>
+/* .space {
+  overflow: scroll;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-items: first baseline;
+} */
+.sharp-left {
+  position: absolute;
+  margin-left: 2rem;
+  top: 6px;
+  left: -40px;
+  border-width: 4px;
+  border-style: solid;
+  border-color: transparent #fff transparent transparent;
+}
+.sharp-right {
+  position: absolute;
+  top: 6px;
+  right: -8px;
+  border-width: 4px;
+  border-style: solid;
+  border-color: transparent transparent transparent#fff;
+}
+.avatar-left {
+  display: flex;
+}
+.avatar-right {
+  display: flex;
+  flex-direction: row-reverse;
+}
+.word-left {
+  text-align: left;
+  margin-left: 0.5rem;
+}
+.word-right {
+  text-align: right;
+  margin-right: 0.5rem;
+}
+</style>
