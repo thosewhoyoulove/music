@@ -12,7 +12,8 @@
       :finished="finished"
       @load="onLoad"
       direction="down"
-      class="p-2 pb-20 flex flex-col-reverse overflow-scroll"
+      :immediate-check="false"
+      class="p-2 flex flex-col-reverse overflow-scroll h-95vh"
     >
       <div v-for="(item, index) in msgs" :key="index" class="w-100%">
         <div class="scale-50">{{ formatMsToDate(item.time) }}</div>
@@ -43,9 +44,9 @@
         </div>
       </div></van-list
     >
-    <div class="fixed mr-1.7 right-4px bottom-42px" @click="toBottom">
+    <!-- <div class="fixed mr-1.7 right-4px bottom-42px" @click="toBottom">
       <van-icon size="10px" name="arrow-down" />
-    </div>
+    </div> -->
   </div>
   <div class="bg-hex-fff h-8vh fixed bottom-0 w-100% flex justify-between items-center">
     <van-field
@@ -72,28 +73,29 @@ const route = useRoute();
 let uid = parseInt(route.query.uid as any); //对方id
 //通过判断自己的id与发消息的id是否一致来判断左边还是右边
 let id = ref(0); //自己id
-let limit = ref(10);
+let limit = ref(5);
 let msgs: any = ref([] as any[]); //所有的消息数组
 let more: any = ref(false);
 const listLoading = ref(false); //下拉刷新加载提示
 const finished = ref(false); //是否结束
 let message = ref("");
-let avatarUrl = ref("");
+
 onMounted(async () => {
   isFooterShow.value = false;
 
   let res = await getUserAcount();
   console.log(res, "用户信息");
   id.value = res.profile.userId;
-  avatarUrl.value = res.profile.avatarUrl;
+
   let res2 = await getMsgDetail(uid, limit.value);
-  window.scrollTo({
-    top: Math.max(document.body.scrollHeight, document.documentElement.scrollHeight),
-    behavior: "smooth",
-  });
+  // window.scrollTo({
+  //   top: Math.max(document.body.scrollHeight, document.documentElement.scrollHeight),
+  //   behavior: "smooth",
+  // });
   console.log(JSON.parse(res2.msgs[0].msg).msg);
   console.log(res2, "新加载的");
   msgs.value = res2.msgs;
+  onLoad();
 });
 //注册时间
 const addZero = (num: any) => {
@@ -120,7 +122,7 @@ const formatMsToDate = (ms: any) => {
 const onLoad = async () => {
   //最开始自动加载
   console.log("进入了加载");
-  limit.value += 10;
+  limit.value += 5;
   let res = await getMsgDetail(uid, limit.value);
   console.log(JSON.parse(res.msgs[0].msg).msg);
   console.log(res, "新加载的");
@@ -131,12 +133,14 @@ const onLoad = async () => {
     finished.value = true;
   }
 };
-const toBottom = () => {
-  window.scrollTo({
-    top: Math.max(document.body.scrollHeight, document.documentElement.scrollHeight),
-    behavior: "smooth",
-  });
-};
+// const toBottom = () => {
+//   console.log(111);
+
+//   window.scrollTo({
+//     top: Math.max(document.body.scrollHeight, document.documentElement.scrollHeight),
+//     behavior: "smooth",
+//   });
+// };
 const sendAMessage = async (msg: any, uid: any) => {
   message.value = "";
   console.log(msg, uid);
