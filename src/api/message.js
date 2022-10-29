@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-10-25 20:43:11
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-28 16:33:58
+ * @LastEditTime: 2022-10-29 15:45:47
  */
 import request from '~/utils/request'
 // 通知 - 私信
@@ -43,5 +43,24 @@ export function getMsgDetail(uid, limit) {
     return request({
         method: 'post',
         url: `/msg/private/history?uid=${uid}&limit=${limit}&cookie=${encodeURIComponent(cookie)}`,
+    })
+}
+// 发送私信
+// 说明: 登录后调用此接口, 传入用户 id 和要发送的信息, 可以发送私信, 返回内容为历史私信, 包含带歌单的私信信息(注: 不能发送私信给自己)
+
+// 必选参数:
+
+//     user_ids: 用户 id, 多个需用逗号隔开
+
+// msg: 要发送的信息
+
+// 接口地址: /send/text
+
+// 调用例子: /send/text ? user_ids = 32953014 & msg = test, /send/text ? user_ids = 32953014, 475625142 & msg = test5142 & msg = test
+export function sendMsg(user_ids, msg) {
+    const cookie = localStorage.getItem('cookie')
+    return request({
+        method: 'post',
+        url: `/send/text?user_ids=${user_ids}&msg=${msg}&cookie=${encodeURIComponent(cookie)}`,
     })
 }

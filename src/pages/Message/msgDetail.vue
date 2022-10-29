@@ -16,27 +16,28 @@
     >
       <div v-for="(item, index) in msgs" :key="index" class="w-100%">
         <div class="scale-50">{{ formatMsToDate(item.time) }}</div>
-        <div :class="[item.fromUser.userId == id ? 'avatar-right' : 'avatar-left']">
-          <img class="w-7 h-7 rounded-full" :src="item.fromUser.avatarUrl" alt="" />
+        <div :class="[item?.fromUser?.userId == id ? 'avatar-right' : 'avatar-left']">
+          <img class="w-7 h-7 rounded-full" :src="item?.fromUser?.avatarUrl" alt="" />
           <div
             style="
               position: relative;
               font-size: 0.75rem;
-              padding-left: 0.5rem;
               word-break: break-all;
               --tw-bg-opacity: 1;
               background-color: rgba(255, 255, 255, var(--tw-bg-opacity));
               border-radius: 0.5rem;
-              width: 77vw;
+              width: auto;
+              max-width: 77vw;
               margin-bottom: 1.5rem;
+              word-break: break-all;
             "
-            :class="[item.fromUser.userId == id ? 'word-right' : 'word-left']"
+            :class="[item?.fromUser?.userId == id ? 'word-right' : 'word-left']"
           >
             <div
-              :class="[item.fromUser.userId == id ? 'sharp-right' : 'sharp-left']"
+              :class="[item?.fromUser?.userId == id ? 'sharp-right' : 'sharp-left']"
             ></div>
-            <div class="mx-2 my-1">
-              {{ JSON.parse(item.msg).msg }}
+            <div class="mx-1 my-1 px-1">
+              {{ JSON.parse(item?.msg)?.msg }}
             </div>
           </div>
         </div>
@@ -47,9 +48,11 @@
     </div>
   </div>
   <div class="bg-hex-fff h-8vh fixed bottom-0 w-100% flex justify-between items-center">
-    <van-field v-model="sendMsg" clearable placeholder="发送消息" />
+    <van-field v-model="message" clearable placeholder="发送消息" />
     <van-icon class="mx-2" name="add-o" />
-    <div class="text-left text-xs flex w-10">发送</div>
+    <div @click="sendAMessage(message, uid)" class="text-left text-xs flex w-10">
+      发送
+    </div>
   </div>
 </template>
 
@@ -57,24 +60,27 @@
 import { storeToRefs } from "pinia";
 import { useStore } from "~/store/index";
 import { getUserAcount } from "~/api/user";
-import { getMsgDetail } from "~/api/message";
+import { getMsgDetail, sendMsg } from "~/api/message";
 const store = useStore();
 const { isFooterShow } = storeToRefs(store);
 const route = useRoute();
-let uid = parseInt(route.query.uid as any);
-let id = ref(0);
+let uid = parseInt(route.query.uid as any); //对方id
+//通过判断自己的id与发消息的id是否一致来判断左边还是右边
+let id = ref(0); //自己id
 let limit = ref(10);
-let msgs: any = ref([]); //所有的消息数组
+let msgs: any = ref([] as any[]); //所有的消息数组
 let more: any = ref(false);
 const listLoading = ref(false); //下拉刷新加载提示
 const finished = ref(false); //是否结束
-let sendMsg = ref("");
+let message = ref("");
+let avatarUrl = ref("");
 onMounted(async () => {
   isFooterShow.value = false;
 
   let res = await getUserAcount();
   console.log(res, "用户信息");
   id.value = res.profile.userId;
+  avatarUrl.value = res.profile.avatarUrl;
   let res2 = await getMsgDetail(uid, limit.value);
   window.scrollTo({
     top: Math.max(document.body.scrollHeight, document.documentElement.scrollHeight),
@@ -126,7 +132,17 @@ const toBottom = () => {
     behavior: "smooth",
   });
 };
-//通过判断自己的id与发消息的id是否一直来判断最右边
+const sendAMessage = async (message: any, uid: any) => {
+  console.log(message, uid);
+  let res = await sendMsg(uid, message);
+
+  console.log(res, "发消息");
+  message = "";
+  nextTick(() => {
+    msgs.value.unshift(res.newMsgs[0]);
+  });
+  console.log(msgs.value);
+};
 </script>
 
 <style lang="css" scoped>
