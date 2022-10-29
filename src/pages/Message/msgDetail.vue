@@ -48,9 +48,14 @@
     </div>
   </div>
   <div class="bg-hex-fff h-8vh fixed bottom-0 w-100% flex justify-between items-center">
-    <van-field v-model="message" clearable placeholder="发送消息" />
+    <van-field
+      v-model="message"
+      clearable
+      placeholder="发送消息"
+      @keyup.enter="sendAMessage(message, uid)"
+    />
     <van-icon class="mx-2" name="add-o" />
-    <div @click="sendAMessage(message, uid)" class="text-left text-xs flex w-10">
+    <div @click.enter="sendAMessage(message, uid)" class="text-left text-xs flex w-10">
       发送
     </div>
   </div>
@@ -132,12 +137,13 @@ const toBottom = () => {
     behavior: "smooth",
   });
 };
-const sendAMessage = async (message: any, uid: any) => {
-  console.log(message, uid);
-  let res = await sendMsg(uid, message);
+const sendAMessage = async (msg: any, uid: any) => {
+  message.value = "";
+  console.log(msg, uid);
+  let res = await sendMsg(uid, msg);
 
   console.log(res, "发消息");
-  message = "";
+
   nextTick(() => {
     msgs.value.unshift(res.newMsgs[0]);
   });
