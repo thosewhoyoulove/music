@@ -16,7 +16,7 @@
       v-for="(item, index) in msgs"
       :key="index"
       class="flex w-100vw"
-      @click="toMsgDetail(item)"
+      @click="toMsgDetail(item, index)"
     >
       <div class="relative">
         <img class="rounded-full w-10 h-10 m-3" :src="item?.fromUser?.avatarUrl" alt="" />
@@ -104,7 +104,15 @@ const onLoad = async () => {
     finished.value = true;
   }
 };
-const toMsgDetail = (item: any) => {
+const toMsgDetail = (item: any, index: any) => {
+  console.log(index, "第几项");
+  console.log(msgs.value);
+  // newMsgCount = 0;
+  Object.defineProperty(msgs.value[index], "newMsgCount", {
+    value: 0,
+    writable: true,
+  });
+  console.log(msgs.value[index]);
   router.push({
     path: "Message/msgDetail",
     query: {
