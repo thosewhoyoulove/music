@@ -22,7 +22,7 @@ export function getPrivateMsg(limit) {
     const cookie = localStorage.getItem('cookie')
     return request({
         method: 'post',
-        url: `/msg/private?limit=${limit}&cookie=${encodeURIComponent(cookie)}`,
+        url: `/msg/private?limit=${limit}&cookie=${encodeURIComponent(cookie)}&timestamp=${Date.now()}`,
     })
 }
 
@@ -42,7 +42,7 @@ export function getMsgDetail(uid, limit) {
     const cookie = localStorage.getItem('cookie')
     return request({
         method: 'post',
-        url: `/msg/private/history?uid=${uid}&limit=${limit}&cookie=${encodeURIComponent(cookie)}`,
+        url: `/msg/private/history?uid=${uid}&limit=${limit}&cookie=${encodeURIComponent(cookie)}&timestamp=${Date.now()}`,
     })
 }
 // 发送私信
@@ -61,6 +61,6 @@ export function sendMsg(user_ids, msg) {
     const cookie = localStorage.getItem('cookie')
     return request({
         method: 'post',
-        url: `/send/text?user_ids=${user_ids}&msg=${msg}&cookie=${encodeURIComponent(cookie)}`,
+        url: `/send/text?user_ids=${user_ids}&msg=${msg}&cookie=${encodeURIComponent(cookie)}&timestamp=${Date.now()}`,
     })
 }
