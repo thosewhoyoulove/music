@@ -6,14 +6,14 @@
  * @LastEditTime: 2022-10-28 21:06:00
 -->
 <template>
-  <div class="bg-hex-ddd" style="min-height: calc(100vh - 1px)">
+  <div class="bg-hex-ddd" style="min-height: calc(100vh - 8vh)">
     <van-list
       v-model:loading="listLoading"
       :finished="finished"
       @load="onLoad"
       direction="down"
       :immediate-check="false"
-      class="p-2 flex flex-col-reverse overflow-scroll h-95vh"
+      class="p-2 flex flex-col-reverse overflow-scroll h-95vh py-20"
     >
       <div v-for="(item, index) in msgs" :key="index" class="w-100%">
         <div class="scale-50">{{ formatMsToDate(item.time) }}</div>
