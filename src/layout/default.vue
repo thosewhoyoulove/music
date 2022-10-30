@@ -6,20 +6,19 @@
  * @LastEditTime: 2022-10-08 20:57:15
 -->
 <template>
-  <main class=" text-center text-gray-700 dark:text-gray-200 h-100% ">
+  <main class="text-center text-gray-700 dark:text-gray-200">
     <van-nav-bar
       left-text="返回"
       left-arrow
       @click-left="router.back()"
+      style="position: fixed; height: 5vh; width: 100%; margin-bottom: 10vh"
     />
   </main>
-  <router-view></router-view>
+  <router-view class="pt-50px"></router-view>
 </template>
 
 <script setup lang="ts">
-const router = useRouter()
+const router = useRouter();
 </script>
 
-<style scoped>
-
-</style>
+<style></style>
