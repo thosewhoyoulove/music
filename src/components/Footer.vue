@@ -3,12 +3,13 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-31 20:40:25
+ * @LastEditTime: 2022-10-31 21:05:38
 -->
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useStore } from "~/store/index";
 import { Notify } from "vant";
+import { type } from "os";
 const audio = ref<
   HTMLElement & {
     paused: boolean;
@@ -29,48 +30,31 @@ const {
   shouldNext,
   isPlayListShow,
 } = storeToRefs(store);
-// let Audio = document.getElementById('Audio')
 onMounted(async () => {
   store.getLyric(playList.value[playListIndex.value]?.id);
   myAudio.value = document.getElementById("myAudio");
   console.log(myAudio.value.currentTime, "myAudio");
   console.log(audio.value?.currentTime);
   // let res = await isMusicAvailable(playList.value[playListIndex.value]?.id);
-  // console.log(res, "音乐是否可用");
-  // if(Audio){
-  //    setTimeout(() => {
-  //   Audio.currentTime = 16.00
-  // }, 2000);
-  // }
-
-  // 渲染的时候也需要同步歌词时间
-  // updateTime()
-  // console.log(lyricList, "----------");
-  // console.log(audio, '1111111111111111111')
 }); // 开始获取歌词
 
-// const updateTime = () => {
-//   // interVal.value = null
-//   interVal.value = setInterval(() => {
-//     audio.value && store.updateCurrentTime(audio.value.currentTime);
-//   }, 1000);
-// };
-
+//这个是用来动态更改歌曲时间
 const timeupdate = (e: any) => {
   store.currentTime = e.target.currentTime;
-  // console.log(audio.value?.currentTime);
-
-  // audio.value.currentTime = parseInt(e.target.currentTime)
 };
-// onUpdated(async () => {
-//   let res = await isMusicAvailable(playList.value[playListIndex.value]?.id);
-//   console.log(res, "音乐是否可用");
-// });
-const onError = () => {
-  shouldNext.value = true;
-  Notify({ type: "primary", message: "当前歌曲为VIP专享音乐，即将播放下一首" });
-  store.updatePlayListIndex(store.playListIndex++);
-  store.currentTime = 0;
+//当发生错误的时候，自动将playListIndex加1，跳转到能够正常播放的歌曲再停下来
+const onError = (Event: any) => {
+  console.log(Event.type, "发生错误了");
+  if (Event.type === "error") {
+    nextTick(() => {
+      store.updatePlayListIndex(++store.playListIndex);
+    });
+    console.log(store.playListIndex, "当前歌曲的index");
+  }
+  // shouldNext.value = true;
+  // Notify({ type: "primary", message: "当前歌曲为VIP专享音乐，即将播放下一首" });
+  // store.updatePlayListIndex(store.playListIndex++);
+  // store.currentTime = 0;
 };
 const play = () => {
   /* 判断是否已暂停 */
