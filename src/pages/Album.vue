@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-10-09 21:08:11
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-10 15:56:30
+ * @LastEditTime: 2022-10-31 14:07:36
 -->
 
 <script setup lang="ts">
@@ -58,7 +58,7 @@ const formatMsToDate = (ms: any) => {
     const oDate = new Date(ms);
     const oYear = oDate.getFullYear();
     const oMonth = oDate.getMonth() + 1;
-    const oDay = oDate.getDay();
+    const oDay = oDate.getDate();
     const oTime = `${oYear}.${addZero(oMonth)}.${addZero(oDay)}`;
     return oTime;
   } else {
@@ -66,7 +66,7 @@ const formatMsToDate = (ms: any) => {
   }
 };
 //跳转歌手主页
-const toArtistDetail = (id:any) => {
+const toArtistDetail = (id: any) => {
   console.log(id);
   router.push({
     path: "/Artist",
@@ -149,9 +149,7 @@ const toCommentDetail = () => {
       <div class="flex items-center justify-between">
         <div class="flex items-center">
           <van-icon size="1rem" name="add" color="#FE3641" />
-          <div class="px-1 text-10px">
-           null
-          </div>
+          <div class="px-1 text-10px">null</div>
         </div>
       </div>
       <div class="-mx-8 flex items-center">|</div>

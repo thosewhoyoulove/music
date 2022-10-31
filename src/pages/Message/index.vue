@@ -84,7 +84,7 @@ const formatMsToDate = (ms: any) => {
     const oDate = new Date(ms);
     const oYear = oDate.getFullYear();
     const oMonth = oDate.getMonth() + 1;
-    const oDay = oDate.getDay();
+    const oDay = oDate.getDate();
     const oTime = `${oYear}年${addZero(oMonth)}月${addZero(oDay)}日`;
     return oTime;
   } else {

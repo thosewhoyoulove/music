@@ -188,7 +188,7 @@ const router = useRouter();
 let artistId = parseInt(route.query.artistId as any); //接收的是字符串的id
 let artistDetail: any = ref({});
 let isDialogShow = ref(false);
-let state:any = reactive({
+let state: any = reactive({
   artistIdSubList: [] as any[],
 }); //关注的歌手列表
 let isSub = ref(false); //是否关注该歌手
@@ -241,7 +241,7 @@ const formatMsToDate = (ms: string | number | Date) => {
     const oDate = new Date(ms);
     const oYear = oDate.getFullYear();
     const oMonth = oDate.getMonth() + 1;
-    const oDay = oDate.getDay();
+    const oDay = oDate.getDate();
     const oTime = `${oYear}-${addZero(oMonth)}-${addZero(oDay)}`;
     return oTime;
   } else {

@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-29 16:04:43
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-10 12:45:23
+ * @LastEditTime: 2022-10-31 14:07:50
 -->
 <template>
   <van-tabs v-model:active="active" @change="change" sticky>
@@ -272,7 +272,7 @@ const change = async (item, index) => {
   }
 };
 //格式化专辑出版时间
-const addZero = (num:any) => {
+const addZero = (num: any) => {
   if (parseInt(num) < 10) num = `0${num}`;
   return num;
 };
@@ -281,7 +281,7 @@ const formatMsToDate = (ms) => {
     const oDate = new Date(ms);
     const oYear = oDate.getFullYear();
     const oMonth = oDate.getMonth() + 1;
-    const oDay = oDate.getDay();
+    const oDay = oDate.getDate();
     const oTime = `${oYear}.${addZero(oMonth)}.${addZero(oDay)}`;
     return oTime;
   } else {
