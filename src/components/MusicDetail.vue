@@ -3,11 +3,11 @@
  * @Author: 曹俊
  * @Date: 2022-08-22 21:03:00
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-09 20:23:25
+ * @LastEditTime: 2022-10-31 20:50:59
 -->
 <script setup lang="ts">
 import { Vue3Marquee } from "vue3-marquee";
-import { getMusicComment,getMusic } from "~/api/SongDetail";
+import { getMusicComment, getMusic } from "~/api/SongDetail";
 import "vue3-marquee/dist/style.css";
 import { storeToRefs } from "pinia";
 import { useStore } from "~/store/index";
@@ -17,17 +17,17 @@ const props = defineProps<{
   musicList: CurrentMusic;
   play: () => void;
   addDuration: Function;
-
+  myAudio: any;
 }>();
 const router = useRouter();
 const store = useStore();
 const isLyricShow = ref(false); // 歌词是否显示
 const totalComment = ref(0);
-const fee = ref(0)//歌曲是 0: 免费或无版权
-  // 1: VIP 歌曲
-  // 4: 购买专辑
-  // 8: 非会员可免费播放低音质，会员可播放高音质及下载
-const { playList, playListIndex, duration,shouldNext } = storeToRefs(store);
+const fee = ref(0); //歌曲是 0: 免费或无版权
+// 1: VIP 歌曲
+// 4: 购买专辑
+// 8: 非会员可免费播放低音质，会员可播放高音质及下载
+const { playList, playListIndex, duration, shouldNext } = storeToRefs(store);
 
 const transformTime = (time: string | number): string => {
   const minRes =
@@ -55,20 +55,22 @@ const totalTime = ref(transformTime(duration.value)); //获取总时长
 const { isShow, isDetailShow } = storeToRefs(store);
 
 onMounted(async () => {
-  const res = await getMusicComment(props.musicList.id,100,0);//参数有三个
+  console.log(props.myAudio, "我是传过来的myAudio");
+
+  const res = await getMusicComment(props.musicList.id, 100, 0); //参数有三个
   totalComment.value = res.total;
   console.log(totalComment.value, "音乐评论数");
   totalTime.value = transformTime(duration.value); //有时候接口数据获取不到的话就会丢失响应式，再赋值一次
   // console.log(store.lyricList.lyric);
-  let musicDetailRes = await getMusic(props.musicList.id)
-  fee.value= musicDetailRes.songs[0].fee
-  console.log(fee.value,'歌曲类别');
+  let musicDetailRes = await getMusic(props.musicList.id);
+  fee.value = musicDetailRes.songs[0].fee;
+  console.log(fee.value, "歌曲类别");
   // if(fee.value == 1){
   //   Notify({type:'primary',message:'当前歌曲为VIP专享音乐，即将播放下一首'})
   //   goPlay(1)
   //   store.$state.currentTime = 0
   // }
-  console.log(musicDetailRes,'musicDetailRes');
+  console.log(musicDetailRes, "musicDetailRes");
   props.addDuration();
   setInterval(() => {
     nowTime.value = transformTime(store.currentTime); //每隔一秒更改一次当前时间
@@ -86,13 +88,13 @@ const playMusic = () => {
   clearInterval(timer);
   props.play();
 };
+//点击进度条更改歌曲时间：首先在外部获取到audio元素，然后传到子组件，子组件的进度条是type为range的input元素，最小值为0，最大值为歌曲的总时间，然后绑定input的change事件
+//接收一个event参数，event参数的target.value值就是点击到的或者拖动到的进度条的时间数，将这个时间数赋值给传过来的audio元素的currentTime，就可以实现点击切换歌曲时间的功能了
 const change = (event: Event) => {
-  // console.log(transformTime(target.target.value), "value");
-  // console.log((event.target as HTMLInputElement).value, "value");
-  // timeValue.value = Number(target.target.value)
+  console.log(event);
   const value = (event.target as HTMLInputElement).value;
   nowTime.value = transformTime(value);
-  store.updateCurrentTime(Number(value));
+  props.myAudio.currentTime = Number(value);
 };
 
 const back = () => {
@@ -113,23 +115,23 @@ const toCommentDetail = () => {
 //切换歌曲更新评论数
 const getNewComment = async (id: number) => {
   if (store.shouldUpdate) {
-    const res = await getMusicComment(props.musicList.id,10,0);
+    const res = await getMusicComment(props.musicList.id, 10, 0);
     totalComment.value = res.total;
     console.log(totalComment.value, "更新后的评论总数");
     store.shouldUpdate = false;
   }
 };
 // 下一首上一首操作
-const goPlay = async(num: number) => {
+const goPlay = async (num: number) => {
   console.log("点击了切换歌曲");
   store.updateIsShow(store.$state, true);
-  let musicDetailRes = await getMusic(props.musicList.id)
-  fee.value= musicDetailRes.songs[0].fee
-  console.log(fee.value,'歌曲类别');
-  if(fee.value == 1){
-    Notify({type:'primary',message:'当前歌曲为VIP专享音乐，即将播放下一首'})
-    goPlay(1)
-    store.$state.currentTime = 0
+  let musicDetailRes = await getMusic(props.musicList.id);
+  fee.value = musicDetailRes.songs[0].fee;
+  console.log(fee.value, "歌曲类别");
+  if (fee.value == 1) {
+    Notify({ type: "primary", message: "当前歌曲为VIP专享音乐，即将播放下一首" });
+    goPlay(1);
+    store.$state.currentTime = 0;
   }
   // 如果是第一首，上一首应该是最后一首
   // 如果是最后一首，下一首应该是第一首
@@ -144,7 +146,7 @@ const goPlay = async(num: number) => {
 // let curSec = ref(0)
 const lyric = computed<LyricItem[]>(() => {
   let arr: Array<LyricItem> = [];
-  console.log(store.lyricList, "components/MusicDetail....lyricList");
+  // console.log(store.lyricList, "components/MusicDetail....lyricList");
   if (store.lyricList.lyric) {
     /* 将歌词进行换行符分割 */
     /* 1.先用数组split方法对歌词的换行进行分割
@@ -211,24 +213,27 @@ watch(
     }
   }
 );
-watch(
-  () => store.playListIndex,
-  (newVal) => {
-    store.shouldUpdate = true;
-    getNewComment(props.musicList.id);
-  }
-);
-watch( () =>store.shouldNext, (newVal) =>{
-  console.log(newVal);
-  
-  if(newVal == true) {
-    console.log('出错了');
-    
-    goPlay(1)
-    store.shouldNext = false
-  }
-  
-})
+//当为付费歌曲的时候就不能播放
+// watch(
+//   () => store.playListIndex,
+//   (newVal) => {
+//     store.shouldUpdate = true;
+//     getNewComment(props.musicList.id);
+//   }
+// );
+// watch(
+//   () => store.shouldNext,
+//   (newVal) => {
+//     console.log(newVal);
+
+//     if (newVal == true) {
+//       console.log("出错了");
+
+//       goPlay(1);
+//       store.shouldNext = false;
+//     }
+//   }
+// );
 
 //过滤评论数
 const transform = (num: number) => {
@@ -239,13 +244,13 @@ const transform = (num: number) => {
   else return num;
 };
 //跳转歌手主页
-const toArtistDetail = (item:any) => {
+const toArtistDetail = (item: any) => {
   console.log(item);
-  isDetailShow.value = false
+  isDetailShow.value = false;
   router.push({
     path: "/Artist",
     query: {
-      artistId: item.id
+      artistId: item.id,
     },
   });
 };
@@ -333,7 +338,7 @@ const toArtistDetail = (item:any) => {
       <div><van-icon color="#fff" size="1.125rem" name="like-o"></van-icon></div>
       <div>
         <van-icon
-        color="#fff"
+          color="#fff"
           style="transform: rotate(180deg)"
           size="1.125rem"
           name="upgrade"
@@ -343,7 +348,7 @@ const toArtistDetail = (item:any) => {
       <div class="relative bottom-0" @click="toCommentDetail">
         <van-icon color="#fff" size="1.125rem" name="comment-o"></van-icon>
         <div
-          class="absolute  text-hex-fff text-.1rem -top-1vh -right-7vw scale-x-75 w-11vw text-center justify-center"
+          class="absolute text-hex-fff text-.1rem -top-1vh -right-7vw scale-x-75 w-11vw text-center justify-center"
           v-if="totalComment > 0"
           style="background: transparent; border-width: 0"
         >

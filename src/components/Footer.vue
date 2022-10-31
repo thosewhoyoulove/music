@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-09 15:29:25
+ * @LastEditTime: 2022-10-31 20:40:25
 -->
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
@@ -18,13 +18,23 @@ const audio = ref<
     duration: number;
   }
 >(); // 获取audio属性
-
+let myAudio: any = ref(null);
 const store = useStore();
 let interVal = ref<any>(); // 设置定时器
-const { playList, playListIndex, isShow, isDetailShow,shouldNext,isPlayListShow } = storeToRefs(store);
+const {
+  playList,
+  playListIndex,
+  isShow,
+  isDetailShow,
+  shouldNext,
+  isPlayListShow,
+} = storeToRefs(store);
 // let Audio = document.getElementById('Audio')
 onMounted(async () => {
   store.getLyric(playList.value[playListIndex.value]?.id);
+  myAudio.value = document.getElementById("myAudio");
+  console.log(myAudio.value.currentTime, "myAudio");
+  console.log(audio.value?.currentTime);
   // let res = await isMusicAvailable(playList.value[playListIndex.value]?.id);
   // console.log(res, "音乐是否可用");
   // if(Audio){
@@ -57,9 +67,9 @@ const timeupdate = (e: any) => {
 //   console.log(res, "音乐是否可用");
 // });
 const onError = () => {
-  shouldNext.value = true
+  shouldNext.value = true;
   Notify({ type: "primary", message: "当前歌曲为VIP专享音乐，即将播放下一首" });
-  store.updatePlayListIndex(store.playListIndex++)
+  store.updatePlayListIndex(store.playListIndex++);
   store.currentTime = 0;
 };
 const play = () => {
@@ -134,10 +144,13 @@ onUpdated(() => {
       <div v-if="!isShow" class="text-lg mx-2" @click="play">
         <van-icon size="1.8rem" name="pause-circle-o" />
       </div>
-      <div @click="isPlayListShow = true" class="text-xl"><van-icon size="1.8rem" name="bars" /></div>
+      <div @click="isPlayListShow = true" class="text-xl">
+        <van-icon size="1.8rem" name="bars" />
+      </div>
     </div>
     <audio
       ref="audio"
+      id="myAudio"
       loop
       @error="onError"
       @timeupdate="timeupdate"
@@ -152,8 +165,9 @@ onUpdated(() => {
     <music-detail
       :music-list="playList[playListIndex]"
       :play="play"
+      :myAudio="myAudio"
       :add-duration="addDuration"
-      :onError = "onError"
+      :onError="onError"
     />
   </van-popup>
 </template>
