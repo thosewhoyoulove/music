@@ -3,18 +3,16 @@
  * @Author: 曹俊
  * @Date: 2022-10-11 16:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-22 16:58:51
+ * @LastEditTime: 2022-10-31 19:52:29
 -->
 <template>
   <div class="w-100vw h-100vh bg-hex-eee relative">
-    <div class="text-hex-eee items-center pt-5">
-      <van-cell-group class="title" inset>
+    <div class="text-hex-eee items-center pt-10">
+      <van-cell-group class="title" inset title="我的资料">
         <van-uploader class="upload" :before-read="beforeRead">
           <van-cell title="头像" title-class="inline-block"
             ><template #right-icon><van-icon :name="avatarUrl" /> </template></van-cell
         ></van-uploader>
-      </van-cell-group>
-      <van-cell-group class="title" inset title="我的资料">
         <van-cell
           @click="toEditInfo((flag = 0))"
           class="cell"
@@ -107,8 +105,8 @@
 
 <script setup lang="ts">
 import { areaList } from "@vant/area-data";
-import { Notify, DatetimePicker } from "vant";
-import { getUserAcount, updateUser, uploadAvatar } from "~/api/user";
+import { Notify } from "vant";
+import { getUserAcount, updateUser } from "~/api/user";
 import axios from "axios";
 const showDatetimePicker = ref(false);
 const showAreaPicker = ref(false);
@@ -304,7 +302,7 @@ const beforeRead = async (file: any) => {
 const main = (file: any) => {
   document.querySelector(".upload").addEventListener(
     "change",
-    function (e) {
+    function (e: any) {
       console.log(e);
       let file: any = e.target.files[0];
       upload(file);
@@ -375,6 +373,9 @@ const onConfirmArea = async (value: any) => {
   width: 82vw;
   height: 2rem;
   align-items: center;
+}
+:deep(.van-cell-group__title--inset) {
+  text-align: left;
 }
 :deep(.van-uploader__input) {
   width: 100vw;
