@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-10-12 16:02:17
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-14 20:01:05
+ * @LastEditTime: 2022-10-31 19:47:26
 -->
 <template>
   <div class="w-100vw h-100vh">
@@ -61,7 +61,6 @@
 </template>
 
 <script setup lang="ts">
-import { areaList } from "@vant/area-data";
 import * as _ from "lodash";
 import { Notify } from "vant";
 import { nicknameCheck, getUserAcount, updateUser } from "~/api/user";
