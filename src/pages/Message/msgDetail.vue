@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-10-28 16:18:24
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-31 14:48:34
+ * @LastEditTime: 2022-10-31 20:21:25
 -->
 <template>
   <div class="bg-hex-F5F5F5" style="height: 100vh">
@@ -14,7 +14,7 @@
       direction="down"
       :immediate-check="false"
       id="listContainer"
-      class="px-2 flex flex-col-reverse overflow-scroll h-92vh pt-20"
+      class="px-2 flex flex-col-reverse overflow-scroll h-92vh pt-30"
     >
       <div v-for="(item, index) in msgs" :key="index" class="w-100%">
         <div class="scale-50">{{ formatMsToDate(item.time) }}</div>
@@ -96,7 +96,7 @@ let listContainer: any = null; //获取van-list的元素对象，然后用来跳
 onMounted(async () => {
   isFooterShow.value = false;
   listContainer = document.getElementById("listContainer");
-
+  toBottom();
   let res = await getUserAcount();
   console.log(res, "用户信息");
   id.value = res.profile.userId;
@@ -168,6 +168,8 @@ const toArtistDetail = (item: any) => {
 };
 //filed获取焦点以及发送消息的时候跳转到最底部
 const toBottom = () => {
+  console.log("回到了最底部");
+
   listContainer.scrollTo({
     top: 0,
     left: 0,
@@ -188,12 +190,6 @@ watch(
 </script>
 
 <style lang="css" scoped>
-/* .space {
-  overflow: scroll;
-  display: flex;
-  flex-direction: column-reverse;
-  justify-items: first baseline;
-} */
 .sharp-left {
   position: absolute;
   margin-left: 2rem;
