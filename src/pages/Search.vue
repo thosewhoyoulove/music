@@ -3,22 +3,23 @@
  * @Author: 曹俊
  * @Date: 2022-08-27 11:27:10
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-30 10:38:15
+ * @LastEditTime: 2022-10-31 14:52:20
 -->
 <script setup lang="ts">
 import { Dialog, Notify } from "vant";
-import { storeToRefs } from "pinia";
-import { getCloudSearch, getSearchHotDetail, getSearchHot } from "~/api/Search";
-import { useStore } from "~/store/index";
-const store = useStore();
+import { getSearchHotDetail, getSearchHot } from "~/api/Search";
 const route = useRoute();
 const router = useRouter();
 const VanDialog = Dialog.Component;
 const keyWordList = ref([]); // 历史记录存放数组
-const keyWord = ref(""); // 搜索关键词
+const keyWord: any = ref(""); // 搜索关键词
 const searchList = ref([]); // 存放搜索结果的数组;
-const searchHotList = ref([{first:'他只是经过'},{first:'会不会'},{first:'永不失联的爱'}]); //热门搜索列表(简略)
-const searchHotDetailList = ref([]); //热门搜索列表(详细)
+const searchHotList = ref([
+  { first: "他只是经过" },
+  { first: "会不会" },
+  { first: "永不失联的爱" },
+]); //热门搜索列表(简略)
+const searchHotDetailList: any = ref([]); //热门搜索列表(详细)
 const defaultSearchKeyWord = ref(route.query.showKeyword);
 const onSearch = async () => {
   // 如果输入为空，则直接搜索默认值
@@ -50,7 +51,7 @@ const onSearch = async () => {
     keyWordList.value.splice(keyWordList.value.length - 1);
 };
 onMounted(async () => {
-  keyWordList.value = JSON.parse(localStorage.getItem("keyWordList")) || [];
+  keyWordList.value = JSON.parse(localStorage.getItem("keyWordList") as any) || [];
   let hotList = await getSearchHot(); //获取热门搜索列表(简略)
   searchHotList.value = hotList.result.hots;
   console.log(searchHotList.value, "searchHotList.value");
@@ -91,7 +92,7 @@ const searchHistory = async (item: string) => {
 </script>
 
 <template>
-  <div class="w-100% h-100vh rounded bg-hex-eee">
+  <div class="w-100% rounded bg-hex-eee pt-10">
     <div>
       <van-search
         v-model="keyWord"

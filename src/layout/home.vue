@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 22:50:44
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-09-25 10:29:19
+ * @LastEditTime: 2022-10-31 14:58:38
 -->
 <template>
   <van-nav-bar title="云音乐" />
@@ -11,8 +11,4 @@
     <router-view />
   </div>
 </template>
-<style>
-.van-nav-bar__content {
-  height: 2rem;
-}
-</style>
+<style scoped></style>
