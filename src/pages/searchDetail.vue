@@ -91,15 +91,15 @@
           class="flex justify-between mb-2"
         >
           <div @click="toArtistDetail(item)" class="flex items-center">
-            <img class="w-10 h-10 rounded-full p-1" :src="item.imgPic" alt="" />
+            <img class="w-10 h-10 rounded-full p-1" :src="item.picUrl" alt="" />
             <div class="flex-col ml-2">{{ item.name }}</div>
           </div>
-          <div v-if="!item.isSub" class="flex mr-3">
+          <div v-if="!item.followed" class="flex mr-3">
             <van-button icon="plus" round color="#f00" plain size="small" type="primary"
               >关注</van-button
             >
           </div>
-          <div v-if="item.isSub" class="flex mr-3">
+          <div v-if="item.followed" class="flex mr-3">
             <van-button icon="success" round color="#bbb" plain size="mini" type="primary"
               >已关注</van-button
             >
@@ -112,7 +112,6 @@
 
 <script setup lang="ts">
 import { getCloudSearch, getSearch } from "~/api/Search";
-import { getArtistDetail, getArtistFollowCount } from "~/api/artist";
 import { getArtistSublist } from "~/api/user";
 import { useStore } from "~/store/index";
 const store = useStore();
@@ -141,7 +140,6 @@ let state = reactive({
   artistList: [] as any[], //搜索的歌手id列表
   isSubMap: [] as any[], //是否关注的map
 });
-let artistCover: any = ref();
 onMounted(async () => {
   console.log(searchKey, "searchKey");
   let res = await getCloudSearch(searchKey, type.value);
@@ -157,7 +155,9 @@ const updateIndex = (item: any, index: any): any => {
   store.updatePlayListIndex(index);
   store.updateIsShow(store.$state, true);
 };
-const change = async (item, index) => {
+const change = async (item: any, index: any) => {
+  console.log(item, "item", index, "index");
+
   loading.value = true;
   console.log(item, index);
   if (index === 0 || item === 0) {
@@ -177,97 +177,49 @@ const change = async (item, index) => {
     //标签为歌手
     type.value = 100;
     let res = await getSearch(searchKey, type.value);
-
-    let songsRes = res.result.songs.map((item: any) => item.artists);
-    console.log(songsRes, "songsRes");
-    state.artistList = songsRes.flat(); //将歌手的数组扁平化
-    console.log(state.artistList, "state.artistList");
-
-    let map = new Map();
-    for (let item of state.artistList) {
-      // console.log(item.name, "item");
-      if (!map.has(item.name)) {
-        map.set(item.name, item);
-      }
-    } //将数组进行去重
-    console.log(map.values(), "map");
-    state.artistList = [...map.values()]; //将map转化为数组
-    console.log(state.artistList, "state.artistIdList");
-    //遍历歌手数组，调用获取粉丝量的接口可以获得是否关注
-    for (let i = 0; i < state.artistList.length; i++) {
-      let followCountRes = await getArtistFollowCount(state.artistList[i].id);
-      console.log(followCountRes, "歌手的关注信息");
-      if (followCountRes.data.isFollow) {
-        Object.defineProperty(state.artistList[i], "isSub", {
-          value: true,
-        });
-      } else {
-        Object.defineProperty(state.artistList[i], "isSub", {
-          value: false,
-        });
-      }
-    }
-    //遍历歌手数组，如果用户的关注列表有这个歌手id就添加isSub属性为true，否则为false
-    // if (state.artistIdSubList.includes(state.artistList[i].id)) {
-    //   Object.defineProperty(state.artistList[i], "isSub", {
-    //     value: true,
-    //   });
-    // } else {
-    //   Object.defineProperty(state.artistList[i], "isSub", {
-    //     value: false,
-    //   });
-    // }
-
-    for (let i = 0; i < state.artistList.length; i++) {
-      //遍历歌手数组，调用接口对每一个歌手进行详情请求得到头像URI并添加imgPic属性
-      let artistRes = await getArtistDetail(state.artistList[i].id);
-      console.log(artistRes, "artistRes");
-      artistCover.value = artistRes.data.artist.cover;
-      Object.defineProperty(state.artistList[i], "imgPic", {
-        value: artistCover.value,
-      });
-    }
+    console.log(res);
+    state.artistList = res.result.artists;
+    console.log(state.artistList, "这是请求得到的歌手信息");
     loading.value = false;
-    console.log(state.artistList, "这是新的state.artistList");
   } else if (item === 3) {
     //标签为歌单
     type.value = 1000;
-    let res = await getCloudSearch(searchKey, 1);
+    let res = await getCloudSearch(searchKey, type.value);
     console.log(res, "歌单");
   } else if (item === 4) {
     //标签为用户
     type.value = 1002;
-    let res = await getCloudSearch(searchKey, 1);
+    let res = await getCloudSearch(searchKey, type.value);
     console.log(res, "用户");
   } else if (item === 5) {
     //标签为MV
     type.value = 1004;
-    let res = await getCloudSearch(searchKey, 1);
+    let res = await getCloudSearch(searchKey, type.value);
     console.log(res, "MV");
   } else if (item === 6) {
     //标签为歌词
     type.value = 1006;
-    let res = await getCloudSearch(searchKey, 1);
+    let res = await getCloudSearch(searchKey, type.value);
     console.log(res, "歌词");
   } else if (item === 7) {
     //标签为电台
     type.value = 1009;
-    let res = await getCloudSearch(searchKey, 1);
+    let res = await getCloudSearch(searchKey, type.value);
     console.log(res, "电台");
   } else if (item === 8) {
     //标签为视频
     type.value = 1014;
-    let res = await getCloudSearch(searchKey, 1);
+    let res = await getCloudSearch(searchKey, type.value);
     console.log(res, "视频");
   } else if (item === 9) {
     //标签为综合
     type.value = 1018;
-    let res = await getCloudSearch(searchKey, 1);
+    let res = await getCloudSearch(searchKey, type.value);
     console.log(res, "综合");
   } else if (item === 10) {
     //标签为声音
     type.value = 2000;
-    let res = await getCloudSearch(searchKey, 1);
+    let res = await getCloudSearch(searchKey, type.value);
     console.log(res, "声音");
   }
 };
