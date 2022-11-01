@@ -7,7 +7,7 @@
 -->
 <script setup lang="ts">
 import { getSingleCatPlayList, getSongList } from "~/api/SongList";
-const allSongList:any = ref([]); // 所有的热门歌单
+const allSongList: any = ref([]); // 所有的热门歌单
 const router = useRouter();
 const singleSongList = ref([]);
 const active = ref();
@@ -45,7 +45,7 @@ const onLoad = async () => {
     finished.value = true;
   }
 };
-const change = async (item:any, index:any) => {
+const change = async (item: any, index: any) => {
   cat.value = index; //切换的时候变换种类
   console.log(cat.value, "cat.value");
   loading.value = true;
@@ -61,12 +61,12 @@ const change = async (item:any, index:any) => {
   console.log(singleSongList.value, `歌单种类:${index}!!!`);
   loading.value = false;
 };
-const filter = (num:any) => {
+const filter = (num: any) => {
   if (num > 100000000) return `${(num / 100000000).toFixed(1)}亿`;
   else if (num > 10000) return `${(num / 10000).toFixed(0)}万`;
   else return num;
 };
-const toMusicDetail = (id:any) => {
+const toMusicDetail = (id: any) => {
   router.push({
     path: "/TopListDetail",
     query: {
