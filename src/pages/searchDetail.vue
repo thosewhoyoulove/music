@@ -118,6 +118,7 @@
         <div
           v-for="(item, index) in playlists"
           :key="index"
+          @click="toMusicDetail(item.id)"
           class="relative inline-block pt-1 px-2"
         >
           <img class="w-21 h-21 rounded-xl p-1" :src="item.coverImgUrl" alt="加载失败" />
@@ -311,6 +312,7 @@ const filter = (num: any) => {
   else if (num > 10000) return `${(num / 10000).toFixed(0)}万`;
   else return num;
 };
+//歌单加载
 const onLoad = async () => {
   //最开始自动加载
   console.log("进入了加载");
@@ -326,6 +328,15 @@ const onLoad = async () => {
   playlists.value = res.result.playlists;
   listLoading.value = false;
   console.log(playlistCount.value, "playlistCount.value");
+};
+//跳转到歌单详情
+const toMusicDetail = (id: any) => {
+  router.push({
+    path: "/TopListDetail",
+    query: {
+      id,
+    },
+  });
 };
 </script>
 

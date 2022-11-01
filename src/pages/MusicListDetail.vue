@@ -9,7 +9,7 @@
 import { getSingleCatPlayList, getSongList } from "~/api/SongList";
 const allSongList: any = ref([]); // 所有的热门歌单
 const router = useRouter();
-const singleSongList = ref([]);
+const singleSongList: any = ref([]);
 const active = ref();
 const loading = ref(true); //切换页面加载提示
 const limit = ref(15); //获取歌曲总量
