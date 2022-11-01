@@ -16,14 +16,14 @@ import request from '~/utils/request'
 export function getCloudSearch(keywords, type) {
     return request({
         method: 'get',
-        url: `/cloudsearch?keywords=${keywords}?type=${type}`,
+        url: `/cloudsearch?keywords=${keywords}&type=${type}`,
     })
 }
 //用于搜索不同的类型
 export function getSearch(keywords, type) {
     return request({
         method: 'get',
-        url: `/search?keywords=${keywords}?type=${type}`,
+        url: `/search?keywords=${keywords}&type=${type}`,
     })
 }
 
