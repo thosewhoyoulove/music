@@ -6,29 +6,26 @@
  * @LastEditTime: 2022-10-28 19:55:46
 -->
 <template>
-  <van-list
-    v-model:loading="listLoading"
-    :finished="finished"
-    finished-text="没有更多了"
-    @load="onLoad"
-    class="pb-3"
+  <van-list v-model:loading="listLoading" :finished="finished" @load="onLoad" class="pb-3"
     ><div
       v-for="(item, index) in msgs"
       :key="index"
-      class="flex w-100vw"
+      class="flex w-100vw px-4"
       @click="toMsgDetail(item, index)"
     >
       <div class="relative">
-        <img class="rounded-full w-10 h-10 m-3" :src="item?.fromUser?.avatarUrl" alt="" />
+        <img class="rounded-full w-15 h-15 m-3" :src="item?.fromUser?.avatarUrl" alt="" />
         <img
           v-if="item?.fromUser?.avatarDetail?.identityIconUrl"
-          class="w-5 h-5 absolute rounded-full left-8 bottom-1"
+          class="w-5 h-5 absolute rounded-full left-12 bottom-1.5"
           :src="item?.fromUser?.avatarDetail?.identityIconUrl"
           alt=""
         />
       </div>
-      <div class="col h-10 w-100% text-left ml-1 mt-3 relative">
-        <div class="flex w-60vw text-style">
+      <div
+        class="col h-15 w-100% text-left ml-3 mt-3 relative border-b border-hex-f5f5f5"
+      >
+        <div class="flex max-w-60vw text-style">
           <div v-if="item.fromUser.remarkName" class="text-sm">
             {{ item.fromUser.remarkName }}
           </div>
@@ -40,13 +37,13 @@
           </div>
           <div
             v-if="item.newMsgCount !== 0"
-            class="flex bg-hex-f00 text-hex-fff scale-60 rounded-full w-6 text-center absolute -bottom-2 right-3"
+            class="flex bg-hex-f00 text-hex-fff scale-60 rounded-full w-6 text-center absolute bottom-3 right-5"
           >
             <div class="w-100% text-center">{{ item.newMsgCount }}</div>
           </div>
         </div>
 
-        <div class="text-style text-xs mt-2 pr-6">
+        <div class="text-style text-xs mt-4 max-w-60vw text-hex-ccc">
           {{ JSON.parse(item.lastMsg).msg }}
         </div>
       </div>
@@ -67,8 +64,6 @@ const finished = ref(false); //是否结束
 let msgs: any = ref([]); //所有的消息数组
 let limit = ref(10);
 let more: any = ref(false);
-let newMsgCount = ref(0);
-// let lastMsg: any = ref({});
 onMounted(async () => {
   isFooterShow.value = false;
   console.log(msgs.value);
