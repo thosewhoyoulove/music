@@ -107,12 +107,11 @@
           </div>
         </div>
       </van-list>
-
       <van-list
         v-show="index == 3"
-        v-model:loading="listLoading"
-        :finished="finished"
-        @load="onLoad"
+        v-model:loading="playListLoading"
+        :finished="playListFinished"
+        @load="playlistLoad"
         class="pb-20 mt-2"
       >
         <div
@@ -133,6 +132,43 @@
           </div>
         </div>
       </van-list>
+      <van-list
+        v-show="index == 5"
+        v-model:loading="mvListLoading"
+        :finished="mvListFinished"
+        @load="mvListLoad"
+        class="pb-20 mt-2"
+      >
+        <div
+          class="flex"
+          v-for="{
+            name,
+            artistName,
+            cover,
+            id,
+            duration,
+            playCount,
+            artistId,
+          } in state.mvList"
+          :key="id"
+          @click="toMvDetail(id, artistId)"
+        >
+          <img class="flex w-40 h-20 rounded-lg my-1 ml-2 relative" :src="cover" alt="" />
+          <div class="absolute left-32 mt-15 text-hex-fff scale-50">
+            {{ formatMsToDate(duration) }}
+          </div>
+          <div class="flex-col text-left text-xs w-40">
+            <div class="flex ml-1 mb-4 mt-1">
+              <div class="scale-70"><van-tag color="#f00" plain>MV</van-tag></div>
+              <div class="text-style">{{ name }}</div>
+            </div>
+            <div class="ml-2 text-hex-bbb">
+              <div>{{ artistName }}</div>
+              <div class="mt-3">{{ filter(playCount) }}播放</div>
+            </div>
+          </div>
+        </div>
+      </van-list>
     </van-tab>
   </van-tabs>
 </template>
@@ -144,8 +180,13 @@ const store = useStore();
 const route = useRoute();
 const router = useRouter();
 const active = ref();
-const listLoading = ref(false); //歌单标签页的加载
-const finished = ref(false);
+//歌单标签页的加载的变量
+const playListLoading = ref(false);
+const playListFinished = ref(false);
+//MV标签页的加载的变量
+const mvListLoading = ref(false);
+const mvListFinished = ref(false);
+
 let playlistCount = ref(0);
 const tabs = ref([
   "单曲",
@@ -167,7 +208,7 @@ let searchKey = route.query.searchKey;
 const searchList: any = ref([]);
 const playlists: any = ref([]);
 let state = reactive({
-  artistIdSubList: [] as any[], //关注的歌手列表
+  mvList: [] as any[], //关注的歌手列表
   artistList: [] as any[], //搜索的歌手id列表
   isSubMap: [] as any[], //是否关注的map
 });
@@ -219,8 +260,7 @@ const change = async (item: any, index: any) => {
     type.value = 1000;
     let res = await getCloudSearch(searchKey, type.value, limit.value);
     playlists.value = res.result.playlists;
-    playlistCount.value = res.result.playlistCount;
-    onLoad();
+    playlistLoad();
     loading.value = false;
   } else if (item === 4) {
     //标签为用户
@@ -231,6 +271,9 @@ const change = async (item: any, index: any) => {
     //标签为MV
     type.value = 1004;
     let res = await getCloudSearch(searchKey, type.value, limit.value);
+    state.mvList = res.result.mvs;
+    mvListLoad();
+    loading.value = false;
     console.log(res, "MV");
   } else if (item === 6) {
     //标签为歌词
@@ -286,7 +329,7 @@ const toArtistDetail = (item: any) => {
     },
   });
 };
-//跳转MV界面
+//单曲标签页跳转MV界面
 const toMv = (item: any) => {
   console.log(item.ar[0].id); //暂时只传一个歌手的i,后续有需要再设计多个歌手
   router.push({
@@ -313,7 +356,7 @@ const filter = (num: any) => {
   else return num;
 };
 //歌单加载
-const onLoad = async () => {
+const playlistLoad = async () => {
   //最开始自动加载
   console.log("进入了加载");
   limit.value += 5;
@@ -321,12 +364,11 @@ const onLoad = async () => {
   console.log(res, "这是加载的res");
   if (res.code === 400) {
     console.log("加载完了");
-
-    finished.value = true;
+    playListFinished.value = true;
     return;
   }
   playlists.value = res.result.playlists;
-  listLoading.value = false;
+  playListLoading.value = false;
   console.log(playlistCount.value, "playlistCount.value");
 };
 //跳转到歌单详情
@@ -335,6 +377,34 @@ const toMusicDetail = (id: any) => {
     path: "/TopListDetail",
     query: {
       id,
+    },
+  });
+};
+//MV标签页加载
+//MV加载
+const mvListLoad = async () => {
+  //最开始自动加载
+  console.log("进入了加载");
+  limit.value += 5;
+  let res = await getCloudSearch(searchKey, type.value, limit.value);
+  console.log(res, "这是加载的res");
+  if (res.code === 400) {
+    console.log("加载完了");
+    mvListFinished.value = true;
+    return;
+  }
+  state.mvList = res.result.mvs;
+  mvListLoading.value = false;
+  console.log(state.mvList, "state.mvList");
+};
+//MV标签页跳转MV
+const toMvDetail = (id: any, artistId: any) => {
+  console.log(id);
+  router.push({
+    path: "/MV",
+    query: {
+      mvId: id,
+      artistId: artistId,
     },
   });
 };
