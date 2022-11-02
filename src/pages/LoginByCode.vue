@@ -9,7 +9,7 @@
 import { Notify } from "vant";
 import { storeToRefs } from "pinia";
 import { getCodeByKey, getCodeKey, testCodeByKey } from "~/api/login";
-import { getUserAcount } from "~/api/user";
+import { getUserAccount } from "~/api/user";
 import { useStore, userStore } from "~/store/index";
 const router = useRouter();
 const store = useStore();
@@ -50,7 +50,7 @@ onMounted(async () => {
       Notify({ type: "success", message: "授权登录成功，即将跳转首页" });
       console.log(statusRes.cookie, "成功了");
       localStorage.setItem("cookie", statusRes.cookie);
-      const AcountRes = await getUserAcount();
+      const AcountRes = await getUserAccount();
       console.log(AcountRes, "用户账户信息");
       userInfo.updateIsLogin(true);
       userInfo.updateUserInfo(AcountRes);
@@ -80,12 +80,12 @@ onMounted(async () => {
     <van-loading v-if="loading" class="mt-10" color="#1989fa" />
     <img
       v-else
-      class="w-50 h-50 rounded-xl absolute left-50% top-10% -translate-x-1/2"
+      class="w-50 h-50 rounded-xl absolute left-50% top-15% -translate-x-1/2"
       :src="qrimg"
       alt=""
     />
     <div class="absolute w-100% top-50% text-left px-2">
-      温馨提示：如果二维码失效了的话，请刷新页面，谢谢合作！！！
+      温馨提示：如果二维码失效了的话，请刷新一下页面！
     </div>
   </div>
 </template>

@@ -63,7 +63,7 @@
 <script setup lang="ts">
 import * as _ from "lodash";
 import { Notify } from "vant";
-import { nicknameCheck, getUserAcount, updateUser } from "~/api/user";
+import { nicknameCheck, getUserAccount, updateUser } from "~/api/user";
 const route = useRoute();
 const router = useRouter();
 let nickname = ref();
@@ -78,7 +78,7 @@ let isDuplicated: any = ref(false);
 let flag = parseInt(route.query.flag as string);
 onMounted(async () => {
   console.log(flag);
-  let infoRes = await getUserAcount();
+  let infoRes = await getUserAccount();
   console.log(infoRes, "用户数据");
   nickname.value = infoRes.profile.nickname;
   gender.value = infoRes.profile.gender;
@@ -122,7 +122,7 @@ const select = (item: any) => {
 };
 const saveNickname = async (nickname: any, isDuplicated: any) => {
   console.log(nickname);
-  let infoRes = await getUserAcount();
+  let infoRes = await getUserAccount();
   let oldNickname = infoRes.profile.nickname;
   if (nickname === oldNickname) {
     router.back();
@@ -149,7 +149,7 @@ const saveNickname = async (nickname: any, isDuplicated: any) => {
 //进入修改简介界面
 
 const saveSignature = async (signature: any) => {
-  let infoRes = await getUserAcount();
+  let infoRes = await getUserAccount();
   let oldSignature = infoRes.profile.signature;
   if (signature === oldSignature) {
     router.back();

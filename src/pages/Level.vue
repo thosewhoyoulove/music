@@ -67,7 +67,7 @@
 </template>
 
 <script setup>
-import { getUserLevel, getUserAcount } from "~/api/user";
+import { getUserLevel, getUserAccount } from "~/api/user";
 const route = useRoute();
 let id = parseInt(route.query.id); //用户id
 const avatarUrl = ref(""); //用户头像
@@ -80,7 +80,7 @@ const info = ref([]); //等级特权的信息，用$分隔
 const nextSong = ref(0); //升级听歌数
 const nextDay = ref(0); //升级登录数
 onMounted(async () => {
-  const AcountRes = await getUserAcount(); //获取用户信息
+  const AcountRes = await getUserAccount(); //获取用户信息
   avatarUrl.value = AcountRes.profile.avatarUrl;
   console.log(id, "id");
   let levelRes = await getUserLevel(id); //获取用户等级

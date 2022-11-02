@@ -76,7 +76,7 @@
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { useStore } from "~/store/index";
-import { getUserAcount } from "~/api/user";
+import { getUserAccount } from "~/api/user";
 import { getMsgDetail, sendMsg } from "~/api/message";
 const store = useStore();
 const { isFooterShow } = storeToRefs(store);
@@ -97,7 +97,7 @@ onMounted(async () => {
   isFooterShow.value = false;
   listContainer = document.getElementById("listContainer");
   toBottom();
-  let res = await getUserAcount();
+  let res = await getUserAccount();
   console.log(res, "用户信息");
   id.value = res.profile.userId;
 

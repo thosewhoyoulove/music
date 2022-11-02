@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-17 15:53:02
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-23 19:40:43
+ * @LastEditTime: 2022-11-02 14:01:41
  */
 import request from '~/utils/request'
 import { storeToRefs } from "pinia";
@@ -30,7 +30,7 @@ export function getUserDetail(uid) {
 // 接口地址 : /user/account
 
 // 调用例子 : /user/account
-export function getUserAcount() {
+export function getUserAccount() {
     const cookie = localStorage.getItem('cookie')
     return request({
         method: 'post',

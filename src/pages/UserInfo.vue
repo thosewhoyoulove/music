@@ -106,7 +106,7 @@
 <script setup lang="ts">
 import { areaList } from "@vant/area-data";
 import { Notify } from "vant";
-import { getUserAcount, updateUser } from "~/api/user";
+import { getUserAccount, updateUser } from "~/api/user";
 import axios from "axios";
 const showDatetimePicker = ref(false);
 const showAreaPicker = ref(false);
@@ -211,7 +211,7 @@ onMounted(async () => {
   console.log(areaList, "城市代码");
   let city_list: any = areaList.city_list;
   let province_list: any = areaList.province_list;
-  let infoRes = await getUserAcount();
+  let infoRes = await getUserAccount();
   console.log(infoRes, "用户详情");
   profile.value = infoRes.profile;
   nickname.value = profile.value.nickname;
@@ -246,7 +246,7 @@ onMounted(async () => {
 const checkGender = async (gender: any) => {
   console.log(gender, "gender的值");
 
-  let infoRes = await getUserAcount();
+  let infoRes = await getUserAccount();
   let oldGender = infoRes.profile.gender;
   console.log(oldGender, "oldGender");
 
@@ -329,7 +329,7 @@ const upload = async (file: any) => {
 };
 //选择地区
 const onConfirmArea = async (value: any) => {
-  let infoRes = await getUserAcount();
+  let infoRes = await getUserAccount();
   birthday.value = infoRes.profile.birthday;
   nextTick(() => {
     provinceCity.value = value[0].name + " " + value[1].name;
