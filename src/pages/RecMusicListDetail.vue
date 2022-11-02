@@ -15,7 +15,7 @@ const router = useRouter();
 const route = useRoute();
 const state: any = reactive({
   playlist: {}, // 歌单信息
-  songlist: [], // 歌曲信息
+  songList: [], // 歌曲信息
 });
 const offset = ref(0);
 const limit = route.query.limit; //接收个人主页我的歌单歌曲的数量
@@ -32,9 +32,9 @@ onMounted(async () => {
   const totalRes = await getAllSong(id, 10000); //获取歌单歌曲总数
   console.log(totalRes, "totalRes");
   totalSong.value = totalRes.songs.length;
-  const songlistRes = await getAllSong(id, SongNum.value, offset.value);
-  state.songlist = songlistRes.songs;
-  if (state.songlist.length == limit || state.songlist.length == totalSong.value) {
+  const songListRes = await getAllSong(id, SongNum.value, offset.value);
+  state.songList = songListRes.songs;
+  if (state.songList.length == limit || state.songList.length == totalSong.value) {
     finished.value = true;
   }
 });
@@ -46,20 +46,20 @@ const filter = (num: any) => {
 const onLoad = async () => {
   offset.value += 10;
   SongNum.value += 10;
-  const songlistRes = await getAllSong(id, SongNum.value, offset.value);
-  console.log(songlistRes, "歌曲信息");
-  state.songlist = songlistRes.songs;
-  playList.value = songlistRes.songs;
+  const songListRes = await getAllSong(id, SongNum.value, offset.value);
+  console.log(songListRes, "歌曲信息");
+  state.songList = songListRes.songs;
+  playList.value = songListRes.songs;
   console.log(playList.value, "播放列表");
   listLoading.value = false;
-  if (state.songlist.length == limit || state.songlist.length == totalSong.value) {
+  if (state.songList.length == limit || state.songList.length == totalSong.value) {
     finished.value = true;
   }
 };
 // 修改歌曲信息并进行播放
 
 const updateSongList = (index: any) => {
-  store.updatePlayList(store.$state, state.songlist); // 将歌单列表传进默认列表
+  store.updatePlayList(store.$state, state.songList); // 将歌单列表传进默认列表
   store.updatePlayListIndex(index); // 将索引值传给默认索引
   store.updateIsShow(store.$state, true); // 修改为暂停图标
 };
@@ -153,7 +153,7 @@ const toMv = (item: any) => {
       <div class="flex items-center justify-between z-10">
         <div class="flex items-center">
           <van-icon size="1rem" name="add" color="#FE3641" />
-          <div class="px-1 text-10px">
+          <div class="px-1 text-xs">
             {{ filterTotal(state?.playlist?.subscribedCount) }}
           </div>
         </div>
@@ -162,7 +162,7 @@ const toMv = (item: any) => {
       <div class="flex items-center justify-between z-10" @click="toCommentDetail">
         <div class="flex items-center" style="background: transparent">
           <van-icon color="#aaa" size="1rem" name="chat" />
-          <div class="px-1 text-10px text-hex-aaa">
+          <div class="px-1 text-xs text-hex-aaa">
             {{ filterTotal(state?.playlist?.commentCount) }}
           </div>
         </div>
@@ -171,7 +171,7 @@ const toMv = (item: any) => {
       <div class="flex items-center justify-between z-10">
         <div class="flex items-center" style="background: transparent">
           <van-icon color="#aaa" size="1rem" name="share" />
-          <div class="px-1 text-10px text-hex-aaa">
+          <div class="px-1 text-xs text-hex-aaa">
             {{ filterTotal(state?.playlist?.shareCount) }}
           </div>
         </div>
@@ -190,9 +190,9 @@ const toMv = (item: any) => {
         <div class="flex ml-2">全部播放</div>
       </div>
       <div
-        v-for="(item, index) in state.songlist"
+        v-for="(item, index) in state.songList"
         :key="index"
-        class="flex justify-between text-xs"
+        class="flex justify-between"
         @click="updateSongList(index)"
       >
         <div class="flex justify-between items-center">
@@ -200,32 +200,32 @@ const toMv = (item: any) => {
             {{ index + 1 }}
           </div>
 
-          <div class="col text-left m-2 w-auto">
-            <div class="flex text-left text-style mb-1">
+          <div class="col text-left m-2">
+            <div class="flex text-left text-style mb-1 max-w-80vw">
               {{ item.name }}
             </div>
 
-            <div class="flex text-left w-auto">
-              <div
-                class="flex text-style"
-                v-for="(ar, index) in state.songlist[index].ar"
+            <div class="text-left text-xs text-style">
+              <span
+                class="pr-.5"
+                v-for="(ar, index) in state.songList[index].ar"
                 :key="index"
               >
-                <div class="text-gray-500 mr-1">
+                <span class="text-gray-500">
                   {{ item.ar[index].name }}
-                </div>
-              </div>
+                </span>
+              </span>
 
-              <div v-if="item.al.name" class="px-1 text-gray-500">-</div>
-              <div class="w-auto text-style text-gray-500">
+              <span v-if="item.al.name" class="px-1 text-gray-500">-</span>
+              <span class="text-gray-500">
                 {{ item.al.name }}
-              </div>
+              </span>
             </div>
           </div>
         </div>
         <div class="flex justify-between items-center">
-          <div @click="toMv(item)" class="mr-5" v-if="item.mv !== 0">
-            <van-icon name="tv-o" />
+          <div @click.stop="toMv(item)" class="mr-5" v-if="item.mv !== 0">
+            <van-icon size="large" name="tv-o" />
           </div>
         </div>
       </div>

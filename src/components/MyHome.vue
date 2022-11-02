@@ -159,27 +159,27 @@ const toUserInfo = () => {
         {{ nickname }}
       </div>
       <div
-        class="absolute font-sans text-10px text-hex-aab top-50% left-30% -translate-x-1/2"
+        class="absolute font-sans text-xs text-hex-aab top-50% left-30% -translate-x-1/2"
         @click="toMyFollows"
       >
         {{ userDetail.profile?.follows }} 关注
       </div>
       <div
-        class="absolute font-sans text-10px text-hex-aab top-50% left-50% -translate-x-1/2"
+        class="absolute font-sans text-xs text-hex-aab top-50% left-50% -translate-x-1/2"
         @click="toMyFolloweds"
       >
         {{ userDetail.profile?.followeds }} 粉丝
       </div>
       <div
         @click="router.push({ path: 'level', query: { id: uid } })"
-        class="absolute font-sans text-10px text-hex-aab top-50% left-70% -translate-x-1/2"
+        class="absolute font-sans text-xs text-hex-aab top-50% left-70% -translate-x-1/2"
       >
         lv{{ userDetail.level }}
       </div>
 
       <div
         @click="toUserInfo"
-        class="rounded-2xl items-center flex justify-center border border-hex-ccc w-20 h-7 font-semibold tracking-widest absolute font-sans text-10px top-70% left-50% -translate-x-1/2"
+        class="rounded-2xl items-center flex justify-center border border-hex-ccc w-20 h-7 font-semibold tracking-widest absolute font-sans text-xs top-70% left-50% -translate-x-1/2"
       >
         编辑资料
       </div>
@@ -189,14 +189,14 @@ const toUserInfo = () => {
         <van-tab v-for="(item, index) in choice" :key="index" :title="item">
           <div v-show="active == 0" class="bg-white rounded-lg px-2 text-left">
             <div class="font-550 mt-2 pt-5">基本信息</div>
-            <div class="text-10px text-hex-bcb py-2">
+            <div class="text-xs text-hex-bcb py-2">
               村龄: {{ age }}年({{ createTime }}注册)
             </div>
-            <div v-if="gender == 0" class="text-10px text-hex-bcb pb-2">性别: 未知</div>
-            <div v-if="gender == 1" class="text-10px text-hex-bcb pb-2">性别: 男</div>
-            <div v-if="gender == 2" class="text-10px text-hex-bcb pb-2">性别: 女</div>
-            <div class="text-10px text-style text-hex-bcb">简介: {{ signature }}</div>
-            <div class="text-10px text-hex-bcb py-2">
+            <div v-if="gender == 0" class="text-xs text-hex-bcb pb-2">性别: 未知</div>
+            <div v-if="gender == 1" class="text-xs text-hex-bcb pb-2">性别: 男</div>
+            <div v-if="gender == 2" class="text-xs text-hex-bcb pb-2">性别: 女</div>
+            <div class="text-xs text-style text-hex-bcb">简介: {{ signature }}</div>
+            <div class="text-xs text-hex-bcb py-2">
               累积听歌数: {{ userDetail.listenSongs }}
             </div>
 
@@ -287,7 +287,7 @@ const toUserInfo = () => {
                     <div class="text-sm font-600">
                       {{ nickname }}
                     </div>
-                    <div class="text-10px">
+                    <div class="text-xs">
                       {{ formatMsToDate(item.eventTime) }}
                     </div>
                     <div class="text-13px">
@@ -306,7 +306,7 @@ const toUserInfo = () => {
                 </div>
 
                 <div class="flex absolute right-0">
-                  <div class="text-10px mr-.5 color-#ccc">
+                  <div class="text-xs mr-.5 color-#ccc">
                     {{ item.info?.likedCount }}
                   </div>
                   <div v-if="!item.info?.liked" class="flex my-1">

@@ -62,7 +62,7 @@ const toMusicDetail = (id: number) => {
               :src="playList.picUrl"
               alt="这是首页推荐歌单的封面"
             />
-            <div class="text-style text-left text-10px px-1">
+            <div class="text-style text-left text-xs px-1">
               {{ playList.name }}
             </div>
             <div class="play-icon flex text-.5rem px-2 rounded-xl absolute">

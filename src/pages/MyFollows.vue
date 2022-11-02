@@ -73,7 +73,7 @@ const toArtistDetail = (item:any) => {
             <div class="text-sm">
               {{ item.nickname }}
             </div>
-            <div class="text-style text-10px">
+            <div class="text-style text-xs">
               {{ item.signature }}
             </div>
           </div>
@@ -97,7 +97,7 @@ const toArtistDetail = (item:any) => {
             <div class="text-sm">
               {{ item.nickname }}
             </div>
-            <div class="text-style text-10px">
+            <div class="text-style text-xs">
               {{ item.signature }}
             </div>
           </div>

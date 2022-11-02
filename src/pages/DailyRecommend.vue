@@ -99,7 +99,7 @@ const toMv = (item: any) => {
               <div
                 v-for="(item, index) in state.songs"
                 :key="index"
-                class="flex justify-between text-xs"
+                class="flex justify-between"
                 @click="updateSongList(index)"
               >
                 <div class="flex justify-between items-center">
@@ -107,32 +107,32 @@ const toMv = (item: any) => {
                     {{ index + 1 }}
                   </div>
 
-                  <div class="col text-left m-2 w-auto">
-                    <div class="flex text-left text-style mb-1">
+                  <div class="col text-left m-2">
+                    <div class="flex text-left text-style mb-1 max-w-80vw">
                       {{ item.name }}
                     </div>
 
-                    <div class="flex text-left">
-                      <div
-                        class="flex text-style"
+                    <div class="text-left text-xs text-style">
+                      <span
+                        class="pr-.5"
                         v-for="(ar, index) in state.songs[index].ar"
                         :key="index"
                       >
-                        <div class="text-gray-500 mr-1">
+                        <span class="text-gray-500">
                           {{ item.ar[index].name }}
-                        </div>
-                      </div>
+                        </span>
+                      </span>
 
-                      <div v-if="item.al.name" class="px-1 text-gray-500">-</div>
-                      <div class="w-auto text-style text-gray-500">
+                      <span v-if="item.al.name" class="px-1 text-gray-500">-</span>
+                      <span class="text-gray-500">
                         {{ item.al.name }}
-                      </div>
+                      </span>
                     </div>
                   </div>
                 </div>
                 <div class="flex justify-between items-center">
-                  <div @click="toMv(item)" class="mr-5" v-if="item.mv !== 0">
-                    <van-icon name="tv-o" />
+                  <div @click.stop="toMv(item)" class="mr-5" v-if="item.mv !== 0">
+                    <van-icon size="large" name="tv-o" />
                   </div>
                 </div>
               </div>
@@ -151,7 +151,7 @@ const toMv = (item: any) => {
               <div class="text-style w-20 text-left text-xs px-1">
                 {{ item.name }}
               </div>
-              <div class="flex play-icon text-10px px-2 py-0.5 rounded-xl absolute">
+              <div class="flex play-icon text-xs px-2 py-0.5 rounded-xl absolute">
                 <div><van-icon name="play-circle-o" /></div>
                 <div class="mx-.5">
                   {{ filter(item.playcount) }}

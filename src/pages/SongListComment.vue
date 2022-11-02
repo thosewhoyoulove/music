@@ -157,7 +157,7 @@ const onLoad = async () => {
                         </div>
                       </div>
                       <div class="flex absolute right-3">
-                        <div class="flex text-10px mr-.5 color-#ccc">
+                        <div class="flex text-xs mr-.5 color-#ccc">
                           {{ item.likedCount }}
                         </div>
                         <div class="flex my-1">
@@ -223,7 +223,7 @@ const onLoad = async () => {
                       </div>
 
                       <div class="flex absolute right-0">
-                        <div class="flex text-10px mr-.5 color-#ccc">
+                        <div class="flex text-xs mr-.5 color-#ccc">
                           {{ filter(item.likedCount) }}
                         </div>
                         <div class="flex my-1">

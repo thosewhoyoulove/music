@@ -25,18 +25,18 @@
       </div>
       <div>10</div>
     </div>
-    <div class="w-40 text-10px text-left text-hex-ccc">等级数据每天下午两点更新</div>
+    <div class="w-40 text-xs text-left text-hex-ccc">等级数据每天下午两点更新</div>
     <van-divider></van-divider>
     <div class="w-50 text-left ml-2">
       <div class="text-12px font-600">当前等级特权</div>
-      <div class="text-10px my-1" v-for="(item, index) in info" :key="index">
+      <div class="text-xs my-1" v-for="(item, index) in info" :key="index">
         - {{ item }}
       </div>
     </div>
   </div>
   <van-divider></van-divider>
   <div class="mt-2">
-    <div class="w-50 text-left text-10px text-hex-ccc">
+    <div class="w-50 text-left text-xs text-hex-ccc">
       距离下一个等级：Lv{{ level + 1 }}
     </div>
     <div class="flex">
@@ -49,7 +49,7 @@
           color="#ee0a24"
           layer-color="#ebedf0"
         />
-        <div class="text-10px">听歌量：还需{{ nextSong }}首</div>
+        <div class="text-xs">听歌量：还需{{ nextSong }}首</div>
       </div>
       <div class="w-50%">
         <van-circle
@@ -60,7 +60,7 @@
           color="#ee0a24"
           layer-color="#ebedf0"
         />
-        <div class="text-10px">登录天数：还需{{ nextDay }}天</div>
+        <div class="text-xs">登录天数：还需{{ nextDay }}天</div>
       </div>
     </div>
   </div>

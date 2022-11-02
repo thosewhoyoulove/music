@@ -149,14 +149,14 @@ const toCommentDetail = () => {
       <div class="flex items-center justify-between">
         <div class="flex items-center">
           <van-icon size="1rem" name="add" color="#FE3641" />
-          <div class="px-1 text-10px">null</div>
+          <div class="px-1 text-xs">null</div>
         </div>
       </div>
       <div class="-mx-8 flex items-center">|</div>
       <div class="flex items-center justify-between z-10" @click="toCommentDetail(id)">
         <div class="flex items-center" style="background: transparent">
           <van-icon color="#aaa" size="1rem" name="chat" />
-          <div class="px-1 text-10px text-hex-aaa">
+          <div class="px-1 text-xs text-hex-aaa">
             {{ filterTotal(state?.album?.info?.commentCount) }}
           </div>
         </div>
@@ -165,7 +165,7 @@ const toCommentDetail = () => {
       <div class="flex items-center justify-between z-10">
         <div class="flex items-center" style="background: transparent">
           <van-icon color="#aaa" size="1rem" name="share" />
-          <div class="px-1 text-10px text-hex-aaa">
+          <div class="px-1 text-xs text-hex-aaa">
             {{ filterTotal(state?.album?.info?.shareCount) }}
           </div>
         </div>

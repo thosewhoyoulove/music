@@ -25,7 +25,7 @@
       </div>
 
       <div
-        class="absolute top-35% left-50% -translate-x-1/2 flex font-sans text-10px text-hex-aab"
+        class="absolute top-35% left-50% -translate-x-1/2 flex font-sans text-xs text-hex-aab"
       >
         <div class="">{{ follow?.followCnt }} 关注</div>
         <div class="mx-1">|</div>
@@ -33,7 +33,7 @@
       </div>
       <div
         v-if="artistDetail?.identify?.imageDesc"
-        class="absolute top-45% left-50% -translate-x-1/2 flex font-sans text-10px text-hex-aab"
+        class="absolute top-45% left-50% -translate-x-1/2 flex font-sans text-xs text-hex-aab"
       >
         {{ artistDetail?.identify?.imageDesc }}
       </div>
