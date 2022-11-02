@@ -30,19 +30,19 @@
                 {{ item.name }}
               </div>
               <!-- 这是歌手以及专辑的盒子 -->
-              <div class="flex text-left text-xs">
-                <div
+              <div class="text-left text-xs text-style">
+                <span
                   class="pr-.5"
                   v-for="(ar, index) in searchList[index]?.ar"
                   :key="item.id"
                 >
-                  <div class="text-gray-500">{{ item?.ar[index]?.name }}</div>
-                </div>
+                  <span class="text-gray-500">{{ item?.ar[index]?.name }}</span>
+                </span>
 
-                <div v-if="item.al.name" class="px-1 text-gray-500">-</div>
-                <div class="text-gray-500">
+                <span v-if="item.al.name" class="px-1 text-gray-500">-</span>
+                <span class="text-gray-500">
                   {{ item.al.name }}
-                </div>
+                </span>
               </div>
             </div>
           </div>
@@ -59,25 +59,24 @@
           v-if="!loading"
           v-for="(item, index) in searchList"
           :key="index"
-          class="flex justify-between text-xs"
+          class="flex justify-between"
           @click="toAlbum(item)"
         >
           <div class="flex justify-between items-center pl-1">
             <img class="w-13 h-13 rounded-lg p-1" :src="item.al.picUrl" alt="" />
-            <div class="col text-left m-2 text-style">
-              <div class="flex text-sm w-auto text-left text-style break-all">
+            <div class="flex-col text-left m-2">
+              <div class="text-left text-style break-all max-w-80vw">
                 {{ item.name }}
               </div>
-              <div class="flex w-auto text-left items-center text-style">
-                <div v-for="(ar, index) in searchList[index].ar" :key="index">
-                  <div class="flex text-xs text-gray-500 pr-.5">
+              <div class="text-left items-center text-style text-xs">
+                <span v-for="(ar, index) in searchList[index].ar" :key="index">
+                  <span class="text-gray-500 pr-.5">
                     {{ item.ar[index].name }}
-                  </div>
-                </div>
-
-                <div class="flex scale-80" v-if="item.publishTime">
-                  {{ formatMsToDate(item.publishTime) }}
-                </div>
+                  </span>
+                </span>
+                <span class="text-xs scale-90 inline-block" v-if="item.publishTime">
+                  - {{ formatMsToDate(item.publishTime) }}
+                </span>
               </div>
             </div>
           </div>
@@ -155,9 +154,9 @@
         >
           <img class="flex w-40 h-20 rounded-lg my-1 ml-2 relative" :src="cover" alt="" />
           <div class="absolute left-32 mt-15 text-hex-fff scale-50">
-            {{ formatMsToDate(duration) }}
+            {{ formatMvTime(duration) }}
           </div>
-          <div class="flex-col text-left text-xs w-40">
+          <div class="flex-col text-left text-xs max-w-30rem">
             <div class="flex ml-1 mb-4 mt-1">
               <div class="scale-70"><van-tag color="#f00" plain>MV</van-tag></div>
               <div class="text-style">{{ name }}</div>
@@ -408,11 +407,23 @@ const toMvDetail = (id: any, artistId: any) => {
     },
   });
 };
+//格式化mv的时间
+const formatMvTime = (ms: number) => {
+  if (ms) {
+    ms = ms / 1000;
+    const min = ((ms / 60) as number).toFixed(0);
+    const sec = ((ms % 60) as number).toFixed(0);
+    const oTime = `${addZero(min)}:${addZero(sec)}`;
+    return oTime;
+  } else {
+    return "";
+  }
+};
 </script>
 
 <style>
 .text-style {
-  display: -webkit-box;
+  /* display: -webkit-box; */
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
   overflow: hidden;
