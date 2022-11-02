@@ -9,7 +9,7 @@
 import { Dialog, Loading, Notify } from "vant";
 import { storeToRefs } from "pinia";
 import {
-  getUserAcount,
+  getUserAccount,
   getUserDetail,
   getUserEvent,
   getUserFollows,
@@ -44,7 +44,14 @@ onMounted(async () => {
       path: "/LoginOrReg",
     });
   } else {
-    const res = await getUserAcount(); // 获取账号信息
+    const res = await getUserAccount(); // 获取账号信息
+    if (res.account === null || res.profile === null) {
+      Notify({ type: "warning", message: "用户信息获取失败，请重新登陆" });
+      store.updateIsShow(store.$state, true);
+      router.push({
+        path: "/LoginOrReg",
+      });
+    }
     console.log(res, "这是用户账号信息");
     // user.value = JSON.parse(localStorage.getItem("userInfo") as string);//获取本地的信息
     user.value = res;
