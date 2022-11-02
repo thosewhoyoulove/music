@@ -82,13 +82,13 @@ const toMv = (item: any) => {
 </script>
 
 <template>
-  <div class="bg-white w-100vw h-42vh relative">
+  <div class="bg-white w-100vw h-50vh relative">
     <img
       class="w-100% h-100% rounded-xl absolute blur-xl"
       :src="state.playlist.coverImgUrl"
       alt="这是排行榜详情的底片阴影"
     />
-    <div class="justify-between pt-5 items-center px-5 text-white text-right">
+    <div class="justify-between pt-10 items-center px-5 text-white text-right">
       <span class="text-7 mr-2"><van-icon size="25px" name="search" /></span>
       <span class="text-7"><van-icon name="ellipsis" /></span>
     </div>
@@ -111,7 +111,7 @@ const toMv = (item: any) => {
       </span>
     </div>
     <div
-      class="relative flex mt-6 text-hex-aaa bg-white justify-around mx-auto w-80vw h-5vh rounded-full"
+      class="relative flex mt-10 text-hex-aaa bg-white justify-around mx-auto w-80vw h-5vh rounded-full"
     >
       <div class="flex items-center justify-between">
         <div class="flex items-center">
