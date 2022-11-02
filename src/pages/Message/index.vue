@@ -10,7 +10,7 @@
     ><div
       v-for="(item, index) in msgs"
       :key="index"
-      class="flex w-100vw px-4"
+      class="flex w-100vw px-3"
       @click="toMsgDetail(item, index)"
     >
       <div class="relative">
@@ -23,7 +23,7 @@
         />
       </div>
       <div
-        class="col h-15 w-100% text-left ml-3 mt-3 relative border-b border-hex-f5f5f5"
+        class="col h-15 w-100% text-left ml-4 mt-4 relative border-b border-hex-f5f5f5"
       >
         <div class="flex max-w-60vw text-style">
           <div v-if="item.fromUser.remarkName" class="text-sm">
@@ -32,7 +32,7 @@
           <div v-else class="text-sm">
             {{ item.fromUser.nickname }}
           </div>
-          <div class="scale-70 absolute top-0 right-0">
+          <div class="text-xs absolute top-0 right-0">
             {{ formatMsToDate(item.lastMsgTime) }}
           </div>
           <div
@@ -54,7 +54,6 @@
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { useStore } from "~/store/index";
-
 import { getPrivateMsg } from "~/api/message";
 const store = useStore();
 const router = useRouter();

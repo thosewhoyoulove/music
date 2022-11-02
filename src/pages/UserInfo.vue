@@ -105,9 +105,13 @@
 
 <script setup lang="ts">
 import { areaList } from "@vant/area-data";
+import { storeToRefs } from "pinia";
+import { useStore } from "~/store/index";
 import { Notify } from "vant";
 import { getUserAccount, updateUser } from "~/api/user";
 import axios from "axios";
+const store = useStore();
+const { isFooterShow } = storeToRefs(store);
 const showDatetimePicker = ref(false);
 const showAreaPicker = ref(false);
 const router = useRouter();
@@ -208,6 +212,7 @@ const onCancel = () => {
   showAreaPicker.value = false;
 };
 onMounted(async () => {
+  isFooterShow.value = false;
   console.log(areaList, "城市代码");
   let city_list: any = areaList.city_list;
   let province_list: any = areaList.province_list;

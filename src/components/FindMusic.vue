@@ -49,7 +49,7 @@ const toMusicDetail = (id: number) => {
       </div>
     </div>
     <div class="w-100vw bg-hex-F6F7F9 z-10 px-2">
-      <van-skeleton :row="6" round :loading="loading" />
+      <van-empty image-size="9rem" v-if="loading" />
       <van-swipe class="h-100%" :loop="false" :width="110" :show-indicators="false">
         <van-swipe-item
           v-for="playList in playListSet.state"
@@ -73,7 +73,12 @@ const toMusicDetail = (id: number) => {
         </van-swipe-item>
       </van-swipe>
     </div>
-    <a class="scale-70 pt-5 inline-block" href="https://beian.miit.gov.cn/" target="_blank">备案号：湘ICP备2022020251号-1</a>
+    <a
+      class="scale-70 pt-5 inline-block"
+      href="https://beian.miit.gov.cn/"
+      target="_blank"
+      >备案号：湘ICP备2022020251号-1</a
+    >
   </div>
 
   <router-view />

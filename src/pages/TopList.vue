@@ -29,7 +29,7 @@ const toTopDetail = (item: any, index: any) => {
 <template>
   <div class="bg-hex-eee p-1 font-sans-serif pb-20">
     <div class="text-left ml-3 mt-2 font-extrabold text-sm">官方榜</div>
-    <van-skeleton :row="13" round :loading="loading" />
+    <van-empty image-size="21rem" v-if="loading" />
     <div
       v-for="(item, index) in list.slice(0, 4)"
       :key="index"
@@ -54,7 +54,7 @@ const toTopDetail = (item: any, index: any) => {
       </div>
     </div>
     <div class="text-left ml-3 mt-2 font-extrabold text-sm">精选榜</div>
-    <van-skeleton :row="10" round :loading="loading" />
+    <van-empty image-size="21rem" v-if="loading" />
     <div
       v-for="(item, index) in list.slice(4, list.length)"
       :key="index"
@@ -80,5 +80,8 @@ const toTopDetail = (item: any, index: any) => {
   -webkit-line-clamp: 1;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+:deep(.van-empty) {
+  padding: 0;
 }
 </style>
