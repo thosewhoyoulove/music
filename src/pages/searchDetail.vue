@@ -131,6 +131,11 @@
           </div>
         </div>
       </van-list>
+      <van-empty
+        image="https://fastly.jsdelivr.net/npm/@vant/assets/custom-empty-image.png"
+        v-show="index == 4"
+        description="还在开发"
+      />
       <van-list
         v-show="index == 5"
         v-model:loading="mvListLoading"
@@ -168,6 +173,31 @@
           </div>
         </div>
       </van-list>
+      <van-empty
+        image="https://fastly.jsdelivr.net/npm/@vant/assets/custom-empty-image.png"
+        v-show="index == 6"
+        description="还在开发"
+      />
+      <van-empty
+        image="https://fastly.jsdelivr.net/npm/@vant/assets/custom-empty-image.png"
+        v-show="index == 7"
+        description="还在开发"
+      />
+      <van-empty
+        image="https://fastly.jsdelivr.net/npm/@vant/assets/custom-empty-image.png"
+        v-show="index == 8"
+        description="还在开发"
+      />
+      <van-empty
+        image="https://fastly.jsdelivr.net/npm/@vant/assets/custom-empty-image.png"
+        v-show="index == 9"
+        description="还在开发"
+      />
+      <van-empty
+        image="https://fastly.jsdelivr.net/npm/@vant/assets/custom-empty-image.png"
+        v-show="index == 10"
+        description="还在开发"
+      />
     </van-tab>
   </van-tabs>
 </template>
