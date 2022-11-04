@@ -3,20 +3,15 @@
  * @Author: 曹俊
  * @Date: 2022-09-12 17:02:36
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-20 20:21:52
+ * @LastEditTime: 2022-11-04 20:44:13
 -->
 <script setup lang="ts">
-import { Dialog, Loading, Notify } from "vant";
+import { Dialog, Loading, Notify, ImagePreview } from "vant";
 import { storeToRefs } from "pinia";
-import {
-  getUserAccount,
-  getUserDetail,
-  getUserEvent,
-  getUserFollows,
-  getUserPlaylist,
-} from "~/api/user";
+import { getUserAccount, getUserDetail, getUserEvent, getUserPlaylist } from "~/api/user";
 import { useStore, userStore } from "~/store/index";
 const VanDialog = Dialog.Component;
+const VanImagePreview = ImagePreview.Component;
 const router = useRouter();
 const store = useStore();
 const userInfo = userStore();
@@ -33,6 +28,12 @@ const gender = ref();
 const age: any = ref(0);
 const signature: any = ref("");
 const events: any = ref([]);
+let isAvatarShow = ref(false); //是否预览
+let startPosition: any = ref(0); //图片开始的索引
+//预览图片的数组
+let image = reactive({
+  lists: [] as any[],
+});
 //个人歌单
 const activeNames: any = ref("创建的歌单");
 const createdList: any = ref([]); //
@@ -74,6 +75,12 @@ onMounted(async () => {
     const eventRes = await getUserEvent(uid.value);
     console.log(eventRes, "用户动态");
     events.value = eventRes.events;
+    console.log(events.value, "events.value");
+    // image.lists = events.value.map((item: any) => item.pics);
+
+    // image.lists = image.lists.flat();
+    // image.lists = image.lists.map((item: any) => item.originUrl);
+    // console.log(image.lists, "imagesList");
     showLoading.value = false;
   }
 });
@@ -139,6 +146,16 @@ const toUserInfo = () => {
     path: "/UserInfo",
     query: {},
   });
+};
+//点击展示图片
+const showImage = (pic: any, index: any) => {
+  image.lists = [];
+  console.log(index);
+  startPosition.value = index;
+  image.lists.push(pic.squareUrl);
+  image.lists = [...new Set(image.lists)];
+  isAvatarShow.value = true;
+  console.log(image.lists, "image.lists");
 };
 </script>
 
@@ -294,12 +311,13 @@ const toUserInfo = () => {
                       {{ item.info?.commentThread?.resourceTitle }}
                     </div>
                     <div v-if="item.pics.length">
-                      <div
-                        v-for="(pic, index) in events[index].pics"
-                        :key="index"
-                        class="flex"
-                      >
-                        <img class="w-20 h-20 rounded p-.5" :src="pic.originUrl" alt="" />
+                      <div v-for="pic in events[index].pics" :key="index" class="flex">
+                        <img
+                          @click="showImage(pic, index)"
+                          class="w-20 h-20 rounded p-.5"
+                          :src="pic.originUrl"
+                          alt=""
+                        />
                       </div>
                     </div>
                   </div>
@@ -322,6 +340,13 @@ const toUserInfo = () => {
         </van-tab>
       </van-tabs>
     </div>
+    <van-image-preview
+      v-model:show="isAvatarShow"
+      :images="image.lists"
+      :show-index="false"
+      :start-position="startPosition"
+    >
+    </van-image-preview>
   </div>
 </template>
 
