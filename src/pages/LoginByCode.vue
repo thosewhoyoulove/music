@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-09 15:26:41
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-20 20:55:13
+ * @LastEditTime: 2022-11-04 18:36:31
 -->
 <script setup lang="ts">
 import { Notify } from "vant";
@@ -25,7 +25,7 @@ onMounted(() => {
 const key = ref("");
 const qrimg = ref("");
 const qrurl = ref("");
-const result = ref("");
+let timer: any = null;
 onMounted(async () => {
   const res = await getCodeKey();
   console.log(res, "获得key");
@@ -34,7 +34,7 @@ onMounted(async () => {
   console.log(res1, "生成二维码图片");
   qrimg.value = res1.data.qrimg;
   qrurl.value = res1.data.qrurl;
-  const timer = setInterval(async () => {
+  timer = setInterval(async () => {
     console.log(key.value, "UNikey");
 
     const statusRes = await testCodeByKey(key.value);
@@ -50,10 +50,10 @@ onMounted(async () => {
       Notify({ type: "success", message: "授权登录成功，即将跳转首页" });
       console.log(statusRes.cookie, "成功了");
       localStorage.setItem("cookie", statusRes.cookie);
-      const AcountRes = await getUserAccount();
-      console.log(AcountRes, "用户账户信息");
+      const AccountRes = await getUserAccount();
+      console.log(AccountRes, "用户账户信息");
       userInfo.updateIsLogin(true);
-      userInfo.updateUserInfo(AcountRes);
+      userInfo.updateUserInfo(AccountRes);
       //在登录成功后设置定时器定期使cookie过期
       setTimeout(() => {
         localStorage.removeItem("userInfo");
@@ -70,13 +70,16 @@ onMounted(async () => {
         path: "/",
       });
     }
-  }, 5000);
+  }, 10000);
+});
+onUnmounted(() => {
+  clearInterval(timer);
 });
 </script>
 
 <template>
   <div class="h-100vh relative w-100%">
-    <div class="w-100% text-center">请使用网易云音乐APP扫码登录</div>
+    <div class="w-100% text-center mt-5">请使用网易云音乐APP扫码登录</div>
     <van-loading v-if="loading" class="mt-10" color="#1989fa" />
     <img
       v-else
