@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-12 17:02:36
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-11-04 20:44:13
+ * @LastEditTime: 2022-11-04 21:02:35
 -->
 <script setup lang="ts">
 import { Dialog, Loading, Notify, ImagePreview } from "vant";
@@ -28,6 +28,9 @@ const gender = ref();
 const age: any = ref(0);
 const signature: any = ref("");
 const events: any = ref([]);
+let event = reactive({
+  content: [] as any[],
+});
 let isAvatarShow = ref(false); //是否预览
 let startPosition: any = ref(0); //图片开始的索引
 //预览图片的数组
@@ -76,6 +79,7 @@ onMounted(async () => {
     console.log(eventRes, "用户动态");
     events.value = eventRes.events;
     console.log(events.value, "events.value");
+
     // image.lists = events.value.map((item: any) => item.pics);
 
     // image.lists = image.lists.flat();
@@ -284,8 +288,7 @@ const showImage = (pic: any, index: any) => {
               加载中...
             </van-loading>
             <div class="bg-hex-f6f7f9" v-show="!showLoading">
-              <div v-if="!events.length"></div>
-              暂无动态
+              <div v-if="!events.length">暂无动态</div>
             </div>
             <ul
               v-if="events.length"
@@ -307,7 +310,7 @@ const showImage = (pic: any, index: any) => {
                     <div class="text-xs">
                       {{ formatMsToDate(item.eventTime) }}
                     </div>
-                    <div class="text-13px">
+                    <div class="text-xs">
                       {{ item.info?.commentThread?.resourceTitle }}
                     </div>
                     <div v-if="item.pics.length">
@@ -315,7 +318,7 @@ const showImage = (pic: any, index: any) => {
                         <img
                           @click="showImage(pic, index)"
                           class="w-20 h-20 rounded p-.5"
-                          :src="pic.originUrl"
+                          :src="pic.squareUrl"
                           alt=""
                         />
                       </div>
