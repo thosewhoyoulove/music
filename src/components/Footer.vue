@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-31 21:05:38
+ * @LastEditTime: 2022-11-04 21:09:42
 -->
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
@@ -97,7 +97,7 @@ onUpdated(() => {
 
 <template>
   <div
-    class="w-100vw h-5rem bottom-0 fixed items-center justify-between bg-white flex px-1"
+    class="w-100vw h-10vh bottom-0 fixed items-center justify-between bg-white flex px-1"
   >
     <div class="flex items-center" @click="toMusicDetail">
       <div
@@ -121,15 +121,15 @@ onUpdated(() => {
         {{ playList[playListIndex]?.name }}
       </Vue3Marquee>
     </div>
-    <div class="flex pr-1.5rem">
-      <div v-if="isShow" class="text-lg mx-2" @click="play">
-        <van-icon size="1.8rem" name="play-circle-o" />
+    <div class="flex pr-1.5rem items-center text-center h-100%">
+      <div v-if="isShow" class="mx-2" @click="play">
+        <van-icon size="1.5rem" name="play-circle-o" />
       </div>
-      <div v-if="!isShow" class="text-lg mx-2" @click="play">
-        <van-icon size="1.8rem" name="pause-circle-o" />
+      <div v-if="!isShow" color="#ccc" class="mx-2" @click="play">
+        <van-icon size="1.5rem" name="pause-circle-o" />
       </div>
-      <div @click="isPlayListShow = true" class="text-xl">
-        <van-icon size="1.8rem" name="bars" />
+      <div @click="isPlayListShow = true">
+        <van-icon color="#ccc" size="1.5rem" name="bars" />
       </div>
     </div>
     <audio
