@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-10 17:08:38
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-11-04 19:20:16
+ * @LastEditTime: 2022-11-04 19:29:06
 -->
 <script setup lang="ts">
 import { Notify } from "vant";
@@ -95,7 +95,7 @@ watch(
 
 <template>
   <div class="w-100vw h-100vh relative bg-hex-f5f5f5">
-    <div class="w-100% text-left ml-5 mt-5">
+    <div class="text-left ml-5 mt-5">
       <div class="font-550">登录体验更多精彩</div>
     </div>
     <div class="w-100% flex items-center mt-5">
@@ -146,7 +146,7 @@ watch(
         </div>
         <div
           class="flex w-20 items-center mx-auto text-xs text-hex-ccc"
-          @click="router.push({ path: '/login' })"
+          @click="router.replace({ path: '/login' })"
         >
           使用密码登录
         </div>

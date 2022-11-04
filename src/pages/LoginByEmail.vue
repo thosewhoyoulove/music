@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-09 15:16:22
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-11-04 18:30:43
+ * @LastEditTime: 2022-11-04 19:29:26
 -->
 <script setup lang="ts">
 import { Notify } from "vant";
@@ -83,7 +83,7 @@ const submit = async () => {
           <van-button round block type="danger" @click="submit"> 登录 </van-button>
         </div>
         <div class="flex items-center justify-between mt-5 px-5">
-          <div class="text-xs text-hex-ccc" @click="router.push({ path: '/Login' })">
+          <div class="text-xs text-hex-ccc" @click="router.replace({ path: '/Login' })">
             使用密码登录
           </div>
           <div class="text-xs text-hex-1A73E9">找回密码</div>

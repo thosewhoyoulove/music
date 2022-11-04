@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-09 15:16:22
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-11-04 18:44:32
+ * @LastEditTime: 2022-11-04 19:29:38
 -->
 <script setup lang="ts">
 import { Notify } from "vant";
@@ -84,7 +84,7 @@ const submit = async () => {
         <div class="flex items-center justify-between mt-5 px-5">
           <div
             class="text-xs text-hex-ccc"
-            @click="router.push({ path: '/LoginByVeryCode' })"
+            @click="router.replace({ path: '/LoginByVeryCode' })"
           >
             使用验证码登录
           </div>
