@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-10 17:08:38
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-11-04 19:17:33
+ * @LastEditTime: 2022-11-04 19:20:16
 -->
 <script setup lang="ts">
 import { Notify } from "vant";
@@ -73,10 +73,10 @@ const submit = async () => {
           path: "/",
         });
       } else {
-        Notify({ type: "danger", message: res.message });
+        Notify({ type: "danger", message: "服务器错误，请稍后再试" });
       }
     } else {
-      Notify({ type: "danger", message: res.message });
+      Notify({ type: "danger", message: "服务器错误，请稍后再试" });
     }
   }
 };

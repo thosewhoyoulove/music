@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-09 15:16:22
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-11-04 18:22:10
+ * @LastEditTime: 2022-11-04 18:44:32
 -->
 <script setup lang="ts">
 import { Notify } from "vant";
@@ -55,7 +55,7 @@ const submit = async () => {
 
 <template>
   <div class="bg-hex-f4f5f5 h-100vh w-100vw p-5 relative">
-    <div class="w-100% text-left ml-5 mt-5">
+    <div class="w-100% text-left mt-5">
       <div class="font-550">登录体验更多精彩</div>
     </div>
     <div class="w-100% items-center mt-5 absolute -translate-x-1/2 left-50%">

@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-10-28 16:18:24
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-31 20:21:25
+ * @LastEditTime: 2022-11-04 18:47:35
 -->
 <template>
   <div class="bg-hex-F5F5F5" style="height: 100vh">
@@ -81,7 +81,6 @@ import { getMsgDetail, sendMsg } from "~/api/message";
 const store = useStore();
 const { isFooterShow } = storeToRefs(store);
 const route = useRoute();
-const router = useRouter();
 let uid = parseInt(route.query.uid as any); //对方id
 //通过判断自己的id与发消息的id是否一致来判断左边还是右边
 let disabled = ref(true);
