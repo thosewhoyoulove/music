@@ -6,15 +6,24 @@
  * @LastEditTime: 2022-09-17 19:31:57
 -->
 <script setup lang="ts">
-
+import { storeToRefs } from "pinia";
+import { useStore } from "~/store/index";
+const store = useStore();
+const { isFooterShow } = storeToRefs(store);
+onBeforeMount(() => {
+  isFooterShow.value = false;
+});
 </script>
 
 <template>
-  <div class="h-100vh w-99% bg-hex-white text-center mt-10 text-12px">
-    遗憾的告诉你，网易云的注册接口暂时用不了>_&lt
+  <div class="h-100vh w-100vw bg-hex-white text-center text-xs pt-10">
+    <p class="mt-10">遗憾的告诉你，网易云的注册接口暂时用不了>_&lt</p>
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
+<route lang="yaml">
+meta:
+  layout: default
+  title: 注册
+</route>

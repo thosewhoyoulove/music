@@ -41,52 +41,54 @@ let image = reactive({
 const activeNames: any = ref("创建的歌单");
 const createdList: any = ref([]); //
 const subList: any = ref([]);
-onMounted(async () => {
+//在beforeMount之前判断是否有cookie
+onBeforeMount(() => {
   if (!cookie.value) {
+    console.log("beforeMount没有cookie");
     store.updateIsShow(store.$state, true);
     router.push({
       path: "/LoginOrReg",
     });
-  } else {
-    const res = await getUserAccount(); // 获取账号信息
-    if (res.account === null || res.profile === null) {
-      Notify({ type: "warning", message: "用户信息获取失败，请重新登陆" });
-      store.updateIsShow(store.$state, true);
-      router.push({
-        path: "/LoginOrReg",
-      });
-    }
-    console.log(res, "这是用户账号信息");
-    // user.value = JSON.parse(localStorage.getItem("userInfo") as string);//获取本地的信息
-    user.value = res;
-    console.log(user.value, "本地用户信息");
-    uid.value = user.value.account.id;
-    nickname.value = user.value.profile?.nickname;
-    gender.value = user.value.profile?.gender;
-    signature.value = user.value.profile?.signature;
-    const res1 = await getUserDetail(uid.value); // 获取用户详细信息-关注
-    userDetail.value = res1;
-    createTime.value = formatMsToDate(res1.createTime); // 获取创建时间
-    age.value = getAge(res1.createTime); // 获取村龄
-    console.log(userDetail.value, "用户详情对象");
-    const res2 = await getUserPlaylist(uid.value); // 获取用户歌单
-    console.log(uid.value, res2, "用户歌单");
-    createdList.value = res2.playlist.filter((item: any) => item.subscribed === false); //获取创建的歌单
-    subList.value = res2.playlist.filter((item: any) => item.subscribed === true); //获取收藏的歌单
-    console.log(createdList.value, "创建的歌曲列表");
-
-    const eventRes = await getUserEvent(uid.value);
-    console.log(eventRes, "用户动态");
-    events.value = eventRes.events;
-    console.log(events.value, "events.value");
-
-    // image.lists = events.value.map((item: any) => item.pics);
-
-    // image.lists = image.lists.flat();
-    // image.lists = image.lists.map((item: any) => item.originUrl);
-    // console.log(image.lists, "imagesList");
-    showLoading.value = false;
   }
+});
+onMounted(async () => {
+  const res = await getUserAccount(); // 获取账号信息
+  if (res.account === null || res.profile === null) {
+    Notify({ type: "warning", message: "用户信息获取失败，请重新登陆" });
+    store.updateIsShow(store.$state, true);
+    router.push({
+      path: "/LoginOrReg",
+    });
+  }
+  console.log(res, "这是用户账号信息");
+  user.value = res;
+  console.log(user.value, "本地用户信息");
+  uid.value = user.value.account.id;
+  nickname.value = user.value.profile?.nickname;
+  gender.value = user.value.profile?.gender;
+  signature.value = user.value.profile?.signature;
+  const res1 = await getUserDetail(uid.value); // 获取用户详细信息-关注
+  userDetail.value = res1;
+  createTime.value = formatMsToDate(res1.createTime); // 获取创建时间
+  age.value = getAge(res1.createTime); // 获取村龄
+  console.log(userDetail.value, "用户详情对象");
+  const res2 = await getUserPlaylist(uid.value); // 获取用户歌单
+  console.log(uid.value, res2, "用户歌单");
+  createdList.value = res2.playlist.filter((item: any) => item.subscribed === false); //获取创建的歌单
+  subList.value = res2.playlist.filter((item: any) => item.subscribed === true); //获取收藏的歌单
+  console.log(createdList.value, "创建的歌曲列表");
+
+  const eventRes = await getUserEvent(uid.value);
+  console.log(eventRes, "用户动态");
+  events.value = eventRes.events;
+  console.log(events.value, "events.value");
+
+  // image.lists = events.value.map((item: any) => item.pics);
+
+  // image.lists = image.lists.flat();
+  // image.lists = image.lists.map((item: any) => item.originUrl);
+  // console.log(image.lists, "imagesList");
+  showLoading.value = false;
 });
 //注册时间
 const addZero = (num: any) => {
@@ -368,3 +370,4 @@ const showImage = (pic: any, index: any) => {
   padding: 0.25rem 0.1rem;
 }
 </style>
+

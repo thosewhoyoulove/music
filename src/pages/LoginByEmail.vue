@@ -16,7 +16,7 @@ const password = ref("");
 const store = useStore();
 const userInfo = userStore();
 const { isFooterShow } = storeToRefs(store);
-onMounted(() => {
+onBeforeMount(() => {
   isFooterShow.value = false;
 });
 // 校验规则
@@ -98,3 +98,8 @@ const submit = async () => {
   width: 40px;
 }
 </style>
+<route lang="yaml">
+meta:
+  layout: default
+  title: 邮箱登录
+</route>

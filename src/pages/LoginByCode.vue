@@ -16,8 +16,10 @@ const store = useStore();
 const userInfo = userStore();
 const { isFooterShow } = storeToRefs(store);
 const loading = ref(true);
-onMounted(() => {
+onBeforeMount(() => {
   isFooterShow.value = false;
+});
+onMounted(() => {
   setTimeout(() => {
     loading.value = false;
   }, 2000);
@@ -78,19 +80,37 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="h-100vh relative w-100%">
-    <div class="w-100% text-center mt-5">请使用网易云音乐APP扫码登录</div>
-    <van-loading v-if="loading" class="mt-10" color="#1989fa" />
-    <img
-      v-else
-      class="w-50 h-50 rounded-xl absolute left-50% top-15% -translate-x-1/2"
-      :src="qrimg"
-      alt=""
-    />
-    <div class="absolute w-100% top-50% text-left px-2">
-      温馨提示：如果二维码失效了的话，请刷新一下页面！
+  <van-loading v-if="loading" class="h-100vh w-100vw bg-hex-f5f5f5" color="#1989fa"
+    >正在加载</van-loading
+  >
+  <div v-else class="h-100vh w-100vw bg-hex-f5f5f5 relative">
+    <div
+      class="w-100% flex justify-center items-center justify-around mt-8 absolute -translate-1/2 top-50% left-50%"
+    >
+      <img
+        class="h-13.76rem w-7.8125rem inline-block"
+        src="https://p5.music.126.net/obj/wo3DlcOGw6DClTvDisK1/9643571155/525c/faac/2dc6/fe695c03c7c358ddaa4651736b26a55f.png"
+        alt=""
+      />
+      <div class="flex-col">
+        <div class="text-center mb-5">扫码登录</div>
+        <img class="w-35 h-35 rounded-xl inline-block" :src="qrimg" alt="" />
+        <div class="text-xs mt-2">
+          使用<a
+            class="text-hex-0c73c2 px-2"
+            href="https://music.163.com/#/download"
+            target="_blank"
+            >网易云音乐APP</a
+          >扫码登录
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped></style>
+<route lang="yaml">
+meta:
+  layout: default
+  title: 二维码登录
+</route>

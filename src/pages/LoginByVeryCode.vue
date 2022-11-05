@@ -19,7 +19,7 @@ const { isFooterShow } = storeToRefs(store);
 let disabled = ref(true);
 let showTime = ref(false);
 let time = ref(60 * 1000);
-onMounted(() => {
+onBeforeMount(() => {
   isFooterShow.value = false;
 });
 
@@ -173,3 +173,8 @@ watch(
   padding: 0 10px;
 }
 </style>
+<route lang="yaml">
+meta:
+  layout: default
+  title: 验证码登录
+</route>
