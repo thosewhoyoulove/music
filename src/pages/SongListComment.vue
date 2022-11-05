@@ -251,3 +251,8 @@ const onLoad = async () => {
   text-overflow: ellipsis;
 }
 </style>
+<route lang="yaml">
+meta:
+  layout: default
+  title: 歌单评论
+</route>

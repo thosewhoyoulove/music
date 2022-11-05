@@ -469,3 +469,8 @@ const formatMvTime = (ms: number) => {
   right: 1rem;
 }
 </style>
+<route lang="yaml">
+meta:
+  layout: default
+  title: 搜索详情
+</route>

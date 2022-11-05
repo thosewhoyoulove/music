@@ -215,5 +215,5 @@ const toMv = (item: any) => {
 <route lang="yaml">
 meta:
   layout: default
-  title: 歌单详情
+  title: 榜单详情
 </route>

@@ -180,3 +180,8 @@ const toMv = (item: any) => {
   right: 5px;
 }
 </style>
+<route lang="yaml">
+meta:
+  layout: default
+  title: 每日推荐
+</route>

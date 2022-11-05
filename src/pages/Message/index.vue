@@ -63,7 +63,7 @@ const finished = ref(false); //是否结束
 let msgs: any = ref([]); //所有的消息数组
 let limit = ref(10);
 let more: any = ref(false);
-onMounted(async () => {
+onBeforeMount(async () => {
   isFooterShow.value = false;
   console.log(msgs.value);
 });
@@ -125,3 +125,8 @@ const toMsgDetail = (item: any, index: any) => {
   text-overflow: ellipsis;
 }
 </style>
+<route lang="yaml">
+meta:
+  layout: default
+  title: 我的私信
+</route>

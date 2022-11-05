@@ -85,3 +85,8 @@ const toTopDetail = (item: any, index: any) => {
   padding: 0;
 }
 </style>
+<route lang="yaml">
+meta:
+  layout: default
+  title: 榜单
+</route>

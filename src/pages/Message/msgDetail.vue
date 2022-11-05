@@ -92,8 +92,10 @@ const listLoading = ref(false); //下拉刷新加载提示
 const finished = ref(false); //是否结束
 let message = ref("");
 let listContainer: any = null; //获取van-list的元素对象，然后用来跳转到最底部
-onMounted(async () => {
+onBeforeMount(() => {
   isFooterShow.value = false;
+});
+onMounted(async () => {
   listContainer = document.getElementById("listContainer");
   toBottom();
   let res = await getUserAccount();
@@ -232,3 +234,8 @@ watch(
   border: 0 solid #fff;
 }
 </style>
+<route lang="yaml">
+meta:
+  layout: default
+  title: 私信详情
+</route>

@@ -8,6 +8,7 @@
 <template>
   <main class="text-center text-gray-700 dark:text-gray-200">
     <van-nav-bar
+      :title="title"
       left-text="返回"
       left-arrow
       @click-left="router.back()"
@@ -19,6 +20,10 @@
 
 <script setup lang="ts">
 const router = useRouter();
+const title = ref();
+watchEffect(() => {
+  title.value = router.currentRoute.value.meta.title || "默认标题";
+});
 </script>
 
 <style></style>

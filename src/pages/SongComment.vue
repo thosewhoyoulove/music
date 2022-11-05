@@ -137,7 +137,7 @@ const onLoad = async () => {
                   <div
                     v-for="(item, index) in state.comment"
                     :key="index"
-                    class="flex justify-between  mt-3 break-all relative"
+                    class="flex justify-between mt-3 break-all relative"
                   >
                     <div class="flex px-2">
                       <img
@@ -246,3 +246,8 @@ const onLoad = async () => {
     </div>
   </div>
 </template>
+<route lang="yaml">
+meta:
+  layout: default
+  title: 歌曲评论
+</route>

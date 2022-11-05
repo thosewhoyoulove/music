@@ -23,7 +23,7 @@ const searchHotDetailList: any = ref([]); //热门搜索列表(详细)
 const defaultSearchKeyWord = ref(route.query.showKeyword);
 const onSearch = async () => {
   // 如果输入为空，则直接搜索默认值
-  if (keyWord.value == "") {
+  if (keyWord.value == "" && !route.query.realkeyword) {
     keyWord.value = route.query.realkeyword;
     // 数组向前追加元素
     keyWordList.value.unshift(keyWord.value);
@@ -196,3 +196,8 @@ const searchHistory = async (item: string) => {
   text-overflow: ellipsis;
 }
 </style>
+<route lang="yaml">
+meta:
+  layout: default
+  title: 搜索
+</route>
