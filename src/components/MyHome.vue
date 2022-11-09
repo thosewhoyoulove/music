@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-09-12 17:02:36
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-11-04 21:02:35
+ * @LastEditTime: 2022-11-09 17:44:23
 -->
 <script setup lang="ts">
 import { Dialog, Loading, Notify, ImagePreview } from "vant";
@@ -28,6 +28,8 @@ const gender = ref();
 const age: any = ref(0);
 const signature: any = ref("");
 const events: any = ref([]);
+let backgroundUrl = ref("");
+let avatarUrl = ref("");
 let event = reactive({
   content: [] as any[],
 });
@@ -42,7 +44,7 @@ const activeNames: any = ref("创建的歌单");
 const createdList: any = ref([]); //
 const subList: any = ref([]);
 //在beforeMount之前判断是否有cookie
-onBeforeMount(() => {
+onBeforeMount(async () => {
   if (!cookie.value) {
     console.log("beforeMount没有cookie");
     store.updateIsShow(store.$state, true);
@@ -50,6 +52,10 @@ onBeforeMount(() => {
       path: "/LoginOrReg",
     });
   }
+  const res = await getUserAccount(); // 获取账号信息
+  user.value = res;
+  backgroundUrl.value = user.value.profile.backgroundUrl;
+  avatarUrl.value = user.value.profile.avatarUrl;
 });
 onMounted(async () => {
   const res = await getUserAccount(); // 获取账号信息
@@ -63,6 +69,8 @@ onMounted(async () => {
   console.log(res, "这是用户账号信息");
   user.value = res;
   console.log(user.value, "本地用户信息");
+  backgroundUrl.value = user.value.profile.backgroundUrl;
+  avatarUrl.value = user.value.profile.avatarUrl;
   uid.value = user.value.account.id;
   nickname.value = user.value.profile?.nickname;
   gender.value = user.value.profile?.gender;
@@ -167,15 +175,11 @@ const showImage = (pic: any, index: any) => {
 
 <template>
   <div v-if="cookie" class="w-100vw">
-    <img
-      class="absolute h-50 w-100vw pt-2 px-3"
-      :src="user?.profile?.backgroundUrl"
-      alt=""
-    />
+    <img class="absolute h-50 w-100vw pt-2 px-3" :src="backgroundUrl" alt="" />
     <div class="relative w-100vw h-35 top-30 rounded bg-white px-3">
       <img
         class="absolute h-15 w-15 rounded-full -top-20% left-50% -translate-x-1/2"
-        :src="user?.profile?.avatarUrl"
+        :src="avatarUrl"
         alt=""
       />
       <div class="absolute font-sans font-650 top-30% left-50% -translate-x-1/2">
@@ -370,4 +374,3 @@ const showImage = (pic: any, index: any) => {
   padding: 0.25rem 0.1rem;
 }
 </style>
-

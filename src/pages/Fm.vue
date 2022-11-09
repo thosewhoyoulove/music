@@ -120,7 +120,7 @@ const toArtistDetail = (item: any) => {
       </div>
       <!-- 艺人名字 -->
       <div
-        class="flex items-center my-1 w-auto "
+        class="flex items-center my-1 w-auto"
         v-for="(item, index) in state.playList[playListIndex]?.artists"
         :key="index"
         @click="toArtistDetail(item)"
@@ -171,3 +171,8 @@ const toArtistDetail = (item: any) => {
 </template>
 
 <style scoped></style>
+<route lang="yaml">
+meta:
+  layout: default
+  title: 私人FM
+</route>

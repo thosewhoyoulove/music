@@ -274,3 +274,8 @@ const toAlbum = (albumId: any) => {
     </div>
   </div>
 </template>
+<route lang="yaml">
+meta:
+  layout: default
+  title: 专辑评论
+</route>

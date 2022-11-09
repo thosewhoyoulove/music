@@ -329,3 +329,8 @@ const toAlbum = (item: any) => {
   text-overflow: ellipsis;
 }
 </style>
+<route lang="yaml">
+meta:
+  layout: default
+  title: 歌手主页
+</route>

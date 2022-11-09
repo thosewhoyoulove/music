@@ -238,3 +238,8 @@ const onDialogCancel = async () => {
   text-overflow: ellipsis;
 }
 </style>
+<route lang="yaml">
+meta:
+  layout: default
+  title: MV详情
+</route>

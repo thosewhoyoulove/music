@@ -3,17 +3,18 @@
  * @Author: 曹俊
  * @Date: 2022-09-15 15:07:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-10 20:04:56
+ * @LastEditTime: 2022-11-09 17:45:19
 -->
 <script setup lang="ts">
 import { getUserFolloweds, getUserFollows } from "~/api/user";
 const route = useRoute();
-const router = useRouter()
+const router = useRouter();
 const uid = parseInt(route.query.id as string);
 const choice = ref(["关注", "粉丝"]);
 const active = ref(Number(route.query.active));
-const followsList:any = ref([]);
-const followedList:any = ref([]);
+const followsList: any = ref([]);
+const followedList: any = ref([]);
+let title = ref("我的关注");
 onMounted(async () => {
   if (active.value == 1) {
     const res = await getUserFolloweds(uid);
@@ -38,12 +39,12 @@ const tabChange = async () => {
   }
 };
 //跳转歌手主页
-const toArtistDetail = (item:any) => {
+const toArtistDetail = (item: any) => {
   console.log(item);
   router.push({
     path: "/Artist",
     query: {
-      artistId: item.userId
+      artistId: item.userId,
     },
   });
 };
@@ -64,7 +65,7 @@ const toArtistDetail = (item:any) => {
             <img class="rounded-full w-11 h-11 m-2" :src="item.avatarUrl" alt="" />
             <img
               v-if="item?.avatarDetail?.identityIconUrl"
-              class="w-5 h-5 absolute rounded-full left-10 bottom-1 "
+              class="w-5 h-5 absolute rounded-full left-10 bottom-1"
               :src="item?.avatarDetail?.identityIconUrl"
               alt=""
             />

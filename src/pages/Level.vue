@@ -6,61 +6,60 @@
  * @LastEditTime: 2022-09-18 14:47:41
 -->
 <template>
-  <div>
-    <div class="w-20 font-550 ml-5 mt-10">我的等级</div>
-    <div class="w-15 h-15 mx-auto">
-      <van-image round :src="avatarUrl">
-        <template v-slot:loading>
-          <van-loading type="spinner" size="20" />
-        </template>
-      </van-image>
-    </div>
-    <div>当前等级：Lv{{ level }}</div>
+  <div class="w-100vw h-100vh bg-hex-f5f5f5">
+    <div>
+      <div class="w-15 h-15 mx-auto">
+        <van-image round :src="avatarUrl">
+          <template v-slot:loading>
+            <van-loading type="spinner" size="20" />
+          </template>
+        </van-image>
+      </div>
+      <div>当前等级：Lv{{ level }}</div>
 
-    <!-- 等级进度条 -->
-    <div class="flex w-80 items-center h-10 mx-auto mt-5">
-      <div class="ml-1">0</div>
-      <div class="w-65 mx-3 h-6.9 mt-5">
-        <van-progress color="#ee0a24" stroke-width="8px" :percentage="percentage" />
+      <!-- 等级进度条 -->
+      <div class="flex w-80 items-center h-10 mx-auto mt-5">
+        <div class="ml-1">0</div>
+        <div class="w-65 mx-3 h-6.9 mt-5">
+          <van-progress color="#ee0a24" stroke-width="8px" :percentage="percentage" />
+        </div>
+        <div>10</div>
       </div>
-      <div>10</div>
+      <div class="w-40 text-xs text-left text-hex-ccc pl-4">等级数据每天下午两点更新</div>
+      <van-divider></van-divider>
+      <div class="w-50 text-left pl-4 text-xs">
+        <div class="font-600">当前等级特权</div>
+        <div class="my-1" v-for="(item, index) in info" :key="index">- {{ item }}</div>
+      </div>
     </div>
-    <div class="w-40 text-xs text-left text-hex-ccc">等级数据每天下午两点更新</div>
     <van-divider></van-divider>
-    <div class="w-50 text-left ml-2">
-      <div class="text-12px font-600">当前等级特权</div>
-      <div class="text-xs my-1" v-for="(item, index) in info" :key="index">
-        - {{ item }}
+    <div class="mt-2">
+      <div class="w-50 text-left text-xs text-hex-ccc pl-4">
+        距离下一个等级：Lv{{ level + 1 }}
       </div>
-    </div>
-  </div>
-  <van-divider></van-divider>
-  <div class="mt-2">
-    <div class="w-50 text-left text-xs text-hex-ccc">
-      距离下一个等级：Lv{{ level + 1 }}
-    </div>
-    <div class="flex">
-      <div class="w-50%">
-        <van-circle
-          v-model:current-rate="songCurrentRate"
-          :rate="30"
-          :speed="100"
-          :text="nextSong"
-          color="#ee0a24"
-          layer-color="#ebedf0"
-        />
-        <div class="text-xs">听歌量：还需{{ nextSong }}首</div>
-      </div>
-      <div class="w-50%">
-        <van-circle
-          v-model:current-rate="dayCurrentRate"
-          :rate="30"
-          :speed="100"
-          :text="nextDay"
-          color="#ee0a24"
-          layer-color="#ebedf0"
-        />
-        <div class="text-xs">登录天数：还需{{ nextDay }}天</div>
+      <div class="flex mt-8">
+        <div class="w-50%">
+          <van-circle
+            v-model:current-rate="songCurrentRate"
+            :rate="30"
+            :speed="100"
+            :text="nextSong"
+            color="#ee0a24"
+            layer-color="#ebedf0"
+          />
+          <div class="text-xs">听歌量：还需{{ nextSong }}首</div>
+        </div>
+        <div class="w-50%">
+          <van-circle
+            v-model:current-rate="dayCurrentRate"
+            :rate="30"
+            :speed="100"
+            :text="nextDay"
+            color="#ee0a24"
+            layer-color="#ebedf0"
+          />
+          <div class="text-xs">登录天数：还需{{ nextDay }}天</div>
+        </div>
       </div>
     </div>
   </div>
@@ -80,8 +79,8 @@ const info = ref([]); //等级特权的信息，用$分隔
 const nextSong = ref(0); //升级听歌数
 const nextDay = ref(0); //升级登录数
 onMounted(async () => {
-  const AcountRes = await getUserAccount(); //获取用户信息
-  avatarUrl.value = AcountRes.profile.avatarUrl;
+  const AccountRes = await getUserAccount(); //获取用户信息
+  avatarUrl.value = AccountRes.profile.avatarUrl;
   console.log(id, "id");
   let levelRes = await getUserLevel(id); //获取用户等级
   level.value = levelRes.data.level;
@@ -113,3 +112,8 @@ onMounted(async () => {
   display: inline-block;
 }
 </style>
+<route lang="yaml">
+meta:
+  layout: default
+  title: 我的等级
+</route>

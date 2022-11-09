@@ -172,3 +172,8 @@ const saveSignature = async (signature: any) => {
 </script>
 
 <style scoped></style>
+<route lang="yaml">
+meta:
+  layout: default
+  title: 编辑个人资料
+</route>

@@ -135,3 +135,8 @@ const toMusicDetail = (id: any) => {
   right: 1rem;
 }
 </style>
+<route lang="yaml">
+meta:
+  layout: default
+  title: 歌单广场
+</route>
