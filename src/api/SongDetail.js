@@ -63,3 +63,18 @@ export function likeMusic(id) {
         url: `/like?id=${id}&cookie=${encodeURIComponent(cookie)}`,
     })
 }
+// 喜欢音乐列表
+// 说明 : 调用此接口 , 传入用户 id, 可获取已喜欢音乐 id 列表(id 数组)
+
+// 必选参数 : uid: 用户 id
+
+// 接口地址 : /likelist
+
+// 调用例子 : /likelist?uid=32953014
+export function getLikeList(uid) {
+    const cookie = localStorage.getItem('cookie')
+    return request({
+        method: 'get',
+        url: `/likelist?uid=${uid}&cookie=${encodeURIComponent(cookie)}`,
+    })
+}

@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-22 21:03:00
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-31 20:50:59
+ * @LastEditTime: 2022-11-09 18:29:30
 -->
 <script setup lang="ts">
 import { Vue3Marquee } from "vue3-marquee";
@@ -27,8 +27,8 @@ const fee = ref(0); //歌曲是 0: 免费或无版权
 // 1: VIP 歌曲
 // 4: 购买专辑
 // 8: 非会员可免费播放低音质，会员可播放高音质及下载
-const { playList, playListIndex, duration, shouldNext } = storeToRefs(store);
-
+const { playList, playListIndex, duration } = storeToRefs(store);
+//格式化歌曲时间变为xx:xx
 const transformTime = (time: string | number): string => {
   const minRes =
     typeof time == "string" ? Math.floor(parseInt(time) / 60) : Math.floor(time / 60);
@@ -56,7 +56,7 @@ const { isShow, isDetailShow } = storeToRefs(store);
 
 onMounted(async () => {
   console.log(props.myAudio, "我是传过来的myAudio");
-
+  //获取歌曲评论
   const res = await getMusicComment(props.musicList.id, 100, 0); //参数有三个
   totalComment.value = res.total;
   console.log(totalComment.value, "音乐评论数");
@@ -199,6 +199,8 @@ const musicLyric = ref<HTMLElement>();
 watch(
   () => store.currentTime,
   (newValue) => {
+    console.log(newValue, "newVal");
+
     const p = document.querySelector<HTMLElement>("p.active");
     if (p && p.offsetTop > 150 && musicLyric.value) {
       musicLyric.value.scrollTop = p.offsetTop - 150;
@@ -413,7 +415,7 @@ input[type="range"]::-webkit-slider-thumb {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 3rem;
+  margin-top: 10vh;
   //溢出滚动
   overflow: scroll;
   p {
@@ -424,7 +426,7 @@ input[type="range"]::-webkit-slider-thumb {
   }
   //高亮显示的歌词
   .active {
-    color: white;
+    color: #fff;
     font-size: 1.1rem;
     overflow-wrap: break-word;
   }
