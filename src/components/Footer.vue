@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-11-04 21:09:42
+ * @LastEditTime: 2023-04-13 23:34:55
 -->
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
@@ -27,14 +27,12 @@ const {
   playListIndex,
   isShow,
   isDetailShow,
-  shouldNext,
   isPlayListShow,
 } = storeToRefs(store);
 onMounted(async () => {
   store.getLyric(playList.value[playListIndex.value]?.id);
   myAudio.value = document.getElementById("myAudio");
   console.log(myAudio.value.currentTime, "myAudio");
-  console.log(audio.value?.currentTime);
   // let res = await isMusicAvailable(playList.value[playListIndex.value]?.id);
 }); // 开始获取歌词
 
@@ -51,10 +49,6 @@ const onError = (Event: any) => {
     });
     console.log(store.playListIndex, "当前歌曲的index");
   }
-  // shouldNext.value = true;
-  // Notify({ type: "primary", message: "当前歌曲为VIP专享音乐，即将播放下一首" });
-  // store.updatePlayListIndex(store.playListIndex++);
-  // store.currentTime = 0;
 };
 const play = () => {
   /* 判断是否已暂停 */
@@ -93,6 +87,13 @@ onUpdated(() => {
   // 渲染的时候也需要同步歌词时间
   addDuration();
 });
+watch(() =>myAudio,(newVal)=>{
+  if(newVal&&newVal.value&&newVal.value.paused){
+    isShow.value = true;
+  }else if(newVal&&newVal.value&&newVal.value.played){
+    isShow.value = false
+  }
+},{immediate:true,deep:true})
 </script>
 
 <template>
