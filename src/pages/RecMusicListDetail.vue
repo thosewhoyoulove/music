@@ -3,14 +3,14 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-10 12:38:51
+ * @LastEditTime: 2023-04-17 23:10:35
 -->
 <script setup lang="ts">
 import { getAllSong, getSongListDetail } from "~/api/SongListDetail";
 import { storeToRefs } from "pinia";
 import { useStore } from "~/store/index";
 const store = useStore();
-const { playList } = storeToRefs(store);
+const { playList,playListIndex } = storeToRefs(store);
 const router = useRouter();
 const route = useRoute();
 const state: any = reactive({
@@ -28,9 +28,9 @@ onMounted(async () => {
   console.log(id);
   const res = await getSongListDetail(id);
   state.playlist = res.playlist; // 歌单信息
-  console.log(state.playlist, "歌单信息");
+  // console.log(state.playlist, "歌单信息");
   const totalRes = await getAllSong(id, 10000); //获取歌单歌曲总数
-  console.log(totalRes, "totalRes");
+  // console.log(totalRes, "totalRes");
   totalSong.value = totalRes.songs.length;
   const songListRes = await getAllSong(id, SongNum.value, offset.value);
   state.songList = songListRes.songs;
@@ -49,7 +49,9 @@ const onLoad = async () => {
   const songListRes = await getAllSong(id, SongNum.value, offset.value);
   console.log(songListRes, "歌曲信息");
   state.songList = songListRes.songs;
-  playList.value = songListRes.songs;
+  songListRes.songs.map(item=>{
+    playList.value.push(item)
+  })
   console.log(playList.value, "播放列表");
   listLoading.value = false;
   if (state.songList.length == limit || state.songList.length == totalSong.value) {
@@ -59,6 +61,10 @@ const onLoad = async () => {
 // 修改歌曲信息并进行播放
 
 const updateSongList = (index: any) => {
+  console.log("点击了推荐歌单的歌曲");
+  
+  store.getLyric(playList.value[playListIndex.value]?.id);
+
   store.updatePlayList(store.$state, state.songList); // 将歌单列表传进默认列表
   store.updatePlayListIndex(index); // 将索引值传给默认索引
   store.updateIsShow(store.$state, true); // 修改为暂停图标

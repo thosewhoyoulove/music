@@ -3,10 +3,9 @@
  * @Author: 曹俊
  * @Date: 2022-09-24 20:05:34
  * @LastEditors: 曹俊
- * @LastEditTime: 2022-10-20 20:50:03
+ * @LastEditTime: 2023-04-17 23:54:59
  */
 import { defineStore } from 'pinia'
-import { Notify } from 'Vant'
 import { Names } from "../names";
 import { getMusicLyric } from '~/api/SongDetail'
 import { generateState, State, Play, LyricList } from "./state"
@@ -42,17 +41,25 @@ export const useStore = defineStore(Names.playList, {
         pushPlayList(value: any) {
             this.playList = value
         },// 搜索出来的歌曲，点击播放，将整首歌数据追加到播放列表内
-        async getLyric(value: any) {
-            let res = await getMusicLyric(value)
-            // console.log(res);
-            this.updateLyric(res.lrc)
-        },//异步获取歌词的方法
+        async getLyric(id: any) {
+            let res = await getMusicLyric(id)
+            nextTick(()=>{
+                this.lyricList = res.lrc
+            })
+                // this.updateLyric(res.lrc)
+                return this.lyricList	// 返回歌词的列表格式，格式如下：[0]:歌词内容，
+
+            
+             
+
+        },//异步获取歌词的方法,要用nextTick将更新后的歌词渲染到页面上，否则歌词不会显示出来
+
         updateLyric(value: LyricList) {
-            this.lyricList = value
-        },//修改歌词
-        // updateUserInfo(name?:string,password?:string,phoneNumber?:string|number,avatar?:string,email?:string){
-        //     this.user.name = name
-        // }
+           
+                this.lyricList = value
+                
+
+        },
 
     }
 })

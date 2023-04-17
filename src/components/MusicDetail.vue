@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-22 21:03:00
  * @LastEditors: 曹俊
- * @LastEditTime: 2023-04-13 23:16:41
+ * @LastEditTime: 2023-04-18 00:08:32
 -->
 <script setup lang="ts">
 import { Vue3Marquee } from "vue3-marquee";
@@ -32,36 +32,64 @@ const fee = ref(0); //歌曲是 0: 免费或无版权
 const { playList, playListIndex, duration } = storeToRefs(store);
 //格式化歌曲时间变为xx:xx
 const transformTime = (time: string | number): string => {
-  const minRes =
-    typeof time == "string" ? Math.floor(parseInt(time) / 60) : Math.floor(time / 60);
+  const timeNumber = typeof time === "string" ? parseInt(time) : time;
+  const minRes = Math.floor(timeNumber / 60);
+  const secRes = (timeNumber % 60).toFixed(0).padStart(2, "0");
 
-  let secRes = typeof time == "string" ? parseInt(time) % 60 : time % 60;
-
-  secRes = Number(secRes.toFixed(0));
-  // console.log(secRes)
-  let res = "";
-
-  if (secRes < 10) {
-    res = minRes + ":" + "0" + secRes;
-  } else {
-    res = `${minRes}:${secRes}`;
-  }
-
-  return res;
+  return `${minRes}:${secRes}`;
 };
+const parseTime = (timeStr: string) => {
+    let time = timeStr.split(':')
+    return parseInt(time[0]) * 60 + parseInt(time[1])
+};
+//歌词转化为一个对象
+const parseLrc = (lrc: string): Array => {
+    let lines = lrc.split('\n')
 
+    let lrcData: any = ref([])
+    for (let i = 0; i < lines.length; i++) {
+        let parts = lines[i].split(']')
+
+        if (parts.length > 1) {
+            let timeStr = parts[0].split('[')
+
+            let obj = {
+                time: parseTime(timeStr[1]),
+                words: parts[1]
+            }
+            lrcData.value.push(obj)
+
+        }
+
+    }
+    return lrcData.value
+
+}
+let lrcData = ref(parseLrc(store.lyricList.lyric))//获取歌词
 const nowTime = ref(transformTime(store.currentTime)); //获取当前时间
-const totalTime = ref(transformTime(duration.value)); //获取总时长
+const totalTime = ref(transformTime(props.myAudio.duration)); //获取总时长
 // console.log(totalTime, "totalTime");
 
 const { isShow, isDetailShow } = storeToRefs(store);
 
 //设置歌曲的偏移量
-
+function getAudioDuration(audio) {
+  return new Promise((resolve) => {
+    if (audio.duration) {
+      resolve(audio.duration);
+    } else {
+      audio.onloadedmetadata = () => {
+        resolve(audio.duration);
+      };
+    }
+  }).catch(() => 0);
+}
 onMounted(async () => {
-  console.log(lrcList);
-
-  console.log(props.myAudio, "我是传过来的myAudio");
+  console.log(lrcData.value,'歌词');
+  
+  console.log(transformTime(props.myAudio.duration),'duration');
+  
+  // console.log(props.myAudio, "我是传过来的myAudio");
   //获取歌曲评论
   const res = await getMusicComment(props.musicList.id, 100, 0); //参数有三个
   totalComment.value = res.total;
@@ -120,21 +148,38 @@ const getNewComment = async (id: number) => {
 };
 // 下一首上一首操作
 const goPlay = async (num: number) => {
-  console.log("点击了切换歌曲");
-  store.updateIsShow(store.$state, true);
-  let musicDetailRes = await getMusic(props.musicList.id);
-  fee.value = musicDetailRes.songs[0].fee;
-  console.log(fee.value, "歌曲类别");
-  // 如果是第一首，上一首应该是最后一首
-  // 如果是最后一首，下一首应该是第一首
+  console.log(playListIndex.value,'第几首歌');
   let index = playListIndex.value + num;
   if (index < 0) index = playList.value.length - 1;
   else if (index == playList.value.length) index = 0;
-
   store.updatePlayListIndex(index);
-};
+  isLyricShow.value = false; // 隐藏歌词显示页面中的“歌词”按钮控件。
+  //在nextTick外获取数据，在里面赋值
+  let res = await store.getLyric(playList.value[playListIndex.value]?.id);
+  nextTick(()=>{
+    console.log(playListIndex.value,'第几首歌的歌词');
+    lrcData.value = parseLrc(res?.lyric)
+    console.log(lrcData.value,'歌词');
+  })
+ 
+  // console.log("点击了切换歌曲",lrcData.value,'切换后的lrcData');
+  // console.log(store.lyricList.lyric,'切换后的store.lyricList.lyric');
+  
+  // console.log(props.myAudio.duration,'props.myAudio.duration');
+  
+  // nextTick(()=>{
+  //   totalTime.value = transformTime(props.myAudio.duration)
+  // })
+  store.updateIsShow(store.$state, true);
+  // let musicDetailRes = await getMusic(props.musicList.id);
+  // fee.value = musicDetailRes.songs[0].fee;
+  // console.log(fee.value, "歌曲类别");
+  // 如果是第一首，上一首应该是最后一首
+  // 如果是最后一首，下一首应该是第一首
+  
 
-const lrcList: [] = ref(null) as any;
+  
+};
 
 
 //过滤评论数
@@ -160,7 +205,7 @@ const toArtistDetail = (item: any) => {
 
 <template>
   <div class="w-100vw h-100vh relative bg-black">
-    <div class="flex justify-between top-5 px-5 relative">
+    <div class="flex justify-between top-20px px-5 relative">
       <div class="text-xl text-hex-ccc" @click="back">
         <van-icon name="arrow-left"></van-icon>
       </div>
@@ -198,26 +243,7 @@ const toArtistDetail = (item: any) => {
       <img class="rounded-1/2 w-11rem h-11rem animate__animated animate__bounceIn ml-6 mt-6" v-show="!isLyricShow"
         :src="props.musicList.al.picUrl" alt="这是歌曲详情的磁盘图" @click="isLyricShow = true" />
     </div>
-    <!-- <div
-                          class="musicLyricList animate__animated animate__backInDown"
-                          v-show="isLyricShow"
-                          ref="musicLyric"
-                          @click="isLyricShow = false"
-                        >
-                          <p
-                            class="ml-6"
-                            v-for="(item, index) in lyric"
-                            :key="index"
-                            :class="{
-                              active:
-                                store.currentTime * 1000 >= item.time && store.currentTime * 1000 < item.pre,
-                            }"
-                          >
-                            {{ item.lrc }}
-                          </p>
-                        </div> -->
-    
-      <Lyric v-show="isLyricShow" @click="isLyricShow = false"></Lyric>
+      <Lyric :lrcData="lrcData" v-show="isLyricShow" @click="isLyricShow = false"></Lyric>
    
 
     <!-- 点击展示歌词，并增加了动画效果 -->
