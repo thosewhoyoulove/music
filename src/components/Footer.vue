@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 17:12:27
  * @LastEditors: 曹俊
- * @LastEditTime: 2023-04-13 23:34:55
+ * @LastEditTime: 2023-04-17 23:33:04
 -->
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
@@ -41,15 +41,15 @@ const timeupdate = (e: any) => {
   store.currentTime = e.target.currentTime;
 };
 //当发生错误的时候，自动将playListIndex加1，跳转到能够正常播放的歌曲再停下来
-const onError = (Event: any) => {
-  console.log(Event.type, "发生错误了");
-  if (Event.type === "error") {
-    nextTick(() => {
-      store.updatePlayListIndex(++store.playListIndex);
-    });
-    console.log(store.playListIndex, "当前歌曲的index");
-  }
-};
+// const onError = (Event: any) => {
+//   console.log(Event.type, "发生错误了");
+//   if (Event.type === "error") {
+//     nextTick(() => {
+//       store.updatePlayListIndex(++store.playListIndex);
+//     });
+//     console.log(store.playListIndex, "当前歌曲的index");
+//   }
+// };
 const play = () => {
   /* 判断是否已暂停 */
   if (audio.value && audio.value.paused) {

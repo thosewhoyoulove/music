@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-22 21:03:00
  * @LastEditors: 曹俊
- * @LastEditTime: 2023-04-18 00:08:32
+ * @LastEditTime: 2023-04-19 22:41:29
 -->
 <script setup lang="ts">
 import { Vue3Marquee } from "vue3-marquee";
@@ -20,8 +20,10 @@ const props = defineProps<{
   addDuration: Function;
   myAudio: any;
 }>();
+
 const router = useRouter();
 const store = useStore();
+
 const isLyricShow = ref(false); // 歌词是否显示
 const totalComment = ref(0);
 const fee = ref(0); //歌曲是 0: 免费或无版权
@@ -29,7 +31,7 @@ const fee = ref(0); //歌曲是 0: 免费或无版权
 // 4: 购买专辑
 // 8: 非会员可免费播放低音质，会员可播放高音质及下载
 // const lrcList = ref(null)
-const { playList, playListIndex, duration } = storeToRefs(store);
+const { playList, playListIndex, duration,lyricList } = storeToRefs(store);
 //格式化歌曲时间变为xx:xx
 const transformTime = (time: string | number): string => {
   const timeNumber = typeof time === "string" ? parseInt(time) : time;
@@ -65,7 +67,7 @@ const parseLrc = (lrc: string): Array => {
     return lrcData.value
 
 }
-let lrcData = ref(parseLrc(store.lyricList.lyric))//获取歌词
+let lrcData = ref(parseLrc(lyricList.value.lyric))//获取歌词
 const nowTime = ref(transformTime(store.currentTime)); //获取当前时间
 const totalTime = ref(transformTime(props.myAudio.duration)); //获取总时长
 // console.log(totalTime, "totalTime");
@@ -87,8 +89,10 @@ function getAudioDuration(audio) {
 onMounted(async () => {
   console.log(lrcData.value,'歌词');
   
-  console.log(transformTime(props.myAudio.duration),'duration');
   
+ nextTick(()=>{
+  console.log(props.myAudio.duration,transformTime(props.myAudio.duration),'duration');
+ })
   // console.log(props.myAudio, "我是传过来的myAudio");
   //获取歌曲评论
   const res = await getMusicComment(props.musicList.id, 100, 0); //参数有三个
@@ -154,6 +158,7 @@ const goPlay = async (num: number) => {
   else if (index == playList.value.length) index = 0;
   store.updatePlayListIndex(index);
   isLyricShow.value = false; // 隐藏歌词显示页面中的“歌词”按钮控件。
+  console.log("点击了下一首",playList.value,playListIndex.value);
   //在nextTick外获取数据，在里面赋值
   let res = await store.getLyric(playList.value[playListIndex.value]?.id);
   nextTick(()=>{

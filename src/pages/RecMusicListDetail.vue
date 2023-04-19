@@ -3,7 +3,7 @@
  * @Author: 曹俊
  * @Date: 2022-08-18 21:41:05
  * @LastEditors: 曹俊
- * @LastEditTime: 2023-04-17 23:10:35
+ * @LastEditTime: 2023-04-19 23:35:50
 -->
 <script setup lang="ts">
 import { getAllSong, getSongListDetail } from "~/api/SongListDetail";
@@ -47,11 +47,10 @@ const onLoad = async () => {
   offset.value += 10;
   SongNum.value += 10;
   const songListRes = await getAllSong(id, SongNum.value, offset.value);
-  console.log(songListRes, "歌曲信息");
+  // console.log(songListRes, "歌曲信息");
   state.songList = songListRes.songs;
-  songListRes.songs.map(item=>{
-    playList.value.push(item)
-  })
+  
+  // playList.value = songListRes.songs
   console.log(playList.value, "播放列表");
   listLoading.value = false;
   if (state.songList.length == limit || state.songList.length == totalSong.value) {
@@ -60,11 +59,19 @@ const onLoad = async () => {
 };
 // 修改歌曲信息并进行播放
 
-const updateSongList = (index: any) => {
-  console.log("点击了推荐歌单的歌曲");
+const updateSongList = async(index: any) => {
+  playList.value.length = 0
+  state.songList.map((item:any)=>{
+    playList.value.push(item)
+  })
+  console.log("点击了推荐歌单的歌曲",playList.value,playListIndex.value);
+  let res = await store.getLyric(playList.value[playListIndex.value]?.id);
+  console.log(res,'res');
   
-  store.getLyric(playList.value[playListIndex.value]?.id);
-
+  // nextTick(()=>{
+  //   console.log(playListIndex.value,'第几首歌的歌词');
+  // })
+  
   store.updatePlayList(store.$state, state.songList); // 将歌单列表传进默认列表
   store.updatePlayListIndex(index); // 将索引值传给默认索引
   store.updateIsShow(store.$state, true); // 修改为暂停图标
